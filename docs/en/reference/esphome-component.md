@@ -22,7 +22,7 @@ The `tc_bus` hub component offers the following configuration options:
 | `receiver_id`             | ID of remote_receiver for receiving data from the TC:BUS intercom.                                                                            | No       | The configured remote_receiver |
 | `transmitter_id`          | ID of remote_transmitter for transmitting data to the TC:BUS intercom. Should be connected to the transistor.                                 | No       | The configured remote_receiver |
 | `event`                   | Event name to be generated in Home Assistant when a bus command is received. For example, if set to `tc`, the event will be `esphome.tc`. Set to `none` to disable event generation. | No       | `tc`         |
-| `on_command`              | Defines actions to be triggered when a command is received from the intercom. Returns a `CommandData` structure as the `x` variable.          | No       |               |
+| `on_command`              | Defines actions to be triggered when a command is received from the intercom. Returns a `CommandData` struct as the `x` variable.          | No       |               |
 | `on_read_memory_complete` | Defines actions to be triggered when the memory reading is complete. Returns a `std::vector<uint8_t>` buffer as the `x` variable.             | No       |               |
 | `on_read_memory_timeout`  | Defines actions to be triggered when the memory reading times out.                                                                            | No       |               |
 | `on_identify_complete`    | Defines actions to be triggered when the identification of the indoor station is complete. Returns a `ModelData` object as the `x` variable.  | No       |               |
@@ -88,7 +88,7 @@ This ensures the binary sensor triggers either through a specific command or a c
 
 ## Callbacks
 ### Received Command
-The `on_command` callback of the `tc_bus` hub allows you to utilize the [CommandData](#command-data) structure, accessible as the `x` variable.
+The `on_command` callback of the `tc_bus` hub allows you to utilize the [CommandData](#command-data) struct, accessible as the `x` variable.
 
 ```yaml
 on_command:
@@ -120,7 +120,7 @@ on_read_memory_timeout:
 ```
 
 ### Identification of Indoor Station Complete
-The `on_identify_complete` callback of the `tc_bus` hub allows you to utilize the [ModelData](#model-data) structure, accessible as the `x` variable.
+The `on_identify_complete` callback of the `tc_bus` hub allows you to utilize the [ModelData](#model-data) struct, accessible as the `x` variable.
 
 ```yaml
 on_identify_complete:
@@ -227,20 +227,6 @@ on_...:
       serial_number: 123456
 ```
 
-#### Example 3: Sending Multiple Commands
-
-For some configurations, you may need to send multiple commands consecutively. In these cases, you must insert at least a 100ms delay between the commands.
-
-```yaml
-on_...:
-  - tc_bus.send:
-      command: 0x1100
-  - delay: 100ms
-  - tc_bus.send:
-      command: 0x2100
-```
-
-
 ## Event Handling
 If the `event` parameter is set (and not `none`), an event is generated each time a command is received. You can monitor these events in Home Assistant on the [developer tools](https://my.home-assistant.io/redirect/developer_events/) page.
 
@@ -293,7 +279,7 @@ external_components:
   - source: github://azoninc/doorman@master
     components: [ tc_bus ]
 
-## RMT component configuration
+## RMT configuration
 remote_receiver:
   pin:
     number: GPIO9
@@ -396,7 +382,7 @@ button:
 ```
 
 ## Command Data
-The `CommandData` structure is used internally and can also be used in the `on_command`.
+The `CommandData` struct is used internally and can also be used in the `on_command`.
 
 ```c++
 struct CommandData {
@@ -411,7 +397,7 @@ struct CommandData {
 ```
 
 ## Model Data
-The `ModelData` structure is used internally in the identification process.
+The `ModelData` struct is used internally in the identification process.
 
 ```c++
 struct ModelData {

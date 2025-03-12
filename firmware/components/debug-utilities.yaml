@@ -108,7 +108,7 @@ button:
     disabled_by_default: true
     on_press:
       - tc_bus.send:
-          command: 0x5100
+          type: reset
     web_server:
       sorting_group_id: sorting_group_system
 
@@ -132,13 +132,14 @@ button:
       # Search Outdoor Stations
       - logger.log: Search outdoor stations...
       - tc_bus.send:
-          command: 0x5802
+          type: select_device_group
+          payload: 2
       - globals.set:
           id: search_mode
           value: "1"
       - delay: 350ms
       - tc_bus.send:
-          command: 0x5200
+          type: search_devices
       # Wait until every outdoor station sent response
       - delay: 5s
       # Search Indoor Stations 0
@@ -147,10 +148,11 @@ button:
           id: search_mode
           value: "2"
       - tc_bus.send:
-          command: 0x5800
+          type: select_device_group
+          payload: 0
       - delay: 350ms
       - tc_bus.send:
-          command: 0x5200
+          type: search_devices
       # Wait until every indoor station sent response
       - delay: 10s
       # Search Indoor Stations 1
@@ -159,10 +161,11 @@ button:
           id: search_mode
           value: "3"
       - tc_bus.send:
-          command: 0x5801
+          type: select_device_group
+          payload: 1
       - delay: 350ms
       - tc_bus.send:
-          command: 0x5200
+          type: search_devices
       # Wait until every indoor station sent response
       - delay: 10s
       # Complete

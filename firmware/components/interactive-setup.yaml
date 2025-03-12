@@ -60,7 +60,7 @@ tc_bus:
               id: entrance_door_station_id
               value: !lambda "return x.address;"
 
-          - logger.log: "Waiting for ringtone to finish before proceeding."
+          # Waiting for ringtone to finish before proceeding
           - delay: 3s
 
           # Start Identification
@@ -80,7 +80,7 @@ script:
   - id: complete_setup
     then:
       - switch.turn_off: doorman_setup_mode
-      
+
       - light.turn_on:
           id: doorman_rgb_status_led
           red: 0%

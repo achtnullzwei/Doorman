@@ -71,6 +71,8 @@ binary_sensor:
           then:
             - switch.toggle: doorman_ring_to_open
             - delay: 300ms
+
+            # Confirm Ring To Open activation
             - if: 
                 condition:
                   - switch.is_on: doorman_ring_to_open
@@ -78,6 +80,10 @@ binary_sensor:
                 then:
                   - tc_bus.send:
                       type: floor_call
+
+            # Reset to prevent address conflict
+            - tc_bus.send:
+                type: reset
 
 
 number:
