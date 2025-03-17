@@ -37,7 +37,7 @@ binary_sensor:
     icon: "mdi:connection"
     disabled_by_default: true
     lambda: |-
-      if (id(debug_bus_voltage).state >= 3) {
+      if (id(debug_bus_voltage).state >= 2.8) {
         return true;
       } else {
         return false;
