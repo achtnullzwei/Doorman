@@ -1117,6 +1117,45 @@ namespace esphome
                     }
                     break;
 
+                case MODEL_VTC42V2:
+                case MODEL_TC40V2:
+                case MODEL_VTC40:
+                case MODEL_TC40:
+                    switch (setting) {
+                        case SETTING_RINGTONE_ENTRANCE_DOOR_CALL:
+                            data.index = 3;
+                            data.left_nibble = true;
+                            break;
+
+                        case SETTING_RINGTONE_INTERNAL_CALL:
+                            data.index = 6;
+                            data.left_nibble = true;
+                            break;
+
+                        case SETTING_RINGTONE_FLOOR_CALL:
+                            data.index = 9;
+                            data.left_nibble = true;
+                            break;
+
+                        case SETTING_RINGTONE_SECOND_ENTRANCE_DOOR_CALL:
+                            data.index = 12;
+                            data.left_nibble = true;
+                            break;
+
+                        case SETTING_VOLUME_RINGTONE:
+                            data.index = 20;
+                            data.left_nibble = false;
+                            break;
+
+                        case SETTING_VOLUME_HANDSET_DOOR_CALL:
+                            data.index = 21;
+                            data.left_nibble = false;
+                            break;
+
+                        default: break;
+                    }
+                    break;
+
                 case MODEL_IVW511X:
                 case MODEL_IVW521X:
                     // TASTA Video

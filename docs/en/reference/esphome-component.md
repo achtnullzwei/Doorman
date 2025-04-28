@@ -495,10 +495,10 @@ Below are the available settings for specific indoor station models:
 | TCS IVW2210 / Koch Ecoos     | Verification and implementation required |
 | TCS IVW2211 / Koch Ecoos     | Verification and implementation required |
 | TCS IVW2212 / Koch Ecoos / Scantron SLIM60T | Verification and implementation required |
-| TCS VTC42V2                  | Verification and implementation required |
-| TCS TC40V2                   | Verification and implementation required |
-| TCS VTC40                    | Verification and implementation required |
-| TCS TC40                     | Verification and implementation required |
+| TCS VTC42V2                  | `ringtone_floor_call`, `ringtone_entrance_door_call`, `ringtone_second_entrance_door_call`, `ringtone_internal_call`, `volume_ringtone`, `volume_handset_door_call` |
+| TCS TC40V2                   | `ringtone_floor_call`, `ringtone_entrance_door_call`, `ringtone_second_entrance_door_call`, `ringtone_internal_call`, `volume_ringtone`, `volume_handset_door_call` |
+| TCS VTC40                    | `ringtone_floor_call`, `ringtone_entrance_door_call`, `ringtone_second_entrance_door_call`, `ringtone_internal_call`, `volume_ringtone`, `volume_handset_door_call` |
+| TCS TC40                     | `ringtone_floor_call`, `ringtone_entrance_door_call`, `ringtone_second_entrance_door_call`, `ringtone_internal_call`, `volume_ringtone`, `volume_handset_door_call` |
 | TCS TC2000                   | Verification and implementation required |
 | TCS TC20P                    | Verification and implementation required |
 | TCS TC20F                    | Verification and implementation required |

@@ -2,12 +2,16 @@
 Welcome to the latest updates! Here's a breakdown of all the **new features**, **improvements**, and important **changes** you need to know. Be sure to check out the **Breaking Changes** section for any actions needed to keep everything running smoothly.
 
 ## 2025.4.0
-### ✨ Improvements
-- **Enhanced Reliability with Remote Peripheral**  
-   Data reading is now based on RMT, providing more reliability compared to the previous interrupt-based method.
+### 🚀 What's New?
+- **Expand Support for Model Settings**  
+   Implemented settings compatibility for TCS TASTA (Koch TC60) IVW5xxx and ISW5xxx models.
 
 - **Support for Acknowledgment Messages**  
    Acknowledgment messages, previously unaccounted for, have now been implemented after further investigation.
+
+### ✨ Improvements
+- **Enhanced Reliability with Remote Peripheral**  
+   Data reading is now based on RMT, providing more reliability compared to the previous interrupt-based method.
 
 - **Extended Model Detection Support**  
    Detection capabilities now include additional older models.
