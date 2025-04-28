@@ -225,8 +225,10 @@ Legt den Timeout-Modus für die [Ring To Open](../guide/automation/ring-to-open)
 
 ### Ring To Open: Door Station <Badge type="tip" text="doorman_ring_to_open_door_trigger" />
 Legt die auslösende Außenstelle für die [Ring To Open](../guide/automation/ring-to-open) Automation fest.
+Bei der Nuki-Bridge-Firmware-Variante öffnet sich das Türschloss, sobald die Wohnungsklingel betätigt wird.
 
 ##### Optionen:
+- Apartment
 - Entrance
 - Second Entrance
 - Any

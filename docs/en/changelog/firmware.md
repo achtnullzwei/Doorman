@@ -15,6 +15,9 @@ Welcome to the latest updates! Here's a breakdown of all the **new features**, *
 - **Command Queue**  
    Outgoing commands are now queued to prevent data loss.
 
+- **Expand "Ring to Open" Functionality to Apartment Doorbell**
+   It is now possible to integrate the apartment doorbell with the "Ring to Open" automation when using a Nuki Smart Lock, offering even greater convenience and seamless access.
+
 ### 📝 Other Updates
 - **More Readable Log Messages**  
    Log messages have been refined for improved clarity and readability.

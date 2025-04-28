@@ -17,6 +17,7 @@ packages:
   debug_component_psram: !include ../components/debug-component.psram.yaml
   pattern_events: !include ../components/pattern-events.yaml
   ring_to_open: !include ../components/ring-to-open.yaml
+  ring_to_open_nuki: !include ../components/ring-to-open-nuki.yaml
   intercom_settings: !include ../components/intercom-settings.yaml
   addon_nuki_bridge: !include ../components/nuki-bridge.yaml
   interactive_setup: !include ../components/interactive-setup.yaml

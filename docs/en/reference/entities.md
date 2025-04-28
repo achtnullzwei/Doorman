@@ -225,8 +225,10 @@ Sets the timeout mode for the [Ring To Open](../guide/automation/ring-to-open) a
 
 ### Ring To Open: Door Station <Badge type="tip" text="doorman_ring_to_open_door_trigger" />
 Sets the triggering door for the [Ring To Open](../guide/automation/ring-to-open) automation.
+With the Nuki Bridge firmware version, the door lock opens when the apartment doorbell is rung.
 
 ##### Options:
+- Apartment
 - Entrance
 - Second Entrance
 - Any
