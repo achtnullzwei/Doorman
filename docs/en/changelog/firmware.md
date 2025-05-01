@@ -1,7 +1,7 @@
 # Release Notes & Changelog
 Welcome to the latest updates! Here's a breakdown of all the **new features**, **improvements**, and important **changes** you need to know. Be sure to check out the **Breaking Changes** section for any actions needed to keep everything running smoothly.
 
-## 2025.4.0
+## 2025.5.0
 ### 🚀 What's New?
 - **Expand Support for Model Settings**  
    Implemented settings compatibility for TCS TASTA (Koch TC60) IVW5xxx and ISW5xxx models.
