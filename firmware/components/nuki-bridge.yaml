@@ -21,12 +21,12 @@ binary_sensor:
                 binary_sensor.is_on: nuki_paired
               then:
                 - nuki_lock.unpair:
-                    id: nuki_smart_lock
+                    id: apartment_door
                 - lambda: |
                     ESP_LOGI("pairing", "Pairing Mode: TODO");
             
           - nuki_lock.set_pairing_mode: 
-              id: nuki_smart_lock
+              id: apartment_door
               pairing_mode: true
 
 number:
@@ -50,8 +50,8 @@ number:
 # Nuki Lock Bridge
 lock:
   - platform: nuki_lock
-    name: Nuki Lock
-    id: nuki_smart_lock
+    name: Apartment Door
+    id: apartment_door
     icon: "mdi:lock"
     web_server:
       sorting_group_id: sorting_group_nuki

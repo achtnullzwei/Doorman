@@ -333,8 +333,14 @@ Controls the Nuki Smart Lock Advertising Mode setting.
 
 ## Schlösser
 
-### Nuki Lock <Badge type="tip" text="nuki_smart_lock" /> <Badge type="info" text="Nuki Bridge" />
-Repräsentiert die Schlosseinheit für dein gekoppeltes Nuki Smart Lock.
+### Entrance Door <Badge type="tip" text="entrance_door" />
+Repräsentiert die Eingangstür von dem Gebäude. Es wird nur die `Öffnen`-Aktion unterstützt.
+
+### Second Entrance Door <Badge type="tip" text="second_entrance_door" /> <Badge type="info" text="Disabled by default" />
+Repräsentiert die zweite Eingangstür von dem Gebäude. Es wird nur die `Öffnen`-Aktion unterstützt.
+
+### Apartment Door <Badge type="tip" text="apartment_door" /> <Badge type="info" text="Nuki Bridge" />
+Repräsentiert das gekoppelte Nuki Smart Lock deiner Wohnungs- oder Haustür.
 
 
 ## Ereignisse

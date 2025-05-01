@@ -333,8 +333,14 @@ Controls the Nuki Smart Lock Advertising Mode setting.
 
 ## Locks
 
-### Nuki Lock <Badge type="tip" text="nuki_smart_lock" /> <Badge type="info" text="Nuki Bridge only" />
-Represents the lock entity for your paired Nuki smart lock.
+### Entrance Door <Badge type="tip" text="entrance_door" />
+Represents the entrance door of the building. Only the `Open` action is supported.
+
+### Second Entrance Door <Badge type="tip" text="second_entrance_door" /> <Badge type="info" text="Disabled by default" />
+Represents the second entrance door of the building. Only the `Open` action is supported.
+
+### Apartment Door <Badge type="tip" text="apartment_door" /> <Badge type="info" text="Nuki Bridge only" />
+Represents the apartment door Nuki smart lock.
 
 
 ## Events

@@ -28,7 +28,7 @@ binary_sensor:
                   else:
                     - delay: !lambda "return (id(doorman_ring_to_open_delay).state*1000) + 300;"
 
-              - lock.open: nuki_smart_lock
+              - lock.open: apartment_door
 
 
 select:

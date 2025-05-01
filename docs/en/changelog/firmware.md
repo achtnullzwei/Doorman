@@ -9,6 +9,9 @@ Welcome to the latest updates! Here's a breakdown of all the **new features**, *
 - **Support for Acknowledgment Messages**  
    Acknowledgment messages, previously unaccounted for, have now been implemented after further investigation.
 
+- **Lock Entities for Each Entrance Door**  
+  The door opening actions are now also available as lock entities, allowing for seamless integration into your Home Assistant dashboards and enabling a more unified user experience.
+
 ### ✨ Improvements
 - **Enhanced Reliability with Remote Peripheral**  
    Data reading is now based on RMT, providing more reliability compared to the previous interrupt-based method.
@@ -19,7 +22,7 @@ Welcome to the latest updates! Here's a breakdown of all the **new features**, *
 - **Command Queue**  
    Outgoing commands are now queued to prevent data loss.
 
-- **Expand "Ring to Open" Functionality to Apartment Doorbell**
+- **Expand "Ring to Open" Functionality to Apartment Doorbell**  
    It is now possible to integrate the apartment doorbell with the "Ring to Open" automation when using a Nuki Smart Lock, offering even greater convenience and seamless access.
 
 ### 📝 Other Updates
@@ -30,6 +33,9 @@ Welcome to the latest updates! Here's a breakdown of all the **new features**, *
 - **RMT Updates**  
    The `TC:BUS` component no longer supports the `rx_pin` and `tx_pin` options.  
    Instead, `remote_receiver` and `remote_transmitter` components must now be defined.
+
+- **Renamed Nuki Lock**  
+  The `Nuki Lock` entity has been renamed to `Apartment Door` for consistency and better alignment with the naming of other doors.
 
 - **Minimum ESPHome Version Set**  
    We’ve bumped the minimum required version to **2025.3.0**.

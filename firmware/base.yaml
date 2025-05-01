@@ -214,6 +214,7 @@ button:
     id: open_second_door
     name: "Open Second Entrance Door"
     icon: mdi:door
+    disabled_by_default: true
     on_press:
       - tc_bus.send:
           type: open_door
@@ -286,7 +287,7 @@ binary_sensor:
       sorting_weight: -28
 
   - platform: tc_bus
-    id: second_entrance_doorbell
+    id: second_doorbell
     name: "Second Entrance Doorbell"
     type: door_call
     address_lambda: !lambda "return id(second_door_station_id).state;"
@@ -375,6 +376,38 @@ binary_sensor:
       sorting_group_id: sorting_group_listeners
       sorting_weight: -7
 
+  - platform: tc_bus
+    id: open_entrance_door_button
+    internal: true
+    type: open_door
+    address_lambda: !lambda "return id(entrance_door_station_id).state;"
+    serial_number: 255
+    auto_off: 5s
+    on_press:
+      - lock.template.publish:
+          id: entrance_door
+          state: UNLOCKING
+    on_release:
+      - lock.template.publish:
+          id: entrance_door
+          state: UNLOCKED
+
+  - platform: tc_bus
+    id: open_second_door_button
+    internal: true
+    type: open_door
+    address_lambda: !lambda "return id(second_door_station_id).state;"
+    serial_number: 255
+    auto_off: 5s
+    on_press:
+      - lock.template.publish:
+          id: second_door
+          state: UNLOCKING
+    on_release:
+      - lock.template.publish:
+          id: second_door
+          state: UNLOCKED
+
   - platform: gpio
     id: doorman_external_button
     name: "External Button"
@@ -389,6 +422,64 @@ binary_sensor:
     web_server:
       sorting_group_id: sorting_group_listeners
       sorting_weight: 99
+
+lock:
+  - platform: template
+    id: entrance_door
+    name: "Entrance Door"
+    icon: mdi:door
+    lambda: return LOCK_STATE_UNLOCKED;
+    lock_action:
+      - lock.template.publish:
+          id: entrance_door
+          state: UNLOCKED
+    unlock_action:
+      - lock.template.publish:
+          id: entrance_door
+          state: UNLOCKED
+    open_action:
+      - lock.template.publish:
+          id: entrance_door
+          state: UNLOCKING
+      - tc_bus.send:
+          type: open_door
+          address: !lambda "return id(entrance_door_station_id).state;"
+      - delay: 5s
+      - lock.template.publish:
+          id: entrance_door
+          state: UNLOCKED
+    web_server:
+      sorting_group_id: sorting_group_controls
+      sorting_weight: -12
+
+  - platform: template
+    id: second_door
+    name: "Second Entrance Door"
+    icon: mdi:door
+    disabled_by_default: true
+    lambda: return LOCK_STATE_UNLOCKED;
+    lock_action:
+      - lock.template.publish:
+          id: second_door
+          state: UNLOCKED
+    unlock_action:
+      - lock.template.publish:
+          id: second_door
+          state: UNLOCKED
+    open_action:
+      - lock.template.publish:
+          id: second_door
+          state: UNLOCKING
+      - tc_bus.send:
+          type: open_door
+          address: !lambda "return id(second_door_station_id).state;"
+      - delay: 5s
+      - lock.template.publish:
+          id: second_door
+          state: UNLOCKED
+    web_server:
+      sorting_group_id: sorting_group_controls
+      sorting_weight: -11
 
 script:
   - id: update_led
