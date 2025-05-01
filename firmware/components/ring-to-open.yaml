@@ -194,7 +194,10 @@ select:
     icon: "mdi:gesture-tap-button"
     disabled_by_default: true
     optimistic: true
-    options: ${event_types}
+    options:
+      - single
+      - double
+      - triple
     initial_option: single
     entity_category: CONFIG
     web_server:

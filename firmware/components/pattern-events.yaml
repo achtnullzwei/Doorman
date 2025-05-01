@@ -1,5 +1,30 @@
 # Pattern Events Addon
 
+event:
+  - id: !extend entrance_doorbell_pattern
+    event_types:
+      - "single"
+      - "double"
+      - "triple"
+
+  - id: !extend second_entrance_doorbell_pattern
+    event_types:
+      - "single"
+      - "double"
+      - "triple"
+
+  - id: !extend apartment_doorbell_pattern
+    event_types:
+      - "single"
+      - "double"
+      - "triple"
+
+  - id: !extend phone_pick_up_pattern
+    event_types:
+      - "single"
+      - "double"
+      - "triple"
+
 binary_sensor:
   - id: !extend entrance_doorbell
     on_multi_click:
