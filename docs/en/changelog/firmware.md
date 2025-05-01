@@ -25,6 +25,9 @@ Welcome to the latest updates! Here's a breakdown of all the **new features**, *
 - **Expand "Ring to Open" Functionality to Apartment Doorbell**  
    It is now possible to integrate the apartment doorbell with the "Ring to Open" automation when using a Nuki Smart Lock, offering even greater convenience and seamless access.
 
+- **Refined "Ring to Open" Logic with Doorbell Pattern Recognition**  
+  The door now opens automatically only when a recognized doorbell ring pattern is used, giving you more control over how access is granted.
+
 ### 📝 Other Updates
 - **More Readable Log Messages**  
    Log messages have been refined for improved clarity and readability.

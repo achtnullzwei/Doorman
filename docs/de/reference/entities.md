@@ -233,8 +233,16 @@ Bei der Nuki-Bridge-Firmware-Variante öffnet sich das Türschloss, sobald die W
 - Second Entrance
 - Any
 
+### Ring To Open: Pattern Condition <Badge type="tip" text="doorman_ring_to_open_pattern_condition" /> <Badge type="info" text="Deaktiviert" />
+Legt das Muster fest, welches Bedingung zum auslösen der [Ring To Open](../guide/automation/ring-to-open) automation fest.
+
+##### Options:
+- single
+- double
+- triple
+
 ### Ring To Open: Toggle Trigger <Badge type="tip" text="doorman_ring_to_open_toggle_trigger" /> <Badge type="info" text="Deaktiviert" />
-Legt den auslöser zum umschalten für die [Ring To Open](../guide/automation/ring-to-open) automation fest.
+Legt den Auslöser zum umschalten für die [Ring To Open](../guide/automation/ring-to-open) automation fest.
 
 ##### Optionen:
 - Manual

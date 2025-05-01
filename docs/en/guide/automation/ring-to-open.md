@@ -33,3 +33,7 @@ You can choose whether the status LED blinks while the automation is active.
 ::: info Toggle Trigger
 You can decide which trigger will toggle the automation.  
 :::
+
+::: info Pattern Condition
+You can choose which doorbell pattern will trigger the automation.
+:::

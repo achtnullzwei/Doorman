@@ -1,56 +1,29 @@
 # Pattern Events Addon
 
 event:
-  - platform: template
-    id: entrance_doorbell_pattern
-    name: "Entrance Doorbell"
-    icon: "mdi:doorbell"
-    device_class: DOORBELL
+  - id: !extend entrance_doorbell_pattern
     event_types:
       - "single"
       - "double"
       - "triple"
-    web_server:
-      sorting_group_id: sorting_group_listeners
-      sorting_weight: -30
 
-  - platform: template
-    id: second_entrance_doorbell_pattern
-    name: "Second Entrance Doorbell"
-    icon: "mdi:doorbell"
-    device_class: DOORBELL
+  - id: !extend second_entrance_doorbell_pattern
     event_types:
       - "single"
       - "double"
       - "triple"
-    web_server:
-      sorting_group_id: sorting_group_listeners
-      sorting_weight: -40
 
-  - platform: template
-    id: apartment_doorbell_pattern
-    name: "Apartment Doorbell"
-    icon: "mdi:doorbell"
-    device_class: DOORBELL
+  - id: !extend apartment_doorbell_pattern
     event_types:
       - "single"
       - "double"
       - "triple"
-    web_server:
-      sorting_group_id: sorting_group_listeners
-      sorting_weight: -50
 
-  - platform: template
-    id: phone_pick_up_pattern
-    name: "Phone pick up"
-    icon: "mdi:phone-incoming-outgoing"
+  - id: !extend phone_pick_up_pattern
     event_types:
       - "single"
       - "double"
       - "triple"
-    web_server:
-      sorting_group_id: sorting_group_listeners
-      sorting_weight: -20
 
 binary_sensor:
   - id: !extend entrance_doorbell

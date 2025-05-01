@@ -233,6 +233,14 @@ With the Nuki Bridge firmware version, the door lock opens when the apartment do
 - Second Entrance
 - Any
 
+### Ring To Open: Pattern Condition <Badge type="tip" text="doorman_ring_to_open_pattern_condition" /> <Badge type="info" text="Disabled by default" />
+Defines the trigger pattern condition of the [Ring To Open](../guide/automation/ring-to-open) automation.
+
+##### Options:
+- single
+- double
+- triple
+
 ### Ring To Open: Toggle Trigger <Badge type="tip" text="doorman_ring_to_open_toggle_trigger" /> <Badge type="info" text="Disabled by default" />
 Defines the trigger to toggle the [Ring To Open](../guide/automation/ring-to-open) automation.
 

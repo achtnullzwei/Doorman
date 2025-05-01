@@ -32,3 +32,7 @@ Du kannst entscheiden ob die Status LED blinkt während die Automation aktiv ist
 ::: info Toggle Trigger
 Du kannst entscheiden durch was die Automation umgeschaltet wird.
 :::
+
+::: info Pattern Condition
+Du kannst entscheiden bei welchem Klingel-Muster die Automation ausgelöst wird.
+:::
