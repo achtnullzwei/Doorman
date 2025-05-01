@@ -136,7 +136,7 @@ Controls the Nuki Smart Lock Auto Lock Immediately setting.
 ### Nuki Auto Unlock: Disable <Badge type="tip" text="nuki_auto_unlock_disabled" /> <Badge type="info" text="Nuki Bridge" /> <Badge type="info" text="Deaktiviert" />
 Controls the Nuki Smart Lock Auto Unlock Disable setting.
 
-### Nuki Single Lock <Badge type="tip" text="nuki_single_lock" /> <Badge type="info" text="Nuki Bridge only" /> <Badge type="info" text="Disabled by default" />
+### Nuki Single Lock <Badge type="tip" text="nuki_single_lock" /> <Badge type="info" text="Nuki Bridge only" /> <Badge type="info" text="Deaktiviert" />
 Controls the Nuki Smart Lock Single Lock setting.
 
 
@@ -321,7 +321,7 @@ Controls the Nuki Smart Lock Fob Action 3 setting.
 - Lock n Go
 - Intelligent
 
-### Nuki Advertising Mode <Badge type="tip" text="nuki_advertising_mode" /> <Badge type="info" text="Nuki Bridge only" /> <Badge type="info" text="Disabled by default" />
+### Nuki Advertising Mode <Badge type="tip" text="nuki_advertising_mode" /> <Badge type="info" text="Nuki Bridge only" /> <Badge type="info" text="Deaktiviert" />
 Controls the Nuki Smart Lock Advertising Mode setting.
 
 ##### Optionen:
@@ -336,7 +336,7 @@ Controls the Nuki Smart Lock Advertising Mode setting.
 ### Entrance Door <Badge type="tip" text="entrance_door" />
 Repräsentiert die Eingangstür von dem Gebäude. Es wird nur die `Öffnen`-Aktion unterstützt.
 
-### Second Entrance Door <Badge type="tip" text="second_entrance_door" /> <Badge type="info" text="Disabled by default" />
+### Second Entrance Door <Badge type="tip" text="second_entrance_door" /> <Badge type="info" text="Deaktiviert" />
 Repräsentiert die zweite Eingangstür von dem Gebäude. Es wird nur die `Öffnen`-Aktion unterstützt.
 
 ### Apartment Door <Badge type="tip" text="apartment_door" /> <Badge type="info" text="Nuki Bridge" />
