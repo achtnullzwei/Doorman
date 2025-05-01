@@ -192,11 +192,9 @@ select:
     id: doorman_ring_to_open_pattern_condition
     name: "Ring To Open: Pattern Condition"
     icon: "mdi:gesture-tap-button"
+    disabled_by_default: true
     optimistic: true
-    options:
-      - single
-      - double
-      - triple
+    options: ${event_types}
     initial_option: single
     entity_category: CONFIG
     web_server:
