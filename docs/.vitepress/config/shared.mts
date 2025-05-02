@@ -41,7 +41,7 @@ export const shared = defineConfig({
   ],
 
   sitemap: {
-    hostname: pkg.version.includes('dev') ? 'https://doorman-dev.surge.sh' : 'https://doorman.azon.ai',
+    hostname: pkg.version.includes('dev') ? 'https://dev.doorman.azon.ai' : 'https://doorman.azon.ai',
     transformItems(items) {
       return items.filter((item) => !item.url.includes('migration'))
     }

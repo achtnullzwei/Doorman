@@ -48,10 +48,10 @@ jobs:
             SUMMARY="Please review the release notes before updating, as some breaking changes might be present."
           elif [[ "${GITHUB_REF_NAME}" == "dev" ]]; then
             SUMMARY="This is an experimental update that should be mostly stable but may still have some minor unstable features. Details: $(git log -1 --pretty=%B), ${SHA}"
-            URL="https://doorman-dev.surge.sh/changelog/firmware"
+            URL="https://dev.doorman.azon.ai/changelog/firmware"
           elif [[ "${GITHUB_REF_NAME}" == dev* ]]; then
             SUMMARY="WARNING! This is an experimental update (${GITHUB_REF_NAME}) with unstable features. Proceed with the update only if explicitly instructed by the developers. Details: $(git log -1 --pretty=%B), ${SHA}"
-            URL="https://doorman-dev.surge.sh/changelog/firmware"
+            URL="https://dev.doorman.azon.ai/changelog/firmware"
           else
             SUMMARY=""
           fi
@@ -282,7 +282,7 @@ jobs:
     name: Deploy to Webserver (dev)
     environment:
       name: dev.doorman.azon.ai
-      url: "https://doorman-dev.surge.sh/"
+      url: "https://dev.doorman.azon.ai/"
     needs: [bundle-assets-dev]
     runs-on: ubuntu-latest
     steps:

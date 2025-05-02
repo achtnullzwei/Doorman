@@ -62,7 +62,7 @@ function nav(): DefaultTheme.NavItem[] {
               items: [
                 {
                   text: !pkg.version.includes('dev') ? 'Switch to development' : 'Switch to current',
-                  link: !pkg.version.includes('dev') ? 'https://doorman-dev.surge.sh/' : 'https://doorman.azon.ai/',
+                  link: !pkg.version.includes('dev') ? 'https://dev.doorman.azon.ai/' : 'https://doorman.azon.ai/',
                   target: '_self'
                 }
               ]
