@@ -268,7 +268,7 @@ jobs:
     if: github.ref_name == 'master'
     name: Deploy to Github Pages (stable)
     environment:
-      name: github-pages
+      name: doorman.azon.ai
       url: ${{ steps.deployment.outputs.page_url }}
     needs: [bundle-assets-stable]
     runs-on: ubuntu-latest 
@@ -279,9 +279,9 @@ jobs:
 
   deploy-dev:
     if: startsWith(github.ref_name, 'dev')
-    name: Deploy to surge.sh (dev)
+    name: Deploy to Webserver (dev)
     environment:
-      name: surge.sh
+      name: github-pages
       url: "https://doorman-dev.surge.sh/"
     needs: [bundle-assets-dev]
     runs-on: ubuntu-latest
@@ -292,9 +292,12 @@ jobs:
           name: asset-bundle
           path: output
 
-      - uses: actions/setup-node@v4
+      - name: Upload Assets
+        uses: SamKirkland/web-deploy@v1
         with:
-          node-version: 20
-
-      - run: npm install -g surge
-      - run: surge output ${{ secrets.SURGE_DOMAIN }} --token ${{ secrets.SURGE_TOKEN }}
+          target-server: dev.doorman.azon.ai
+          remote-user: ${{ secrets.AZON_USERNAME }}
+          private-ssh-key: ${{ secrets.AZON_SSH_KEY }}
+          source-path: ./output
+          destination-path: ${{ secrets.AZON_PATH }}
+          ssh-port: ${{ secrets.AZON_SSH_PORT }}
