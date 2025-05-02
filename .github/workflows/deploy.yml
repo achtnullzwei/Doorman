@@ -281,7 +281,7 @@ jobs:
     if: startsWith(github.ref_name, 'dev')
     name: Deploy to Webserver (dev)
     environment:
-      name: github-pages
+      name: dev.doorman.azon.ai
       url: "https://doorman-dev.surge.sh/"
     needs: [bundle-assets-dev]
     runs-on: ubuntu-latest
@@ -298,6 +298,6 @@ jobs:
           target-server: dev.doorman.azon.ai
           remote-user: ${{ secrets.AZON_USERNAME }}
           private-ssh-key: ${{ secrets.AZON_SSH_KEY }}
-          source-path: ./output
+          source-path: ./output/
           destination-path: ${{ secrets.AZON_PATH }}
           ssh-port: ${{ secrets.AZON_SSH_PORT }}
