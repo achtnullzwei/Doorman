@@ -3,50 +3,56 @@ Welcome to the latest updates! Here's a breakdown of all the **new features**, *
 
 ## 2025.5.0
 ### 🚀 What's New?
-- **Expand Support for Model Settings**  
-   Implemented settings compatibility for TCS TASTA (Koch TC60) IVW5xxx and ISW5xxx models.
+- **Expanded Support for Model-Specific Settings**  
+   Settings compatibility has been added for TCS TASTA (Koch TC60) `IVW5xxx` and `ISW5xxx` models.
 
-- **Support for Acknowledgment Messages**  
-   Acknowledgment messages, previously unaccounted for, have now been implemented after further investigation.
+- **Added Support for Acknowledgment Messages**  
+   Acknowledgment messages are now properly handled, following additional investigation into previously unsupported cases.
 
-- **Streamlined Door Controls with Lock Entities**  
-  The `Open ... Door` buttons have been retired in favor of new, unified lock entities.  
-  Now, you can use `lock.open` and `lock.unlock` actions in Home Assistant to control door access.  
-  This update simplifies dashboard integration and brings a cleaner, more consistent user experience.
+- **Streamlined Door Control with Unified Lock Entities**  
+  The `Open Door` buttons have been replaced by new, standardized lock entities.  
+  You can now use `lock.open` and `lock.unlock` actions in Home Assistant for seamless door control.
+  This change simplifies dashboard integration and delivers a more consistent, intuitive experience.
+
+- **Extended Ring to Open to Apartment Doorbells**  
+   From now on `Ring to Open` supports the apartment doorbell when used with a Nuki Smart Lock, enabling more convenient and seamless access.
 
 ### ✨ Improvements
-- **Enhanced Reliability with Remote Peripheral**  
-   Data reading is now based on RMT, providing more reliability compared to the previous interrupt-based method.
+- **Refined Configuration for Ring to Open**  
+   The configuration options have been split into individual options for each door, giving you greater flexibility to tailor `Ring to Open` behavior to your specific needs.
+
+- **Smarter Ring to Open with Pattern Recognition**  
+  The door now opens only when a configured doorbell ring pattern is detected, offering more precise control over access.
 
 - **Extended Model Detection Support**  
    Detection capabilities now include additional older models.
 
+- **Enhanced Reliability with Remote Peripheral**  
+   Data reading is now based on RMT, providing more reliability compared to the previous interrupt-based method.
+
 - **Command Queue**  
    Outgoing commands are now queued to prevent data loss.
-
-- **Expand "Ring to Open" Functionality to Apartment Doorbell**  
-   It is now possible to integrate the apartment doorbell with the "Ring to Open" automation when using a Nuki Smart Lock, offering even greater convenience and seamless access.
-
-- **Refined "Ring to Open" Logic with Doorbell Pattern Recognition**  
-  The door now opens automatically only when a recognized doorbell ring pattern is used, giving you more control over how access is granted.
 
 ### 📝 Other Updates
 - **More Readable Log Messages**  
    Log messages have been refined for improved clarity and readability.
 
 ### 🚨 Breaking Changes
-- **RMT Updates**  
+- **Transition to RMT Components**  
    The `TC:BUS` component no longer supports the `rx_pin` and `tx_pin` options.  
-   Instead, `remote_receiver` and `remote_transmitter` components must now be defined.
+   Instead, you must now define the `remote_receiver` and `remote_transmitter` components.
 
 - **Removed Open Door Buttons**  
-  The `Open ... Door` buttons have been removed.
+  The `Open Door` buttons have been removed in favor of more efficient control methods.
+
+- **Renamed Ring to Open Entities**  
+  The `Ring to Open` entities are now labeled as `RTO: Door Name – Setting` to reflect the updated configuration structure, improving clarity and consistency.
 
 - **Renamed Nuki Lock**  
-  The `Nuki Lock` entity has been renamed to `Apartment Door` for consistency and better alignment with the naming of other doors.
+  The `Nuki Lock` entity has been renamed to `Apartment Door` for better alignment with the naming convention used for other doors.
 
 - **Minimum ESPHome Version Set**  
-   We’ve bumped the minimum required version to **2025.3.0**.
+   The minimum required version has been updated to **2025.3.0**.
 
 ## 2025.3.0
 ### ✨ Improvements

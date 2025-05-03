@@ -87,6 +87,9 @@ Reports the nuki component security pin status.
 
 ## Switches
 
+### RTO: Quick Toggle <Badge type="tip" text="rto_quick_toggle" />
+Toggles the [Ring To Open](../guide/automation/ring-to-open) automation for the specified doors.
+
 ### RTO: Entrance Door <Badge type="tip" text="rto_entrance_door" />
 Controls the [Ring To Open](../guide/automation/ring-to-open) automation.
 
@@ -227,6 +230,16 @@ Sets the Nuki Bridge Security Pin to authenticate against the Nuki Smart Lock.
 
 ## Selects
 
+### RTO: Quick Toggle - Door Selection <Badge type="tip" text="rto_quick_toggle_doors" />
+Defines the doors for which the `RTO: Quick Toggle` will toggle the [Ring To Open](../guide/automation/ring-to-open) automation.
+
+##### Modes:
+- Entrance
+- Second Entrance
+- Any Entrance
+- Apartment
+- Any Entrance & Apartment
+
 ### RTO: Entrance Door - Timeout <Badge type="tip" text="rto_entrance_door_timeout_mode" />
 Sets the timeout mode for the [Ring To Open](../guide/automation/ring-to-open) automation.
 
@@ -275,7 +288,7 @@ Defines the trigger pattern condition of the [Ring To Open](../guide/automation/
 - double
 - triple
 
-### RTO: Toggle Trigger <Badge type="tip" text="rto_toggle_trigger" /> <Badge type="info" text="Disabled by default" />
+### RTO: Quick Toggle - Trigger <Badge type="tip" text="rto_toggle_trigger" /> <Badge type="info" text="Disabled by default" />
 Defines the trigger to toggle the [Ring To Open](../guide/automation/ring-to-open) automation.
 
 ##### Options:

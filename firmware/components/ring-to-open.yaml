@@ -170,6 +170,59 @@ number:
 
 
 switch:
+  # Global Setting
+  - platform: template
+    id: rto_quick_toggle
+    name: "RTO: Quick Toggle"
+    icon: "mdi:checkbox-marked-circle-auto-outline"
+    restore_mode: RESTORE_DEFAULT_OFF
+    lambda: |-
+      if(id(rto_quick_toggle_doors).state == "Entrance") {
+        return id(rto_entrance_door).state;
+      } else if(id(rto_quick_toggle_doors).state == "Second Entrance") {
+        return id(rto_second_entrance_door).state;
+      } else if(id(rto_quick_toggle_doors).state == "Any Entrance") {
+        return id(rto_entrance_door).state && id(rto_second_entrance_door).state;
+      } else if(id(rto_quick_toggle_doors).state == "Apartment") {
+        return id(rto_apartment_door).state;
+      } else if(id(rto_quick_toggle_doors).state == "Any Entrance & Apartment") {
+        return id(rto_entrance_door).state && id(rto_second_entrance_door).state && id(rto_apartment_door).state;
+      }
+    turn_on_action:
+      - lambda: |-
+          if(id(rto_quick_toggle_doors).state == "Entrance") {
+            id(rto_entrance_door).turn_on();
+          } else if(id(rto_quick_toggle_doors).state == "Second Entrance") {
+            id(rto_second_entrance_door).turn_on();
+          } else if(id(rto_quick_toggle_doors).state == "Any Entrance") {
+            id(rto_entrance_door).turn_on();
+            id(rto_second_entrance_door).turn_on();
+          } else if(id(rto_quick_toggle_doors).state == "Apartment") {
+            id(rto_apartment_door).turn_on();
+          } else if(id(rto_quick_toggle_doors).state == "Any Entrance & Apartment") {
+            id(rto_entrance_door).turn_on();
+            id(rto_second_entrance_door).turn_on();
+            id(rto_apartment_door).turn_on();
+          }
+    turn_off_action:
+      - lambda: |-
+          if(id(rto_quick_toggle_doors).state == "Entrance") {
+            id(rto_entrance_door).turn_off();
+          } else if(id(rto_quick_toggle_doors).state == "Second Entrance") {
+            id(rto_second_entrance_door).turn_off();
+          } else if(id(rto_quick_toggle_doors).state == "Any Entrance") {
+            id(rto_entrance_door).turn_off();
+            id(rto_second_entrance_door).turn_off();
+          } else if(id(rto_quick_toggle_doors).state == "Apartment") {
+            id(rto_apartment_door).turn_off();
+          } else if(id(rto_quick_toggle_doors).state == "Any Entrance & Apartment") {
+            id(rto_entrance_door).turn_off();
+            id(rto_second_entrance_door).turn_off();
+            id(rto_apartment_door).turn_off();
+          }
+    web_server:
+      sorting_group_id: sorting_group_doorman_settings
+
   # Setting for each Door - Entrance Door
   - platform: template
     id: rto_entrance_door
@@ -251,6 +304,22 @@ switch:
       sorting_group_id: sorting_group_doorman_settings
 
 select:
+  - platform: template
+    id: rto_quick_toggle_doors
+    name: "RTO: Quick Toggle - Door Selection"
+    icon: "mdi:door"
+    optimistic: true
+    options:
+      - Entrance Door
+      - Second Entrance
+      - Any Entrance
+      - Apartment
+      - Any Entrance & Apartment
+    initial_option: "Any Entrance"
+    entity_category: CONFIG
+    web_server:
+      sorting_group_id: sorting_group_doorman_settings
+
   # Setting for each Door - Entrance Door
   - platform: template
     id: rto_entrance_door_timeout_mode
@@ -380,10 +449,10 @@ select:
     web_server:
       sorting_group_id: sorting_group_doorman_settings
 
-  # Global Setting for Entrance Doors
+  # Global Setting
   - platform: template
     id: rto_toggle_trigger
-    name: "RTO: Entrance Doors - Toggle Trigger"
+    name: "RTO: Quick Toggle - Trigger"
     icon: "mdi:circle-outline"
     optimistic: true
     options:
