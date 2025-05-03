@@ -10,8 +10,8 @@ Welcome to the latest updates! Here's a breakdown of all the **new features**, *
    Acknowledgment messages, previously unaccounted for, have now been implemented after further investigation.
 
 - **Streamlined Door Controls with Lock Entities**  
-  The `Open ... Door` buttons have been retired in favor of new, unified lock entities.
-  Now, you can use `lock.open` and `lock.unlock` actions in Home Assistant to control door access.
+  The `Open ... Door` buttons have been retired in favor of new, unified lock entities.  
+  Now, you can use `lock.open` and `lock.unlock` actions in Home Assistant to control door access.  
   This update simplifies dashboard integration and brings a cleaner, more consistent user experience.
 
 ### ✨ Improvements
