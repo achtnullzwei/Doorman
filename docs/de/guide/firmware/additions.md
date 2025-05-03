@@ -7,25 +7,25 @@ Command Builder:
 ```yaml
 <!--@include: minimal.example.yaml-->
 
-binary_sensor: // [!code ++] // [!code focus]
-  - platform: tc_bus // [!code ++] // [!code focus]
-    name: "Benutzerdefinierter Befehl" // [!code ++] // [!code focus]
-    type: open_door // [!code ++] // [!code focus]
-    address: 0 // [!code ++] // [!code focus]
-    web_server: // [!code ++] // [!code focus]
-      sorting_group_id: sorting_group_listeners // [!code ++] // [!code focus]
+binary_sensor: # [!code ++] [!code focus]
+  - platform: tc_bus # [!code ++] [!code focus]
+    name: "Benutzerdefinierter Befehl" # [!code ++] [!code focus]
+    type: open_door # [!code ++] [!code focus]
+    address: 0 # [!code ++] [!code focus]
+    web_server: # [!code ++] [!code focus]
+      sorting_group_id: sorting_group_listeners # [!code ++] [!code focus]
 ```
 
 32-Bit Command:
 ```yaml
 <!--@include: minimal.example.yaml-->
 
-binary_sensor: // [!code ++] // [!code focus]
-  - platform: tc_bus // [!code ++] // [!code focus]
-    name: "Benutzerdefinierter Befehl" // [!code ++] // [!code focus]
-    command: 0x00001100 // [!code ++] // [!code focus]
-    web_server: // [!code ++] // [!code focus]
-      sorting_group_id: sorting_group_listeners // [!code ++] // [!code focus]
+binary_sensor: # [!code ++] [!code focus]
+  - platform: tc_bus # [!code ++] [!code focus]
+    name: "Benutzerdefinierter Befehl" # [!code ++] [!code focus]
+    command: 0x00001100 # [!code ++] [!code focus]
+    web_server: # [!code ++] [!code focus]
+      sorting_group_id: sorting_group_listeners # [!code ++] [!code focus]
 ```
 :::
 
@@ -34,15 +34,15 @@ Wenn du die RGB-LED am Doorman beispielsweise mit einem Button steuern möchtest
 ```yaml
 <!--@include: minimal.example.yaml-->
 
-button: // [!code ++] // [!code focus]
-  - platform: template // [!code ++] // [!code focus]
-    name: "Status RGB-LED auf Rot setzen" // [!code ++] // [!code focus]
-    on_press: // [!code ++] // [!code focus]
-      - light.turn_on: // [!code ++] // [!code focus]
-          id: doorman_rgb_status_led // [!code ++] // [!code focus]
-          red: 100% // [!code ++] // [!code focus]
-          green: 0% // [!code ++] // [!code focus]
-          blue: 0% // [!code ++] // [!code focus]
+button: # [!code ++] [!code focus]
+  - platform: template # [!code ++] [!code focus]
+    name: "Status RGB-LED auf Rot setzen" # [!code ++] [!code focus]
+    on_press: # [!code ++] [!code focus]
+      - light.turn_on: # [!code ++] [!code focus]
+          id: doorman_rgb_status_led # [!code ++] [!code focus]
+          red: 100% # [!code ++] [!code focus]
+          green: 0% # [!code ++] [!code focus]
+          blue: 0% # [!code ++] [!code focus]
 ```
 :::
 
@@ -51,10 +51,10 @@ Wenn du den externen Button nutzen möchtest, um Automationen auszulösen, kanns
 ```yaml
 <!--@include: minimal.example.yaml-->
 
-binary_sensor: // [!code ++] // [!code focus]
-  - id: !extend doorman_external_button // [!code ++] // [!code focus]
-    on_press: // [!code ++] // [!code focus]
-      - logger.log: "Externer Button gedrückt!" // [!code ++] // [!code focus]
+binary_sensor: # [!code ++] [!code focus]
+  - id: !extend doorman_external_button # [!code ++] [!code focus]
+    on_press: # [!code ++] [!code focus]
+      - logger.log: "Externer Button gedrückt!" # [!code ++] [!code focus]
 ```
 :::
 
@@ -63,11 +63,11 @@ Falls du Sensoren über den I²C-Bus hinzufügen möchtest, kannst du die beiden
 ```yaml
 <!--@include: minimal.example.yaml-->
 
-i2c: // [!code ++] // [!code focus]
-  sda: GPIO40 // [!code ++] // [!code focus]
-  scl: GPIO48 // [!code ++] // [!code focus]
-  scan: true // [!code ++] // [!code focus]
-  id: i2c_bus // [!code ++] // [!code focus]
+i2c: # [!code ++] [!code focus]
+  sda: GPIO40 # [!code ++] [!code focus]
+  scl: GPIO48 # [!code ++] [!code focus]
+  scan: true # [!code ++] [!code focus]
+  id: i2c_bus # [!code ++] [!code focus]
 ```
 :::
 
@@ -156,31 +156,36 @@ Wenn du ein benutzerdefiniertes Klingelmuster erstellen möchtest, kannst du die
 ```yaml
 <!--@include: minimal.example.yaml-->
 
-# Türglocken-Muster-Event-Entity erweitern // [!code ++] // [!code focus]
-# Neues apartment_special-Eventtyp hinzufügen // [!code ++] // [!code focus]
-event: // [!code ++] // [!code focus]
-  - id: !extend apartment_doorbell_pattern // [!code ++] // [!code focus]
-    event_types: // [!code ++] // [!code focus]
-      - "apartment_special" // [!code ++] // [!code focus]
+# [!code ++] [!code focus]
+# Klingel-Muster-Event-Entity erweitern [!code ++] [!code focus]
+# Neues apartment_special-Eventtyp hinzufügen [!code ++] [!code focus]
+event: # [!code ++] [!code focus]
+  - id: !extend apartment_doorbell_pattern # [!code ++] [!code focus]
+    event_types: # [!code ++] [!code focus]
+      - "apartment_special" # [!code ++] [!code focus]
 
-# Die apartment_doorbell / entrance_doorbell-Entity erweitern // [!code ++] // [!code focus]
-# und das neue spezielle Muster hinzufügen // [!code ++] // [!code focus]
-binary_sensor: // [!code ++] // [!code focus]
-  - id: !extend apartment_doorbell // [!code ++] // [!code focus]
-    on_multi_click: // [!code ++] // [!code focus]
-      # Besonderes Muster // [!code ++] // [!code focus]
-      - timing: // [!code ++] // [!code focus]
-          # Zwei Mal drücken, mit maximal einer Sekunde zwischen den Drücken. // [!code ++] // [!code focus]
-          - ON für maximal 0.5s // [!code ++] // [!code focus]
-          - OFF für maximal 1s // [!code ++] // [!code focus]
-          - ON für maximal 0.5s // [!code ++] // [!code focus]
-          - OFF für mindestens 2s // [!code ++] // [!code focus]
-        then: // [!code ++] // [!code focus]
-          - logger.log: "Besonderes Muster erkannt!" // [!code ++] // [!code focus]
-          - event.trigger: // [!code ++] // [!code focus]
-              id: apartment_doorbell_pattern // [!code ++] // [!code focus]
-              # Den vorher definierten neuen Eventtyp hier verwenden // [!code ++] // [!code focus]
-              event_type: apartment_special // [!code ++] // [!code focus]
+# [!code ++] [!code focus]
+# Die apartment_doorbell / entrance_doorbell-Entity erweitern [!code ++] [!code focus]
+# und das neue spezielle Muster hinzufügen [!code ++] [!code focus]
+binary_sensor: # [!code ++] [!code focus]
+  - id: !extend apartment_doorbell # [!code ++] [!code focus]
+    on_multi_click: # [!code ++] [!code focus]
+      # [!code ++] [!code focus]
+      # Besonderes Muster # [!code ++] [!code focus]
+      - timing: # [!code ++] [!code focus]
+          # [!code ++] [!code focus]
+          # Zwei Mal drücken, mit maximal einer Sekunde zwischen den Drücken. [!code ++] [!code focus]
+          - ON für maximal 0.5s # [!code ++] [!code focus]
+          - OFF für maximal 1s # [!code ++] [!code focus]
+          - ON für maximal 0.5s # [!code ++] [!code focus]
+          - OFF für mindestens 2s # [!code ++] [!code focus]
+        then: # [!code ++] [!code focus]
+          - logger.log: "Besonderes Muster erkannt!" # [!code ++] [!code focus]
+          - event.trigger: # [!code ++] [!code focus]
+              id: apartment_doorbell_pattern # [!code ++] [!code focus]
+              # [!code ++] [!code focus]
+              # Den vorher definierten neuen Eventtyp hier verwenden [!code ++] [!code focus]
+              event_type: apartment_special # [!code ++] [!code focus]
 ```
 :::
 
@@ -189,37 +194,41 @@ Du kannst das Licht einschalten lassen, wenn jemand an der Eingangstür klingelt
 ```yaml
 <!--@include: minimal.example.yaml-->
 
-binary_sensor: // [!code ++] // [!code focus]
-  - id: !extend entrance_doorbell // [!code ++] // [!code focus]
-    on_press: // [!code ++] // [!code focus]
-      - tc_bus.send: // [!code ++] // [!code focus]
-          type: "light" // [!code ++] // [!code focus]
+binary_sensor: # [!code ++] [!code focus]
+  - id: !extend entrance_doorbell # [!code ++] [!code focus]
+    on_press: # [!code ++] [!code focus]
+      - tc_bus.send: # [!code ++] [!code focus]
+          type: "light" # [!code ++] [!code focus]
 ```
 
 Wenn du auch die Sonnenhöhe berücksichtigen möchtest, kannst du das entsprechend anpassen.
 ```yaml
 <!--@include: minimal.example.yaml-->
 
-# Home Assistant Sonnenhöhe-Sensor importieren // [!code ++] // [!code focus]
-sensor: // [!code ++] // [!code focus]
-  - platform: homeassistant // [!code ++] // [!code focus]
-    id: sun_elevation // [!code ++] // [!code focus]
-    entity_id: sun.sun // [!code ++] // [!code focus]
-    attribute: elevation // [!code ++] // [!code focus]
+# [!code ++] [!code focus]
+# Home Assistant Sonnenhöhe-Sensor importieren # [!code ++] [!code focus]
+sensor: # [!code ++] [!code focus]
+  - platform: homeassistant # [!code ++] [!code focus]
+    id: sun_elevation # [!code ++] [!code focus]
+    entity_id: sun.sun # [!code ++] [!code focus]
+    attribute: elevation # [!code ++] [!code focus]
 
-# Eingangstür-Sensor erweitern // [!code ++] // [!code focus]
-binary_sensor: // [!code ++] // [!code focus]
-  - id: !extend entrance_doorbell // [!code ++] // [!code focus]
-    on_press: // [!code ++] // [!code focus]
-      # Sonnenhöhe <= 0 (dunkel) // [!code ++] // [!code focus]
-      - if: // [!code ++] // [!code focus]
-          condition: // [!code ++] // [!code focus]
-            sensor.in_range: // [!code ++] // [!code focus]
-              id: sun_elevation // [!code ++] // [!code focus]
-              below: 1 // [!code ++] // [!code focus]
-          then: // [!code ++] // [!code focus]
-            # Licht einschalten // [!code ++] // [!code focus]
-            - tc_bus.send: // [!code ++] // [!code focus]
-                type: "light" // [!code ++] // [!code focus]
+# [!code ++] [!code focus]
+# Eingangstür-Sensor erweitern # [!code ++] [!code focus]
+binary_sensor: # [!code ++] [!code focus]
+  - id: !extend entrance_doorbell # [!code ++] [!code focus]
+    on_press: # [!code ++] [!code focus]
+      # [!code ++] [!code focus]
+      # Sonnenhöhe <= 0 (dunkel) # [!code ++] [!code focus]
+      - if: # [!code ++] [!code focus]
+          condition: # [!code ++] [!code focus]
+            sensor.in_range: # [!code ++] [!code focus]
+              id: sun_elevation # [!code ++] [!code focus]
+              below: 1 # [!code ++] [!code focus]
+          then: # [!code ++] [!code focus]
+            # [!code ++] [!code focus]
+            # Licht einschalten # [!code ++] [!code focus]
+            - tc_bus.send: # [!code ++] [!code focus]
+                type: "light" # [!code ++] [!code focus]
 ```
 :::
