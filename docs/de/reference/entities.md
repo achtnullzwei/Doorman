@@ -142,12 +142,6 @@ Controls the Nuki Smart Lock Single Lock setting.
 
 ## Buttons
 
-### Open Entrance Door <Badge type="tip" text="open_entrance_door" />
-Öffnet die Eingangstür, indem der Befehlvom Typ `open_door` auf dem Bus gesendet wird.
-
-### Open Second Entrance Door <Badge type="tip" text="open_second_door" /> <Badge type="info" text="Deaktiviert" />
-Öffnet die zweite Eingangstür, indem der Befehl vom Typ `open_door` mit `address` der zweiten Außenstelle auf dem Bus gesendet wird.
-
 ### Turn on the Light <Badge type="tip" text="turn_on_light" /> <Badge type="info" text="Deaktiviert" />
 Schaltet das Licht ein, indem der Befehl `light_button_command` auf dem Bus gesendet wird.
 
@@ -342,10 +336,10 @@ Controls the Nuki Smart Lock Advertising Mode setting.
 ## Schlösser
 
 ### Entrance Door <Badge type="tip" text="entrance_door" />
-Repräsentiert die Eingangstür von dem Gebäude. Es wird nur die `Öffnen`-Aktion unterstützt.
+Repräsentiert die Eingangstür von dem Gebäude. Es werden nur die `Öffnen`- und `Aufschließen`-Aktionen unterstützt.
 
 ### Second Entrance Door <Badge type="tip" text="second_entrance_door" /> <Badge type="info" text="Deaktiviert" />
-Repräsentiert die zweite Eingangstür von dem Gebäude. Es wird nur die `Öffnen`-Aktion unterstützt.
+Repräsentiert die zweite Eingangstür von dem Gebäude. Es werden nur die `Öffnen`- und `Aufschließen`-Aktionen unterstützt.
 
 ### Apartment Door <Badge type="tip" text="apartment_door" /> <Badge type="info" text="Nuki Bridge" />
 Repräsentiert das gekoppelte Nuki Smart Lock deiner Wohnungs- oder Haustür.

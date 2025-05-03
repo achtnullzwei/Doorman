@@ -144,12 +144,6 @@ Controls the Nuki Smart Lock Single Lock setting.
 
 ## Buttons
 
-### Open Entrance Door <Badge type="tip" text="open_entrance_door" />
-Opens the entrance door by sending a `open_door` command on the bus.
-
-### Open Second Entrance Door <Badge type="tip" text="open_second_door" /> <Badge type="info" text="Disabled by default" />
-Opens the second entrance door by sending a `open_door` command with the `address` of the second outdoor station on the bus.
-
 ### Turn on the Light <Badge type="tip" text="turn_on_light" /> <Badge type="info" text="Disabled by default" />
 Turns on the light by sending a `light` command on the bus.
 
@@ -342,10 +336,10 @@ Controls the Nuki Smart Lock Advertising Mode setting.
 ## Locks
 
 ### Entrance Door <Badge type="tip" text="entrance_door" />
-Represents the entrance door of the building. Only the `Open` action is supported.
+Represents the entrance door of the building. Only the `Open` and `Unlock` actions are supported.
 
 ### Second Entrance Door <Badge type="tip" text="second_entrance_door" /> <Badge type="info" text="Disabled by default" />
-Represents the second entrance door of the building. Only the `Open` action is supported.
+Represents the second entrance door of the building. Only the `Open` and `Unlock` actions are supported.
 
 ### Apartment Door <Badge type="tip" text="apartment_door" /> <Badge type="info" text="Nuki Bridge only" />
 Represents the apartment door Nuki smart lock.

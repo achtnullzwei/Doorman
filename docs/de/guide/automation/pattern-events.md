@@ -35,11 +35,9 @@ trigger:
     to: double
 condition: []
 action:
-  - service: button.press
-    metadata: {}
-    data: {}
+  - service: lock.open
     target:
-        entity_id: button.doorman_s3_open_entrance_door
+        entity_id: lock.doorman_s3_entrance_door
 mode: single
 ```
 :::

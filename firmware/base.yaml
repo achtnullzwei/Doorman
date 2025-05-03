@@ -208,31 +208,6 @@ button:
 
   # Preconfigured Open Door Button
   - platform: template
-    id: open_entrance_door
-    name: "Open Entrance Door"
-    icon: mdi:door
-    on_press:
-      - tc_bus.send:
-          type: open_door
-          address: !lambda "return id(entrance_door_station_id).state;"
-    web_server:
-      sorting_group_id: sorting_group_controls
-      sorting_weight: -10
-          
-  - platform: template
-    id: open_second_door
-    name: "Open Second Entrance Door"
-    icon: mdi:door
-    disabled_by_default: true
-    on_press:
-      - tc_bus.send:
-          type: open_door
-          address: !lambda "return id(second_door_station_id).state;"
-    web_server:
-      sorting_group_id: sorting_group_controls
-      sorting_weight: -9
-
-  - platform: template
     id: turn_on_light
     name: "Turn on the Light"
     icon: mdi:lightbulb-on
@@ -466,7 +441,7 @@ lock:
           state: LOCKED
     web_server:
       sorting_group_id: sorting_group_controls
-      sorting_weight: -12
+      sorting_weight: -10
 
   - platform: template
     id: second_entrance_door
@@ -502,7 +477,7 @@ lock:
           state: LOCKED
     web_server:
       sorting_group_id: sorting_group_controls
-      sorting_weight: -11
+      sorting_weight: -9
 
 
 event:
