@@ -1,37 +1,23 @@
 # Ring To Open Addon - Nuki Bridge
 
-event:
-  - id: !extend apartment_doorbell_pattern
-    on_event:
-      # Ring To Open Action
-      - if:
-          condition:
-            - switch.is_on: doorman_ring_to_open
-            - lambda: !lambda 'return id(doorman_ring_to_open_door_trigger).state == "Apartment" || id(doorman_ring_to_open_door_trigger).state == "Any";'
-            - lambda: !lambda 'return event_type.c_str() == id(doorman_ring_to_open_pattern_condition).state;'
-          then:
-            # Deactivate Ring To Open when Ring once is selected
-            - if:
-                condition:
-                  - lambda: !lambda 'return id(doorman_ring_to_open_timeout_mode).state == "Ring once";'
-                then:
-                  - switch.turn_off: doorman_ring_to_open
+number:
+  # Show in UI
+  - id: !extend rto_apartment_door_delay
+    internal: false
 
-            # If delay is 60 seconds, use random delay from 5 to 15 seconds
-            - if:
-                condition:
-                  number.in_range:
-                    id: doorman_ring_to_open_delay
-                    above: 59
-                then:
-                  - delay: !lambda "return 5000 + (rand() % 10000);"
-                else:
-                  - delay: !lambda "return (id(doorman_ring_to_open_delay).state*1000) + 300;"
-
-            - lock.open: apartment_door
-
+switch:
+  # Show in UI
+  - id: !extend rto_apartment_door
+    internal: false
 
 select:
-  - id: !extend doorman_ring_to_open_door_trigger
-    options:
-      - Apartment
+  # Show in UI
+  - id: !extend rto_apartment_door_timeout_mode
+    internal: false
+  - id: !extend rto_apartment_door_pattern_condition
+    internal: false
+
+script:
+  - !extend id: rto_apartment_door_action
+    then:
+      - lock.open: apartment_door

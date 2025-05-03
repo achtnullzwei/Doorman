@@ -6,31 +6,28 @@ event:
       # Ring To Open Action
       - if:
           condition:
-            - switch.is_on: doorman_ring_to_open
-            - lambda: !lambda 'return id(doorman_ring_to_open_door_trigger).state == "Entrance" || id(doorman_ring_to_open_door_trigger).state == "Any";'
-            - lambda: !lambda 'return event_type.c_str() == id(doorman_ring_to_open_pattern_condition).state;'
+            - switch.is_on: rto_entrance_door
+            - lambda: !lambda 'return event_type.c_str() == id(rto_entrance_door_pattern_condition).state;'
           then:
             # Deactivate Ring To Open when Ring once is selected
             - if:
                 condition:
-                  - lambda: !lambda 'return id(doorman_ring_to_open_timeout_mode).state == "Ring once";'
+                  - lambda: !lambda 'return id(rto_entrance_door_timeout_mode).state == "Ring once";'
                 then:
-                  - switch.turn_off: doorman_ring_to_open
+                  - switch.turn_off: rto_entrance_door
 
             # If delay is 60 seconds, use random delay from 5 to 15 seconds
             - if:
                 condition:
                   number.in_range:
-                    id: doorman_ring_to_open_delay
+                    id: rto_entrance_door_delay
                     above: 59
                 then:
                   - delay: !lambda "return 5000 + (rand() % 10000);"
                 else:
-                  - delay: !lambda "return (id(doorman_ring_to_open_delay).state*1000) + 300;"
+                  - delay: !lambda "return (id(rto_entrance_door_delay).state*1000) + 300;"
 
-            - tc_bus.send:
-                type: open_door
-                address: !lambda "return id(entrance_door_station_id).state;"
+            - script.execute: rto_entrance_door_action
 
 
   - id: !extend second_entrance_doorbell_pattern
@@ -38,48 +35,74 @@ event:
       # Ring To Open Action
       - if:
           condition:
-            - switch.is_on: doorman_ring_to_open
-            - lambda: !lambda 'return id(doorman_ring_to_open_door_trigger).state == "Second Entrance" || id(doorman_ring_to_open_door_trigger).state == "Any";'
-            - lambda: !lambda 'return event_type.c_str() == id(doorman_ring_to_open_pattern_condition).state;'
+            - switch.is_on: rto_second_entrance_door
+            - lambda: !lambda 'return event_type.c_str() == id(rto_second_entrance_door_pattern_condition).state;'
           then:
             # Deactivate Ring To Open when Ring once is selected
             - if:
                 condition:
-                  - lambda: !lambda 'return id(doorman_ring_to_open_timeout_mode).state == "Ring once";'
+                  - lambda: !lambda 'return id(rto_second_entrance_door_timeout_mode).state == "Ring once";'
                 then:
-                  - switch.turn_off: doorman_ring_to_open
+                  - switch.turn_off: rto_second_entrance_door
 
             # If delay is 60 seconds, use random delay from 5 to 15 seconds
             - if:
                 condition:
                   number.in_range:
-                    id: doorman_ring_to_open_delay
+                    id: rto_second_entrance_door_delay
                     above: 59
                 then:
                   - delay: !lambda "return 5000 + (rand() % 10000);"
                 else:
-                  - delay: !lambda "return (id(doorman_ring_to_open_delay).state*1000) + 300;"
+                  - delay: !lambda "return (id(rto_second_entrance_door_delay).state*1000) + 300;"
 
-            - tc_bus.send:
-                type: open_door
-                address: !lambda "return id(second_door_station_id).state;"
+            - script.execute: rto_second_entrance_door_action
 
+  - id: !extend apartment_doorbell_pattern
+    on_event:
+      # Ring To Open Action
+      - if:
+          condition:
+            - switch.is_on: rto_apartment_door
+            - lambda: !lambda 'return event_type.c_str() == id(rto_apartment_door_pattern_condition).state;'
+          then:
+            # Deactivate Ring To Open when Ring once is selected
+            - if:
+                condition:
+                  - lambda: !lambda 'return id(rto_apartment_door_timeout_mode).state == "Ring once";'
+                then:
+                  - switch.turn_off: rto_apartment_door
+
+            # If delay is 60 seconds, use random delay from 5 to 15 seconds
+            - if:
+                condition:
+                  number.in_range:
+                    id: rto_apartment_door_delay
+                    above: 59
+                then:
+                  - delay: !lambda "return 5000 + (rand() % 10000);"
+                else:
+                  - delay: !lambda "return (id(rto_apartment_door_delay).state*1000) + 300;"
+
+            - script.execute: rto_apartment_door_action
 
 binary_sensor:
   - id: !extend function_button
     on_press:
       - if:
           condition:
-            - lambda: !lambda 'return id(doorman_ring_to_open_toggle_trigger).state != "Function Button";'
+            - lambda: !lambda 'return id(rto_toggle_trigger).state != "Function Button";'
           then:
-            - switch.toggle: doorman_ring_to_open
+            - switch.toggle: rto_entrance_door
+            - switch.toggle: rto_second_entrance_door
             - delay: 300ms
 
             # Confirm Ring To Open activation
             - if: 
                 condition:
-                  - switch.is_on: doorman_ring_to_open
-                  - switch.is_on: doorman_ring_to_open_confirmation
+                  - switch.is_on: rto_entrance_door
+                  - switch.is_on: rto_second_entrance_door
+                  - switch.is_on: rto_confirmation
                 then:
                   - tc_bus.send:
                       type: floor_call
@@ -90,9 +113,47 @@ binary_sensor:
 
 
 number:
+  # Setting for each Door: Entrance Door
   - platform: template
-    name: "Ring To Open: Delay"
-    id: doorman_ring_to_open_delay
+    name: "RTO: Entrance Door - Delay"
+    id: rto_entrance_door_delay
+    icon: "mdi:clock-end"
+    mode: slider
+    min_value: 0
+    max_value: 60
+    step: 1
+    optimistic: true
+    restore_value: true
+    initial_value: 0
+    unit_of_measurement: seconds
+    entity_category: CONFIG
+    disabled_by_default: true
+    web_server:
+      sorting_group_id: sorting_group_doorman_settings
+
+  # Setting for each Door - Second Entrance Door
+  - platform: template
+    name: "RTO: Second Entrance Door - Delay"
+    id: rto_second_entrance_door_delay
+    icon: "mdi:clock-end"
+    mode: slider
+    min_value: 0
+    max_value: 60
+    step: 1
+    optimistic: true
+    restore_value: true
+    initial_value: 0
+    unit_of_measurement: seconds
+    entity_category: CONFIG
+    disabled_by_default: true
+    web_server:
+      sorting_group_id: sorting_group_doorman_settings
+
+  # Setting for each Door - Apartment Door
+  - platform: template
+    name: "RTO: Apartment Door - Delay"
+    id: rto_apartment_door_delay
+    internal: true
     icon: "mdi:clock-end"
     mode: slider
     min_value: 0
@@ -109,16 +170,17 @@ number:
 
 
 switch:
+  # Setting for each Door - Entrance Door
   - platform: template
-    id: doorman_ring_to_open
-    name: "Ring To Open"
+    id: rto_entrance_door
+    name: "RTO: Entrance Door"
     icon: "mdi:checkbox-marked-circle-auto-outline"
     restore_mode: RESTORE_DEFAULT_OFF
     optimistic: true
     turn_on_action:
-      - script.execute: ring_to_open_timer
+      - script.execute: rto_entrance_door_timer
     turn_off_action:
-      - script.stop: ring_to_open_timer
+      - script.stop: rto_entrance_door_timer
     on_turn_on:
       - script.execute: update_led
     on_turn_off:
@@ -126,9 +188,47 @@ switch:
     web_server:
       sorting_group_id: sorting_group_doorman_settings
 
+  # Setting for each Door - Second Entrance Door
   - platform: template
-    id: doorman_ring_to_open_confirmation
-    name: "Ring To Open: Confirmation"
+    id: rto_second_entrance_door
+    name: "RTO: Second Entrance Door"
+    icon: "mdi:checkbox-marked-circle-auto-outline"
+    restore_mode: RESTORE_DEFAULT_OFF
+    optimistic: true
+    turn_on_action:
+      - script.execute: rto_second_entrance_door_timer
+    turn_off_action:
+      - script.stop: rto_second_entrance_door_timer
+    on_turn_on:
+      - script.execute: update_led
+    on_turn_off:
+      - script.execute: update_led
+    web_server:
+      sorting_group_id: sorting_group_doorman_settings
+
+  # Setting for each Door - Apartment Door
+  - platform: template
+    id: rto_apartment_door
+    name: "RTO: Apartment Door"
+    internal: true
+    icon: "mdi:checkbox-marked-circle-auto-outline"
+    restore_mode: RESTORE_DEFAULT_OFF
+    optimistic: true
+    turn_on_action:
+      - script.execute: rto_apartment_door_timer
+    turn_off_action:
+      - script.stop: rto_apartment_door_timer
+    on_turn_on:
+      - script.execute: update_led
+    on_turn_off:
+      - script.execute: update_led
+    web_server:
+      sorting_group_id: sorting_group_doorman_settings
+
+  # Global Setting for all Doors
+  - platform: template
+    id: rto_confirmation
+    name: "RTO: Confirmation"
     icon: "mdi:bell-check"
     restore_mode: RESTORE_DEFAULT_OFF
     optimistic: true
@@ -137,9 +237,10 @@ switch:
     web_server:
       sorting_group_id: sorting_group_doorman_settings
 
+  # Global Setting for all Doors
   - platform: template
-    id: doorman_ring_to_open_led_status
-    name: "Ring To Open: Display Status"
+    id: rto_led_status
+    name: "RTO: Display Status"
     icon: "mdi:led-on"
     restore_mode: RESTORE_DEFAULT_ON
     optimistic: true
@@ -149,9 +250,10 @@ switch:
       sorting_group_id: sorting_group_doorman_settings
 
 select:
+  # Setting for each Door - Entrance Door
   - platform: template
-    id: doorman_ring_to_open_timeout_mode
-    name: "Ring To Open: Timeout"
+    id: rto_entrance_door_timeout_mode
+    name: "RTO: Entrance Door - Timeout"
     icon: "mdi:clock-fast"
     optimistic: true
     options:
@@ -174,23 +276,63 @@ select:
     web_server:
       sorting_group_id: sorting_group_doorman_settings
 
+  # Setting for each Door - Second Entrance Door
   - platform: template
-    id: doorman_ring_to_open_door_trigger
-    name: "Ring To Open: Door Station"
-    icon: "mdi:door-open"
+    id: rto_second_entrance_door_timeout_mode
+    name: "RTO: Second Entrance Door - Timeout"
+    icon: "mdi:clock-fast"
     optimistic: true
     options:
-      - Entrance
-      - Second Entrance
-      - Any
-    initial_option: Any
+      - Never
+      - Ring once
+      - 5 minutes
+      - 10 minutes
+      - 15 minutes
+      - 20 minutes
+      - 25 minutes
+      - 30 minutes
+      - 35 minutes
+      - 40 minutes
+      - 45 minutes
+      - 50 minutes
+      - 55 minutes
+      - 60 minutes
+    initial_option: Never
     entity_category: CONFIG
     web_server:
       sorting_group_id: sorting_group_doorman_settings
 
+  # Setting for each Door - Apartment Door
   - platform: template
-    id: doorman_ring_to_open_pattern_condition
-    name: "Ring To Open: Pattern Condition"
+    id: rto_apartment_door_timeout_mode
+    internal: true
+    name: "RTO: Apartment Door - Timeout"
+    icon: "mdi:clock-fast"
+    optimistic: true
+    options:
+      - Never
+      - Ring once
+      - 5 minutes
+      - 10 minutes
+      - 15 minutes
+      - 20 minutes
+      - 25 minutes
+      - 30 minutes
+      - 35 minutes
+      - 40 minutes
+      - 45 minutes
+      - 50 minutes
+      - 55 minutes
+      - 60 minutes
+    initial_option: Never
+    entity_category: CONFIG
+    web_server:
+      sorting_group_id: sorting_group_doorman_settings
+
+  # Setting for each Door - Entrance Door
+  - platform: template
+    id: rto_entrance_door_pattern_condition
+    name: "RTO: Entrance Door - Pattern"
     icon: "mdi:gesture-tap-button"
     disabled_by_default: true
     optimistic: true
@@ -203,9 +345,43 @@ select:
     web_server:
       sorting_group_id: sorting_group_doorman_settings
 
+  # Setting for each Door - Second Entrance Door
   - platform: template
-    id: doorman_ring_to_open_toggle_trigger
-    name: "Ring To Open: Toggle Trigger"
+    id: rto_second_entrance_door_pattern_condition
+    name: "RTO: Second Entrance Door - Pattern"
+    icon: "mdi:gesture-tap-button"
+    disabled_by_default: true
+    optimistic: true
+    options:
+      - single
+      - double
+      - triple
+    initial_option: single
+    entity_category: CONFIG
+    web_server:
+      sorting_group_id: sorting_group_doorman_settings
+
+  # Setting for each Door - Apartment Door
+  - platform: template
+    id: rto_apartment_door_pattern_condition
+    name: "RTO: Apartment Door - Pattern"
+    internal: true
+    icon: "mdi:gesture-tap-button"
+    disabled_by_default: true
+    optimistic: true
+    options:
+      - single
+      - double
+      - triple
+    initial_option: single
+    entity_category: CONFIG
+    web_server:
+      sorting_group_id: sorting_group_doorman_settings
+
+  # Global Setting for Entrance Doors
+  - platform: template
+    id: rto_toggle_trigger
+    name: "RTO: Entrance Doors - Toggle Trigger"
     icon: "mdi:circle-outline"
     optimistic: true
     options:
@@ -219,15 +395,15 @@ select:
       sorting_group_id: sorting_group_doorman_settings
 
 script:
-  - id: ring_to_open_timer
+  - id: rto_entrance_door_timer
     then:
       # Turn off Ring To Open Mode after selected time
       - if:
           condition:
-            - lambda: !lambda 'return id(doorman_ring_to_open_timeout_mode).state != "Never" && id(doorman_ring_to_open_timeout_mode).state != "Ring once";'
+            - lambda: !lambda 'return id(rto_entrance_door_timeout_mode).state != "Never" && id(rto_entrance_door_timeout_mode).state != "Ring once";'
           then:
             - delay: !lambda |-
-                std::string str = id(doorman_ring_to_open_timeout_mode).state;
+                std::string str = id(rto_entrance_door_timeout_mode).state;
                 std::vector<std::string> v;
                 char * token;
                 char seps[] = " ";
@@ -237,19 +413,76 @@ script:
                   v.push_back(token);
                   token = strtok (NULL, seps);
                 }
-
                 ESP_LOGD("main", "Ring To Open will stay turned on for %s minutes", v[0].c_str());
-
                 return std::stoi(v[0].c_str()) * 60 * 1000;
+            - switch.turn_off: rto_entrance_door
 
-            - switch.turn_off: doorman_ring_to_open
+  - id: rto_second_entrance_door_timer
+    then:
+      # Turn off Ring To Open Mode after selected time
+      - if:
+          condition:
+            - lambda: !lambda 'return id(rto_second_entrance_door_timeout_mode).state != "Never" && id(rto_second_entrance_door_timeout_mode).state != "Ring once";'
+          then:
+            - delay: !lambda |-
+                std::string str = id(rto_second_entrance_door_timeout_mode).state;
+                std::vector<std::string> v;
+                char * token;
+                char seps[] = " ";
+                token = strtok (&str[0],seps);
+                while (token != NULL)
+                {
+                  v.push_back(token);
+                  token = strtok (NULL, seps);
+                }
+                ESP_LOGD("main", "Ring To Open will stay turned on for %s minutes", v[0].c_str());
+                return std::stoi(v[0].c_str()) * 60 * 1000;
+            - switch.turn_off: rto_second_entrance_door
+
+  - id: rto_apartment_door_timer
+    then:
+      # Turn off Ring To Open Mode after selected time
+      - if:
+          condition:
+            - lambda: !lambda 'return id(rto_apartment_door_timeout_mode).state != "Never" && id(rto_apartment_door_timeout_mode).state != "Ring once";'
+          then:
+            - delay: !lambda |-
+                std::string str = id(rto_apartment_door_timeout_mode).state;
+                std::vector<std::string> v;
+                char * token;
+                char seps[] = " ";
+                token = strtok (&str[0],seps);
+                while (token != NULL)
+                {
+                  v.push_back(token);
+                  token = strtok (NULL, seps);
+                }
+                ESP_LOGD("main", "Ring To Open will stay turned on for %s minutes", v[0].c_str());
+                return std::stoi(v[0].c_str()) * 60 * 1000;
+            - switch.turn_off: rto_apartment_door
+
+  - id: rto_entrance_door_action
+    then:
+      - tc_bus.send:
+        type: open_door
+        address: !lambda "return id(entrance_door_station_id).state;"
+
+  - id: rto_second_entrance_door_action
+    then:
+      - tc_bus.send:
+        type: open_door
+        address: !lambda "return id(second_entrance_door_station_id).state;"
+
+  - id: rto_apartment_door_action
+    then:
+      - logger.log: "RTO: Apartment Door Action"
 
   - id: !extend update_led
     then:
       - if:
           condition:
-            - switch.is_on: doorman_ring_to_open
-            - switch.is_on: doorman_ring_to_open_led_status
+            - switch.is_on: rto_entrance_door
+            - switch.is_on: rto_led_status
           then:
             - light.turn_on:
                 id: doorman_rgb_status_led
