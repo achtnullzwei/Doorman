@@ -88,7 +88,7 @@ Meldet den Pin Status der Nuki Bridge Komponente.
 ### RTO: Entrance Door <Badge type="tip" text="rto_entrance_door" />
 Steuert die [Ring To Open](../guide/automation/ring-to-open) Automatisierung.
 
-### RTO: Second Entrance Door <Badge type="tip" text="rto_second_entrance_door" />
+### RTO: Second Entrance Door <Badge type="tip" text="rto_second_entrance_door" /> <Badge type="info" text="Deaktiviert" />
 Steuert die [Ring To Open](../guide/automation/ring-to-open) Automatisierung.
 
 ### RTO: Apartment Door <Badge type="tip" text="rto_apartment__door" />
@@ -237,7 +237,7 @@ Legt den Timeout-Modus für die [Ring To Open](../guide/automation/ring-to-open)
 - 5...60 Minutes
 - Never
 
-### RTO: Second Entrance Door - Timeout <Badge type="tip" text="rto_second_entrance_door_timeout_mode" />
+### RTO: Second Entrance Door - Timeout <Badge type="tip" text="rto_second_entrance_door_timeout_mode" /> <Badge type="info" text="Deaktiviert" />
 Legt den Timeout-Modus für die [Ring To Open](../guide/automation/ring-to-open) Automation fest.
 
 ##### Modi:

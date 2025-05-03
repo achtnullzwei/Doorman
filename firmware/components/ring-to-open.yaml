@@ -117,6 +117,7 @@ number:
   - platform: template
     name: "RTO: Entrance Door - Delay"
     id: rto_entrance_door_delay
+    disabled_by_default: true
     icon: "mdi:clock-end"
     mode: slider
     min_value: 0
@@ -127,7 +128,6 @@ number:
     initial_value: 0
     unit_of_measurement: seconds
     entity_category: CONFIG
-    disabled_by_default: true
     web_server:
       sorting_group_id: sorting_group_doorman_settings
 
@@ -135,6 +135,7 @@ number:
   - platform: template
     name: "RTO: Second Entrance Door - Delay"
     id: rto_second_entrance_door_delay
+    disabled_by_default: true
     icon: "mdi:clock-end"
     mode: slider
     min_value: 0
@@ -145,7 +146,6 @@ number:
     initial_value: 0
     unit_of_measurement: seconds
     entity_category: CONFIG
-    disabled_by_default: true
     web_server:
       sorting_group_id: sorting_group_doorman_settings
 
@@ -153,6 +153,7 @@ number:
   - platform: template
     name: "RTO: Apartment Door - Delay"
     id: rto_apartment_door_delay
+    disabled_by_default: true
     internal: true
     icon: "mdi:clock-end"
     mode: slider
@@ -164,7 +165,6 @@ number:
     initial_value: 0
     unit_of_measurement: seconds
     entity_category: CONFIG
-    disabled_by_default: true
     web_server:
       sorting_group_id: sorting_group_doorman_settings
 
@@ -194,6 +194,7 @@ switch:
     name: "RTO: Second Entrance Door"
     icon: "mdi:checkbox-marked-circle-auto-outline"
     restore_mode: RESTORE_DEFAULT_OFF
+    disabled_by_default: true
     optimistic: true
     turn_on_action:
       - script.execute: rto_second_entrance_door_timer
@@ -281,6 +282,7 @@ select:
     id: rto_second_entrance_door_timeout_mode
     name: "RTO: Second Entrance Door - Timeout"
     icon: "mdi:clock-fast"
+    disabled_by_default: true
     optimistic: true
     options:
       - Never

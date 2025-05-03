@@ -90,7 +90,7 @@ Reports the nuki component security pin status.
 ### RTO: Entrance Door <Badge type="tip" text="rto_entrance_door" />
 Controls the [Ring To Open](../guide/automation/ring-to-open) automation.
 
-### RTO: Second Entrance Door <Badge type="tip" text="rto_second_entrance_door" />
+### RTO: Second Entrance Door <Badge type="tip" text="rto_second_entrance_door" /> <Badge type="info" text="Disabled by default" />
 Controls the [Ring To Open](../guide/automation/ring-to-open) automation.
 
 ### RTO: Apartment Door <Badge type="tip" text="rto_apartment_door" />
@@ -235,7 +235,7 @@ Sets the timeout mode for the [Ring To Open](../guide/automation/ring-to-open) a
 - 5 to 60 minutes
 - Never
 
-### RTO: Second Entrance Door - Timeout <Badge type="tip" text="rto_second_entrance_door_timeout_mode" />
+### RTO: Second Entrance Door - Timeout <Badge type="tip" text="rto_second_entrance_door_timeout_mode" /> <Badge type="info" text="Disabled by default" />
 Sets the timeout mode for the [Ring To Open](../guide/automation/ring-to-open) automation.
 
 ##### Modes:
