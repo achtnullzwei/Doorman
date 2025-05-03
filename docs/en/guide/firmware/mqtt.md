@@ -22,7 +22,7 @@ ON or OFF or whatever is supported
 To enable or disable the [Ring-To-Open](../automation/ring-to-open.md) automation, send `ON` or `OFF` as the payload to the topic:
 ::: code-group
 ``` [Topic]
-doorman-s3/switch/ring_to_open/command
+doorman-s3/switch/rto_entrance_door/command
 ```
 ``` [Payload]
 ON

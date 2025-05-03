@@ -9,30 +9,26 @@ Wie der Name schon sagt, öffnet sich die Eingangstür automatisch, wenn jemand 
 Du kannst die Ring To Open-Automation entweder über den Schalter in Home Assistant umschalten oder durch Ausführen des `Function Button` Commands.
 
 #### Konfigurationsoptionen:
-::: info Confirmation
+::: info Confirmation (für Haustüren)
 Wenn du diese Einstellung aktivierst, wird deine Wohnungs-Klingel jedes Mal klingeln, wenn du die Ring To Open-Automation per Befehl (Funktionstaste) aktivierst.
 :::
 
-::: info Delay
+::: info Delay (für jede Tür einzeln)
 Diese Einstellung erlaubt es dir, eine Verzögerung für den Türöffner zu konfigurieren. Wenn du die Verzögerung auf 60 Sekunden einstellst, wird bei jeder Ausführung der Automation zufällig eine Verzögerung zwischen 5 und 15 Sekunden ausgewählt.
 :::
 
-::: info Timeout
+::: info Timeout (für jede Tür einzeln)
 Du kannst die Ring To Open-Automation nach 5 bis 60 Minuten, nach einem einzigen Klingeln oder nie automatisch deaktivieren.
 :::
 
-::: info Door Station
-Du kannst entscheiden welche Außenstelle (Tür) die Automation auslöst.
-:::
-
-::: info Display Status
+::: info Display Status (allgemein)
 Du kannst entscheiden ob die Status LED blinkt während die Automation aktiv ist.
 :::
 
-::: info Toggle Trigger
+::: info Toggle Trigger (für Haustüren)
 Du kannst entscheiden durch was die Automation umgeschaltet wird.
 :::
 
-::: info Pattern Condition
+::: info Pattern Condition (für jede Tür einzeln)
 Du kannst entscheiden bei welchem Klingel-Muster die Automation ausgelöst wird.
 :::

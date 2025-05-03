@@ -69,7 +69,7 @@ action:
     metadata: {}
     data: {}
     target:
-        entity_id: switch.doorman_s3_ring_to_open
+        entity_id: switch.doorman_s3_rto_entrance_door
 mode: single
 ```
 :::

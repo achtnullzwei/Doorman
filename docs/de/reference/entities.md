@@ -85,13 +85,19 @@ Meldet den Pin Status der Nuki Bridge Komponente.
 
 ## Schalter
 
-### Ring To Open <Badge type="tip" text="doorman_ring_to_open" />
+### RTO: Entrance Door <Badge type="tip" text="rto_entrance_door" />
 Steuert die [Ring To Open](../guide/automation/ring-to-open) Automatisierung.
 
-### Ring To Open: Confirmation <Badge type="tip" text="doorman_ring_to_open_confirmation" /> <Badge type="info" text="Deaktiviert" />
+### RTO: Second Entrance Door <Badge type="tip" text="rto_second_entrance_door" />
+Steuert die [Ring To Open](../guide/automation/ring-to-open) Automatisierung.
+
+### RTO: Apartment Door <Badge type="tip" text="rto_apartment__door" />
+Steuert die [Ring To Open](../guide/automation/ring-to-open) Automatisierung.
+
+### RTO: Confirmation <Badge type="tip" text="rto_confirmation" /> <Badge type="info" text="Deaktiviert" />
 Steuert die Einschaltbestätigung für die [Ring To Open](../guide/automation/ring-to-open) Automatisierung.
 
-### Ring To Open: Display Status <Badge type="tip" text="doorman_ring_to_open_led_status" /> <Badge type="info" text="Deaktiviert" />
+### RTO: Display Status <Badge type="tip" text="rto_led_status" /> <Badge type="info" text="Deaktiviert" />
 Steuert die Status LED anzeige für die [Ring To Open](../guide/automation/ring-to-open) Automatisierung.
 
 ### Relay <Badge type="tip" text="doorman_relay" /> <Badge type="info" text="Deaktiviert" />
@@ -181,10 +187,24 @@ Legt die Seriennummer der Innenstation für den Commandbuilder/parser fest.
 ### Entrance Door Station ID <Badge type="tip" text="entrance_door_station_id" /> <Badge type="info" text="Deaktiviert" />
 Legt die ID der Außenstelle am Eingang fest.
 
-### Second Door Station ID <Badge type="tip" text="second_door_station_id" /> <Badge type="info" text="Deaktiviert" />
+### Second Entrance Door Station ID <Badge type="tip" text="second_entrance_door_station_id" /> <Badge type="info" text="Deaktiviert" />
 Legt die ID der zweiten Außenstelle fest.
 
-### Ring To Open: Delay <Badge type="tip" text="doorman_ring_to_open_delay" /> <Badge type="info" text="Deaktiviert" />
+### RTO: Entrance Door - Delay <Badge type="tip" text="rto_entrance_door_delay" /> <Badge type="info" text="Deaktiviert" />
+Legt die Verzögerung für die [Ring To Open](../guide/automation/ring-to-open) Automatisierung fest.
+
+::: tip
+Das Einstellen der Verzögerung auf das Maximum (60 Sekunden) führt dazu, dass die Automatisierung jedes Mal eine zufällige Verzögerung zwischen 5 und 15 Sekunden generiert, wenn sie ausgelöst wird.
+:::
+
+### RTO: Second Entrance Door - Delay <Badge type="tip" text="rto_second_entrance_door_delay" /> <Badge type="info" text="Deaktiviert" />
+Legt die Verzögerung für die [Ring To Open](../guide/automation/ring-to-open) Automatisierung fest.
+
+::: tip
+Das Einstellen der Verzögerung auf das Maximum (60 Sekunden) führt dazu, dass die Automatisierung jedes Mal eine zufällige Verzögerung zwischen 5 und 15 Sekunden generiert, wenn sie ausgelöst wird.
+:::
+
+### RTO: Apartment Door - Delay <Badge type="tip" text="rto_apartment_door_delay" /> <Badge type="info" text="Deaktiviert" />
 Legt die Verzögerung für die [Ring To Open](../guide/automation/ring-to-open) Automatisierung fest.
 
 ::: tip
@@ -209,7 +229,7 @@ Sets the Nuki Bridge Security Pin to authenticate against the Nuki Smart Lock.
 
 ## Dropdowns
 
-### Ring To Open: Timeout <Badge type="tip" text="doorman_ring_to_open_timeout_mode" />
+### RTO: Entrance Door - Timeout <Badge type="tip" text="rto_entrance_door_timeout_mode" />
 Legt den Timeout-Modus für die [Ring To Open](../guide/automation/ring-to-open) Automation fest.
 
 ##### Modi:
@@ -217,17 +237,23 @@ Legt den Timeout-Modus für die [Ring To Open](../guide/automation/ring-to-open)
 - 5...60 Minutes
 - Never
 
-### Ring To Open: Door Station <Badge type="tip" text="doorman_ring_to_open_door_trigger" />
-Legt die auslösende Außenstelle für die [Ring To Open](../guide/automation/ring-to-open) Automation fest.
-Bei der Nuki-Bridge-Firmware-Variante öffnet sich das Türschloss, sobald die Wohnungsklingel betätigt wird.
+### RTO: Second Entrance Door - Timeout <Badge type="tip" text="rto_second_entrance_door_timeout_mode" />
+Legt den Timeout-Modus für die [Ring To Open](../guide/automation/ring-to-open) Automation fest.
 
-##### Optionen:
-- Apartment
-- Entrance
-- Second Entrance
-- Any
+##### Modi:
+- Ring once
+- 5...60 Minutes
+- Never
 
-### Ring To Open: Pattern Condition <Badge type="tip" text="doorman_ring_to_open_pattern_condition" /> <Badge type="info" text="Deaktiviert" />
+### RTO: Apartment Door - Timeout <Badge type="tip" text="rto_apartment_door_timeout_mode" />
+Legt den Timeout-Modus für die [Ring To Open](../guide/automation/ring-to-open) Automation fest.
+
+##### Modi:
+- Ring once
+- 5...60 Minutes
+- Never
+
+### RTO: Entrance Door - Pattern Condition <Badge type="tip" text="rto_entrance_door_pattern_condition" /> <Badge type="info" text="Deaktiviert" />
 Legt das Muster fest, welches Bedingung zum auslösen der [Ring To Open](../guide/automation/ring-to-open) automation fest.
 
 ##### Options:
@@ -235,7 +261,23 @@ Legt das Muster fest, welches Bedingung zum auslösen der [Ring To Open](../guid
 - double
 - triple
 
-### Ring To Open: Toggle Trigger <Badge type="tip" text="doorman_ring_to_open_toggle_trigger" /> <Badge type="info" text="Deaktiviert" />
+### RTO: Second Entrance Door - Pattern Condition <Badge type="tip" text="rto_second_entrance_door_pattern_condition" /> <Badge type="info" text="Deaktiviert" />
+Legt das Muster fest, welches Bedingung zum auslösen der [Ring To Open](../guide/automation/ring-to-open) automation fest.
+
+##### Options:
+- single
+- double
+- triple
+
+### RTO: Apartment Door - Pattern Condition <Badge type="tip" text="rto_apartment_door_pattern_condition" /> <Badge type="info" text="Deaktiviert" />
+Legt das Muster fest, welches Bedingung zum auslösen der [Ring To Open](../guide/automation/ring-to-open) automation fest.
+
+##### Options:
+- single
+- double
+- triple
+
+### RTO: Toggle Trigger <Badge type="tip" text="rto_toggle_trigger" /> <Badge type="info" text="Deaktiviert" />
 Legt den Auslöser zum umschalten für die [Ring To Open](../guide/automation/ring-to-open) automation fest.
 
 ##### Optionen:

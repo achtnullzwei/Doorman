@@ -87,13 +87,19 @@ Reports the nuki component security pin status.
 
 ## Switches
 
-### Ring To Open <Badge type="tip" text="doorman_ring_to_open" />
+### RTO: Entrance Door <Badge type="tip" text="rto_entrance_door" />
 Controls the [Ring To Open](../guide/automation/ring-to-open) automation.
 
-### Ring To Open: Confirmation <Badge type="tip" text="doorman_ring_to_open_confirmation" /> <Badge type="info" text="Disabled by default" />
+### RTO: Second Entrance Door <Badge type="tip" text="rto_second_entrance_door" />
+Controls the [Ring To Open](../guide/automation/ring-to-open) automation.
+
+### RTO: Apartment Door <Badge type="tip" text="rto_apartment_door" />
+Controls the [Ring To Open](../guide/automation/ring-to-open) automation.
+
+### RTO: Confirmation <Badge type="tip" text="rto_confirmation" /> <Badge type="info" text="Disabled by default" />
 Controls the turn-on confirmation for the [Ring To Open](../guide/automation/ring-to-open) automation.
 
-### Ring To Open: Display Status <Badge type="tip" text="doorman_ring_to_open_led_status" /> <Badge type="info" text="Disabled by default" />
+### RTO: Display Status <Badge type="tip" text="rto_led_status" /> <Badge type="info" text="Disabled by default" />
 Controls the Status LED for the [Ring To Open](../guide/automation/ring-to-open) automation.
 
 ### Relay <Badge type="tip" text="doorman_relay" /> <Badge type="info" text="Disabled by default" />
@@ -182,10 +188,22 @@ Sets the indoor station serial number for the command builder/parser.
 ### Entrance Door Station ID <Badge type="tip" text="entrance_door_station_id" /> <Badge type="info" text="Disabled by default" />
 Sets the ID of the entrance outdoor station.
 
-### Second Door Station ID <Badge type="tip" text="second_door_station_id" /> <Badge type="info" text="Disabled by default" />
+### Second Entrance Door Station ID <Badge type="tip" text="second_entrance_door_station_id" /> <Badge type="info" text="Disabled by default" />
 Sets the ID of the second outdoor station.
 
-### Ring To Open: Delay <Badge type="tip" text="doorman_ring_to_open_delay" /> <Badge type="info" text="Disabled by default" />
+### RTO: Entrance Door - Delay <Badge type="tip" text="rto_entrance_door_delay" /> <Badge type="info" text="Disabled by default" />
+Sets the delay for the [Ring To Open](../guide/automation/ring-to-open) automation.
+::: tip
+Setting the delay to the maximum (60 seconds) will result in the automation generating a random delay between 5 and 15 seconds each time it is triggered. 
+:::
+
+### RTO: Second Entrance Door - Delay <Badge type="tip" text="rto_second_entrance_door_delay" /> <Badge type="info" text="Disabled by default" />
+Sets the delay for the [Ring To Open](../guide/automation/ring-to-open) automation.
+::: tip
+Setting the delay to the maximum (60 seconds) will result in the automation generating a random delay between 5 and 15 seconds each time it is triggered. 
+:::
+
+### RTO: Apartment Door - Delay <Badge type="tip" text="rto_apartment_door_delay" /> <Badge type="info" text="Disabled by default" />
 Sets the delay for the [Ring To Open](../guide/automation/ring-to-open) automation.
 ::: tip
 Setting the delay to the maximum (60 seconds) will result in the automation generating a random delay between 5 and 15 seconds each time it is triggered. 
@@ -209,7 +227,7 @@ Sets the Nuki Bridge Security Pin to authenticate against the Nuki Smart Lock.
 
 ## Selects
 
-### Ring To Open: Timeout <Badge type="tip" text="doorman_ring_to_open_timeout_mode" />
+### RTO: Entrance Door - Timeout <Badge type="tip" text="rto_entrance_door_timeout_mode" />
 Sets the timeout mode for the [Ring To Open](../guide/automation/ring-to-open) automation.
 
 ##### Modes:
@@ -217,17 +235,23 @@ Sets the timeout mode for the [Ring To Open](../guide/automation/ring-to-open) a
 - 5 to 60 minutes
 - Never
 
-### Ring To Open: Door Station <Badge type="tip" text="doorman_ring_to_open_door_trigger" />
-Sets the triggering door for the [Ring To Open](../guide/automation/ring-to-open) automation.
-With the Nuki Bridge firmware version, the door lock opens when the apartment doorbell is rung.
+### RTO: Second Entrance Door - Timeout <Badge type="tip" text="rto_second_entrance_door_timeout_mode" />
+Sets the timeout mode for the [Ring To Open](../guide/automation/ring-to-open) automation.
 
-##### Options:
-- Apartment
-- Entrance
-- Second Entrance
-- Any
+##### Modes:
+- Ring once
+- 5 to 60 minutes
+- Never
 
-### Ring To Open: Pattern Condition <Badge type="tip" text="doorman_ring_to_open_pattern_condition" /> <Badge type="info" text="Disabled by default" />
+### RTO: Apartment Door - Timeout <Badge type="tip" text="rto_apartment_door_timeout_mode" />
+Sets the timeout mode for the [Ring To Open](../guide/automation/ring-to-open) automation.
+
+##### Modes:
+- Ring once
+- 5 to 60 minutes
+- Never
+
+### RTO: Entrance Door - Pattern Condition <Badge type="tip" text="rto_entrance_door_pattern_condition" /> <Badge type="info" text="Disabled by default" />
 Defines the trigger pattern condition of the [Ring To Open](../guide/automation/ring-to-open) automation.
 
 ##### Options:
@@ -235,7 +259,23 @@ Defines the trigger pattern condition of the [Ring To Open](../guide/automation/
 - double
 - triple
 
-### Ring To Open: Toggle Trigger <Badge type="tip" text="doorman_ring_to_open_toggle_trigger" /> <Badge type="info" text="Disabled by default" />
+### RTO: Second Entrance Door - Pattern Condition <Badge type="tip" text="rto_second_entrance_door_pattern_condition" /> <Badge type="info" text="Disabled by default" />
+Defines the trigger pattern condition of the [Ring To Open](../guide/automation/ring-to-open) automation.
+
+##### Options:
+- single
+- double
+- triple
+
+### RTO: Apartment Door - Pattern Condition <Badge type="tip" text="rto_apartment_door_pattern_condition" /> <Badge type="info" text="Disabled by default" />
+Defines the trigger pattern condition of the [Ring To Open](../guide/automation/ring-to-open) automation.
+
+##### Options:
+- single
+- double
+- triple
+
+### RTO: Toggle Trigger <Badge type="tip" text="rto_toggle_trigger" /> <Badge type="info" text="Disabled by default" />
 Defines the trigger to toggle the [Ring To Open](../guide/automation/ring-to-open) automation.
 
 ##### Options:
