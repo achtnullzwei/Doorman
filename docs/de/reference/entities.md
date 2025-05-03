@@ -89,13 +89,13 @@ Meldet den Pin Status der Nuki Bridge Komponente.
 Schaltet die [Ring To Open](../guide/automation/ring-to-open) Automatisierung für die festgelegten Türen ein/aus.
 
 ### RTO: Entrance Door <Badge type="tip" text="rto_entrance_door" />
-Steuert die [Ring To Open](../guide/automation/ring-to-open) Automatisierung.
+Steuert die [Ring To Open](../guide/automation/ring-to-open) Automatisierung der Eingangstür.
 
 ### RTO: Second Entrance Door <Badge type="tip" text="rto_second_entrance_door" /> <Badge type="info" text="Deaktiviert" />
-Steuert die [Ring To Open](../guide/automation/ring-to-open) Automatisierung.
+Steuert die [Ring To Open](../guide/automation/ring-to-open) Automatisierung der zweiten Eingangstür.
 
-### RTO: Apartment Door <Badge type="tip" text="rto_apartment__door" />
-Steuert die [Ring To Open](../guide/automation/ring-to-open) Automatisierung.
+### RTO: Apartment Door <Badge type="tip" text="rto_apartment__door" /> <Badge type="info" text="Nuki Bridge" />
+Steuert die [Ring To Open](../guide/automation/ring-to-open) Automatisierung der Wohnungstür.
 
 ### RTO: Confirmation <Badge type="tip" text="rto_confirmation" /> <Badge type="info" text="Deaktiviert" />
 Steuert die Einschaltbestätigung für die [Ring To Open](../guide/automation/ring-to-open) Automatisierung.
@@ -207,7 +207,7 @@ Legt die Verzögerung für die [Ring To Open](../guide/automation/ring-to-open) 
 Das Einstellen der Verzögerung auf das Maximum (60 Sekunden) führt dazu, dass die Automatisierung jedes Mal eine zufällige Verzögerung zwischen 5 und 15 Sekunden generiert, wenn sie ausgelöst wird.
 :::
 
-### RTO: Apartment Door - Delay <Badge type="tip" text="rto_apartment_door_delay" /> <Badge type="info" text="Deaktiviert" />
+### RTO: Apartment Door - Delay <Badge type="tip" text="rto_apartment_door_delay" /> <Badge type="info" text="Nuki Bridge" /> <Badge type="info" text="Deaktiviert" />
 Legt die Verzögerung für die [Ring To Open](../guide/automation/ring-to-open) Automatisierung fest.
 
 ::: tip
@@ -258,7 +258,7 @@ Legt den Timeout-Modus für die [Ring To Open](../guide/automation/ring-to-open)
 - 5...60 Minutes
 - Never
 
-### RTO: Apartment Door - Timeout <Badge type="tip" text="rto_apartment_door_timeout_mode" />
+### RTO: Apartment Door - Timeout <Badge type="tip" text="rto_apartment_door_timeout_mode" /> <Badge type="info" text="Nuki Bridge" />
 Legt den Timeout-Modus für die [Ring To Open](../guide/automation/ring-to-open) Automation fest.
 
 ##### Modi:
@@ -282,7 +282,7 @@ Legt das Muster fest, welches Bedingung zum auslösen der [Ring To Open](../guid
 - double
 - triple
 
-### RTO: Apartment Door - Pattern Condition <Badge type="tip" text="rto_apartment_door_pattern_condition" /> <Badge type="info" text="Deaktiviert" />
+### RTO: Apartment Door - Pattern Condition <Badge type="tip" text="rto_apartment_door_pattern_condition" /> <Badge type="info" text="Nuki Bridge" /> <Badge type="info" text="Deaktiviert" />
 Legt das Muster fest, welches Bedingung zum auslösen der [Ring To Open](../guide/automation/ring-to-open) automation fest.
 
 ##### Options:
