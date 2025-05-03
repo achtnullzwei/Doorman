@@ -18,6 +18,6 @@ select:
     internal: false
 
 script:
-  - !extend id: rto_apartment_door_action
+  - id: !extend rto_apartment_door_action
     then:
       - lock.open: apartment_door

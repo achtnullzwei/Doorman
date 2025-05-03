@@ -464,14 +464,14 @@ script:
   - id: rto_entrance_door_action
     then:
       - tc_bus.send:
-        type: open_door
-        address: !lambda "return id(entrance_door_station_id).state;"
+          type: open_door
+          address: !lambda "return id(entrance_door_station_id).state;"
 
   - id: rto_second_entrance_door_action
     then:
       - tc_bus.send:
-        type: open_door
-        address: !lambda "return id(second_entrance_door_station_id).state;"
+          type: open_door
+          address: !lambda "return id(second_entrance_door_station_id).state;"
 
   - id: rto_apartment_door_action
     then:
