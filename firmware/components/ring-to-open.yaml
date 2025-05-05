@@ -229,6 +229,7 @@ switch:
     name: "RTO: Entrance Door"
     icon: "mdi:checkbox-marked-circle-auto-outline"
     restore_mode: RESTORE_DEFAULT_OFF
+    disabled_by_default: true
     optimistic: true
     turn_on_action:
       - script.execute: rto_entrance_door_timer
@@ -264,6 +265,7 @@ switch:
   - platform: template
     id: rto_apartment_door
     name: "RTO: Apartment Door"
+    disabled_by_default: true
     internal: true
     icon: "mdi:checkbox-marked-circle-auto-outline"
     restore_mode: RESTORE_DEFAULT_OFF

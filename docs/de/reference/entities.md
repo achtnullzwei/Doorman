@@ -88,13 +88,13 @@ Meldet den Pin Status der Nuki Bridge Komponente.
 ### Ring To Open <Badge type="tip" text="rto_quick_toggle" />
 Schaltet die [Ring To Open](../guide/automation/ring-to-open) Automatisierung für die festgelegten Türen ein/aus.
 
-### RTO: Entrance Door <Badge type="tip" text="rto_entrance_door" />
+### RTO: Entrance Door <Badge type="tip" text="rto_entrance_door" /> <Badge type="info" text="Deaktiviert" />
 Steuert die [Ring To Open](../guide/automation/ring-to-open) Automatisierung der Eingangstür.
 
 ### RTO: Second Entrance Door <Badge type="tip" text="rto_second_entrance_door" /> <Badge type="info" text="Deaktiviert" />
 Steuert die [Ring To Open](../guide/automation/ring-to-open) Automatisierung der zweiten Eingangstür.
 
-### RTO: Apartment Door <Badge type="tip" text="rto_apartment__door" /> <Badge type="info" text="Nuki Bridge" />
+### RTO: Apartment Door <Badge type="tip" text="rto_apartment_door" /> <Badge type="info" text="Nuki Bridge" /> <Badge type="info" text="Deaktiviert" />
 Steuert die [Ring To Open](../guide/automation/ring-to-open) Automatisierung der Wohnungstür.
 
 ### RTO: Confirmation <Badge type="tip" text="rto_confirmation" /> <Badge type="info" text="Deaktiviert" />

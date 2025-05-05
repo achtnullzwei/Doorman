@@ -525,6 +525,7 @@ Below is a list of available settings for specific indoor station models:
 | TCS CAIXXXX / Koch CAIXXXX   | Verification and implementation required |
 | TCS CAI2000 / Koch Carus     | Verification and implementation required |
 | TCS ISW42X0                  | Verification and implementation required |
+| TKI01-SG/2                   | Verification and implementation required, hardware testing required |
 | TCS IVW9010 | None |
 | TCS IVW9011 / Koch VTP10 | None |
 | TCS IVW9110 | None |

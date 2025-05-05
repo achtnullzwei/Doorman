@@ -90,17 +90,17 @@ Reports the nuki component security pin status.
 ### Ring To Open <Badge type="tip" text="rto_quick_toggle" />
 Toggles the [Ring To Open](../guide/automation/ring-to-open) automation for the specified doors.
 
-### RTO: Entrance Door <Badge type="tip" text="rto_entrance_door" />
+### RTO: Entrance Door <Badge type="tip" text="rto_entrance_door" /> <Badge type="info" text="Disabled by default" />
 Controls the [Ring To Open](../guide/automation/ring-to-open) automation of the entrance door.
 
 ### RTO: Second Entrance Door <Badge type="tip" text="rto_second_entrance_door" /> <Badge type="info" text="Disabled by default" />
 Controls the [Ring To Open](../guide/automation/ring-to-open) automation of the second entrance door.
 
-### RTO: Apartment Door <Badge type="tip" text="rto_apartment_door" /> <Badge type="info" text="Nuki Bridge only" />
+### RTO: Apartment Door <Badge type="tip" text="rto_apartment_door" /> <Badge type="info" text="Nuki Bridge only" /> <Badge type="info" text="Disabled by default" />
 Controls the [Ring To Open](../guide/automation/ring-to-open) automation of the apartment door.
 
 ### RTO: Confirmation <Badge type="tip" text="rto_confirmation" /> <Badge type="info" text="Disabled by default" />
-Controls the turn-on confirmation for the [Ring To Open](../guide/automation/ring-to-open) automation.
+Controls the turn-on doorbell-confirmation for the [Ring To Open](../guide/automation/ring-to-open) automation.
 
 ### RTO: Display Status <Badge type="tip" text="rto_led_status" /> <Badge type="info" text="Disabled by default" />
 Controls the Status LED for the [Ring To Open](../guide/automation/ring-to-open) automation.
