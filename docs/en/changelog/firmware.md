@@ -4,7 +4,7 @@ Welcome to the latest updates! Here's a breakdown of all the **new features**, *
 ## 2025.5.0
 ### 🚀 What's New?
 - **Expanded Support for Model-Specific Settings**  
-   Settings compatibility has been added for TCS TASTA (Koch TC60) `IVW5xxx` and `ISW5xxx` models.
+   Settings compatibility has been added for TCS TASTA / Koch TC60 (`IVW5xxx`, `ISW5xxx`) and Ecoos (`IVW22xx`) models.
 
 - **Added Support for Acknowledgment Messages**  
    Acknowledgment messages are now properly handled, following additional investigation into previously unsupported cases.

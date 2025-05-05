@@ -1256,7 +1256,7 @@ namespace esphome
                 case MODEL_IVW2212:
                     // ECOOS
                     switch (setting) {
-                        /*case SETTING_RINGTONE_ENTRANCE_DOOR_CALL:
+                        case SETTING_RINGTONE_ENTRANCE_DOOR_CALL:
                             data.index = 3;
                             data.left_nibble = true;
                             break;
@@ -1271,8 +1271,19 @@ namespace esphome
                             data.left_nibble = true;
                             break;
 
+                        case SETTING_RINGTONE_SECOND_ENTRANCE_DOOR_CALL:
+                            data.index = 12;
+                            data.left_nibble = true;
+                            break;
+
                         case SETTING_VOLUME_RINGTONE:
                             data.index = 20;
+                            data.left_nibble = false;
+                            break;
+
+                        // Supported? Not documented.
+                        /*case SETTING_VOLUME_HANDSET_DOOR_CALL:
+                            data.index = 21;
                             data.left_nibble = false;
                             break;*/
 

@@ -456,8 +456,11 @@ Here are the available setting types you can use to update the settings of your 
 - volume_handset_internal_call <Badge type="tip" text="SETTING_VOLUME_HANDSET_INTERNAL_CALL" />
 
 
-## Model Setting availability
-Below are the available settings for specific indoor station models:
+## Model Setting Availability
+In general, **all listed models** are supported.
+However, some support configuration directly via Doorman, while others still require verification.
+
+Below is a list of available settings for specific indoor station models:
 
 | Model                        | Available settings                                                                                         |
 |------------------------------|------------------------------------------------------------------------------------------------------------|
@@ -492,9 +495,9 @@ Below are the available settings for specific indoor station models:
 | TCS IVWM7000                 | Verification and implementation required |
 | TCS ISW4100 / Koch TC31      | Verification and implementation required |
 | TCS IMM2100 / Koch TCE31     | Verification and implementation required |
-| TCS IVW2210 / Koch Ecoos     | Verification and implementation required |
-| TCS IVW2211 / Koch Ecoos     | Verification and implementation required |
-| TCS IVW2212 / Koch Ecoos / Scantron SLIM60T | Verification and implementation required |
+| TCS IVW2210 / Koch Ecoos     | `ringtone_floor_call`, `ringtone_entrance_door_call`, `ringtone_second_entrance_door_call`, `ringtone_internal_call`, `volume_ringtone` |
+| TCS IVW2211 / Koch Ecoos     | `ringtone_floor_call`, `ringtone_entrance_door_call`, `ringtone_second_entrance_door_call`, `ringtone_internal_call`, `volume_ringtone` |
+| TCS IVW2212 / Koch Ecoos / Scantron SLIM60T | `ringtone_floor_call`, `ringtone_entrance_door_call`, `ringtone_second_entrance_door_call`, `ringtone_internal_call`, `volume_ringtone` |
 | TCS VTC42V2                  | `ringtone_floor_call`, `ringtone_entrance_door_call`, `ringtone_second_entrance_door_call`, `ringtone_internal_call`, `volume_ringtone`, `volume_handset_door_call` |
 | TCS TC40V2                   | `ringtone_floor_call`, `ringtone_entrance_door_call`, `ringtone_second_entrance_door_call`, `ringtone_internal_call`, `volume_ringtone`, `volume_handset_door_call` |
 | TCS VTC40                    | `ringtone_floor_call`, `ringtone_entrance_door_call`, `ringtone_second_entrance_door_call`, `ringtone_internal_call`, `volume_ringtone`, `volume_handset_door_call` |
