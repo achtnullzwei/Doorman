@@ -15,11 +15,13 @@ Welcome to the latest updates! Here's a breakdown of all the **new features**, *
   This change simplifies dashboard integration and delivers a more consistent, intuitive experience.
 
 - **Extended Ring to Open to Apartment Doorbells**  
-   From now on `Ring to Open` supports the apartment doorbell when used with a Nuki Smart Lock, enabling more convenient and seamless access.
+   From now on [Ring To Open](../guide/automation/ring-to-open) supports the apartment doorbell when used with a Nuki Smart Lock, enabling more convenient and seamless access.
 
 ### ✨ Improvements
 - **Refined Configuration for Ring to Open**  
-   The configuration options have been split into individual options for each door, giving you greater flexibility to tailor `Ring to Open` behavior to your specific needs.
+   The configuration options have been separated per door, giving you greater flexibility to customize the [Ring To Open](../guide/automation/ring-to-open) behavior according to your specific requirements.
+   
+   Additionally, the Delay settings are now presented as dropdown menus, making it more intuitive to use the random delay feature—which was previously hidden behind the 60-second setting.
 
 - **Smarter Ring to Open with Pattern Recognition**  
   The door now opens only when a configured doorbell ring pattern is detected, offering more precise control over access.
@@ -46,7 +48,7 @@ Welcome to the latest updates! Here's a breakdown of all the **new features**, *
   The `Open Door` buttons have been removed in favor of more efficient control methods.
 
 - **Renamed Ring to Open Entities**  
-  The `Ring to Open` entities are now labeled as `RTO: Door Name – Setting` to reflect the updated configuration structure, improving clarity and consistency.
+  The [Ring To Open](../guide/automation/ring-to-open) entities are now labeled as `RTO: Door Name – Setting` to reflect the updated configuration structure, improving clarity and consistency.
 
 - **Renamed Nuki Lock**  
   The `Nuki Lock` entity has been renamed to `Apartment Door` for better alignment with the naming convention used for other doors.
