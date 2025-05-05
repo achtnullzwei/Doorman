@@ -36,7 +36,6 @@ Specify which doors are controlled by the central `Ring to Open` switch.
 #### Configuration per door:
 ::: info Delay
 This setting allows you to configure a delay for the door opener.
-If you set the delay to 60 seconds, a random delay between 5 and 15 seconds is applied each time the automation runs.
 :::
 
 ::: info Timeout

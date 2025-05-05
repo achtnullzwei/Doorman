@@ -193,27 +193,6 @@ Legt die ID der Außenstelle am Eingang fest.
 ### Second Entrance Door Station ID <Badge type="tip" text="second_entrance_door_station_id" /> <Badge type="info" text="Deaktiviert" />
 Legt die ID der zweiten Außenstelle fest.
 
-### RTO: Entrance Door - Delay <Badge type="tip" text="rto_entrance_door_delay" /> <Badge type="info" text="Deaktiviert" />
-Legt die Verzögerung für die [Ring To Open](../guide/automation/ring-to-open) Automatisierung fest.
-
-::: tip
-Das Einstellen der Verzögerung auf das Maximum (60 Sekunden) führt dazu, dass die Automatisierung jedes Mal eine zufällige Verzögerung zwischen 5 und 15 Sekunden generiert, wenn sie ausgelöst wird.
-:::
-
-### RTO: Second Entrance Door - Delay <Badge type="tip" text="rto_second_entrance_door_delay" /> <Badge type="info" text="Deaktiviert" />
-Legt die Verzögerung für die [Ring To Open](../guide/automation/ring-to-open) Automatisierung fest.
-
-::: tip
-Das Einstellen der Verzögerung auf das Maximum (60 Sekunden) führt dazu, dass die Automatisierung jedes Mal eine zufällige Verzögerung zwischen 5 und 15 Sekunden generiert, wenn sie ausgelöst wird.
-:::
-
-### RTO: Apartment Door - Delay <Badge type="tip" text="rto_apartment_door_delay" /> <Badge type="info" text="Nuki Bridge" /> <Badge type="info" text="Deaktiviert" />
-Legt die Verzögerung für die [Ring To Open](../guide/automation/ring-to-open) Automatisierung fest.
-
-::: tip
-Das Einstellen der Verzögerung auf das Maximum (60 Sekunden) führt dazu, dass die Automatisierung jedes Mal eine zufällige Verzögerung zwischen 5 und 15 Sekunden generiert, wenn sie ausgelöst wird.
-:::
-
 ### Volume: Ringtone <Badge type="tip" text="intercom_volume_ringtone" /> <Badge type="info" text="Deaktiviert" />
 Legt die Lautstärke der Klingeltöne deiner Innenstation fest.
 
@@ -241,6 +220,27 @@ Legt die Türen fest, bei denen der zentrale `Ring To Open`-Schalter die [Ring T
 - Any Entrance
 - Apartment
 - Any Entrance & Apartment
+
+### RTO: Entrance Door - Delay <Badge type="tip" text="rto_entrance_door_delay" /> <Badge type="info" text="Deaktiviert" />
+Legt die Verzögerung für die [Ring To Open](../guide/automation/ring-to-open) Automatisierung fest.
+
+##### Optionen:
+- 0 to 20 seconds
+- Random
+
+### RTO: Second Entrance Door - Delay <Badge type="tip" text="rto_second_entrance_door_delay" /> <Badge type="info" text="Deaktiviert" />
+Legt die Verzögerung für die [Ring To Open](../guide/automation/ring-to-open) Automatisierung fest.
+
+##### Optionen:
+- 0 to 20 seconds
+- Random
+
+### RTO: Apartment Door - Delay <Badge type="tip" text="rto_apartment_door_delay" /> <Badge type="info" text="Nuki Bridge" /> <Badge type="info" text="Deaktiviert" />
+Legt die Verzögerung für die [Ring To Open](../guide/automation/ring-to-open) Automatisierung fest.
+
+##### Optionen:
+- 0 to 20 seconds
+- Random
 
 ### RTO: Entrance Door - Timeout <Badge type="tip" text="rto_entrance_door_timeout_mode" />
 Legt den Timeout-Modus für die [Ring To Open](../guide/automation/ring-to-open) Automation fest.

@@ -194,24 +194,6 @@ Sets the ID of the entrance outdoor station.
 ### Second Entrance Door Station ID <Badge type="tip" text="second_entrance_door_station_id" /> <Badge type="info" text="Disabled by default" />
 Sets the ID of the second outdoor station.
 
-### RTO: Entrance Door - Delay <Badge type="tip" text="rto_entrance_door_delay" /> <Badge type="info" text="Disabled by default" />
-Sets the delay for the [Ring To Open](../guide/automation/ring-to-open) automation.
-::: tip
-Setting the delay to the maximum (60 seconds) will result in the automation generating a random delay between 5 and 15 seconds each time it is triggered. 
-:::
-
-### RTO: Second Entrance Door - Delay <Badge type="tip" text="rto_second_entrance_door_delay" /> <Badge type="info" text="Disabled by default" />
-Sets the delay for the [Ring To Open](../guide/automation/ring-to-open) automation.
-::: tip
-Setting the delay to the maximum (60 seconds) will result in the automation generating a random delay between 5 and 15 seconds each time it is triggered. 
-:::
-
-### RTO: Apartment Door - Delay <Badge type="tip" text="rto_apartment_door_delay" /> <Badge type="info" text="Nuki Bridge only" /> <Badge type="info" text="Disabled by default" />
-Sets the delay for the [Ring To Open](../guide/automation/ring-to-open) automation.
-::: tip
-Setting the delay to the maximum (60 seconds) will result in the automation generating a random delay between 5 and 15 seconds each time it is triggered. 
-:::
-
 ### Volume: Ringtone <Badge type="tip" text="intercom_volume_ringtone" /> <Badge type="info" text="Disabled by default" />
 Sets the intercom phone ringtone volume.
 
@@ -239,6 +221,27 @@ Defines the doors for which the central `Ring To Open` switch will toggle the [R
 - Any Entrance
 - Apartment
 - Any Entrance & Apartment
+
+### RTO: Entrance Door - Delay <Badge type="tip" text="rto_entrance_door_delay" /> <Badge type="info" text="Disabled by default" />
+Sets the delay for the [Ring To Open](../guide/automation/ring-to-open) automation.
+
+##### Options:
+- 0 to 20 seconds
+- Random
+
+### RTO: Second Entrance Door - Delay <Badge type="tip" text="rto_second_entrance_door_delay" /> <Badge type="info" text="Disabled by default" />
+Sets the delay for the [Ring To Open](../guide/automation/ring-to-open) automation.
+
+##### Options:
+- 0 to 20 seconds
+- Random
+
+### RTO: Apartment Door - Delay <Badge type="tip" text="rto_apartment_door_delay" /> <Badge type="info" text="Nuki Bridge only" /> <Badge type="info" text="Disabled by default" />
+Sets the delay for the [Ring To Open](../guide/automation/ring-to-open) automation.
+
+##### Options:
+- 0 to 20 seconds
+- Random
 
 ### RTO: Entrance Door - Timeout <Badge type="tip" text="rto_entrance_door_timeout_mode" />
 Sets the timeout mode for the [Ring To Open](../guide/automation/ring-to-open) automation.

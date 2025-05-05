@@ -32,7 +32,7 @@ Bestimme, für welche Türen der zentrale `Ring-to-Open`-Schalter die Automation
 
 #### Einstellungen pro Tür:
 ::: info Delay
-Diese Einstellung erlaubt es dir, eine Verzögerung für den Türöffner zu konfigurieren. Wenn du die Verzögerung auf 60 Sekunden einstellst, wird bei jeder Ausführung der Automation zufällig eine Verzögerung zwischen 5 und 15 Sekunden ausgewählt.
+Diese Einstellung erlaubt es dir, eine Verzögerung für den Türöffner zu konfigurieren.
 :::
 
 ::: info Timeout
