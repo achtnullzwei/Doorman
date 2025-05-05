@@ -88,6 +88,10 @@ Meldet den Pin Status der Nuki Bridge Komponente.
 ### Ring To Open <Badge type="tip" text="rto_central" />
 Schaltet die [Ring To Open](../guide/automation/ring-to-open) Automatisierung für die festgelegten Türen ein/aus.
 
+::: tip
+Du kannst die Türen mit dem [RTO: Central Toggle - Door Selection](#rto-central-toggle-door-selection)-Dropdown festlegen.
+:::
+
 ### RTO: Entrance Door <Badge type="tip" text="rto_entrance_door" /> <Badge type="info" text="Deaktiviert" />
 Steuert die [Ring To Open](../guide/automation/ring-to-open) Automatisierung der Eingangstür.
 

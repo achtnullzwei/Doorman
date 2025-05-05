@@ -90,6 +90,10 @@ Reports the nuki component security pin status.
 ### Ring To Open <Badge type="tip" text="rto_central" />
 Toggles the [Ring To Open](../guide/automation/ring-to-open) automation for the specified doors.
 
+::: tip
+You can define the doors with the [RTO: Central Toggle - Door Selection](#rto-central-toggle-door-selection) select.
+:::
+
 ### RTO: Entrance Door <Badge type="tip" text="rto_entrance_door" /> <Badge type="info" text="Disabled by default" />
 Controls the [Ring To Open](../guide/automation/ring-to-open) automation of the entrance door.
 
