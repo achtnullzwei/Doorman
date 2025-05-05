@@ -65,7 +65,7 @@ Beispiel:
 ### Schritt 1: Mit Wi-Fi verbinden
 Wenn du deinen Doorman-S3 zum ersten Mal einschaltest, wird er schnell (orange) blinken und einen neuen Access Point namens `Doorman-S3 Setup` erstellen. Du kannst deine WiFi-Zugangsdaten über den Access Point, Improv Serial oder Improv Bluetooth einrichten.
 
-Das Passwort für den Access Point lautet `open-sesame`.
+Das Passwort für den Access Point lautet `Op3n-Sesame!`.
 
 Sobald du mit dem Access Point verbunden bist, sollte sich die Web-Oberfläche automatisch öffnen (siehe auch Netzwerk-Benachrichtigungen).\
 Falls nicht, kannst du manuell zu http://192.168.4.1/ in deinem Browser navigieren.

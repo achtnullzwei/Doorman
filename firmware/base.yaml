@@ -65,7 +65,7 @@ web_server:
 wifi:
   ap:
     ssid: "${friendly_name} Setup"
-    password: "open-sesame"
+    password: "Op3n-Sesame!"
 
 captive_portal:
 
