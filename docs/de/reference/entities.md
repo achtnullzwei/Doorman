@@ -85,7 +85,7 @@ Meldet den Pin Status der Nuki Bridge Komponente.
 
 ## Schalter
 
-### RTO: Quick Toggle <Badge type="tip" text="rto_quick_toggle" />
+### Ring To Open <Badge type="tip" text="rto_quick_toggle" />
 Schaltet die [Ring To Open](../guide/automation/ring-to-open) Automatisierung für die festgelegten Türen ein/aus.
 
 ### RTO: Entrance Door <Badge type="tip" text="rto_entrance_door" />

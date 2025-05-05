@@ -87,7 +87,7 @@ Reports the nuki component security pin status.
 
 ## Switches
 
-### RTO: Quick Toggle <Badge type="tip" text="rto_quick_toggle" />
+### Ring To Open <Badge type="tip" text="rto_quick_toggle" />
 Toggles the [Ring To Open](../guide/automation/ring-to-open) automation for the specified doors.
 
 ### RTO: Entrance Door <Badge type="tip" text="rto_entrance_door" />

@@ -173,7 +173,7 @@ switch:
   # Global Setting
   - platform: template
     id: rto_quick_toggle
-    name: "RTO: Quick Toggle"
+    name: "Ring To Open"
     icon: "mdi:checkbox-marked-circle-auto-outline"
     restore_mode: RESTORE_DEFAULT_OFF
     lambda: |-
@@ -182,11 +182,11 @@ switch:
       } else if(id(rto_quick_toggle_doors).state == "Second Entrance") {
         return id(rto_second_entrance_door).state;
       } else if(id(rto_quick_toggle_doors).state == "Any Entrance") {
-        return id(rto_entrance_door).state && id(rto_second_entrance_door).state;
+        return id(rto_entrance_door).state || id(rto_second_entrance_door).state;
       } else if(id(rto_quick_toggle_doors).state == "Apartment") {
         return id(rto_apartment_door).state;
       } else if(id(rto_quick_toggle_doors).state == "Any Entrance & Apartment") {
-        return id(rto_entrance_door).state && id(rto_second_entrance_door).state && id(rto_apartment_door).state;
+        return id(rto_entrance_door).state || id(rto_second_entrance_door).state || id(rto_apartment_door).state;
       }
     turn_on_action:
       - lambda: |-
