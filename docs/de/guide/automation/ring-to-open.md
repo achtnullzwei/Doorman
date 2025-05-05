@@ -1,4 +1,4 @@
-# Ring To Open <Badge type="warning" text="Party Mode" />
+# Ring To Open <Badge type="warning" text="RTO / Party Mode" />
 
 Die Doorman-Firmware bietet eine **Ring To Open**-Automation, die früher als **Party Mode** bekannt war.
 
@@ -6,29 +6,39 @@ Die Doorman-Firmware bietet eine **Ring To Open**-Automation, die früher als **
 Wie der Name schon sagt, öffnet sich die Eingangstür automatisch, wenn jemand die Türklingel betätigt. Diese Funktion ist besonders nützlich während einer Party, da Gäste einfach durch Klingeln das Gebäude betreten können.
 
 ### Wie benutze ich es?
-Du kannst die Ring To Open-Automation entweder über den Schalter in Home Assistant umschalten oder durch Ausführen des `Function Button` Commands.
+Du kannst die **Ring to Open**-Funktion für jede Tür individuell aktivieren oder deaktivieren.
+Dafür stehen dir separate Schalter wie `RTO: Entrance Door`, `RTO: Second Entrance Door` und `RTO: Apartment Door` zur Verfügung.
 
-#### Konfigurationsoptionen:
-::: info Confirmation (für Haustüren)
-Wenn du diese Einstellung aktivierst, wird deine Wohnungs-Klingel jedes Mal klingeln, wenn du die Ring To Open-Automation per Befehl (Funktionstaste) aktivierst.
+Zusätzlich gibt es einen **zentralen Schalter** namens `Ring to Open`, der das für mehrere Türen gleichzeitig steuern kann.
+Welche Türen davon betroffen sind, legst du über die Einstellung `RTO: Quick Toggle – Door Selection` fest.
+
+#### Allgemeine Einstellungen:
+::: info Confirmation
+Wenn du diese Option aktivierst, klingelt deine Innenstation jedes Mal, wenn du die Ring-to-Open-Automation manuell (z. B. per Funktionstaste) aktivierst.
 :::
 
-::: info Delay (für jede Tür einzeln)
+::: info Display Status
+Du kannst festlegen, ob die Status-LED blinkt, während Ring to Open für eine der Türen aktiv ist.
+:::
+
+::: info Toggle Trigger
+Lege fest, wodurch der zentrale `Ring to Open`-Schalter umgeschaltet wird.
+Zum Beispiel kannst du einstellen, dass die Funktionstaste deiner Innenstation den zentralen Schalter aktiviert oder deaktiviert.
+:::
+
+::: info Quick Toggle - Door Selection
+Bestimme, für welche Türen der zentrale `Ring-to-Open`-Schalter die Automation ein- oder ausschaltet.
+:::
+
+#### Einstellungen pro Tür:
+::: info Delay
 Diese Einstellung erlaubt es dir, eine Verzögerung für den Türöffner zu konfigurieren. Wenn du die Verzögerung auf 60 Sekunden einstellst, wird bei jeder Ausführung der Automation zufällig eine Verzögerung zwischen 5 und 15 Sekunden ausgewählt.
 :::
 
-::: info Timeout (für jede Tür einzeln)
-Du kannst die Ring To Open-Automation nach 5 bis 60 Minuten, nach einem einzigen Klingeln oder nie automatisch deaktivieren.
+::: info Timeout
+Du kannst festlegen, ob Ring to Open nach einer bestimmten Zeit (zwischen 5 und 60 Minuten), nach einem einzigen Klingeln oder gar nicht automatisch deaktiviert wird.
 :::
 
-::: info Display Status (allgemein)
-Du kannst entscheiden ob die Status LED blinkt während die Automation aktiv ist.
-:::
-
-::: info Toggle Trigger (für Haustüren)
-Du kannst entscheiden durch was die Automation umgeschaltet wird.
-:::
-
-::: info Pattern Condition (für jede Tür einzeln)
-Du kannst entscheiden bei welchem Klingel-Muster die Automation ausgelöst wird.
+::: info Pattern Condition
+Wähle aus, bei welchem Klingel-Muster die Automation ausgelöst werden soll.
 :::

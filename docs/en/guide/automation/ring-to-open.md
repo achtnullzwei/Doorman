@@ -1,4 +1,4 @@
-# Ring To Open <Badge type="warning" text="Party Mode" />
+# Ring To Open <Badge type="warning" text="RTO / Party Mode" />
 
 The Doorman firmware features a Ring To Open automation, which was previously known as Party Mode.
 
@@ -9,27 +9,40 @@ This feature is especially useful during a party, allowing guests to enter the b
 ### How do I use it?
 You can enable or disable the Ring To Open automation using the switch in Home Assistant or by issuing the `Function Button` command.
 
-#### Configuration Options:
-::: info Confirmation (for entrance doors)
-If you enable this setting, your apartment doorbell will ring each time you activate the Ring To Open automation via command (function button).
+You can activate or deactivate the Ring to Open function individually for each door.
+There are separate switches available, such as `RTO: Entrance Door`, `RTO: Second Entrance Door`, and `RTO: Apartment Door`.
+
+Additionally, there's a central switch called `Ring to Open`, which can control multiple doors at once.
+You can configure which doors are affected via the setting `RTO: Quick Toggle – Door Selection`.
+
+#### General Configuration:
+::: info Confirmation
+If you enable this option, your indoor station will ring every time the Ring-to-Open automation is manually activated via function button.
 :::
 
-::: info Delay (for each door)
-This setting allows you to configure a delay for the door opener. If you set the delay to 60 seconds, it will randomly select a delay between 5 and 15 seconds whenever the automation is executed.
+::: info Display Status
+You can choose whether the status LED should blink while Ring to Open is active for any door.
 :::
 
-::: info Timeout (for each door)
-You can choose to disable the Ring To Open automation after 5 to 60 minutes, after a single ring, or never.
+::: info Toggle Trigger
+Define what toggles the central `Ring to Open` switch.
+For example, you can set the function button of your indoor station to activate or deactivate the central switch.
 :::
 
-::: info Display Status (global)
-You can choose whether the status LED blinks while the automation is active.  
+::: info Quick Toggle - Door Selection
+Specify which doors are controlled by the central `Ring to Open` switch.
 :::
 
-::: info Toggle Trigger (for entrance doors)
-You can decide which trigger will toggle the automation.  
+#### Configuration per door:
+::: info Delay
+This setting allows you to configure a delay for the door opener.
+If you set the delay to 60 seconds, a random delay between 5 and 15 seconds is applied each time the automation runs.
 :::
 
-::: info Pattern Condition (for each door)
-You can choose which doorbell pattern will trigger the automation.
+::: info Timeout
+You can define whether Ring to Open should automatically deactivate after a certain time (between 5 and 60 minutes), after a single ring, or not at all.
+:::
+
+::: info Pattern Condition
+Select which ringing pattern should trigger the automation.
 :::
