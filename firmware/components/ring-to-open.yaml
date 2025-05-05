@@ -172,51 +172,51 @@ number:
 switch:
   # Global Setting
   - platform: template
-    id: rto_quick_toggle
+    id: rto_central
     name: "Ring To Open"
     icon: "mdi:checkbox-marked-circle-auto-outline"
     restore_mode: RESTORE_DEFAULT_OFF
     lambda: |-
-      if(id(rto_quick_toggle_doors).state == "Entrance") {
+      if(id(rto_central_doors).state == "Entrance") {
         return id(rto_entrance_door).state;
-      } else if(id(rto_quick_toggle_doors).state == "Second Entrance") {
+      } else if(id(rto_central_doors).state == "Second Entrance") {
         return id(rto_second_entrance_door).state;
-      } else if(id(rto_quick_toggle_doors).state == "Any Entrance") {
+      } else if(id(rto_central_doors).state == "Any Entrance") {
         return id(rto_entrance_door).state || id(rto_second_entrance_door).state;
-      } else if(id(rto_quick_toggle_doors).state == "Apartment") {
+      } else if(id(rto_central_doors).state == "Apartment") {
         return id(rto_apartment_door).state;
-      } else if(id(rto_quick_toggle_doors).state == "Any Entrance & Apartment") {
+      } else if(id(rto_central_doors).state == "Any Entrance & Apartment") {
         return id(rto_entrance_door).state || id(rto_second_entrance_door).state || id(rto_apartment_door).state;
       }
       return false;
     turn_on_action:
       - lambda: |-
-          if(id(rto_quick_toggle_doors).state == "Entrance") {
+          if(id(rto_central_doors).state == "Entrance") {
             id(rto_entrance_door).turn_on();
-          } else if(id(rto_quick_toggle_doors).state == "Second Entrance") {
+          } else if(id(rto_central_doors).state == "Second Entrance") {
             id(rto_second_entrance_door).turn_on();
-          } else if(id(rto_quick_toggle_doors).state == "Any Entrance") {
+          } else if(id(rto_central_doors).state == "Any Entrance") {
             id(rto_entrance_door).turn_on();
             id(rto_second_entrance_door).turn_on();
-          } else if(id(rto_quick_toggle_doors).state == "Apartment") {
+          } else if(id(rto_central_doors).state == "Apartment") {
             id(rto_apartment_door).turn_on();
-          } else if(id(rto_quick_toggle_doors).state == "Any Entrance & Apartment") {
+          } else if(id(rto_central_doors).state == "Any Entrance & Apartment") {
             id(rto_entrance_door).turn_on();
             id(rto_second_entrance_door).turn_on();
             id(rto_apartment_door).turn_on();
           }
     turn_off_action:
       - lambda: |-
-          if(id(rto_quick_toggle_doors).state == "Entrance") {
+          if(id(rto_central_doors).state == "Entrance") {
             id(rto_entrance_door).turn_off();
-          } else if(id(rto_quick_toggle_doors).state == "Second Entrance") {
+          } else if(id(rto_central_doors).state == "Second Entrance") {
             id(rto_second_entrance_door).turn_off();
-          } else if(id(rto_quick_toggle_doors).state == "Any Entrance") {
+          } else if(id(rto_central_doors).state == "Any Entrance") {
             id(rto_entrance_door).turn_off();
             id(rto_second_entrance_door).turn_off();
-          } else if(id(rto_quick_toggle_doors).state == "Apartment") {
+          } else if(id(rto_central_doors).state == "Apartment") {
             id(rto_apartment_door).turn_off();
-          } else if(id(rto_quick_toggle_doors).state == "Any Entrance & Apartment") {
+          } else if(id(rto_central_doors).state == "Any Entrance & Apartment") {
             id(rto_entrance_door).turn_off();
             id(rto_second_entrance_door).turn_off();
             id(rto_apartment_door).turn_off();
@@ -308,8 +308,8 @@ switch:
 
 select:
   - platform: template
-    id: rto_quick_toggle_doors
-    name: "RTO: Quick Toggle - Door Selection"
+    id: rto_central_doors
+    name: "RTO: Central Toggle - Door Selection"
     icon: "mdi:door"
     optimistic: true
     options:
@@ -455,7 +455,7 @@ select:
   # Global Setting
   - platform: template
     id: rto_toggle_trigger
-    name: "RTO: Quick Toggle - Trigger"
+    name: "RTO: Central Toggle - Trigger"
     icon: "mdi:circle-outline"
     optimistic: true
     options:

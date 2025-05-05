@@ -85,7 +85,7 @@ Meldet den Pin Status der Nuki Bridge Komponente.
 
 ## Schalter
 
-### Ring To Open <Badge type="tip" text="rto_quick_toggle" />
+### Ring To Open <Badge type="tip" text="rto_central" />
 Schaltet die [Ring To Open](../guide/automation/ring-to-open) Automatisierung für die festgelegten Türen ein/aus.
 
 ### RTO: Entrance Door <Badge type="tip" text="rto_entrance_door" /> <Badge type="info" text="Deaktiviert" />
@@ -232,8 +232,8 @@ Sets the Nuki Bridge Security Pin to authenticate against the Nuki Smart Lock.
 
 ## Dropdowns
 
-### RTO: Quick Toggle - Door Selection <Badge type="tip" text="rto_quick_toggle_doors" />
-Legt die Türen fest, bei denen `RTO: Quick Toggle` die [Ring To Open](../guide/automation/ring-to-open) Automation umschaltet.
+### RTO: Central Toggle - Door Selection <Badge type="tip" text="rto_central_doors" />
+Legt die Türen fest, bei denen der zentrale `Ring To Open`-Schalter die [Ring To Open](../guide/automation/ring-to-open) Automation umschaltet.
 
 ##### Modi:
 - Entrance
@@ -290,7 +290,7 @@ Legt das Muster fest, welches Bedingung zum auslösen der [Ring To Open](../guid
 - double
 - triple
 
-### RTO: Quick Toggle - Trigger <Badge type="tip" text="rto_toggle_trigger" /> <Badge type="info" text="Deaktiviert" />
+### RTO: Central Toggle - Trigger <Badge type="tip" text="rto_toggle_trigger" /> <Badge type="info" text="Deaktiviert" />
 Legt den Auslöser zum umschalten für die [Ring To Open](../guide/automation/ring-to-open) automation fest.
 
 ##### Optionen:

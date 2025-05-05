@@ -249,6 +249,11 @@ namespace esphome
                             // TTC-XX
                             device.model = MODEL_TTCXX;
                         }
+                        if (cmd_data.command == 0x02010040)
+                        {
+                            // TTS-XX
+                            device.model = MODEL_TTSXX;
+                        }
                         else if (cmd_data.command == 0x08000048)
                         {
                             // ISH1030

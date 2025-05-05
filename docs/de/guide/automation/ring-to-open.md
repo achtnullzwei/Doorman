@@ -10,7 +10,7 @@ Du kannst die **Ring to Open**-Funktion für jede Tür individuell aktivieren od
 Dafür stehen dir separate Schalter wie `RTO: Entrance Door`, `RTO: Second Entrance Door` und `RTO: Apartment Door` zur Verfügung.
 
 Zusätzlich gibt es einen **zentralen Schalter** namens `Ring to Open`, der das für mehrere Türen gleichzeitig steuern kann.
-Welche Türen davon betroffen sind, legst du über die Einstellung `RTO: Quick Toggle – Door Selection` fest.
+Welche Türen davon betroffen sind, legst du über die Einstellung `RTO: Central Toggle – Door Selection` fest.
 
 #### Allgemeine Einstellungen:
 ::: info Confirmation
@@ -21,12 +21,12 @@ Wenn du diese Option aktivierst, klingelt deine Innenstation jedes Mal, wenn du 
 Du kannst festlegen, ob die Status-LED blinkt, während Ring to Open für eine der Türen aktiv ist.
 :::
 
-::: info Toggle Trigger
+::: info Central Toggle - Trigger
 Lege fest, wodurch der zentrale `Ring to Open`-Schalter umgeschaltet wird.
 Zum Beispiel kannst du einstellen, dass die Funktionstaste deiner Innenstation den zentralen Schalter aktiviert oder deaktiviert.
 :::
 
-::: info Quick Toggle - Door Selection
+::: info Central Toggle - Door Selection
 Bestimme, für welche Türen der zentrale `Ring-to-Open`-Schalter die Automation ein- oder ausschaltet.
 :::
 

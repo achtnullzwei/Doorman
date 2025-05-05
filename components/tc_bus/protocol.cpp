@@ -577,6 +577,7 @@ namespace esphome
             if (str == "TCS ISH3030 / Koch TCH50 / Scantron Lux2") return MODEL_ISH3030;
             if (str == "TCS ISH1030 / Koch TTS25") return MODEL_ISH1030;
             if (str == "TCS TTC-XX") return MODEL_TTCXX;
+            if (str == "TCS TTS-XX") return MODEL_TTSXX;
             if (str == "TCS IMM1000 / Koch TCH30") return MODEL_IMM1000;
             if (str == "TCS IMM1100 / Koch TCHE30") return MODEL_IMM1100;
             if (str == "TCS IMM1300 / Koch VTCH30") return MODEL_IMM1300;
@@ -760,6 +761,7 @@ namespace esphome
                 case MODEL_ISH3030: return "TCS ISH3030 / Koch TCH50 / Scantron Lux2";
                 case MODEL_ISH1030: return "TCS ISH1030 / Koch TTS25";
                 case MODEL_TTCXX: return "TCS TTC-XX";
+                case MODEL_TTSXX: return "TCS TTS-XX";
                 case MODEL_IMM1000: return "TCS IMM1000 / Koch TCH30";
                 case MODEL_IMM1100: return "TCS IMM1100 / Koch TCHE30";
                 case MODEL_IMM1300: return "TCS IMM1300 / Koch VTCH30";
@@ -990,6 +992,10 @@ namespace esphome
                     modelData.category = 0;
                     modelData.memory_size = 16;
                     break;
+                case MODEL_TTSXX:
+                    modelData.category = 0;
+                    modelData.memory_size = 16;
+                    break;
                 case MODEL_IMM1000: /* TCH30 */
                     modelData.category = 0;
                     modelData.memory_size = 32;
@@ -1096,6 +1102,7 @@ namespace esphome
 
                 case MODEL_ISH1030:
                 case MODEL_TTCXX:
+                case MODEL_TTSXX:
                 case MODEL_IVH3222:
                     switch (setting) {
                         case SETTING_RINGTONE_ENTRANCE_DOOR_CALL:

@@ -25,7 +25,7 @@ Welcome to the latest updates! Here's a breakdown of all the **new features**, *
   The door now opens only when a configured doorbell ring pattern is detected, offering more precise control over access.
 
 - **Extended Model Detection Support**  
-   Detection capabilities now include additional older models.
+   Detection capabilities now include additional older models like the `TTC-xx` and `TTS-xx`.
 
 - **Enhanced Reliability with Remote Peripheral**  
    Data reading is now based on RMT, providing more reliability compared to the previous interrupt-based method.

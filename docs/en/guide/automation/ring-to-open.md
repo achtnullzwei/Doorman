@@ -13,7 +13,7 @@ You can activate or deactivate the Ring to Open function individually for each d
 There are separate switches available, such as `RTO: Entrance Door`, `RTO: Second Entrance Door`, and `RTO: Apartment Door`.
 
 Additionally, there's a central switch called `Ring to Open`, which can control multiple doors at once.
-You can configure which doors are affected via the setting `RTO: Quick Toggle – Door Selection`.
+You can configure which doors are affected via the setting `RTO: Central Toggle – Door Selection`.
 
 #### General Configuration:
 ::: info Confirmation
@@ -24,12 +24,12 @@ If you enable this option, your indoor station will ring every time the Ring-to-
 You can choose whether the status LED should blink while Ring to Open is active for any door.
 :::
 
-::: info Toggle Trigger
+::: info Central Toggle - Trigger
 Define what toggles the central `Ring to Open` switch.
 For example, you can set the function button of your indoor station to activate or deactivate the central switch.
 :::
 
-::: info Quick Toggle - Door Selection
+::: info Central Toggle - Door Selection
 Specify which doors are controlled by the central `Ring to Open` switch.
 :::
 
