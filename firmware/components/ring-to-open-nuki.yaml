@@ -1,8 +1,5 @@
 # Ring To Open Addon - Nuki Bridge
 
-number:
-
-
 switch:
   # Show in UI
   - id: !extend rto_apartment_door
