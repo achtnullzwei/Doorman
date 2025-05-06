@@ -601,7 +601,7 @@ script:
     then:
       - if:
           condition:
-            - switch.is_on: rto_entrance_door
+            - lambda: !lambda 'return id(rto_entrance_door).state || id(rto_second_entrance_door).state || id(rto_apartment_door).state;'
             - switch.is_on: rto_led_status
           then:
             - light.turn_on:
