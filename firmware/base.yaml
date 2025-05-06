@@ -23,6 +23,22 @@ esphome:
           id: second_entrance_door
           state: LOCKED
 
+      # Temporary Workaround for ESPHome >= 2025.3.0
+      # Prevents WebServer Crash
+      - event.trigger:
+          id: entrance_doorbell_pattern
+          event_type: "default"
+      - event.trigger:
+          id: second_entrance_doorbell_pattern
+          event_type: "default"
+      - event.trigger:
+          id: apartment_doorbell_pattern
+          event_type: "default"
+      - event.trigger:
+          id: phone_pick_up_pattern
+          event_type: "default"
+
+
 # Enable logging
 # Prevent component warning spam
 logger:
