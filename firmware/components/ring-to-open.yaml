@@ -457,6 +457,8 @@ select:
       - single
       - double
       - triple
+      - quadruple
+      - quintuple
     initial_option: single
     restore_value: true
     entity_category: CONFIG
@@ -474,6 +476,8 @@ select:
       - single
       - double
       - triple
+      - quadruple
+      - quintuple
     initial_option: single
     restore_value: true
     entity_category: CONFIG
@@ -492,6 +496,8 @@ select:
       - single
       - double
       - triple
+      - quadruple
+      - quintuple
     initial_option: single
     restore_value: true
     entity_category: CONFIG

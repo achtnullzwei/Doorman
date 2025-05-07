@@ -278,6 +278,8 @@ Defines the trigger pattern condition of the [Ring To Open](../guide/automation/
 - single
 - double
 - triple
+- quadruple
+- quintuple
 
 ### RTO: Second Entrance Door - Pattern Condition <Badge type="tip" text="rto_second_entrance_door_pattern_condition" /> <Badge type="info" text="Disabled by default" />
 Defines the trigger pattern condition of the [Ring To Open](../guide/automation/ring-to-open) automation.
@@ -286,6 +288,8 @@ Defines the trigger pattern condition of the [Ring To Open](../guide/automation/
 - single
 - double
 - triple
+- quadruple
+- quintuple
 
 ### RTO: Apartment Door - Pattern Condition <Badge type="tip" text="rto_apartment_door_pattern_condition" /> <Badge type="info" text="Nuki Bridge only" /> <Badge type="info" text="Disabled by default" />
 Defines the trigger pattern condition of the [Ring To Open](../guide/automation/ring-to-open) automation.
@@ -294,6 +298,8 @@ Defines the trigger pattern condition of the [Ring To Open](../guide/automation/
 - single
 - double
 - triple
+- quadruple
+- quintuple
 
 ### RTO: Central Toggle - Trigger <Badge type="tip" text="rto_toggle_trigger" /> <Badge type="info" text="Disabled by default" />
 Defines the trigger to toggle the [Ring To Open](../guide/automation/ring-to-open) automation.
@@ -414,6 +420,8 @@ Triggers each time a doorbell pattern is detected at the entrance. Learn more ab
 - single
 - double
 - triple
+- quadruple
+- quintuple
 
 ### Second Entrance Doorbell <Badge type="tip" text="second_entrance_doorbell_pattern" />
 Triggers each time a doorbell pattern is detected at the second entrance. Learn more about pattern events [here](../guide/automation/pattern-events).
@@ -422,6 +430,8 @@ Triggers each time a doorbell pattern is detected at the second entrance. Learn 
 - single
 - double
 - triple
+- quadruple
+- quintuple
 
 ### Apartment Doorbell <Badge type="tip" text="apartment_doorbell_pattern" />
 Triggers each time a doorbell pattern is detected at the apartment. Learn more about pattern events [here](../guide/automation/pattern-events).
@@ -430,6 +440,8 @@ Triggers each time a doorbell pattern is detected at the apartment. Learn more a
 - single
 - double
 - triple
+- quadruple
+- quintuple
 
 ### Phone pick up <Badge type="tip" text="phone_pick_up_pattern" />
 Triggers each time a phone pick up pattern is detected. Learn more about pattern events [here](../guide/automation/pattern-events).
@@ -438,6 +450,8 @@ Triggers each time a phone pick up pattern is detected. Learn more about pattern
 - single
 - double
 - triple
+- quadruple
+- quintuple
 
 ## Updates
 

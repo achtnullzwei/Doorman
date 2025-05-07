@@ -33,6 +33,10 @@ blueprint:
                   value: double
                 - label: Triple Press
                   value: triple
+                - label: Quadruple Press
+                  value: quadruple
+                - label: Quinuple Press
+                  value: quintuple
     
     notification_details_section:
       name: "Notification Details"

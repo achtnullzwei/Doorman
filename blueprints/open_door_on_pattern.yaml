@@ -27,6 +27,10 @@ blueprint:
               value: double
             - label: Triple Press
               value: triple
+            - label: Quadruple Press
+              value: quadruple
+            - label: Quinuple Press
+              value: quintuple
 
     confirm_action:
       name: "Action"

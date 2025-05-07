@@ -277,6 +277,8 @@ Legt das Muster fest, welches Bedingung zum auslösen der [Ring To Open](../guid
 - single
 - double
 - triple
+- quadruple
+- quintuple
 
 ### RTO: Second Entrance Door - Pattern Condition <Badge type="tip" text="rto_second_entrance_door_pattern_condition" /> <Badge type="info" text="Deaktiviert" />
 Legt das Muster fest, welches Bedingung zum auslösen der [Ring To Open](../guide/automation/ring-to-open) automation fest.
@@ -285,6 +287,8 @@ Legt das Muster fest, welches Bedingung zum auslösen der [Ring To Open](../guid
 - single
 - double
 - triple
+- quadruple
+- quintuple
 
 ### RTO: Apartment Door - Pattern Condition <Badge type="tip" text="rto_apartment_door_pattern_condition" /> <Badge type="info" text="Nuki Bridge" /> <Badge type="info" text="Deaktiviert" />
 Legt das Muster fest, welches Bedingung zum auslösen der [Ring To Open](../guide/automation/ring-to-open) automation fest.
@@ -293,6 +297,8 @@ Legt das Muster fest, welches Bedingung zum auslösen der [Ring To Open](../guid
 - single
 - double
 - triple
+- quadruple
+- quintuple
 
 ### RTO: Central Toggle - Trigger <Badge type="tip" text="rto_toggle_trigger" /> <Badge type="info" text="Deaktiviert" />
 Legt den Auslöser zum umschalten für die [Ring To Open](../guide/automation/ring-to-open) automation fest.
@@ -413,6 +419,8 @@ Wird ausgelöst, wenn ein Klingelmuster an der Eingangstür erkannt wird. Erfahr
 - single
 - double
 - triple
+- quadruple
+- quintuple
 
 ### Second Entrance Doorbell <Badge type="tip" text="second_entrance_doorbell_pattern" />
 Wird ausgelöst, wenn ein Klingelmuster an der zweiten Eingangstür erkannt wird. Erfahre mehr über Musterereignisse [hier](../guide/automation/pattern-events).
@@ -421,6 +429,8 @@ Wird ausgelöst, wenn ein Klingelmuster an der zweiten Eingangstür erkannt wird
 - single
 - double
 - triple
+- quadruple
+- quintuple
 
 ### Apartment Doorbell <Badge type="tip" text="apartment_doorbell_pattern" />
 Wird ausgelöst, wenn ein Klingelmuster an der Wohnungstür erkannt wird. Erfahre mehr über Musterereignisse [hier](../guide/automation/pattern-events).
@@ -429,6 +439,8 @@ Wird ausgelöst, wenn ein Klingelmuster an der Wohnungstür erkannt wird. Erfahr
 - single
 - double
 - triple
+- quadruple
+- quintuple
 
 ### Phone pick up <Badge type="tip" text="phone_pick_up_pattern" />
 Wird ausgelöst, wenn ein Abhebe-Muster des Telefons der Innenstation erkannt wird. Erfahre mehr über Musterereignisse [hier](../guide/automation/pattern-events).
@@ -437,6 +449,8 @@ Wird ausgelöst, wenn ein Abhebe-Muster des Telefons der Innenstation erkannt wi
 - single
 - double
 - triple
+- quadruple
+- quintuple
 
 
 ## Updates

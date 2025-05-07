@@ -6,24 +6,32 @@ event:
       - "single"
       - "double"
       - "triple"
+      - "quadruple"
+      - "quintuple"
 
   - id: !extend second_entrance_doorbell_pattern
     event_types:
       - "single"
       - "double"
       - "triple"
+      - "quadruple"
+      - "quintuple"
 
   - id: !extend apartment_doorbell_pattern
     event_types:
       - "single"
       - "double"
       - "triple"
+      - "quadruple"
+      - "quintuple"
 
   - id: !extend phone_pick_up_pattern
     event_types:
       - "single"
       - "double"
       - "triple"
+      - "quadruple"
+      - "quintuple"
 
 binary_sensor:
   - id: !extend entrance_doorbell
@@ -64,6 +72,44 @@ binary_sensor:
               id: entrance_doorbell_pattern
               event_type: triple
 
+      # Quadruple press
+      - timing:
+          - ON for at most 0.5s
+          - OFF for at most 1s
+
+          - ON for at most 0.5s
+          - OFF for at most 1s
+
+          - ON for at most 0.5s
+          - OFF for at most 1s
+
+          - ON for at most 0.5s
+          - OFF for at least 2s
+        then:
+          - event.trigger:
+              id: entrance_doorbell_pattern
+              event_type: quadruple
+
+      # Quintuple press
+      - timing:
+          - ON for at most 0.5s
+          - OFF for at most 1s
+
+          - ON for at most 0.5s
+          - OFF for at most 1s
+
+          - ON for at most 0.5s
+          - OFF for at most 1s
+
+          - ON for at most 0.5s
+          - OFF for at most 1s
+
+          - ON for at most 0.5s
+          - OFF for at least 2s
+        then:
+          - event.trigger:
+              id: entrance_doorbell_pattern
+              event_type: quintuple
 
   - id: !extend second_entrance_doorbell
     on_multi_click:
@@ -103,6 +149,44 @@ binary_sensor:
               id: second_entrance_doorbell_pattern
               event_type: triple
 
+      # Quadruple press
+      - timing:
+          - ON for at most 0.5s
+          - OFF for at most 1s
+
+          - ON for at most 0.5s
+          - OFF for at most 1s
+
+          - ON for at most 0.5s
+          - OFF for at most 1s
+
+          - ON for at most 0.5s
+          - OFF for at least 2s
+        then:
+          - event.trigger:
+              id: second_entrance_doorbell_pattern
+              event_type: quadruple
+
+      # Quintuple press
+      - timing:
+          - ON for at most 0.5s
+          - OFF for at most 1s
+
+          - ON for at most 0.5s
+          - OFF for at most 1s
+
+          - ON for at most 0.5s
+          - OFF for at most 1s
+
+          - ON for at most 0.5s
+          - OFF for at most 1s
+
+          - ON for at most 0.5s
+          - OFF for at least 2s
+        then:
+          - event.trigger:
+              id: second_entrance_doorbell_pattern
+              event_type: quintuple
 
   - id: !extend apartment_doorbell
     on_multi_click:
@@ -142,6 +226,44 @@ binary_sensor:
               id: apartment_doorbell_pattern
               event_type: triple
 
+      # Quadruple press
+      - timing:
+          - ON for at most 0.5s
+          - OFF for at most 1s
+
+          - ON for at most 0.5s
+          - OFF for at most 1s
+
+          - ON for at most 0.5s
+          - OFF for at most 1s
+
+          - ON for at most 0.5s
+          - OFF for at least 2s
+        then:
+          - event.trigger:
+              id: apartment_doorbell_pattern
+              event_type: quadruple
+
+      # Quintuple press
+      - timing:
+          - ON for at most 0.5s
+          - OFF for at most 1s
+
+          - ON for at most 0.5s
+          - OFF for at most 1s
+
+          - ON for at most 0.5s
+          - OFF for at most 1s
+
+          - ON for at most 0.5s
+          - OFF for at most 1s
+
+          - ON for at most 0.5s
+          - OFF for at least 2s
+        then:
+          - event.trigger:
+              id: apartment_doorbell_pattern
+              event_type: quintuple
 
   - id: !extend pick_up_phone
     on_multi_click:
@@ -180,3 +302,42 @@ binary_sensor:
           - event.trigger:
               id: phone_pick_up_pattern
               event_type: triple
+
+      # Quadruple press
+      - timing:
+          - ON for at most 0.5s
+          - OFF for at most 1s
+
+          - ON for at most 0.5s
+          - OFF for at most 1s
+
+          - ON for at most 0.5s
+          - OFF for at most 1s
+
+          - ON for at most 0.5s
+          - OFF for at least 2s
+        then:
+          - event.trigger:
+              id: phone_pick_up_pattern
+              event_type: quadruple
+
+      # Quintuple press
+      - timing:
+          - ON for at most 0.5s
+          - OFF for at most 1s
+
+          - ON for at most 0.5s
+          - OFF for at most 1s
+
+          - ON for at most 0.5s
+          - OFF for at most 1s
+
+          - ON for at most 0.5s
+          - OFF for at most 1s
+
+          - ON for at most 0.5s
+          - OFF for at least 2s
+        then:
+          - event.trigger:
+              id: phone_pick_up_pattern
+              event_type: quintuple
