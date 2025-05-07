@@ -46,6 +46,10 @@ binary_sensor:
     web_server:
       sorting_group_id: sorting_group_diagnostic
 
+  - id: !extend doorman_boot_button
+    internal: false
+    
+
 sensor:
   - platform: adc
     id: debug_bus_voltage
