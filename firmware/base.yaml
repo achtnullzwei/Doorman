@@ -281,7 +281,7 @@ binary_sensor:
     name: "Entrance Doorbell"
     type: door_call
     address_lambda: !lambda "return id(entrance_door_station_id).state;"
-    auto_off: 0.1s
+    auto_off: 0.2s
     web_server:
       sorting_group_id: sorting_group_listeners
       sorting_weight: -28
@@ -291,7 +291,7 @@ binary_sensor:
     name: "Second Entrance Doorbell"
     type: door_call
     address_lambda: !lambda "return id(second_entrance_door_station_id).state;"
-    auto_off: 0.1s
+    auto_off: 0.2s
     web_server:
       sorting_group_id: sorting_group_listeners
       sorting_weight: -27
@@ -300,7 +300,7 @@ binary_sensor:
     id: apartment_doorbell
     name: "Apartment Doorbell"
     type: floor_call
-    auto_off: 0.1s
+    auto_off: 0.2s
     web_server:
       sorting_group_id: sorting_group_listeners
       sorting_weight: -29
@@ -311,7 +311,7 @@ binary_sensor:
     icon: "mdi:phone-check"
     type: start_talking_door_call
     address: 255
-    auto_off: 0.1s
+    auto_off: 0.2s
     disabled_by_default: true
     web_server:
       sorting_group_id: sorting_group_listeners
@@ -323,7 +323,7 @@ binary_sensor:
     icon: "mdi:phone-remove"
     type: stop_talking_door_call
     address: 255
-    auto_off: 0.1s
+    auto_off: 0.2s
     disabled_by_default: true
     web_server:
       sorting_group_id: sorting_group_listeners
@@ -335,7 +335,7 @@ binary_sensor:
     icon: "mdi:phone-check"
     type: start_talking
     address: 255
-    auto_off: 0.1s
+    auto_off: 0.2s
     disabled_by_default: true
     web_server:
       sorting_group_id: sorting_group_listeners
@@ -347,7 +347,7 @@ binary_sensor:
     icon: "mdi:phone-remove"
     type: stop_talking
     address: 255
-    auto_off: 0.1s
+    auto_off: 0.2s
     disabled_by_default: true
     web_server:
       sorting_group_id: sorting_group_listeners
@@ -357,7 +357,7 @@ binary_sensor:
     id: function_button
     name: "Function Button"
     icon: "mdi:circle-outline"
-    auto_off: 0.1s
+    auto_off: 0.2s
     type: control_function
     payload: 255
     disabled_by_default: true
@@ -370,7 +370,7 @@ binary_sensor:
     name: "Light Button"
     icon: "mdi:white-balance-sunny"
     type: light
-    auto_off: 0.1s
+    auto_off: 0.2s
     disabled_by_default: true
     web_server:
       sorting_group_id: sorting_group_listeners
