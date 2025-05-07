@@ -193,7 +193,7 @@ binary_sensor:
        # Single press
       - timing:
           - ON for at most 0.5s
-          - OFF for at least 2s
+          - OFF for at least 1.9s
         then:
           - event.trigger:
               id: apartment_doorbell_pattern
@@ -205,7 +205,7 @@ binary_sensor:
           - OFF for at most 1s
 
           - ON for at most 0.5s
-          - OFF for at least 2s
+          - OFF for at least 1.8s
         then:
           - event.trigger:
               id: apartment_doorbell_pattern
@@ -220,7 +220,7 @@ binary_sensor:
           - OFF for at most 1s
 
           - ON for at most 0.5s
-          - OFF for at least 2s
+          - OFF for at least 1.7s
         then:
           - event.trigger:
               id: apartment_doorbell_pattern
@@ -238,7 +238,7 @@ binary_sensor:
           - OFF for at most 1s
 
           - ON for at most 0.5s
-          - OFF for at least 2s
+          - OFF for at least 1.6s
         then:
           - event.trigger:
               id: apartment_doorbell_pattern
@@ -259,7 +259,7 @@ binary_sensor:
           - OFF for at most 1s
 
           - ON for at most 0.5s
-          - OFF for at least 2s
+          - OFF for at least 1.5s
         then:
           - event.trigger:
               id: apartment_doorbell_pattern
