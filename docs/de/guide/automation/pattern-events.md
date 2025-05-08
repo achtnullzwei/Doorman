@@ -21,7 +21,6 @@ Sieh dir die [fortgeschrittenen Beispiele](../firmware/stock-firmware#fortgeschr
 - double
 - triple
 - quadruple
-- quintuple
 
 ### Beispiel-Automatisierung
 ::: details Tür automatisch öffnen, wenn die Eingangsklingel zweimal in einem bestimmten Muster gedrückt wird.
@@ -51,7 +50,6 @@ mode: single
 - double
 - triple
 - quadruple
-- quintuple
 
 ### Beispiel-Automatisierung
 ::: details Ring-To-Open-Modus umschalten, indem du schnell dreimal den Telefonhörer auflegst.

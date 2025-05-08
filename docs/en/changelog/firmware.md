@@ -20,11 +20,14 @@ Welcome to the latest updates! Here's a breakdown of all the **new features**, *
 ### ✨ Improvements
 - **Refined Configuration for Ring to Open**  
    The configuration options have been separated per door, giving you greater flexibility to customize the [Ring To Open](../guide/automation/ring-to-open) behavior according to your specific requirements.
-   
+
    Additionally, the Delay settings are now presented as dropdown menus, making it more intuitive to use the random delay feature—which was previously hidden behind the 60-second setting.
 
 - **Smarter Ring to Open with Pattern Recognition**  
   The door now opens only when a configured doorbell ring pattern is detected, offering more precise control over access.
+
+- **Quadruple Doorbell Pattern**  
+  A new quadruple-press pattern has been added, with slightly refined timing to improve reliability and avoid overlap with other patterns.
 
 - **Extended Model Detection Support**  
    Detection capabilities now include additional older models like the `TTC-xx` and `TTS-xx`.

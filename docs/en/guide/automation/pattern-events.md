@@ -21,7 +21,6 @@ Check out the [advanced examples](../firmware/stock-firmware#advanced-examples) 
 - double
 - triple
 - quadruple
-- quintuple
 
 ### Example Automation
 ::: details Automatically open the door when the Entrance Doorbell is pressed twice in a specific pattern.
@@ -53,7 +52,6 @@ mode: single
 - double
 - triple
 - quadruple
-- quintuple
 
 ### Example Automation
 ::: details Toggle Ring To Open Mode by quickly picking up the phone three times.
