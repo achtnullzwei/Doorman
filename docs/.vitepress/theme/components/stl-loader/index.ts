@@ -1,0 +1,1 @@
+export { default as STLLoader } from './STLLoader.vue'

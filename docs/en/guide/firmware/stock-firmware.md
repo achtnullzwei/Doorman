@@ -11,27 +11,9 @@ Be aware that some **updates may introduce breaking changes** — always review 
 :::
 
 #### Web Serial <Badge type="tip" text="Latest release build, no customization" />
-Connect your **Doorman-S3** via USB-C and click the button below to install or update the latest firmware directly via Web Serial, enabling seamless integration with the Home Assistant API. This setup ensures you can effortlessly apply community-driven updates in the future.
+Connect your **Doorman-S3** via USB-C, then use the configuration assistant below to configure and install the latest firmware directly via Web Serial. This setup ensures seamless integration with the Home Assistant API and makes future community-driven updates easy to apply.
 
-<esp-web-install-button manifest="../../firmware/release/esp32-s3.ha.stock/manifest.json">
-    <button slot="activate">
-        <div class="custom-layout">
-            <a class="btn">Install or Update Firmware (Doorman-S3)</a>
-        </div>
-    </button>
-    <div slot="unsupported">
-        <div class="danger custom-block">
-            <p class="custom-block-title">OH SNAP!</p>
-            <p>Your Browser doesn't support Web Serial :(</p>
-        </div>
-    </div>
-    <div slot="not-allowed">
-        <div class="danger custom-block">
-            <p class="custom-block-title">OH SNAP!</p>
-            <p>You are not allowed to use this on HTTP :(</p>
-        </div>
-    </div>
-</esp-web-install-button>
+<FirmwareConfig baseUrl="../../firmware/release/" />
 
 #### HTTP OTA Updates <Badge type="tip" text="Latest release build, no customization" />
 By integrating Doorman with Home Assistant, you unlock the convenience of automated firmware builds and seamless updates to the latest releases. The Update will appear directly in your Update list, allowing you to initiate an OTA update with just a click of the Update button — simple, efficient, and hassle-free.

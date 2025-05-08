@@ -8,7 +8,7 @@ import { TresCanvas, useLoop, useRenderLoop  } from '@tresjs/core';
 import { Box, OrbitControls, CameraControls } from '@tresjs/cientos'
 import { BasicShadowMap, SRGBColorSpace, NoToneMapping } from 'three'
 
-import STLFile from './STLLoader.vue';
+import STLFile from '../stl-loader/STLLoader.vue';
 
 const controlsState = reactive({
   minDistance: 0,

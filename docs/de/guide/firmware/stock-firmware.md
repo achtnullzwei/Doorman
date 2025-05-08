@@ -11,27 +11,9 @@ Manche **Updates können Breaking Changes mit sich bringen** — lies dir die Ch
 :::
 
 #### Web Serial <Badge type="tip" text="Neueste Release-Version, keine Anpassungen" />
-Verbinde deinen **Doorman-S3** per USB-C und klicke auf den Button unten, um die neueste Firmware direkt über Web Serial zu installieren oder zu aktualisieren. So kannst du das Gerät nahtlos mit der Home Assistant API nutzen und zukünftig einfach Community-Updates einspielen.
+Verbinde deinen **Doorman-S3** per USB-C und nutze dann den Konfigurationsassistent unten, um die neueste Firmware direkt über Web Serial zu installieren oder zu aktualisieren. So kannst du das Gerät nahtlos mit der Home Assistant API nutzen und zukünftig einfach Community-Updates einspielen.
 
-<esp-web-install-button manifest="../../../firmware/release/esp32-s3.ha.stock/manifest.json">
-    <button slot="activate">
-        <div class="custom-layout">
-            <a class="btn">Firmware (Doorman-S3) installieren oder updaten</a>
-        </div>
-    </button>
-    <div slot="unsupported">
-        <div class="danger custom-block">
-            <p class="custom-block-title">OH NEIN!</p>
-            <p>Dein Browser unterstützt leider kein Web Serial :(</p>
-        </div>
-    </div>
-    <div slot="not-allowed">
-        <div class="danger custom-block">
-            <p class="custom-block-title">OH NEIN!</p>
-            <p>Das funktioniert mit HTTP nicht :(</p>
-        </div>
-    </div>
-</esp-web-install-button>
+<FirmwareConfig baseUrl="../../../firmware/release/" />
 
 #### HTTP OTA-Updates <Badge type="tip" text="Neueste Release-Version, keine Anpassungen" />  
 Wenn du Doorman in Home Assistant hinzugefügt hast, kannst du von automatisierten Firmware-Builds und einfachen Updates profitieren. Das Update erscheint direkt in deiner Update-Liste – ein Klick auf den Update-Button genügt, und das OTA-Update startet sofort. Einfach, effizient und stressfrei.

@@ -1,0 +1,33 @@
+::: tabs
+== tab a
+a content 2
+
+== tab b
+b content 2
+
+:::
+
+
+::: code-group
+
+```sh [npm]
+npm install vitepress-plugin-group-icons
+```
+
+```sh [yarn]
+yarn add vitepress-plugin-group-icons
+```
+
+```sh [pnpm]
+pnpm add vitepress-plugin-group-icons
+```
+
+```sh [bun]
+bun add vitepress-plugin-group-icons
+```
+
+:::
+
+
+## Make it your own
+<FirmwareConfig />

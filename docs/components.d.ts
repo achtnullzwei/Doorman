@@ -7,7 +7,8 @@ export {}
 /* prettier-ignore */
 declare module 'vue' {
   export interface GlobalComponents {
-    ModelViewer: typeof import('./.vitepress/theme/components/ModelViewer.vue')['default']
-    STLLoader: typeof import('./.vitepress/theme/components/STLLoader.vue')['default']
+    FirmwareConfig: typeof import('./.vitepress/theme/components/firmware-config/FirmwareConfig.vue')['default']
+    ModelViewer: typeof import('./.vitepress/theme/components/model-viewer/ModelViewer.vue')['default']
+    STLLoader: typeof import('./.vitepress/theme/components/stl-loader/STLLoader.vue')['default']
   }
 }
