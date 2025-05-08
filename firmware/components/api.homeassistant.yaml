@@ -39,7 +39,7 @@ api:
       then:
         - tc_bus.send:
             command: !lambda 'return command;'
-            
+
     - action: send_tc_command
       variables:
         type: string

@@ -58,6 +58,7 @@ text:
     entity_category: CONFIG
     web_server:
       sorting_group_id: sorting_group_mqtt
+      sorting_weight: 0
 
   - platform: template
     id: mqtt_broker_username
@@ -71,19 +72,21 @@ text:
     entity_category: CONFIG
     web_server:
       sorting_group_id: sorting_group_mqtt
+      sorting_weight: 2
     
   - platform: template
     id: mqtt_broker_password
     name: "MQTT: Password"
     optimistic: true
     min_length: 0
-    max_length: 30
+    max_length: 45
     mode: password
     restore_value: true
     initial_value : ""
     entity_category: CONFIG
     web_server:
       sorting_group_id: sorting_group_mqtt
+      sorting_weight: 3
 
 number:
   - platform: template
@@ -100,6 +103,7 @@ number:
     disabled_by_default: true
     web_server:
       sorting_group_id: sorting_group_mqtt
+      sorting_weight: 1
 
 button:
   - platform: template
@@ -109,6 +113,7 @@ button:
       - script.execute: mqtt_apply_settings
     web_server:
       sorting_group_id: sorting_group_mqtt
+      sorting_weight: 4
 
 mqtt:
   id: mqtt_client
@@ -161,13 +166,16 @@ script:
     then:
       - logger.log: Apply Settings & connect to MQTT
       - lambda: |-
-          if (id(mqtt_client)->is_connected())
-          {
-            id(mqtt_client).disable();
-          }
+          id(mqtt_client).disable();
+
+          ESP_LOGI("mqtt", "Address: %s", id(mqtt_broker_address).state.c_str());
+          ESP_LOGI("mqtt", "Port: %i", id(mqtt_broker_port).state);
+          ESP_LOGI("mqtt", "User: %s", id(mqtt_broker_username).state.c_str());
+          ESP_LOGI("mqtt", "Pass: %s", id(mqtt_broker_password).state.c_str());
+
+
           id(mqtt_client).set_broker_address(id(mqtt_broker_address).state.c_str());
           id(mqtt_client).set_broker_port(id(mqtt_broker_port).state);
           id(mqtt_client).set_username(id(mqtt_broker_username).state.c_str());
           id(mqtt_client).set_password(id(mqtt_broker_password).state.c_str());
-
           id(mqtt_client).enable();
