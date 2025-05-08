@@ -70,6 +70,7 @@ text:
     restore_value: true
     initial_value : ""
     entity_category: CONFIG
+    disabled_by_default: true
     web_server:
       sorting_group_id: sorting_group_mqtt
       sorting_weight: 2
@@ -84,6 +85,7 @@ text:
     restore_value: true
     initial_value : ""
     entity_category: CONFIG
+    disabled_by_default: true
     web_server:
       sorting_group_id: sorting_group_mqtt
       sorting_weight: 3
