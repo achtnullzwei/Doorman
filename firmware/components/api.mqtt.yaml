@@ -99,8 +99,8 @@ number:
 
 button:
   - platform: template
-    id: mqtt_apply_settings
-    name: "MQTT: Apply configuration"
+    id: mqtt_save_settings
+    name: "MQTT: Save configuration"
     on_press:
       - script.execute: mqtt_apply_settings
     web_server:
