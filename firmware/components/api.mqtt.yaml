@@ -18,6 +18,10 @@ esphome:
           red: 0%
           green: 22%
           blue: 100%
+          
+      # Try to connect to MQTT
+      - script.execute: mqtt_apply_settings
+
       - wait_until:
           condition:
             mqtt.connected:
@@ -31,10 +35,67 @@ esphome:
       - delay: 3s
       - script.execute: update_led
 
+text:
+  - platform: template
+    id: mqtt_broker_address
+    name: "MQTT: Broker Address"
+    optimistic: true
+    min_length: 0
+    max_length: 30
+    mode: text
+    restore_value: true
+    initial_value : ""
+    entity_category: CONFIG
+
+  - platform: template
+    id: mqtt_broker_username
+    name: "MQTT: Username"
+    optimistic: true
+    min_length: 0
+    max_length: 30
+    mode: text
+    restore_value: true
+    initial_value : ""
+    entity_category: CONFIG
+    
+  - platform: template
+    id: mqtt_broker_password
+    name: "MQTT: Password"
+    optimistic: true
+    min_length: 0
+    max_length: 30
+    mode: password
+    restore_value: true
+    initial_value : ""
+    entity_category: CONFIG
+
+number:
+  - platform: template
+    id: mqtt_broker_port
+    name: "MQTT: Broker Port"
+    optimistic: true
+    min_value: 0
+    max_value: 65535
+    step: 1
+    mode: box
+    restore_value: true
+    initial_value: 1883
+    entity_category: CONFIG
+    disabled_by_default: true
+
+button:
+  - platform: template
+    id: mqtt_apply_settings
+    name: "MQTT: Apply configuration"
+    on_press:
+      - script.execute: mqtt_apply_settings
+
 mqtt:
+  id: mqtt_client
   broker: ""
   username: ""
   password: ""
+  enable_on_boot: false,
   on_json_message:
     - topic: doorman-s3/send_tc_command_raw
       then:
@@ -73,3 +134,15 @@ mqtt:
               if (x.containsKey("serial_number"))
                 serial_number = x["serial_number"];
               return serial_number;
+
+
+script:
+  - id: mqtt_apply_settings
+    then:
+      - logger.log: Apply Settings & connect to MQTT
+      - lambda: |-
+          id(mqtt_client).set_broker_address(id(mqtt_broker_address));
+          id(mqtt_client).set_broker_port(id(mqtt_broker_port));
+          id(mqtt_client).set_username(id(mqtt_broker_username));
+          id(mqtt_client).set_password(id(mqtt_broker_password));
+      - mqtt.enable:
