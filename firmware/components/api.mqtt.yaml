@@ -12,16 +12,35 @@ esphome:
       - wait_until:
           condition:
             wifi.connected:
-      - light.turn_on:
-          id: doorman_rgb_status_led
-          effect: slow_pulse
-          red: 0%
-          green: 22%
-          blue: 100%
 
-      # Try to connect to MQTT
-      - script.execute: mqtt_apply_settings
+      # Check if Broker data ist set
+      - if:
+          condition:
+             - lambda: return id(mqtt_broker_address).state != "";
+          then:
+            # Regular blue pulse while connecting
+            - light.turn_on:
+                id: doorman_rgb_status_led
+                effect: slow_pulse
+                red: 0%
+                green: 22%
+                blue: 100%
 
+            # Try to connect to MQTT
+            - lambda: |-
+                id(mqtt_client).set_broker_address(id(mqtt_broker_address).state.c_str());
+                id(mqtt_client).set_broker_port(id(mqtt_broker_port).state);
+                id(mqtt_client).set_username(id(mqtt_broker_username).state.c_str());
+                id(mqtt_client).set_password(id(mqtt_broker_password).state.c_str());
+            - mqtt.enable:
+          else:
+            # Red pulse because broker data is not set
+            - light.turn_on:
+                id: doorman_rgb_status_led
+                effect: slow_pulse
+                red: 100%
+                green: 0%
+                blue: 0%
       - wait_until:
           condition:
             mqtt.connected:
@@ -119,6 +138,7 @@ button:
 
 mqtt:
   id: mqtt_client
+  port: 1883
   broker: ""
   username: ""
   password: ""
@@ -166,18 +186,12 @@ mqtt:
 script:
   - id: mqtt_apply_settings
     then:
-      - logger.log: Apply Settings & connect to MQTT
+      - logger.log: Apply settings & restart
+      - mqtt.disable:
+      - delay: 5s
       - lambda: |-
-          id(mqtt_client).disable();
-
-          ESP_LOGI("mqtt", "Address: %s", id(mqtt_broker_address).state.c_str());
-          ESP_LOGI("mqtt", "Port: %i", id(mqtt_broker_port).state);
-          ESP_LOGI("mqtt", "User: %s", id(mqtt_broker_username).state.c_str());
-          ESP_LOGI("mqtt", "Pass: %s", id(mqtt_broker_password).state.c_str());
-
-
           id(mqtt_client).set_broker_address(id(mqtt_broker_address).state.c_str());
           id(mqtt_client).set_broker_port(id(mqtt_broker_port).state);
           id(mqtt_client).set_username(id(mqtt_broker_username).state.c_str());
           id(mqtt_client).set_password(id(mqtt_broker_password).state.c_str());
-          id(mqtt_client).enable();
+      - mqtt.enable:
