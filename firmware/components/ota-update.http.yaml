@@ -1,4 +1,4 @@
-# OTA Updates Addon
+# OTA Updates Addon - HTTP
 
 substitutions:
   update_url_stable: "https://doorman.azon.ai/firmware/release/${host_platform}.${api_variant}.${firmware_type}/manifest.json"
@@ -8,8 +8,6 @@ http_request:
   verify_ssl: false
 
 ota:
-  - platform: esphome
-    id: ota_esphome
   - platform: http_request
     id: ota_http_request
     

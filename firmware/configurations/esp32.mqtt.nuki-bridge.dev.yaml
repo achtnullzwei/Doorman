@@ -8,6 +8,9 @@ packages:
   host: !include ../hosts/esp32.yaml
   rgb_status_led: !include ../components/rgb-status-led.yaml
   base: !include ../base.yaml
+  ota_update_esphome: !include ../components/ota-update.esphome.yaml
+  ota_update_http: !include ../components/ota-update.http.yaml
+  ota_update_http_dev: !include ../components/ota-update.http.dev.yaml
   api: !include ../components/api.mqtt.yaml
   debug_utilities: !include ../components/debug-utilities.yaml
   debug_component: !include ../components/debug-component.yaml

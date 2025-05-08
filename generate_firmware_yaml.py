@@ -34,8 +34,10 @@ def get_packages(host, api_variant, firmware, branch):
         ('base', '!include ../base.yaml', True),
         ('bluedroid_ble', '!include ../components/bluedroid-ble.yaml', is_esp32 and firmware != 'nuki-bridge'),
         
-        ('ota_update', '!include ../components/ota-update.yaml', api_variant == 'ha'),
-        ('ota_update_default_dev', '!include ../components/ota-update.dev.yaml', api_variant == 'ha' and branch == 'dev'),
+        ('ota_update_esphome', '!include ../components/ota-update.esphome.yaml', True),
+        ('ota_update_http', '!include ../components/ota-update.http.yaml', True),
+        ('ota_update_http_dev', '!include ../components/ota-update.http.dev.yaml', branch == 'dev'),
+
         ('dashboard_import', '!include ../components/dashboard-import.yaml', api_variant == 'ha'),
         
         ('api', '!include ../components/api.homeassistant.yaml', api_variant == 'ha'),
