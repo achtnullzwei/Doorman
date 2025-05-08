@@ -157,8 +157,8 @@ script:
     then:
       - logger.log: Apply Settings & connect to MQTT
       - lambda: |-
-          id(mqtt_client).set_broker_address(id(mqtt_broker_address));
-          id(mqtt_client).set_broker_port(id(mqtt_broker_port));
-          id(mqtt_client).set_username(id(mqtt_broker_username));
-          id(mqtt_client).set_password(id(mqtt_broker_password));
+          id(mqtt_client).set_broker_address(id(mqtt_broker_address).state.c_str());
+          id(mqtt_client).set_broker_port(id(mqtt_broker_port).state);
+          id(mqtt_client).set_username(id(mqtt_broker_username).state.c_str());
+          id(mqtt_client).set_password(id(mqtt_broker_password).state.c_str());
       - mqtt.enable:
