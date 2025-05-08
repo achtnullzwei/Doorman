@@ -18,7 +18,7 @@ esphome:
           red: 0%
           green: 22%
           blue: 100%
-          
+
       # Try to connect to MQTT
       - script.execute: mqtt_apply_settings
 
@@ -35,6 +35,12 @@ esphome:
       - delay: 3s
       - script.execute: update_led
 
+web_server:
+  sorting_groups:
+    - id: sorting_group_mqtt
+      name: "MQTT Configuration"
+      sorting_weight: -2
+
 text:
   - platform: template
     id: mqtt_broker_address
@@ -46,6 +52,8 @@ text:
     restore_value: true
     initial_value : ""
     entity_category: CONFIG
+    web_server:
+      sorting_group_id: sorting_group_mqtt
 
   - platform: template
     id: mqtt_broker_username
@@ -57,6 +65,8 @@ text:
     restore_value: true
     initial_value : ""
     entity_category: CONFIG
+    web_server:
+      sorting_group_id: sorting_group_mqtt
     
   - platform: template
     id: mqtt_broker_password
@@ -68,6 +78,8 @@ text:
     restore_value: true
     initial_value : ""
     entity_category: CONFIG
+    web_server:
+      sorting_group_id: sorting_group_mqtt
 
 number:
   - platform: template
@@ -82,6 +94,8 @@ number:
     initial_value: 1883
     entity_category: CONFIG
     disabled_by_default: true
+    web_server:
+      sorting_group_id: sorting_group_mqtt
 
 button:
   - platform: template
@@ -89,13 +103,15 @@ button:
     name: "MQTT: Apply configuration"
     on_press:
       - script.execute: mqtt_apply_settings
+    web_server:
+      sorting_group_id: sorting_group_mqtt
 
 mqtt:
   id: mqtt_client
   broker: ""
   username: ""
   password: ""
-  enable_on_boot: false,
+  enable_on_boot: false
   on_json_message:
     - topic: doorman-s3/send_tc_command_raw
       then:
