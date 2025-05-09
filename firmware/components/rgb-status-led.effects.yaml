@@ -1,0 +1,43 @@
+# RMT Light Status LED - Effects Addon
+
+light:
+  - id: !extend doorman_rgb_status_led
+    effects:
+      - pulse:
+          name: pulse
+          transition_length: 250ms
+          update_interval: 250ms
+          min_brightness: 0%
+          max_brightness: 40%
+      - pulse:
+          name: slow_pulse
+          transition_length: 1s
+          update_interval: 2s
+          min_brightness: 0%
+          max_brightness: 40%
+      - pulse:
+          name: slow_partymode
+          transition_length: 4s
+          update_interval: 2s
+          min_brightness: 0%
+          max_brightness: 40%
+      - pulse:
+          name: error_api
+          update_interval: 1s
+          lambda: |-
+            static bool state = false;
+            
+            auto call = id(doorman_rgb_status_led).turn_on();
+
+            // Transition of 1000ms = 1s
+            call.set_transition_length(1000);
+
+            // Red / Blue
+            if (state == 0) {
+              call.set_rgb(1.0, 0, 0);
+            } else {
+              call.set_rgb(0, 0.22, 1.0);
+            }
+            call.perform();
+
+            state = !state;

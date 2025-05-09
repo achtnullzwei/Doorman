@@ -30,7 +30,8 @@ def get_packages(host, api_variant, firmware, branch):
         
         ('rgb_status_led', '!include ../components/rgb-status-led.yaml', has_status_led),
         ('rgb_status_led', '!include ../components/rgb-status-led.dummy.yaml', not has_status_led),
-        
+        ('rgb_status_led_effects', '!include ../components/rgb-status-led.effects.yaml', True),
+
         ('base', '!include ../base.yaml', True),
         ('bluedroid_ble', '!include ../components/bluedroid-ble.yaml', is_esp32 and firmware != 'nuki-bridge'),
         

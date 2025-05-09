@@ -88,9 +88,6 @@ captive_portal:
 # Improv for easy provisioning
 improv_serial:
 
-# Enable API
-api:
-
 # Import TC:BUS Component
 external_components:
   - source: github://azoninc/doorman@${branch}

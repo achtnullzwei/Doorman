@@ -20,7 +20,3 @@ esphome:
           blue: 0%
       - delay: 3s
       - script.execute: update_led
-
-# Prevent restart Timeout
-api:
-  reboot_timeout: 0s

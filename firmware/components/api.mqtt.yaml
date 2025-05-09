@@ -9,54 +9,12 @@ esphome:
           red: 100%
           green: 65%
           blue: 0%
+
       - wait_until:
           condition:
             wifi.connected:
 
-      # Check if Broker data ist set
-      - if:
-          condition:
-             - lambda: return id(mqtt_broker_address).state != "";
-          then:
-            # Regular blue pulse while connecting
-            - light.turn_on:
-                id: doorman_rgb_status_led
-                effect: slow_pulse
-                red: 0%
-                green: 22%
-                blue: 100%
-
-            # Try to connect to MQTT
-            - lambda: |-
-                id(mqtt_client).set_broker_address(id(mqtt_broker_address).state.c_str());
-                id(mqtt_client).set_broker_port(id(mqtt_broker_port).state);
-                id(mqtt_client).set_username(id(mqtt_broker_username).state.c_str());
-                id(mqtt_client).set_password(id(mqtt_broker_password).state.c_str());
-            - mqtt.enable:
-          else:
-            # Red pulse because broker data is not set
-            - light.turn_on:
-                id: doorman_rgb_status_led
-                effect: slow_pulse
-                red: 100%
-                green: 0%
-                blue: 0%
-      - wait_until:
-          condition:
-            mqtt.connected:
-      - light.turn_on:
-          id: doorman_rgb_status_led
-          effect: none
-          red: 0%
-          green: 22%
-          blue: 100%
-          color_brightness: 60%
-      - delay: 3s
-      - script.execute: update_led
-
-# Prevent restart Timeout
-api:
-  reboot_timeout: 0s
+      - script.execute: mqtt_connect
 
 web_server:
   sorting_groups:
@@ -131,7 +89,9 @@ button:
     id: mqtt_save_settings
     name: "MQTT: Save configuration"
     on_press:
-      - script.execute: mqtt_apply_settings
+      - mqtt.disable:
+      - delay: 5s
+      - script.execute: mqtt_connect
     web_server:
       sorting_group_id: sorting_group_mqtt
       sorting_weight: 4
@@ -184,14 +144,49 @@ mqtt:
 
 
 script:
-  - id: mqtt_apply_settings
+  - id: mqtt_connect
     then:
-      - logger.log: Apply settings & restart
-      - mqtt.disable:
-      - delay: 5s
-      - lambda: |-
-          id(mqtt_client).set_broker_address(id(mqtt_broker_address).state.c_str());
-          id(mqtt_client).set_broker_port(id(mqtt_broker_port).state);
-          id(mqtt_client).set_username(id(mqtt_broker_username).state.c_str());
-          id(mqtt_client).set_password(id(mqtt_broker_password).state.c_str());
-      - mqtt.enable:
+      # Check if Broker data ist set
+      - if:
+          condition:
+             - lambda: return id(mqtt_broker_address).state != "";
+          then:
+            # Regular blue pulse while connecting
+            - light.turn_on:
+                id: doorman_rgb_status_led
+                effect: slow_pulse
+                red: 0%
+                green: 22%
+                blue: 100%
+
+            # Set broker credentials
+            - lambda: |-
+                id(mqtt_client).set_broker_address(id(mqtt_broker_address).state.c_str());
+                id(mqtt_client).set_broker_port(id(mqtt_broker_port).state);
+                id(mqtt_client).set_username(id(mqtt_broker_username).state.c_str());
+                id(mqtt_client).set_password(id(mqtt_broker_password).state.c_str());
+
+            # Try to connect to MQTT
+            - mqtt.enable:
+          
+          else:
+            # Red/Blue pulse because broker data is not set
+            - light.turn_on:
+                id: doorman_rgb_status_led
+                effect: error_api
+
+      - wait_until:
+          condition:
+            mqtt.connected:
+
+      - light.turn_on:
+          id: doorman_rgb_status_led
+          effect: none
+          red: 0%
+          green: 22%
+          blue: 100%
+          color_brightness: 60%
+
+      - delay: 3s
+
+      - script.execute: update_led
