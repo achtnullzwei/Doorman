@@ -75,7 +75,7 @@ Check out the [TC:BUS ESPHome component documentation](https://doorman.azon.ai/r
 - **External Button** (G + BTN) for manual triggering
 - **Bridge Rectifier** for correcting polarity on bus-wire input
 - **TC:BUS Communication** for door functions and detecting the doorbell
-- **Nuki Bridge functionality** with the [Nuki Bridge Firmware](https://doorman.azon.ai/guide/firmware/nuki-bridge-firmware) (Note: Incompatible with Nuki app but works with **Home Assistant** app)
+- **Nuki Bridge functionality** with the [Nuki Bridge Addon](https://doorman.azon.ai/guide/firmware/nuki-bridge-addon)
 
 ---
 

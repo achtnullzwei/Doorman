@@ -195,7 +195,7 @@ Startet Doorman im Sicherheitsmodus neu, nützlich für OTA-Updates, wenn die Ei
 ### Restore Factory Settings <Badge type="tip" text="doorman_factory_reset" /> <Badge type="info" text="Deaktiviert" />
 Startet Doorman neu und lädt die Werkseinstellungen.
 
-::: Gefahr MIT GROẞER VORSICHT VERWENDEN
+::: danger MIT GROẞER VORSICHT VERWENDEN
 Alle Zugangsdaten, globalen Variablen, Zähler und gespeicherten Zustände, die im nichtflüchtigen Speicher gespeichert sind, gehen verloren und können nicht wiederhergestellt werden. Selbst das Auslesen des Flash-Speichers mit esptool hilft nicht, da die Daten physisch aus dem Flash-Speicher gelöscht werden.
 
 Wenn du WiFi über das Captive Portal, Improv Serial oder Improv BLE konfiguriert hast, werden auch die WiFi-Einstellungen zurückgesetzt, wodurch solche Geräte offline gehen. Du musst das Gerät dann über einen eingebauten WiFi-Access-Point und das Captive Portal neu konfigurieren.

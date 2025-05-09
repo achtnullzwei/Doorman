@@ -7,14 +7,14 @@ Each pattern is configured as follows:
 - Maximum 1-second break
 - Push
 
-Check out the [advanced examples](../firmware/stock-firmware#advanced-examples) to learn how to create and customize your own patterns.
+Check out the [example](../firmware/customization#create-your-own-doorbell-pattern) to learn how to create and customize your own patterns.
 
 ## Doorbell Pattern
 
 ### Event Sensors
 - Entrance Doorbell <Badge type="tip" text="entrance_doorbell_pattern" />
-- Second Entrance Doorbell <Badge type="tip" text="second_entrance_doorbell" />
-- Apartment Doorbell <Badge type="tip" text="apartment_doorbell" />
+- Second Entrance Doorbell <Badge type="tip" text="second_entrance_doorbell_pattern" />
+- Apartment Doorbell <Badge type="tip" text="apartment_doorbell_pattern" />
 
 ### Event Types
 - single

@@ -114,19 +114,3 @@ To enable detection of the second doorbell and the ability to unlock the second 
 ::: tip MULTIPLE INDOOR STATIONS
 If you have multiple indoor stations, things become a bit more complex. You'll need to create a custom YAML configuration to integrate all the indoor stations. The default firmware only supports a single indoor station.
 :::
-
-## ESPHome adoption
-
-If you want to customize your Doorman firmware, you can add the Doorman device to your [ESPHome Dashboard](https://my.home-assistant.io/redirect/supervisor_ingress/?addon=5c53de3b_esphome) and flash your customized [Stock](firmware/stock-firmware.md) or [Nuki Bridge](firmware/nuki-bridge-firmware.md) firmware.
-
-After adding the device, your configuration will look like this:
-::: details Example
-> [!NOTE]
-> You can add new components and modify existing ones here. For more information on the possibilities, check out the [Examples](firmware/stock-firmware#examples) section.
->
-> If you need to deeply customize the firmware, you'll need to use the `base.yaml` file from the repository.
-
-```yaml
-<!--@include: ./firmware/minimal.example.yaml-->
-```
-:::

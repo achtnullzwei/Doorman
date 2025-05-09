@@ -85,14 +85,13 @@ function sidebarGuide(): DefaultTheme.SidebarItem[] {
     {
       text: 'Firmware',
       items: [
-        { text: 'Stock Firmware', link: 'stock-firmware', base: '/guide/firmware/' },
-        { text: 'Nuki Bridge Firmware', link: 'nuki-bridge-firmware', base: '/guide/firmware/' },
-        {
-          text: 'Entities',
-          link: 'entities',
-          base: '/reference/',
-        },
-        { text: 'Custom Firmware', link: 'custom-firmware', base: '/guide/firmware/' }
+        { text: 'Install or Update', link: 'installation', base: '/guide/firmware/' },
+        { text: 'Nuki Bridge Addon', link: 'nuki-bridge-addon', base: '/guide/firmware/' },
+        { text: 'MQTT Integration', link: 'mqtt', base: '/guide/firmware/' },
+        { text: 'Customization', link: 'customization', base: '/guide/firmware/' },
+        { text: 'Home Assistant Examples', link: 'home-assistant-examples', base: '/guide/firmware/' },
+        { text: 'Entities', link: 'entities', base: '/reference/' },
+        { text: 'Alternative Firmware', link: 'custom-firmware', base: '/guide/firmware/' }
       ]
     },
     {

@@ -1,7 +1,12 @@
-## MQTT
+# MQTT Integration
+
+This page provides everything you need — from configuration to practical examples using MQTT topics and payloads.
+
+## Setup
 After flashing the firmware with MQTT integration and connecting to Wi-Fi, the status LED will **pulse red and blue** to indicate that the MQTT broker is not yet configured.
 
 To continue, open the web interface and navigate to the `MQTT Configuration` section.
+
 Enter your broker credentials there:
 
 ![broker-credentials](../images/mqtt-details.png)
@@ -9,10 +14,10 @@ Enter your broker credentials there:
 Once you save the settings, the firmware will attempt to connect to your MQTT broker.
 If the connection is successful, the status LED will turn **solid blue for 3 seconds** to confirm.
 
-### Topics
+## Topics
 Various topics are published to your broker. Here's how the topic structure and controls work.
 
-#### Structure
+### Structure
 Each entity publishes its state to a topic in the following format:
 ```
 <TOPIC_PREFIX>/<COMPONENT_TYPE>/<COMPONENT_NAME>/state
@@ -28,7 +33,7 @@ ON or OFF or whatever is supported
 ```
 :::
 
-#### Example
+### Example
 To enable or disable the [Ring-To-Open](../automation/ring-to-open.md) automation, send `ON` or `OFF` as the payload to the topic:
 ::: code-group
 ``` [Topic]
@@ -39,10 +44,10 @@ ON
 ```
 :::
 
-### Special Topics
+## Special Topics
 Certain special topics allow for advanced commands.
 
-#### Send a Command (Hexadecimal)
+### Send a Command (Hexadecimal)
 Here's an example of how to send a hexadecimal command (uint32) to the bus:
 ::: code-group
 ``` [Topic]
@@ -55,13 +60,13 @@ doorman-s3/send_raw_command
 ```
 ```json [Advanced Payload]
 {
-    "command": 0x1C30BA80,
-    "is_long": false
+    "command": 0x00000680,
+    "is_long": true
 }
 ```
 :::
 
-#### Send a Command (Command Builder)
+### Send a Command (Command Builder)
 Here's an example of how to use the command builder to send a command to the bus:
 ::: code-group
 ``` [Topic]

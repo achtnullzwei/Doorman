@@ -7,14 +7,14 @@ Jedes Muster ist wie folgt konfiguriert:
 - Maximal 1 Sekunde Pause
 - Drücken
 
-Sieh dir die [fortgeschrittenen Beispiele](../firmware/stock-firmware#fortgeschrittene-beispiele) an, um zu lernen, wie du eigene Muster erstellen und anpassen kannst.
+Sieh dir das [Beispiel](../firmware/customization#erstelle-dein-eigenes-klingelmuster) an, um zu lernen, wie du eigene Muster erstellen und anpassen kannst.
 
 ## Klingelmuster
 
 ### Ereignis Sensoren
-- Entrance Doorbell <Badge type="tip" text="entrance_doorbell" />
-- Second Entrance Doorbell <Badge type="tip" text="second_entrance_doorbell" />
-- Apartment Doorbell <Badge type="tip" text="apartment_doorbell" />
+- Entrance Doorbell <Badge type="tip" text="entrance_doorbell_pattern" />
+- Second Entrance Doorbell <Badge type="tip" text="second_entrance_doorbell_pattern" />
+- Apartment Doorbell <Badge type="tip" text="apartment_doorbell_pattern" />
 
 ### Ereignistypen
 - single

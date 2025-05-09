@@ -92,7 +92,7 @@ export default {
     },
     notes() {
         if(this.integration == 'mqtt') {
-            return 'The firmware requires further setup after flashing! Please take a look at the <code>MQTT</code> section below.<br><b>Note:</b> This firmware variant is not compatible with the Nuki Bridge Addon due to RAM limitations.';
+            return 'The firmware requires further setup after flashing! Please take a look at the <a href="./mqtt#setup">MQTT Setup instructions</a>.<br><br>Unfortunately this firmware variant is not compatible with the Nuki Bridge Addon due to <b>RAM limitations</b>.';
         }
         return '';
     },
@@ -106,20 +106,18 @@ export default {
 }
 </script>
 
-# Stock Firmware <Badge type="tip" text="ESP-IDF Framework" />
+# Install or Update Firmware
 
-This is the preferred firmware as it works out of the box with the Doorman S3 and supports Improv via Bluetooth LE.
+On this page, you'll find all available methods to install or update the Doorman firmware. Whether you're flashing the firmware for the first time or applying the latest update, the instructions here will guide you step-by-step — including direct installation via Web Serial, updates through the firmware web interface, and integration with Home Assistant's update system.
 
-## Install or Update Firmware
-
-There are several ways to update the firmware.
-
-::: warning
+::: tip IMPORTANT
 Be aware that some **updates may introduce breaking changes** — always review the changelogs carefully to ensure your system functions reliably in critical situations.
 :::
 
-#### Web Serial <Badge type="tip" text="Latest release build, no customization" />
-Connect your **Doorman-S3** via USB-C, then use the configuration assistant below to configure and install the latest firmware directly via Web Serial. This setup ensures seamless integration with the Home Assistant API and makes future community-driven updates easy to apply.
+## Web Serial <Badge type="tip" text="Latest release build, no customization" />
+Connect your **Doorman-S3** via USB-C and use the configuration assistant below to install the latest firmware directly via Web Serial — perfect for first-time setup.
+
+This guided process ensures seamless integration with the Home Assistant API and makes future community-driven updates easy to apply.
 
 <div v-if="web_serial_available">
     <h5 class="firmware_title_row"><i class="mdi mdi-hammer-wrench"></i> Which hardware do you use?</h5>
@@ -147,7 +145,7 @@ Connect your **Doorman-S3** via USB-C, then use the configuration assistant belo
         </div>
     </div>
     <div v-if="notes" class="important custom-block">
-        <p class="custom-block-title">IMPORTANT</p>
+        <p class="custom-block-title">NOTE</p>
         <p v-html="notes"></p>
     </div>
     <div v-if="integration != ''">
@@ -191,16 +189,47 @@ Connect your **Doorman-S3** via USB-C, then use the configuration assistant belo
     <p>Since your browser doesn't support Web Serial, the configuration assistant isn't available. Please use a Chromium-based browser instead.</p>
 </div>
 
-#### HTTP OTA Updates <Badge type="tip" text="Latest release build, no customization" />
-By integrating Doorman with Home Assistant, you unlock the convenience of automated firmware builds and seamless updates to the latest releases. The Update will appear directly in your Update list, allowing you to initiate an OTA update with just a click of the Update button — simple, efficient, and hassle-free.
+## Integrated OTA Updates <Badge type="tip" text="Latest release build, no customization" />
+The firmware supports OTA updates right out of the box, so you can install the latest version with a single click — quick, easy, and hassle-free.
 
-#### ESPHome CLI / Dashboard <Badge type="warning" text="Full customization" />
-For full customization and complete control over the firmware, you can adopt it into your ESPHome Dashboard or utilize the ESPHome CLI by executing:  
-`esphome run <yamlfile.yaml>`
+When integrated with Home Assistant, Doorman updates will even show up directly in your Updates list, making it even more convenient to stay up to date.
+
+To update, simply click the `Install Update` button in the firmware's web interface or use the Update list in Home Assistant.
+
+## ESPHome CLI / Dashboard <Badge type="warning" text="Full customization" />
+If you want full customization and the ability to add your own sensors, automations, or features, this is your way to go — ideal for power users who prefer complete control over their setup.
+
+### ESPHome Dashboard
+You can adopt Doorman to your [ESPHome Dashboard](https://my.home-assistant.io/redirect/supervisor_ingress/?addon=5c53de3b_esphome) and flash a customized firmware variant.
+
+The adopted configuration could look like this:
+```yaml
+<!--@include: ../firmware/minimal.example.yaml-->
+```
+
+### ESPHome CLI
+If you choose this option, you likely know what you're doing — just run the following command with your YAML configuration file.
 
 If you prefer using the MQTT-only firmware, simply apply the provided MQTT example YAML tailored for your board below.
 
-##### Board Configuration Options: 
+```sh
+esphome run <yamlfile.yaml>
+```
+
+## Board Configuration Files
+
+### Default GPIO configuration
+| Component      | ESP32-S3 | ESP32    | ESP8266  |
+| -------------- | :------: | :------: | :------: |
+| TC:BUS RX      | GPIO 9   | GPIO 22  | GPIO 12  |
+| TC:BUS TX      | GPIO 8   | GPIO 23  | GPIO 13  |
+| Status LED     | GPIO 1   | GPIO 2   | GPIO 2   |
+| RGB Status LED | GPIO 2   | GPIO 4   | Dummy    |
+| Relay          | GPIO 42  | GPIO 21  | GPIO 14  |
+| External Button| GPIO 41  | GPIO 20  | GPIO 15  |
+| ADC Input      | GPIO 10  | GPIO 36  | GPIO A0  |
+
+### Stock Firmware
 ::: details ESP32-S3 (Octal PSRAM) / Doorman-S3 (1.5)
 ::: code-group
 ```yaml [Home Assistant]
@@ -208,6 +237,9 @@ If you prefer using the MQTT-only firmware, simply apply the provided MQTT examp
 ```
 ```yaml [MQTT]
 <!--@include: ../../../../firmware/examples/esp32-s3.mqtt.stock.master.example.yaml-->
+```
+```yaml [Custom]
+<!--@include: ../../../../firmware/examples/esp32-s3.custom.stock.master.example.yaml-->
 ```
 :::
 
@@ -219,18 +251,12 @@ If you prefer using the MQTT-only firmware, simply apply the provided MQTT examp
 ```yaml [MQTT]
 <!--@include: ../../../../firmware/examples/esp32-s3-quad.mqtt.stock.master.example.yaml-->
 ```
+```yaml [Custom]
+<!--@include: ../../../../firmware/examples/esp32-s3-quad.custom.stock.master.example.yaml-->
+```
 :::
 
 ::: details Generic ESP32
-#### GPIO configuration
-- **TC:BUS RX:** GPIO 22
-- **TC:BUS TX:** GPIO 23
-- **Status LED:** GPIO 2
-- **RGB Status LED:** GPIO 4
-- **Relay:** GPIO 21
-- **External button:** GPIO 20
-- **ADC Input:** GPIO 36
-
 ::: code-group
 ```yaml [Home Assistant]
 <!--@include: ../../../../firmware/examples/esp32.ha.stock.master.example.yaml-->
@@ -238,18 +264,12 @@ If you prefer using the MQTT-only firmware, simply apply the provided MQTT examp
 ```yaml [MQTT]
 <!--@include: ../../../../firmware/examples/esp32.mqtt.stock.master.example.yaml-->
 ```
+```yaml [Custom]
+<!--@include: ../../../../firmware/examples/esp32.custom.stock.master.example.yaml-->
+```
 :::
 
 ::: details Generic ESP8266
-#### GPIO configuration
-- **TC:BUS RX:** GPIO 12
-- **TC:BUS TX:** GPIO 13
-- **Status LED:** GPIO 2
-- **RGB Status LED:** Dummy
-- **Relay:** GPIO 14
-- **External button:** GPIO 15
-- **ADC Input:** A0
-
 ::: code-group
 ```yaml [Home Assistant]
 <!--@include: ../../../../firmware/examples/esp8266.ha.stock.master.example.yaml-->
@@ -257,8 +277,48 @@ If you prefer using the MQTT-only firmware, simply apply the provided MQTT examp
 ```yaml [MQTT]
 <!--@include: ../../../../firmware/examples/esp8266.mqtt.stock.master.example.yaml-->
 ```
+```yaml [Custom]
+<!--@include: ../../../../firmware/examples/esp8266.custom.stock.master.example.yaml-->
+```
 :::
 
-<!--@include: ./additions.md-->
+### Nuki Bridge Firmware
+::: details ESP32-S3 (Octal PSRAM) / Doorman-S3 (1.5)
+::: code-group
+```yaml [Home Assistant]
+<!--@include: ../../../../firmware/examples/esp32-s3.ha.nuki-bridge.master.example.yaml-->
+```
+```yaml [Custom]
+<!--@include: ../../../../firmware/examples/esp32-s3.custom.nuki-bridge.master.example.yaml-->
+```
+:::
 
-<!--@include: ./mqtt.md-->
+::: details ESP32-S3 (Quad PSRAM) / Doorman-S3 (1.4)
+::: code-group
+```yaml [Home Assistant]
+<!--@include: ../../../../firmware/examples/esp32-s3-quad.ha.nuki-bridge.master.example.yaml-->
+```
+```yaml [Custom]
+<!--@include: ../../../../firmware/examples/esp32-s3-quad.custom.nuki-bridge.master.example.yaml-->
+```
+:::
+
+::: details Generic ESP32
+::: code-group
+```yaml [Home Assistant]
+<!--@include: ../../../../firmware/examples/esp32.ha.nuki-bridge.master.example.yaml-->
+```
+```yaml [Custom]
+<!--@include: ../../../../firmware/examples/esp32.custom.nuki-bridge.master.example.yaml-->
+```
+:::
+
+::: details Generic ESP8266
+::: code-group
+```yaml [Home Assistant]
+<!--@include: ../../../../firmware/examples/esp8266.ha.nuki-bridge.master.example.yaml-->
+```
+```yaml [Custom]
+<!--@include: ../../../../firmware/examples/esp8266.custom.nuki-bridge.master.example.yaml-->
+```
+:::
