@@ -123,7 +123,7 @@ Steuert das eingebaute Relais.
 ### Setup Mode <Badge type="tip" text="doorman_setup_mode" />
 Aktiviert oder deaktiviert den Modus für die [interaktive Einrichtung](../guide/getting-started#schritt-3-interaktive-einrichtung).
 
-### Experimental Updates <Badge type="tip" text="dev_firmware" />
+### Experimental Firmware <Badge type="tip" text="dev_firmware" />
 Schaltet experimentelle Updates frei, damit du ganz einfach zwischen dem Master- und Dev-Zweig wechseln und die neuesten Änderungen ausprobieren kannst.
 
 ### Nuki Pairing Mode <Badge type="tip" text="nuki_pairing_mode" /> <Badge type="info" text="Nuki Bridge" /> <Badge type="info" text="Deaktiviert" />

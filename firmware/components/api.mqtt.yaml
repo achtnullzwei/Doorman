@@ -110,6 +110,8 @@ mqtt:
   username: ""
   password: ""
   enable_on_boot: false
+  discovery: false
+  discover_ip: false
   on_json_message:
     - topic: doorman-s3/send_tc_command_raw
       then:

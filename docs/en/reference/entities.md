@@ -124,7 +124,7 @@ Controls the built-in relay.
 ### Setup Mode <Badge type="tip" text="doorman_setup_mode" />
 Toggles the [Interactive Setup](../guide/getting-started#step-3-interactive-setup) Mode to easily setup your Doorman.
 
-### Experimental Updates <Badge type="tip" text="dev_firmware" />
+### Experimental Firmware <Badge type="tip" text="dev_firmware" />
 Enables experimental updates, allowing you to easily switch between the master and dev branches to check for the latest changes.
 
 ### Nuki Pairing Mode <Badge type="tip" text="nuki_pairing_mode" /> <Badge type="info" text="Nuki Bridge only" /> <Badge type="info" text="Disabled by default" />

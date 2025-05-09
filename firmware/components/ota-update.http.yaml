@@ -15,7 +15,7 @@ update:
   - platform: http_request
     id: update_http_request
     icon: "mdi:update"
-    name: Doorman Firmware Update
+    name: "Doorman Firmware Update"
     source: ${update_url_stable}
     update_interval: 1h
     disabled_by_default: false
@@ -44,18 +44,20 @@ button:
 switch:
   - platform: template
     id: dev_firmware
-    name: Experimental firmware
+    name: "Experimental Firmware"
     icon: "mdi:test-tube"
     entity_category: CONFIG
     optimistic: true
     restore_mode: RESTORE_DEFAULT_OFF
     on_turn_on:
       - logger.log: "OTA update source set to dev"
-      - lambda: id(update_http_request).set_source_url(to_string("${update_url_dev}"));
+      - lambda: |-
+          id(update_http_request).set_source_url(to_string("${update_url_dev}"));
       - component.update: update_http_request
     on_turn_off:
       - logger.log: "OTA update source set to master"
-      - lambda: id(update_http_request).set_source_url(to_string("${update_url_stable}"));
+      - lambda: |-
+          id(update_http_request).set_source_url(to_string("${update_url_stable}"));
       - component.update: update_http_request
     disabled_by_default: true
     web_server:
