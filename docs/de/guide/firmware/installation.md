@@ -12,14 +12,14 @@ export default {
         platform_options: [
             {
                 key: 'esp32-s3',
-                name: 'ESP32-S3 (Octal)',
+                name: 'ESP32-S3 <span class="VPBadge tip">Octal</span>',
                 icon: '',
                 iconColor: '',
                 details: 'Empfohlen für den <b>Doorman-S3</b> und alle ESP32-S3-Boards mit 8MB (Octal) PSRAM.',
             },
             {
                 key: 'esp32-s3-quad',
-                name: 'ESP32-S3 (Quad)',
+                name: 'ESP32-S3 <span class="VPBadge tip">Quad</span>',
                 icon: '',
                 iconColor: '',
                 details: 'Für <b>Doorman-S3 rev 1.4</b> und ESP32-S3-Boards mit 4MB (Quad) PSRAM.',
