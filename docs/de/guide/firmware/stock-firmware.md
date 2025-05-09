@@ -73,6 +73,13 @@ export default {
         ],
     }
   },
+  watch: {
+    integration(newIntegration, oldIntegration) {
+      if (newIntegration == 'mqtt' && this.variant == 'nuki-bridge') {
+        this.variant = 'stock';
+      }
+    }
+  },
   computed: {
     fw_string() {
       return [this.platform, this.integration, this.variant].join('.');
@@ -85,7 +92,7 @@ export default {
     },
     notes() {
         if(this.integration == 'mqtt') {
-            return 'Die Firmware benötigt nach dem flashen noch etwas Liebe! Schau dir dazu bitte den Abschnitt <code>MQTT</code> weiter unten an.';
+            return 'Die Firmware benötigt nach dem flashen noch etwas Liebe! Schau dir dazu bitte den Abschnitt <code>MQTT</code> weiter unten an.<br><b>Hinweis:</b> Diese Firmware-Variante ist aufgrund von RAM-Einschränkungen nicht mit der Nuki Bridge Erweiterung kompatibel.';
         }
         return '';
     },
@@ -147,7 +154,7 @@ Verbinde deinen **Doorman-S3** per USB-C und nutze dann den Konfigurationsassist
         <h5 class="firmware_title_row"><i class="mdi mdi-package-variant-plus"></i> Darf's vielleicht etwas mehr sein?</h5>
         <div class="firmware_option_row">
             <label class="firmware_option" v-for="fw_variant in variant_options" :key="fw_variant.key">
-                <input type="radio" class="reset_default" v-model="variant" :value="fw_variant.key">
+                <input type="radio" class="reset_default" :disabled="integration=='mqtt' && fw_variant.key == 'nuki-bridge'" v-model="variant" :value="fw_variant.key">
                 <span class="checkmark">
                     <div class="icon" v-if="fw_variant.icon" v-html="fw_variant.icon"></div>
                     <div class="title" v-html="fw_variant.name"></div>

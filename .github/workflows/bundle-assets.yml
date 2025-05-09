@@ -106,11 +106,11 @@ jobs:
         with:
           name: firmware.esp32.ha.nuki-bridge
           path: output/firmware/release
-      - name: Download Doorman Nuki Bridge for Home Assistant (ESP32, MQTT) artifact
-        uses: actions/download-artifact@v4
-        with:
-          name: firmware.esp32.mqtt.nuki-bridge
-          path: output/firmware/release
+      #- name: Download Doorman Nuki Bridge for Home Assistant (ESP32, MQTT) artifact
+      #  uses: actions/download-artifact@v4
+      #  with:
+      #    name: firmware.esp32.mqtt.nuki-bridge
+      #    path: output/firmware/release
       - name: Download Doorman Nuki Bridge for Home Assistant (ESP32, Custom) artifact
         uses: actions/download-artifact@v4
         with:
@@ -123,11 +123,11 @@ jobs:
         with:
           name: firmware.esp32-s3.ha.nuki-bridge
           path: output/firmware/release
-      - name: Download Doorman Nuki Bridge for Home Assistant (ESP32-S3, MQTT) artifact
-        uses: actions/download-artifact@v4
-        with:
-          name: firmware.esp32-s3.mqtt.nuki-bridge
-          path: output/firmware/release
+      #- name: Download Doorman Nuki Bridge for Home Assistant (ESP32-S3, MQTT) artifact
+      #  uses: actions/download-artifact@v4
+      #  with:
+      #    name: firmware.esp32-s3.mqtt.nuki-bridge
+      #    path: output/firmware/release
       - name: Download Doorman Nuki Bridge for Home Assistant (ESP32-S3, Custom) artifact
         uses: actions/download-artifact@v4
         with:
@@ -140,26 +140,16 @@ jobs:
         with:
           name: firmware.esp32-s3-quad.ha.nuki-bridge
           path: output/firmware/release
-      - name: Download Doorman Nuki Bridge for Home Assistant (ESP32-S3-Quad, MQTT) artifact
-        uses: actions/download-artifact@v4
-        with:
-          name: firmware.esp32-s3-quad.mqtt.nuki-bridge
-          path: output/firmware/release
+      #- name: Download Doorman Nuki Bridge for Home Assistant (ESP32-S3-Quad, MQTT) artifact
+      #  uses: actions/download-artifact@v4
+      #  with:
+      #    name: firmware.esp32-s3-quad.mqtt.nuki-bridge
+      #    path: output/firmware/release
       - name: Download Doorman Nuki Bridge for Home Assistant (ESP32-S3-Quad, Custom) artifact
         uses: actions/download-artifact@v4
         with:
           name: firmware.esp32-s3-quad.custom.nuki-bridge
           path: output/firmware/release
-
-
-
-      - name: Create Doorman Stock backwards compatibility files for updates
-        run: |
-          cp -r output/firmware/release/esp32-s3.ha.stock output/firmware/release/doorman-stock
-          cp -r output/firmware/release/esp32-s3.ha.stock output/firmware/release/ha-doorman-stock
-          cp -r output/firmware/release/esp32-s3.ha.nuki-bridge output/firmware/release/doorman-nuki-bridge
-          cp -r output/firmware/release/esp32-s3.ha.nuki-bridge output/firmware/release/ha-doorman-nuki-bridge
-  
 
 
       - name: Upload Pages artifact
