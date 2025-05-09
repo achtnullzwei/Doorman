@@ -175,6 +175,7 @@ script:
                 id(mqtt_client).set_broker_port(id(mqtt_broker_port).state);
                 id(mqtt_client).set_username(id(mqtt_broker_username).state.c_str());
                 id(mqtt_client).set_password(id(mqtt_broker_password).state.c_str());
+                global_preferences->sync();
 
             # Try to connect to MQTT
             - logger.log: "Enable MQTT..."
