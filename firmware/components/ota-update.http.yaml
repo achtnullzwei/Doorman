@@ -15,7 +15,7 @@ update:
   - platform: http_request
     id: update_http_request
     icon: "mdi:update"
-    name: Doorman Update
+    name: Doorman Firmware Update
     source: ${update_url_stable}
     update_interval: 1h
     disabled_by_default: false

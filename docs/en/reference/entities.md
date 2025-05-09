@@ -479,7 +479,7 @@ Triggers each time a phone pick up pattern is detected. Learn more about pattern
 
 ## Updates
 
-### Doorman Update <Badge type="tip" text="update_http_request" />
+### Doorman Firmware Update <Badge type="tip" text="update_http_request" />
 Shows if an doorman firmware update is available and offers installation via the HTTP OTA update mechanism.
 
 

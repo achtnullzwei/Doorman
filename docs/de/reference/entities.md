@@ -479,7 +479,7 @@ Wird ausgelöst, wenn ein Abhebe-Muster des Telefons der Innenstation erkannt wi
 
 ## Updates
 
-### Doorman Update <Badge type="tip" text="update_http_request" />
+### Doorman Firmware Update <Badge type="tip" text="update_http_request" />
 Zeigt an, ob ein Doorman Firmware Update verfügbar ist, und bietet eine Installation über das HTTP OTA-Updateverfahren an.
 
 
