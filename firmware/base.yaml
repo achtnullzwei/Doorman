@@ -163,7 +163,7 @@ text_sensor:
   - platform: tc_bus
     hardware_version:
       id: doorman_hardware_version
-      name: "Hardware"
+      name: "Doorman Hardware"
       icon: "mdi:router-wireless"
       disabled_by_default: true
       entity_category: DIAGNOSTIC
@@ -177,13 +177,25 @@ text_sensor:
         sorting_group_id: sorting_group_listeners
         sorting_weight: -99
 
+  - platform: version
+    id: esphome_version
+    name: "ESPHome Version"
+    icon: mdi:information-box
+    hide_timestamp: true
+    entity_category: DIAGNOSTIC
+    disabled_by_default: true
+    web_server:
+      sorting_group_id: sorting_group_diagnostic
+      sorting_weight: -21
+
   - platform: template
     id: doorman_firmware_version
-    name: "Firmware"
-    icon: mdi:new-box
+    name: "Doorman Firmware"
+    icon: mdi:information-box
     lambda: |-
-      return to_string(ESPHOME_PROJECT_VERSION);
+      return { ESPHOME_PROJECT_VERSION };
     entity_category: DIAGNOSTIC
+    disabled_by_default: true
     web_server:
       sorting_group_id: sorting_group_diagnostic
       sorting_weight: -20

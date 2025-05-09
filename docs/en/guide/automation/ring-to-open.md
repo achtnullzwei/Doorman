@@ -7,17 +7,17 @@ As the name implies, the entrance door will open automatically when someone ring
 This feature is especially useful during a party, allowing guests to enter the building simply by ringing the bell.
 
 ### How do I use it?
-You can enable or disable the Ring To Open automation using the switch in Home Assistant or by issuing the `Function Button` command.
-
 You can activate or deactivate the Ring to Open function individually for each door.
 There are separate switches available, such as `RTO: Entrance Door`, `RTO: Second Entrance Door`, and `RTO: Apartment Door`.
+
+You can also configure an additional trigger, like the function button or the external button.
 
 Additionally, there's a central switch called `Ring to Open`, which can control multiple doors at once.
 You can configure which doors are affected via the setting `RTO: Central Toggle – Door Selection`.
 
 #### General Configuration:
 ::: info Confirmation
-If you enable this option, your indoor station will ring every time the Ring-to-Open automation is manually activated via function button.
+If this option is enabled, your indoor station will ring each time the Ring-to-Open automation is triggered by a physical button — depending on which physical button you've configured as the trigger.
 :::
 
 ::: info Display Status

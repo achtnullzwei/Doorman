@@ -9,12 +9,14 @@ Wie der Name schon sagt, öffnet sich die Eingangstür automatisch, wenn jemand 
 Du kannst die **Ring to Open**-Funktion für jede Tür individuell aktivieren oder deaktivieren.
 Dafür stehen dir separate Schalter wie `RTO: Entrance Door`, `RTO: Second Entrance Door` und `RTO: Apartment Door` zur Verfügung.
 
+Du kannst ebenso einen zusätzlichen Auslöser konfigurieren, zum Beispiel die Funktionstaste oder den externen Taster.
+
 Zusätzlich gibt es einen **zentralen Schalter** namens `Ring to Open`, der das für mehrere Türen gleichzeitig steuern kann.
 Welche Türen davon betroffen sind, legst du über die Einstellung `RTO: Central Toggle – Door Selection` fest.
 
 #### Allgemeine Einstellungen:
 ::: info Confirmation
-Wenn du diese Option aktivierst, klingelt deine Innenstation jedes Mal, wenn du die Ring-to-Open-Automation manuell (z. B. per Funktionstaste) aktivierst.
+Wenn diese Option aktiviert ist, klingelt deine Innenstation jedes Mal, wenn die Ring-to-Open-Automation manuell über eine physische Taste ausgelöst wird – je nachdem, welche Taste du dafür eingerichtet hast.
 :::
 
 ::: info Display Status

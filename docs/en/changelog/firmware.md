@@ -41,6 +41,9 @@ Welcome to the latest updates! Here's a breakdown of all the **new features**, *
 - **Command Queue**  
    Outgoing commands are now queued to prevent data loss.
 
+- **Install Update Button**  
+   A new button lets you install the latest available Doorman firmware version directly from the web interface.
+
 ### 📝 Other Updates
 - **Firmware Configuration Assistant**  
    The new assistant makes flashing the firmware easier than ever — not much technical experience required.
@@ -204,7 +207,7 @@ Welcome to the latest updates! Here's a breakdown of all the **new features**, *
 
 ### ✨ Improvements
 - **Better Entity Grouping**  
-   Navigate with ease! **Entities** are now more logically grouped on the webserver for effortless control and access.
+   Navigate with ease! **Entities** are now more logically grouped on the web interface for effortless control and access.
 
 - **Simplified ESPHome Configuration**  
    We’ve made the ESPHome config files **more modular**! Configurations are now split into separate add-ons for smoother management.

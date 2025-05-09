@@ -3,9 +3,6 @@ Die Doorman-Firmware stellt standardmäßig viele Entitäten zur Verfügung. Auf
 
 ## Sensoren
 
-### Last Bus Command <Badge type="tip" text="last_bus_command" />
-Meldet jeden veröffentlichten Befehl auf dem Bus.
-
 ### Uptime <Badge type="tip" text="doorman_uptime" /> <Badge type="info" text="Deaktiviert" />
 Meldet die Betriebszeit in Sekunden.
 
@@ -68,6 +65,9 @@ Keine Beschreibung vorhanden.
 
 ## Text Sensoren
 
+### Last Bus Command <Badge type="tip" text="last_bus_command" />
+Meldet jeden veröffentlichten Befehl auf dem Bus.
+
 ### Nuki Door Sensor State <Badge type="tip" text="nuki_door_sensor_state" /> <Badge type="info" text="Nuki Bridge" /> <Badge type="info" text="Deaktiviert" />
 Meldet den Türsensorstatus des gekoppelten Nuki Smart Locks.
 
@@ -82,6 +82,16 @@ Reports the last log action trigger of the Nuki smart lock.
 
 ### Nuki Security Pin Status <Badge type="tip" text="nuki_pin_status" /> <Badge type="info" text="Nuki Bridge" /> <Badge type="info" text="Deaktiviert" />
 Meldet den Pin Status der Nuki Bridge Komponente.
+
+### ESPHome Version <Badge type="tip" text="esphome_version" /> <Badge type="info" text="Deaktiviert" />
+Zeigt die installierte ESPHome Basisversion an.
+
+### Doorman Firmware Version <Badge type="tip" text="doorman_firmware_version" /> <Badge type="info" text="Deaktiviert" />
+Zeigt die installierte Doorman Firmware Version und Buildzeit an.
+
+### Doorman Hardware <Badge type="tip" text="doorman_hardware_version" /> <Badge type="info" text="Deaktiviert" />
+Zeigt die Doorman Hardware-Revision an.
+
 
 ## Schalter
 
@@ -173,6 +183,8 @@ Entkoppelt dein Nuki Smart Lock.
 ### MQTT: Save Configuration <Badge type="tip" text="mqtt_save_settings" /> <Badge type="info" text="MQTT Integration" />
 Saves the MQTT credentials and reconnect.
 
+### Install Update <Badge type="tip" text="update_install" />
+Installiert die neuste Doorman Firmware Version.
 
 ### Restart <Badge type="tip" text="doorman_restart" /> <Badge type="info" text="Deaktiviert" />
 Startet Doorman neu, nützlich nach Konfigurationsänderungen, die einen Neustart erfordern.
@@ -245,24 +257,24 @@ Legt die Türen fest, bei denen der zentrale `Ring To Open`-Schalter die [Ring T
 - Any Entrance & Apartment
 
 ### RTO: Entrance Door - Delay <Badge type="tip" text="rto_entrance_door_delay" /> <Badge type="info" text="Deaktiviert" />
-Legt die Verzögerung für die [Ring To Open](../guide/automation/ring-to-open) Automatisierung fest.
+Legt die Verzögerung für die [Ring To Open](../guide/automation/ring-to-open) Automatisierung fest. Um Kollisionen mit Klingelmustern zu vermeiden, startet die Verzögerung erst bei 2 Sekunden.
 
 ##### Optionen:
-- 0 to 20 seconds
+- 2 to 25 seconds
 - Random
 
 ### RTO: Second Entrance Door - Delay <Badge type="tip" text="rto_second_entrance_door_delay" /> <Badge type="info" text="Deaktiviert" />
-Legt die Verzögerung für die [Ring To Open](../guide/automation/ring-to-open) Automatisierung fest.
+Legt die Verzögerung für die [Ring To Open](../guide/automation/ring-to-open) Automatisierung fest. Um Kollisionen mit Klingelmustern zu vermeiden, startet die Verzögerung erst bei 2 Sekunden.
 
 ##### Optionen:
-- 0 to 20 seconds
+- 2 to 25 seconds
 - Random
 
 ### RTO: Apartment Door - Delay <Badge type="tip" text="rto_apartment_door_delay" /> <Badge type="info" text="Nuki Bridge" /> <Badge type="info" text="Deaktiviert" />
-Legt die Verzögerung für die [Ring To Open](../guide/automation/ring-to-open) Automatisierung fest.
+Legt die Verzögerung für die [Ring To Open](../guide/automation/ring-to-open) Automatisierung fest. Um Kollisionen mit Klingelmustern zu vermeiden, startet die Verzögerung erst bei 2 Sekunden.
 
 ##### Optionen:
-- 0 to 20 seconds
+- 2 to 25 seconds
 - Random
 
 ### RTO: Entrance Door - Timeout <Badge type="tip" text="rto_entrance_door_timeout_mode" />
@@ -322,6 +334,7 @@ Legt den Auslöser zum umschalten für die [Ring To Open](../guide/automation/ri
 ##### Optionen:
 - Manual
 - Function Button
+- External Button
 
 ### Intercom Model <Badge type="tip" text="intercom_model" /> <Badge type="info" text="Deaktiviert" />
 Legt das Modell deiner Innenstation fest. Finde mehr über die [unterstützten Modelle und Einstellungen](esphome-component#model-setting-availability) heraus.
@@ -466,8 +479,8 @@ Wird ausgelöst, wenn ein Abhebe-Muster des Telefons der Innenstation erkannt wi
 
 ## Updates
 
-### Firmware <Badge type="tip" text="update_http_request" />
-Zeigt an, ob ein Update verfügbar ist, und bietet eine Installation über das HTTP OTA-Updateverfahren an.
+### Doorman Firmware <Badge type="tip" text="update_http_request" />
+Zeigt an, ob ein Doorman Firmware Update verfügbar ist, und bietet eine Installation über das HTTP OTA-Updateverfahren an.
 
 
 ## Lichter

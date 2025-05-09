@@ -140,7 +140,7 @@ Connect your **Doorman-S3** via USB-C, then use the configuration assistant belo
         </div>
     </div>
     <div v-if="notes" class="important custom-block">
-        <p class="custom-block-title">WAIT A MINUTE</p>
+        <p class="custom-block-title">IMPORTANT</p>
         <p v-html="notes"></p>
     </div>
     <div v-if="integration != ''">

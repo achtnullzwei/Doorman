@@ -3,9 +3,6 @@ The Doorman firmware exposes many entities by default. This page explains the pu
 
 ## Sensors
 
-### Last Bus Command <Badge type="tip" text="last_bus_command" />
-Reports every published command on the bus.
-
 ### Uptime <Badge type="tip" text="doorman_uptime" /> <Badge type="info" text="Disabled by default" />
 Reports the uptime in seconds.
 
@@ -69,6 +66,9 @@ No description yet.
 
 ## Text Sensors
 
+### Last Bus Command <Badge type="tip" text="last_bus_command" />
+Reports every published command on the bus.
+
 ### Nuki Door Sensor State <Badge type="tip" text="nuki_door_sensor_state" /> <Badge type="info" text="Nuki Bridge only" /> <Badge type="info" text="Disabled by default" />
 Reports the door sensor state of the paired Nuki smart lock.
 
@@ -83,6 +83,15 @@ Reports the last log action trigger of the Nuki smart lock.
 
 ### Nuki Security Pin Status <Badge type="tip" text="nuki_pin_status" /> <Badge type="info" text="Nuki Bridge only" /> <Badge type="info" text="Disabled by default" />
 Reports the nuki component security pin status.
+
+### ESPHome Version <Badge type="tip" text="esphome_version" /> <Badge type="info" text="Disabled by default" />
+Reports the installed base ESPHome version.
+
+### Doorman Firmware <Badge type="tip" text="doorman_firmware_version" /> <Badge type="info" text="Disabled by default" />
+Reports the installed Doorman firmware version and build time.
+
+### Doorman Hardware <Badge type="tip" text="doorman_hardware_version" /> <Badge type="info" text="Disabled by default" />
+Reports the Doorman hardware revision.
 
 
 ## Switches
@@ -175,6 +184,9 @@ Unpairs your Nuki smart lock.
 ### MQTT: Save Configuration <Badge type="tip" text="mqtt_save_settings" /> <Badge type="info" text="MQTT integration only" />
 Saves the MQTT credentials and reconnect.
 
+### Install Update <Badge type="tip" text="update_install" />
+Installs the latest available Doorman Firmware update.
+
 ### Restart <Badge type="tip" text="doorman_restart" /> <Badge type="info" text="Disabled by default" />
 Restarts the Doorman unit, useful after configuration changes that require a restart.
 
@@ -245,24 +257,24 @@ Defines the doors for which the central `Ring To Open` switch will toggle the [R
 - Any Entrance & Apartment
 
 ### RTO: Entrance Door - Delay <Badge type="tip" text="rto_entrance_door_delay" /> <Badge type="info" text="Disabled by default" />
-Sets the delay for the [Ring To Open](../guide/automation/ring-to-open) automation.
+Sets the delay for the [Ring To Open](../guide/automation/ring-to-open) automation. To avoid interference with patterns, the delay starts at 2 seconds.
 
 ##### Options:
-- 0 to 20 seconds
+- 2 to 25 seconds
 - Random
 
 ### RTO: Second Entrance Door - Delay <Badge type="tip" text="rto_second_entrance_door_delay" /> <Badge type="info" text="Disabled by default" />
-Sets the delay for the [Ring To Open](../guide/automation/ring-to-open) automation.
+Sets the delay for the [Ring To Open](../guide/automation/ring-to-open) automation. To avoid interference with patterns, the delay starts at 2 seconds.
 
 ##### Options:
-- 0 to 20 seconds
+- 2 to 25 seconds
 - Random
 
 ### RTO: Apartment Door - Delay <Badge type="tip" text="rto_apartment_door_delay" /> <Badge type="info" text="Nuki Bridge only" /> <Badge type="info" text="Disabled by default" />
-Sets the delay for the [Ring To Open](../guide/automation/ring-to-open) automation.
+Sets the delay for the [Ring To Open](../guide/automation/ring-to-open) automation. To avoid interference with patterns, the delay starts at 2 seconds.
 
 ##### Options:
-- 0 to 20 seconds
+- 2 to 25 seconds
 - Random
 
 ### RTO: Entrance Door - Timeout <Badge type="tip" text="rto_entrance_door_timeout_mode" />
@@ -322,6 +334,7 @@ Defines the trigger to toggle the [Ring To Open](../guide/automation/ring-to-ope
 ##### Options:
 - Manual
 - Function Button
+- External Button
 
 ### Intercom Model <Badge type="tip" text="intercom_model" /> <Badge type="info" text="Disabled by default" />
 Sets the intercom phone model. Check the [Supported Models and Settings](esphome-component#model-setting-availability) to see your options.
@@ -466,8 +479,8 @@ Triggers each time a phone pick up pattern is detected. Learn more about pattern
 
 ## Updates
 
-### Firmware <Badge type="tip" text="update_http_request" />
-Shows if an update is available and offers installation via the HTTP OTA update mechanism.
+### Doorman Firmware <Badge type="tip" text="update_http_request" />
+Shows if an doorman firmware update is available and offers installation via the HTTP OTA update mechanism.
 
 
 ## Lights

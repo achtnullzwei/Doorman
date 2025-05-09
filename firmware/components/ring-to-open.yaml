@@ -33,7 +33,7 @@ event:
                         v.push_back(token);
                         token = strtok (NULL, seps);
                       }
-                      return (std::stoi(v[0].c_str()) * 1000) + 300;
+                      return ((std::stoi(v[0].c_str()) - 2) * 1000) + 300;
 
             - script.execute: rto_entrance_door_action
 
@@ -70,7 +70,7 @@ event:
                         v.push_back(token);
                         token = strtok (NULL, seps);
                       }
-                      return (std::stoi(v[0].c_str()) * 1000) + 300;
+                      return ((std::stoi(v[0].c_str()) - 2) * 1000) + 300;
 
             - script.execute: rto_second_entrance_door_action
 
@@ -106,26 +106,46 @@ event:
                         v.push_back(token);
                         token = strtok (NULL, seps);
                       }
-                      return (std::stoi(v[0].c_str()) * 1000) + 300;
+                      return ((std::stoi(v[0].c_str()) - 2) * 1000) + 300;
 
             - script.execute: rto_apartment_door_action
 
 binary_sensor:
-  - id: !extend function_button
+  - id: !extend doorman_external_button
     on_press:
       - if:
           condition:
-            - lambda: !lambda 'return id(rto_toggle_trigger).state != "Function Button";'
+            - lambda: !lambda 'return id(rto_toggle_trigger).state == "External Button";'
           then:
-            - switch.toggle: rto_entrance_door
-            - switch.toggle: rto_second_entrance_door
+            - switch.toggle: rto_central
             - delay: 300ms
 
             # Confirm Ring To Open activation
             - if: 
                 condition:
-                  - switch.is_on: rto_entrance_door
-                  - switch.is_on: rto_second_entrance_door
+                  - switch.is_on: rto_central
+                  - switch.is_on: rto_confirmation
+                then:
+                  - tc_bus.send:
+                      type: floor_call
+
+            # Reset to prevent address conflict
+            - tc_bus.send:
+                type: reset
+
+  - id: !extend function_button
+    on_press:
+      - if:
+          condition:
+            - lambda: !lambda 'return id(rto_toggle_trigger).state == "Function Button";'
+          then:
+            - switch.toggle: rto_central
+            - delay: 300ms
+
+            # Confirm Ring To Open activation
+            - if: 
+                condition:
+                  - switch.is_on: rto_central
                   - switch.is_on: rto_confirmation
                 then:
                   - tc_bus.send:
@@ -279,11 +299,11 @@ select:
     icon: "mdi:door"
     optimistic: true
     options:
-      - Entrance Door
-      - Second Entrance
-      - Any Entrance
-      - Apartment
-      - Any Entrance & Apartment
+      - "Entrance Door"
+      - "Second Entrance"
+      - "Any Entrance"
+      - "Apartment"
+      - "Any Entrance & Apartment"
     initial_option: "Any Entrance"
     restore_value: true
     entity_category: CONFIG
@@ -297,18 +317,16 @@ select:
     icon: "mdi:clock-end"
     optimistic: true
     options:
-      - 0 seconds
-      - 1 seconds
-      - 2 seconds
-      - 3 seconds
-      - 4 seconds
-      - 5 seconds
-      - 10 seconds
-      - 15 seconds
-      - 20 seconds
-      - 25 seconds
-      - Random
-    initial_option: "0 seconds"
+      - "2 seconds"
+      - "3 seconds"
+      - "4 seconds"
+      - "5 seconds"
+      - "10 seconds"
+      - "15 seconds"
+      - "20 seconds"
+      - "25 seconds"
+      - "Random"
+    initial_option: "2 seconds"
     restore_value: true
     entity_category: CONFIG
     web_server:
@@ -321,18 +339,16 @@ select:
     icon: "mdi:clock-end"
     optimistic: true
     options:
-      - 0 seconds
-      - 1 seconds
-      - 2 seconds
-      - 3 seconds
-      - 4 seconds
-      - 5 seconds
-      - 10 seconds
-      - 15 seconds
-      - 20 seconds
-      - 25 seconds
-      - Random
-    initial_option: "0 seconds"
+      - "2 seconds"
+      - "3 seconds"
+      - "4 seconds"
+      - "5 seconds"
+      - "10 seconds"
+      - "15 seconds"
+      - "20 seconds"
+      - "25 seconds"
+      - "Random"
+    initial_option: "2 seconds"
     restore_value: true
     entity_category: CONFIG
     web_server:
@@ -346,18 +362,16 @@ select:
     icon: "mdi:clock-end"
     optimistic: true
     options:
-      - 0 seconds
-      - 1 seconds
-      - 2 seconds
-      - 3 seconds
-      - 4 seconds
-      - 5 seconds
-      - 10 seconds
-      - 15 seconds
-      - 20 seconds
-      - 25 seconds
-      - Random
-    initial_option: "0 seconds"
+      - "2 seconds"
+      - "3 seconds"
+      - "4 seconds"
+      - "5 seconds"
+      - "10 seconds"
+      - "15 seconds"
+      - "20 seconds"
+      - "25 seconds"
+      - "Random"
+    initial_option: "2 seconds"
     restore_value: true
     entity_category: CONFIG
     web_server:
@@ -370,21 +384,21 @@ select:
     icon: "mdi:clock-fast"
     optimistic: true
     options:
-      - Never
-      - Ring once
-      - 5 minutes
-      - 10 minutes
-      - 15 minutes
-      - 20 minutes
-      - 25 minutes
-      - 30 minutes
-      - 35 minutes
-      - 40 minutes
-      - 45 minutes
-      - 50 minutes
-      - 55 minutes
-      - 60 minutes
-    initial_option: Never
+      - "Never"
+      - "Ring once"
+      - "5 minutes"
+      - "10 minutes"
+      - "15 minutes"
+      - "20 minutes"
+      - "25 minutes"
+      - "30 minutes"
+      - "35 minutes"
+      - "40 minutes"
+      - "45 minutes"
+      - "50 minutes"
+      - "55 minutes"
+      - "60 minutes"
+    initial_option: "Never"
     restore_value: true
     entity_category: CONFIG
     web_server:
@@ -398,21 +412,21 @@ select:
     disabled_by_default: true
     optimistic: true
     options:
-      - Never
-      - Ring once
-      - 5 minutes
-      - 10 minutes
-      - 15 minutes
-      - 20 minutes
-      - 25 minutes
-      - 30 minutes
-      - 35 minutes
-      - 40 minutes
-      - 45 minutes
-      - 50 minutes
-      - 55 minutes
-      - 60 minutes
-    initial_option: Never
+      - "Never"
+      - "Ring once"
+      - "5 minutes"
+      - "10 minutes"
+      - "15 minutes"
+      - "20 minutes"
+      - "25 minutes"
+      - "30 minutes"
+      - "35 minutes"
+      - "40 minutes"
+      - "45 minutes"
+      - "50 minutes"
+      - "55 minutes"
+      - "60 minutes"
+    initial_option: "Never"
     restore_value: true
     entity_category: CONFIG
     web_server:
@@ -426,21 +440,21 @@ select:
     icon: "mdi:clock-fast"
     optimistic: true
     options:
-      - Never
-      - Ring once
-      - 5 minutes
-      - 10 minutes
-      - 15 minutes
-      - 20 minutes
-      - 25 minutes
-      - 30 minutes
-      - 35 minutes
-      - 40 minutes
-      - 45 minutes
-      - 50 minutes
-      - 55 minutes
-      - 60 minutes
-    initial_option: Never
+      - "Never"
+      - "Ring once"
+      - "5 minutes"
+      - "10 minutes"
+      - "15 minutes"
+      - "20 minutes"
+      - "25 minutes"
+      - "30 minutes"
+      - "35 minutes"
+      - "40 minutes"
+      - "45 minutes"
+      - "50 minutes"
+      - "55 minutes"
+      - "60 minutes"
+    initial_option: "Never"
     restore_value: true
     entity_category: CONFIG
     web_server:
@@ -454,11 +468,11 @@ select:
     disabled_by_default: true
     optimistic: true
     options:
-      - single
-      - double
-      - triple
-      - quadruple
-    initial_option: single
+      - "single"
+      - "double"
+      - "triple"
+      - "quadruple"
+    initial_option: "single"
     restore_value: true
     entity_category: CONFIG
     web_server:
@@ -472,11 +486,11 @@ select:
     disabled_by_default: true
     optimistic: true
     options:
-      - single
-      - double
-      - triple
-      - quadruple
-    initial_option: single
+      - "single"
+      - "double"
+      - "triple"
+      - "quadruple"
+    initial_option: "single"
     restore_value: true
     entity_category: CONFIG
     web_server:
@@ -491,11 +505,11 @@ select:
     disabled_by_default: true
     optimistic: true
     options:
-      - single
-      - double
-      - triple
-      - quadruple
-    initial_option: single
+      - "single"
+      - "double"
+      - "triple"
+      - "quadruple"
+    initial_option: "single"
     restore_value: true
     entity_category: CONFIG
     web_server:
@@ -508,9 +522,10 @@ select:
     icon: "mdi:circle-outline"
     optimistic: true
     options:
-      - Manual
-      - Function Button
-    initial_option: Manual
+      - "Manual"
+      - "Function Button"
+      - "External Button"
+    initial_option: "Manual"
     restore_value: true
     entity_category: CONFIG
     disabled_by_default: true
