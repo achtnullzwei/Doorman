@@ -25,7 +25,7 @@ For full customization and complete control over the firmware, you can adopt it 
 If you prefer using the MQTT-only firmware, simply apply the provided MQTT example YAML tailored for your board below.
 
 ##### Board Configuration Options: 
-::: details Doorman-S3 (1.5) / ESP32-S3 (Octal PSRAM)
+::: details ESP32-S3 (Octal PSRAM) / Doorman-S3 (1.5)
 ::: code-group
 ```yaml [Home Assistant]
 <!--@include: ../../../../firmware/examples/esp32-s3.ha.nuki-bridge.master.example.yaml-->
@@ -35,7 +35,7 @@ If you prefer using the MQTT-only firmware, simply apply the provided MQTT examp
 ```
 :::
 
-::: details Doorman-S3 (1.4) / ESP32-S3 (Quad PSRAM)
+::: details ESP32-S3 (Quad PSRAM) / Doorman-S3 (1.4)
 ::: code-group
 ```yaml [Home Assistant]
 <!--@include: ../../../../firmware/examples/esp32-s3-quad.ha.nuki-bridge.master.example.yaml-->

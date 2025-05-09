@@ -1,8 +1,18 @@
 ## MQTT
+Nachdem du die Firmware mit MQTT-Integration geflasht und deinen Doorman mit dem WLAN verbunden hast, **blinkt die Status-LED abwechselnd rot und blau**, weil der MQTT-Broker noch nicht eingerichtet ist.
 
+Öffne jetzt einfach die Web-Oberfläche und gehe zum Bereich `MQTT Configuration`.
+Dort gibst du deine Broker-Zugangsdaten ein:
+
+![broker-credentials](../images/mqtt-details.png)
+
+Sobald du die Einstellungen speicherst, versucht die Firmware sich mit deinem MQTT-Broker zu verbinden.
+Klappt das, leuchtet die Status-LED **für 3 Sekunden durchgehend blau** als Bestätigung.
+
+### Topics
 Bei Verwendung der MQTT-Firmware werden verschiedene Topics an deinen Broker gesendet. So funktioniert die Struktur der Topics und Steuerung.
 
-### Topic Struktur
+#### Topic Struktur
 Jede Entität veröffentlicht ihren Status auf einem Topic im folgenden Format:
 ```
 <TOPIC_PREFIX>/<COMPONENT_TYPE>/<COMPONENT_NAME>/state
@@ -18,7 +28,7 @@ ON oder OFF oder was sonst unterstützt wird
 ```
 :::
 
-### Beispiel
+#### Beispiel
 Um die [Ring-To-Open](../automation/ring-to-open.md) Automatisierung zu aktivieren oder zu deaktivieren, sende ON oder OFF als Payload an dieses Topic:
 ::: code-group
 ``` [Topic]

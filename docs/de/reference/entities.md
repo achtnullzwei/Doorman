@@ -170,6 +170,10 @@ Liest den internen speicher deiner Innenstation mit der angegebenen Seriennummer
 ### Nuki Unpair Device <Badge type="tip" text="nuki_unpair_device" /> <Badge type="info" text="Nuki Bridge" /> <Badge type="info" text="Deaktiviert" />
 Entkoppelt dein Nuki Smart Lock.
 
+### MQTT: Save Configuration <Badge type="tip" text="mqtt_save_settings" /> <Badge type="info" text="MQTT Integration" />
+Saves the MQTT credentials and reconnect.
+
+
 ### Restart <Badge type="tip" text="doorman_restart" /> <Badge type="info" text="Deaktiviert" />
 Startet Doorman neu, nützlich nach Konfigurationsänderungen, die einen Neustart erfordern.
 
@@ -211,6 +215,21 @@ Controls the Nuki Smart Lock LED Brightness setting.
 
 ### Nuki Security Pin <Badge type="tip" text="nuki_security_pin" /> <Badge type="info" text="Nuki Bridge" /> <Badge type="info" text="Deaktiviert" />
 Sets the Nuki Bridge Security Pin to authenticate against the Nuki Smart Lock.
+
+### MQTT: Broker Port <Badge type="tip" text="mqtt_broker_port" /> <Badge type="info" text="MQTT Integration" /> <Badge type="info" text="Deaktiviert" />
+Sets the MQTT Broker Port.
+
+
+## Eingabe für Text
+
+### MQTT: Broker Address <Badge type="tip" text="mqtt_broker_address" /> <Badge type="info" text="MQTT Integration" />
+Sets the MQTT Broker Address.
+
+### MQTT: Broker Username <Badge type="tip" text="mqtt_broker_username" /> <Badge type="info" text="MQTT Integration" />
+Sets the MQTT Broker Username.
+
+### MQTT: Broker Password <Badge type="tip" text="mqtt_broker_password" /> <Badge type="info" text="MQTT Integration" />
+Sets the MQTT Broker Password.
 
 
 ## Dropdowns

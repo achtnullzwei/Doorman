@@ -172,6 +172,9 @@ Reads the memory of the intercom phone with the specified serial number.
 ### Nuki Unpair Device <Badge type="tip" text="nuki_unpair_device" /> <Badge type="info" text="Nuki Bridge only" /> <Badge type="info" text="Disabled by default" />
 Unpairs your Nuki smart lock.
 
+### MQTT: Save Configuration <Badge type="tip" text="mqtt_save_settings" /> <Badge type="info" text="MQTT integration only" />
+Saves the MQTT credentials and reconnect.
+
 ### Restart <Badge type="tip" text="doorman_restart" /> <Badge type="info" text="Disabled by default" />
 Restarts the Doorman unit, useful after configuration changes that require a restart.
 
@@ -212,6 +215,21 @@ Controls the Nuki Smart Lock LED Brightness setting.
 
 ### Nuki Security Pin <Badge type="tip" text="nuki_security_pin" /> <Badge type="info" text="Nuki Bridge only" /> <Badge type="info" text="Disabled by default" />
 Sets the Nuki Bridge Security Pin to authenticate against the Nuki Smart Lock.
+
+### MQTT: Broker Port <Badge type="tip" text="mqtt_broker_port" /> <Badge type="info" text="MQTT integration only" /> <Badge type="info" text="Disabled by default" />
+Sets the MQTT Broker Port.
+
+
+## Texts
+
+### MQTT: Broker Address <Badge type="tip" text="mqtt_broker_address" /> <Badge type="info" text="MQTT integration only" />
+Sets the MQTT Broker Address.
+
+### MQTT: Broker Username <Badge type="tip" text="mqtt_broker_username" /> <Badge type="info" text="MQTT integration only" />
+Sets the MQTT Broker Username.
+
+### MQTT: Broker Password <Badge type="tip" text="mqtt_broker_password" /> <Badge type="info" text="MQTT integration only" />
+Sets the MQTT Broker Password.
 
 
 ## Selects

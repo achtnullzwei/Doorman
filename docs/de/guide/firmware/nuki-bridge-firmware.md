@@ -26,7 +26,7 @@ Falls du lieber die MQTT-Only-Firmware verwenden möchtest, nutze einfach das pa
 
 ##### Board Konfigurationsoptionen:
 
-::: details Doorman-S3 (1.5) / ESP32-S3 (Octal PSRAM)
+::: details ESP32-S3 (Octal PSRAM) / Doorman-S3 (1.5)
 ::: code-group
 ```yaml [Home Assistant]
 <!--@include: ../../../../firmware/examples/esp32-s3.ha.stock.master.example.yaml-->
@@ -36,7 +36,7 @@ Falls du lieber die MQTT-Only-Firmware verwenden möchtest, nutze einfach das pa
 ```
 :::
 
-::: details Doorman-S3 (1.4) / ESP32-S3 (Quad PSRAM)
+::: details ESP32-S3 (Quad PSRAM) / Doorman-S3 (1.4)
 ::: code-group
 ```yaml [Home Assistant]
 <!--@include: ../../../../firmware/examples/esp32-s3-quad.ha.stock.master.example.yaml-->
