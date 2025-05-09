@@ -15,7 +15,10 @@ Welcome to the latest updates! Here's a breakdown of all the **new features**, *
   This change simplifies dashboard integration and delivers a more consistent, intuitive experience.
 
 - **Extended Ring to Open to Apartment Doorbells**  
-   From now on [Ring To Open](../guide/automation/ring-to-open) supports the apartment doorbell when used with a Nuki Smart Lock, enabling more convenient and seamless access.
+   [Ring To Open](../guide/automation/ring-to-open) now also works with your apartment doorbell when paired with a Nuki Smart Lock — making access even more convenient and seamless.
+
+- **Runtime MQTT Configuration**  
+   If you flashed the firmware with MQTT integration, you can now enter your broker credentials via the built-in web interface.
 
 ### ✨ Improvements
 - **Refined Configuration for Ring to Open**  
@@ -39,6 +42,9 @@ Welcome to the latest updates! Here's a breakdown of all the **new features**, *
    Outgoing commands are now queued to prevent data loss.
 
 ### 📝 Other Updates
+- **Firmware Configuration Assistant**  
+   The new assistant makes flashing the firmware easier than ever — not much technical experience required.
+
 - **More Readable Log Messages**  
    Log messages have been refined for improved clarity and readability.
 
