@@ -149,7 +149,8 @@ mqtt:
 
 
 script:
-  - id: mqtt_connect
+  - id: 
+    mode: "restart"
     then:
       # Check if Broker data ist set
       - if:
