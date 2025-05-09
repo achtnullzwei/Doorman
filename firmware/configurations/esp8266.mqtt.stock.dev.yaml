@@ -13,7 +13,6 @@ packages:
   ota_update_http: !include ../components/ota-update.http.yaml
   ota_update_http_dev: !include ../components/ota-update.http.dev.yaml
   api: !include ../components/api.mqtt.yaml
-  api_arduino: !include ../components/api.mqtt.arduino.yaml
   debug_utilities: !include ../components/debug-utilities.yaml
   debug_utilities_arduino: !include ../components/debug-utilities.arduino.yaml
   debug_component: !include ../components/debug-component.yaml

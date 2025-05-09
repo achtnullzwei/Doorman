@@ -12,7 +12,6 @@ packages:
   ota_update_esphome: !include ../components/ota-update.esphome.yaml
   ota_update_http: !include ../components/ota-update.http.yaml
   api: !include ../components/api.mqtt.yaml
-  api_arduino: !include ../components/api.mqtt.arduino.yaml
   pattern_events: !include ../components/pattern-events.yaml
   ring_to_open: !include ../components/ring-to-open.yaml
   intercom_settings: !include ../components/intercom-settings.yaml

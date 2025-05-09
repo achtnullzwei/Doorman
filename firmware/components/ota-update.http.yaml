@@ -22,7 +22,7 @@ update:
     web_server:
       sorting_group_id: sorting_group_updates
       sorting_weight: 99
-    setup_priority: 200
+    setup_priority: -100
 
 button:
   - platform: template
@@ -64,4 +64,4 @@ switch:
     web_server:
       sorting_group_id: sorting_group_updates
       sorting_weight: 98
-    setup_priority: 100
+    setup_priority: -120
