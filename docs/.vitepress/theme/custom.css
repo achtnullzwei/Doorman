@@ -56,3 +56,92 @@
     --md-dialog-container-shape-end-end: 8px;
     --md-dialog-container-shape-end-start: 8px;
 }
+
+
+
+
+.firmware_title_row
+{
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+
+.firmware_option_row
+{
+    display: flex;
+    flex-wrap: wrap;
+    margin-bottom: 8px;
+    gap: 20px;
+}
+
+.firmware_option_row .firmware_option
+{
+    flex-grow: 1;
+    flex-basis: 0;
+}
+
+.firmware_option_row .firmware_option input
+{
+    position: absolute;
+    opacity: 0;
+    cursor: pointer;
+}
+
+.firmware_option_row .firmware_option:hover input ~ .checkmark
+{
+    box-shadow: 0px 0px 0px 2px var(--vp-button-brand-bg) inset;
+    color: var(--vp-c-text-1);
+}
+
+.firmware_option_row .firmware_option input:checked ~ .checkmark
+{
+    font-weight: 500;
+    box-shadow: inset 0px 0px 0px 2px var(--vp-button-brand-bg);
+    color: var(--vp-c-text-1);
+}
+
+.firmware_option_row .firmware_option .checkmark
+{
+    display: flex;
+    flex-direction: column;
+    padding: 24px;
+    border-radius: 12px;
+    height: 100%;
+    background-color: var(--vp-c-bg-soft);
+    transition: box-shadow 0.25s, color 0.25s;
+    cursor: pointer;
+    color: var(--vp-c-text-2);
+    min-width: 210px;
+}
+
+.firmware_option_row .firmware_option .checkmark .icon
+{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 20px;
+    border-radius: 6px;
+    background-color: var(--vp-c-default-soft);
+    width: 48px;
+    height: 48px;
+    font-size: 24px;
+    transition: background-color 0.25s;
+    padding: 10px;
+}
+
+.firmware_option_row .firmware_option .checkmark .title
+{
+    line-height: 24px;
+    font-size: 16px;
+    font-weight: 600;
+}
+
+.firmware_option_row .firmware_option .checkmark .details
+{
+    flex-grow: 1;
+    padding-top: 8px;
+    line-height: 24px;
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--vp-c-text-2);
+}

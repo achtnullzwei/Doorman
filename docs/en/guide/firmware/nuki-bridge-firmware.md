@@ -56,20 +56,20 @@ export default {
             },
         ],
         variant_options: [
-        {
-            key: 'stock',
-            name: 'Standard',
-            icon: '',
-            iconColor: '',
-            details: 'I only need the basic features to control my intercom — nothing extra.',
-        },
-        {
-            key: 'nuki-bridge',
-            name: 'Nuki Bridge',
-            icon: '',
-            iconColor: '',
-            details: 'I also want to control my Nuki Smart Lock and use Ring to Open with the apartment doorbell.',
-        },
+            {
+                key: 'stock',
+                name: 'Standard',
+                icon: '',
+                iconColor: '',
+                details: 'I only need the basic features to control my intercom — nothing extra.',
+            },
+            {
+                key: 'nuki-bridge',
+                name: 'Nuki Bridge',
+                icon: '',
+                iconColor: '',
+                details: 'I also want to control my Nuki Smart Lock and use Ring to Open with the apartment doorbell.',
+            },
         ],
     }
   },
@@ -85,7 +85,7 @@ export default {
     },
     notes() {
         if(this.integration == 'mqtt') {
-            return 'The MQTT Integration requires further setup! Please take a look at the <code>MQTT</code> section below.';
+            return 'The firmware requires further setup after flashing! Please take a look at the <code>MQTT</code> section below.';
         }
         return '';
     },
@@ -115,7 +115,7 @@ Be aware that some **updates may introduce breaking changes** — always review 
 Connect your **Doorman-S3** via USB-C, then use the configuration assistant below to configure and install the latest firmware directly via Web Serial. This setup ensures seamless integration with the Home Assistant API and makes future community-driven updates easy to apply.
 
 <div v-if="web_serial_available">
-    <h5 class="title_row"><i class="mdi mdi-hammer-wrench"></i> Which hardware do you use?</h5>
+    <h5 class="firmware_title_row"><i class="mdi mdi-hammer-wrench"></i> Which hardware do you use?</h5>
     <div class="firmware_option_row">
         <label class="firmware_option" v-for="fw_platform in platform_options" :key="fw_platform.key">
             <input type="radio" class="reset_default" v-model="platform" :value="fw_platform.key">
@@ -127,7 +127,7 @@ Connect your **Doorman-S3** via USB-C, then use the configuration assistant belo
         </label>
     </div>
     <div v-if="platform != ''">
-        <h5 class="title_row"><i class="mdi mdi-home-automation"></i> Do you use any smart home system?</h5>
+        <h5 class="firmware_title_row"><i class="mdi mdi-home-automation"></i> Do you use any smart home system?</h5>
         <div class="firmware_option_row">
             <label class="firmware_option" v-for="fw_integration in integration_options" :key="fw_integration.key">
                 <input type="radio" class="reset_default" v-model="integration" :value="fw_integration.key">
@@ -144,7 +144,7 @@ Connect your **Doorman-S3** via USB-C, then use the configuration assistant belo
         <p v-html="notes"></p>
     </div>
     <div v-if="integration != ''">
-        <h5 class="title_row"><i class="mdi mdi-package-variant-plus"></i> What about some extras?</h5>
+        <h5 class="firmware_title_row"><i class="mdi mdi-package-variant-plus"></i> What about some extras?</h5>
         <div class="firmware_option_row">
             <label class="firmware_option" v-for="fw_variant in variant_options" :key="fw_variant.key">
                 <input type="radio" class="reset_default" v-model="variant" :value="fw_variant.key">
@@ -157,7 +157,7 @@ Connect your **Doorman-S3** via USB-C, then use the configuration assistant belo
         </div>
     </div>
     <div v-if="valid_manifest">
-        <h5 class="title_row"><i class="mdi mdi-auto-fix"></i> Let's summon the firmware spirits!</h5>
+        <h5 class="firmware_title_row"><i class="mdi mdi-auto-fix"></i> Let's summon the firmware spirits!</h5>
         <esp-web-install-button :manifest="manifest_file">
             <button slot="activate">
                 <div class="custom-layout">
@@ -272,92 +272,3 @@ If your Smart Lock is already paired with Doorman, press the `FLASH`- or `PRG`-b
 <!--@include: ./additions.md-->
 
 <!--@include: ./mqtt.md-->
-
-<style>
-.title_row
-{
-    margin-top: 20px;
-    margin-bottom: 20px;
-}
-
-.firmware_option_row
-{
-    display: flex;
-    flex-wrap: wrap;
-    margin-bottom: 8px;
-    gap: 10px;
-}
-
-.firmware_option_row .firmware_option
-{
-    flex-grow: 1;
-    flex-basis: 0;
-}
-
-.firmware_option_row .firmware_option input
-{
-    position: absolute;
-    opacity: 0;
-    cursor: pointer;
-}
-
-.firmware_option_row .firmware_option:hover input ~ .checkmark
-{
-    box-shadow: 0px 0px 0px 2px var(--vp-button-brand-bg) inset;
-    color: var(--vp-c-text-1);
-}
-
-.firmware_option_row .firmware_option input:checked ~ .checkmark
-{
-    font-weight: 500;
-    box-shadow: inset 0px 0px 0px 2px var(--vp-button-brand-bg);
-    color: var(--vp-c-text-1);
-}
-
-.firmware_option_row .firmware_option .checkmark
-{
-    display: flex;
-    flex-direction: column;
-    padding: 24px;
-    border: 1px solid var(--vp-c-bg-soft);
-    border-radius: 12px;
-    height: 100%;
-    background-color: var(--vp-c-bg-soft);
-    transition: border-color 0.25s, background-color 0.25s;
-    cursor: pointer;
-    color: var(--vp-c-text-2);
-    min-width: 210px;
-}
-
-.firmware_option_row .firmware_option .checkmark .icon
-{
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    margin-bottom: 20px;
-    border-radius: 6px;
-    background-color: var(--vp-c-default-soft);
-    width: 48px;
-    height: 48px;
-    font-size: 24px;
-    transition: background-color 0.25s;
-    padding: 10px;
-}
-
-.firmware_option_row .firmware_option .checkmark .title
-{
-    line-height: 24px;
-    font-size: 16px;
-    font-weight: 600;
-}
-
-.firmware_option_row .firmware_option .checkmark .details
-{
-    flex-grow: 1;
-    padding-top: 8px;
-    line-height: 24px;
-    font-size: 14px;
-    font-weight: 500;
-    color: var(--vp-c-text-2);
-}
-</style>
