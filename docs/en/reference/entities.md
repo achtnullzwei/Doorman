@@ -225,10 +225,10 @@ Sets the MQTT Broker Port.
 ### MQTT: Broker Address <Badge type="tip" text="mqtt_broker_address" /> <Badge type="info" text="MQTT integration only" />
 Sets the MQTT Broker Address.
 
-### MQTT: Broker Username <Badge type="tip" text="mqtt_broker_username" /> <Badge type="info" text="MQTT integration only" />
+### MQTT: Broker Username <Badge type="tip" text="mqtt_broker_username" /> <Badge type="info" text="MQTT integration only" /> <Badge type="info" text="Disabled by default" />
 Sets the MQTT Broker Username.
 
-### MQTT: Broker Password <Badge type="tip" text="mqtt_broker_password" /> <Badge type="info" text="MQTT integration only" />
+### MQTT: Broker Password <Badge type="tip" text="mqtt_broker_password" /> <Badge type="info" text="MQTT integration only" /> <Badge type="info" text="Disabled by default" />
 Sets the MQTT Broker Password.
 
 
