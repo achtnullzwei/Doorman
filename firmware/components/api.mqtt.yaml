@@ -94,8 +94,10 @@ button:
     name: "MQTT: Save configuration"
     icon: "mdi:content-save-check"
     on_press:
+      - logger.log: "Save MQTT configuration, disable MQTT..."
       - mqtt.disable:
       - delay: 5s
+      - logger.log: "Save MQTT configuration, apply config..."
       - script.execute: mqtt_connect
     web_server:
       sorting_group_id: sorting_group_mqtt
@@ -149,8 +151,8 @@ mqtt:
 
 
 script:
-  - id: 
-    mode: "restart"
+  - id: mqtt_connect
+    mode: restart
     then:
       # Check if Broker data ist set
       - if:
@@ -165,6 +167,8 @@ script:
                 green: 22%
                 blue: 100%
 
+            - logger.log: "Set MQTT credentials..."
+            
             # Set broker credentials
             - lambda: |-
                 id(mqtt_client).set_broker_address(id(mqtt_broker_address).state.c_str());
@@ -173,6 +177,7 @@ script:
                 id(mqtt_client).set_password(id(mqtt_broker_password).state.c_str());
 
             # Try to connect to MQTT
+            - logger.log: "Enable MQTT..."
             - mqtt.enable:
           
           else:
@@ -181,10 +186,12 @@ script:
                 id: doorman_rgb_status_led
                 effect: error_api
 
+      - logger.log: "Wait for MQTT connection..."
       - wait_until:
           condition:
             mqtt.connected:
 
+      - logger.log: "MQTT connected!"
       - light.turn_on:
           id: doorman_rgb_status_led
           effect: none
