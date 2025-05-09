@@ -144,7 +144,7 @@ This guided process ensures seamless integration with the Home Assistant API and
             </label>
         </div>
     </div>
-    <div v-if="notes" class="important custom-block">
+    <div v-if="notes" class="tip custom-block">
         <p class="custom-block-title">NOTE</p>
         <p v-html="notes"></p>
     </div>

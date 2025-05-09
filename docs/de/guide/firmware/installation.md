@@ -144,7 +144,7 @@ Dieser geführte Prozess sorgt für eine nahtlose Integration mit der Home Assis
             </label>
         </div>
     </div>
-    <div v-if="notes" class="important custom-block">
+    <div v-if="notes" class="tip custom-block">
         <p class="custom-block-title">HINWEIS</p>
         <p v-html="notes"></p>
     </div>
