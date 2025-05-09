@@ -11,7 +11,7 @@ Please note that support is provided on a best-effort basis. While I will assist
 ## Common Issues
 
 ::: details Web Serial (Flashing via ESP Web Tools) Connect-Disconnect loop
-If you've received a Doorman-S3 PCB that hasn't been pre-flashed with the [Stock Firmware](../firmware/stock-firmware.md), the ESP will not have any firmware installed. As a result, it will enter a continuous restart loop by default, making it impossible to flash using ESP Web Tools or any other tool.
+If you've received a Doorman-S3 PCB that hasn't been pre-flashed with the [Doorman Firmware](../firmware/installation.md), the ESP will not have any firmware installed. As a result, it will enter a continuous restart loop by default, making it impossible to flash using ESP Web Tools or any other tool.
 
 #### Solution
 To resolve this, hold down the button labeled `FLASH` while connecting the USB cable to your computer. This will put the ESP into bootloader mode, preventing it from constantly restarting.
@@ -55,6 +55,6 @@ If the bus voltage constantly goes up and down there's an issue with the power d
 
 If you are experiencing other issues, here are some things to try:
 
-- Reflash the firmware [here](../firmware/stock-firmware).
+- Reflash the firmware [here](../firmware/installation).
 
 If everything else fails, please join the [Discord server](https://discord.gg/t2d34dvmBf) for support. If necessary, we will work to triage an issue on the GitHub repository.

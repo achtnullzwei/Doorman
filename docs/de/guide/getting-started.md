@@ -120,18 +120,3 @@ Um die Erkennung der zweiten Türklingel und das Öffnen der zweiten Tür zu erm
 ::: tip MEHRERE INNENSTATIONEN
 Wenn du mehrere Innenstationen hast, wird's etwas tricky. Du musst dann eine eigene YAML-Konfiguration erstellen, damit alle zusammen funktionieren. Die Standard-Firmware kann nämlich nur mit einer Innenstation umgehen.
 :::
-
-## ESPHome adoption
-Wenn du die Firmware deines Doorman anpassen möchtest, kannst du diesen zu deinem [ESPHome-Dashboard](https://my.home-assistant.io/redirect/supervisor_ingress/?addon=5c53de3b_esphome) hinzufügen und deine angepasste [Stock](firmware/stock-firmware.md) oder [Nuki Bridge](firmware/nuki-bridge-firmware.md) Firmware flashen.
-
-Nach dem Hinzufügen wird deine Konfiguration ungefähr so aussehen:
-::: details Beispiel
-> [!NOTE]
-> Hier kannst du neue Komponenten hinzufügen und bestehende ändern. Weitere Informationen zu den Möglichkeiten findest du im Abschnitt [Beispiele](firmware/stock-firmware#beispiele).
->
-> Wenn du die Firmware vollständig anpassen möchtest, solltest du die `base.yaml`-Datei aus dem Repository verwenden.
-
-```yaml
-<!--@include: ./firmware/minimal.example.yaml-->
-```
-:::

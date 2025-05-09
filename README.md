@@ -38,7 +38,7 @@ Before diving into the installation process, visit the [Doorman Docs](https://do
   </ul>
 </div>
 
-You can get fully assembled **Doorman S3** units with the **[Stock Firmware](firmware/stock-firmware)** pre-installed and ready for immediate integration into **Home Assistant**. 
+You can get fully assembled **Doorman S3** units with the **[Doorman Firmware](firmware/installation)** pre-installed and ready for immediate integration into **Home Assistant**. 
 
 For inquiries, feel free to reach out via:
 - [Discord](https://discord.gg/t2d34dvmBf)
