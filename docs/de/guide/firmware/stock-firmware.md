@@ -1,3 +1,6 @@
+<script setup>
+import { inBrowser } from 'vitepress'
+</script>
 <script>
 export default {
   data() {
@@ -87,7 +90,10 @@ export default {
         return '';
     },
     web_serial_available() {
-        return navigator.serial != undefined;
+        if(inBrowser) {
+            return navigator.serial != undefined;
+        }
+        return false;
     }
   },
 }
