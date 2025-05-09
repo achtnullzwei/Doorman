@@ -16,6 +16,12 @@ esphome:
 
       - script.execute: mqtt_connect
 
+globals:
+   - id: mqtt_connecting
+     type: bool
+     restore_value: no
+     initial_value: 'false'
+
 web_server:
   sorting_groups:
     - id: sorting_group_mqtt
@@ -94,10 +100,15 @@ button:
     name: "Save MQTT Configuration"
     icon: "mdi:content-save-check"
     on_press:
-      - logger.log: "Save MQTT configuration, disable MQTT..."
-      - mqtt.disable:
-      - delay: 5s
-      - logger.log: "Save MQTT configuration, apply config..."
+      - if:
+          condition:
+            - lambda: return id(mqtt_connecting) == true || id(mqtt_client).is_connected();
+          then:
+            - logger.log: "MQTT is connecing or already connected. Disable MQTT and wait 5 seconds..."
+            - mqtt.disable:
+            - delay: 5s
+            - lambda: id(mqtt_connecting) = false;
+      - logger.log: "Apply configuration and enable MQTT..."
       - script.execute: mqtt_connect
     web_server:
       sorting_group_id: sorting_group_mqtt
@@ -156,7 +167,7 @@ script:
   - id: mqtt_connect
     mode: restart
     then:
-      # Check if Broker data ist set
+      # Check if Broker data is set
       - if:
           condition:
              - lambda: return id(mqtt_broker_address).state != "";
@@ -178,6 +189,8 @@ script:
                 id(mqtt_client).set_username(id(mqtt_broker_username).state.c_str());
                 id(mqtt_client).set_password(id(mqtt_broker_password).state.c_str());
                 global_preferences->sync();
+                
+                id(mqtt_connecting) = true;
 
             # Try to connect to MQTT
             - logger.log: "Enable MQTT..."
