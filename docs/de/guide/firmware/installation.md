@@ -184,11 +184,11 @@ Dieser geführte Prozess sorgt für eine nahtlose Integration mit der Home Assis
         </esp-web-install-button>
     </div>
 </div>
-<div v-else class="danger custom-block">
-    <p class="custom-block-title">COMPUTER SAGT NEIN</p>
-    <p>
-        Da dein Browser kein Web Serial unterstützt, ist der Konfigurations Assistent leider nicht verfügbar! Bitte verwende einen Chromium-basierten Browser.
-    </p>
+<div v-else>
+    <div class="danger custom-block">
+        <p class="custom-block-title">COMPUTER SAGT NEIN</p>
+        <p>Da dein Browser kein Web Serial unterstützt, ist der Konfigurations Assistent leider nicht verfügbar! Bitte verwende einen Chromium-basierten Browser.</p>
+    </div>
 </div>
 
 ## Integrierte OTA-Updates <Badge type="tip" text="Neueste Release-Version, keine Anpassungen" />  

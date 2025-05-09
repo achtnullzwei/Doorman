@@ -184,9 +184,11 @@ This guided process ensures seamless integration with the Home Assistant API and
         </esp-web-install-button>
     </div>
 </div>
-<div v-else class="danger custom-block">
-    <p class="custom-block-title">BROWSER INCOMPATIBLE</p>
-    <p>Since your browser doesn't support Web Serial, the configuration assistant isn't available. Please use a Chromium-based browser instead.</p>
+<div v-else>
+    <div class="danger custom-block">
+        <p class="custom-block-title">BROWSER INCOMPATIBLE</p>
+        <p>Since your browser doesn't support Web Serial, the configuration assistant isn't available. Please use a Chromium-based browser instead.</p>
+    </div>
 </div>
 
 ## Integrated OTA Updates <Badge type="tip" text="Latest release build, no customization" />
