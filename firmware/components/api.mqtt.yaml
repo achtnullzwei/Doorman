@@ -26,6 +26,7 @@ text:
   - platform: template
     id: mqtt_broker_address
     name: "MQTT: Broker Address"
+    icon: "mdi:server"
     optimistic: true
     min_length: 0
     max_length: 30
@@ -40,6 +41,7 @@ text:
   - platform: template
     id: mqtt_broker_username
     name: "MQTT: Username"
+    icon: "mdi:shield-account"
     optimistic: true
     min_length: 0
     max_length: 30
@@ -55,6 +57,7 @@ text:
   - platform: template
     id: mqtt_broker_password
     name: "MQTT: Password"
+    icon: "mdi:shield-lock"
     optimistic: true
     min_length: 0
     max_length: 45
@@ -71,6 +74,7 @@ number:
   - platform: template
     id: mqtt_broker_port
     name: "MQTT: Broker Port"
+    icon: "mdi:numeric"
     optimistic: true
     min_value: 0
     max_value: 65535
@@ -88,6 +92,7 @@ button:
   - platform: template
     id: mqtt_save_settings
     name: "MQTT: Save configuration"
+    icon: "mdi:content-save-check"
     on_press:
       - mqtt.disable:
       - delay: 5s
