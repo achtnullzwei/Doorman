@@ -180,7 +180,7 @@ Liest den internen speicher deiner Innenstation mit der angegebenen Seriennummer
 ### Nuki Unpair Device <Badge type="tip" text="nuki_unpair_device" /> <Badge type="info" text="Nuki Bridge" /> <Badge type="info" text="Deaktiviert" />
 Entkoppelt dein Nuki Smart Lock.
 
-### MQTT: Save Configuration <Badge type="tip" text="mqtt_save_settings" /> <Badge type="info" text="MQTT Integration" />
+### Save MQTT Configuration <Badge type="tip" text="mqtt_save_settings" /> <Badge type="info" text="MQTT Integration" />
 Saves the MQTT credentials and reconnect.
 
 ### Install Update <Badge type="tip" text="update_install" />
@@ -228,19 +228,19 @@ Controls the Nuki Smart Lock LED Brightness setting.
 ### Nuki Security Pin <Badge type="tip" text="nuki_security_pin" /> <Badge type="info" text="Nuki Bridge" /> <Badge type="info" text="Deaktiviert" />
 Sets the Nuki Bridge Security Pin to authenticate against the Nuki Smart Lock.
 
-### MQTT: Broker Port <Badge type="tip" text="mqtt_broker_port" /> <Badge type="info" text="MQTT Integration" /> <Badge type="info" text="Deaktiviert" />
+### MQTT Broker Port <Badge type="tip" text="mqtt_broker_port" /> <Badge type="info" text="MQTT Integration" /> <Badge type="info" text="Deaktiviert" />
 Sets the MQTT Broker Port.
 
 
 ## Eingabe für Text
 
-### MQTT: Broker Address <Badge type="tip" text="mqtt_broker_address" /> <Badge type="info" text="MQTT Integration" />
+### MQTT Broker Address <Badge type="tip" text="mqtt_broker_address" /> <Badge type="info" text="MQTT Integration" />
 Sets the MQTT Broker Address.
 
-### MQTT: Broker Username <Badge type="tip" text="mqtt_broker_username" /> <Badge type="info" text="MQTT Integration" /> <Badge type="info" text="Deaktiviert" />
+### MQTT Broker Username <Badge type="tip" text="mqtt_broker_username" /> <Badge type="info" text="MQTT Integration" /> <Badge type="info" text="Deaktiviert" />
 Sets the MQTT Broker Username.
 
-### MQTT: Broker Password <Badge type="tip" text="mqtt_broker_password" /> <Badge type="info" text="MQTT Integration" /> <Badge type="info" text="Deaktiviert" />
+### MQTT Broker Password <Badge type="tip" text="mqtt_broker_password" /> <Badge type="info" text="MQTT Integration" /> <Badge type="info" text="Deaktiviert" />
 Sets the MQTT Broker Password.
 
 
@@ -479,7 +479,7 @@ Wird ausgelöst, wenn ein Abhebe-Muster des Telefons der Innenstation erkannt wi
 
 ## Updates
 
-### Doorman Firmware <Badge type="tip" text="update_http_request" />
+### Doorman Update <Badge type="tip" text="update_http_request" />
 Zeigt an, ob ein Doorman Firmware Update verfügbar ist, und bietet eine Installation über das HTTP OTA-Updateverfahren an.
 
 

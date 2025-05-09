@@ -87,7 +87,7 @@ Reports the nuki component security pin status.
 ### ESPHome Version <Badge type="tip" text="esphome_version" /> <Badge type="info" text="Disabled by default" />
 Reports the installed base ESPHome version.
 
-### Doorman Firmware <Badge type="tip" text="doorman_firmware_version" /> <Badge type="info" text="Disabled by default" />
+### Doorman Firmware Version <Badge type="tip" text="doorman_firmware_version" /> <Badge type="info" text="Disabled by default" />
 Reports the installed Doorman firmware version and build time.
 
 ### Doorman Hardware <Badge type="tip" text="doorman_hardware_version" /> <Badge type="info" text="Disabled by default" />
@@ -181,7 +181,7 @@ Reads the memory of the intercom phone with the specified serial number.
 ### Nuki Unpair Device <Badge type="tip" text="nuki_unpair_device" /> <Badge type="info" text="Nuki Bridge only" /> <Badge type="info" text="Disabled by default" />
 Unpairs your Nuki smart lock.
 
-### MQTT: Save Configuration <Badge type="tip" text="mqtt_save_settings" /> <Badge type="info" text="MQTT integration only" />
+### Save MQTT Configuration <Badge type="tip" text="mqtt_save_settings" /> <Badge type="info" text="MQTT integration only" />
 Saves the MQTT credentials and reconnect.
 
 ### Install Update <Badge type="tip" text="update_install" />
@@ -228,19 +228,19 @@ Controls the Nuki Smart Lock LED Brightness setting.
 ### Nuki Security Pin <Badge type="tip" text="nuki_security_pin" /> <Badge type="info" text="Nuki Bridge only" /> <Badge type="info" text="Disabled by default" />
 Sets the Nuki Bridge Security Pin to authenticate against the Nuki Smart Lock.
 
-### MQTT: Broker Port <Badge type="tip" text="mqtt_broker_port" /> <Badge type="info" text="MQTT integration only" /> <Badge type="info" text="Disabled by default" />
+### MQTT Broker Port <Badge type="tip" text="mqtt_broker_port" /> <Badge type="info" text="MQTT integration only" /> <Badge type="info" text="Disabled by default" />
 Sets the MQTT Broker Port.
 
 
 ## Texts
 
-### MQTT: Broker Address <Badge type="tip" text="mqtt_broker_address" /> <Badge type="info" text="MQTT integration only" />
+### MQTT Broker Address <Badge type="tip" text="mqtt_broker_address" /> <Badge type="info" text="MQTT integration only" />
 Sets the MQTT Broker Address.
 
-### MQTT: Broker Username <Badge type="tip" text="mqtt_broker_username" /> <Badge type="info" text="MQTT integration only" /> <Badge type="info" text="Disabled by default" />
+### MQTT Broker Username <Badge type="tip" text="mqtt_broker_username" /> <Badge type="info" text="MQTT integration only" /> <Badge type="info" text="Disabled by default" />
 Sets the MQTT Broker Username.
 
-### MQTT: Broker Password <Badge type="tip" text="mqtt_broker_password" /> <Badge type="info" text="MQTT integration only" /> <Badge type="info" text="Disabled by default" />
+### MQTT Broker Password <Badge type="tip" text="mqtt_broker_password" /> <Badge type="info" text="MQTT integration only" /> <Badge type="info" text="Disabled by default" />
 Sets the MQTT Broker Password.
 
 
@@ -479,7 +479,7 @@ Triggers each time a phone pick up pattern is detected. Learn more about pattern
 
 ## Updates
 
-### Doorman Firmware <Badge type="tip" text="update_http_request" />
+### Doorman Update <Badge type="tip" text="update_http_request" />
 Shows if an doorman firmware update is available and offers installation via the HTTP OTA update mechanism.
 
 

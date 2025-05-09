@@ -32,7 +32,7 @@ ON oder OFF oder was sonst unterstützt wird
 Um die [Ring-To-Open](../automation/ring-to-open.md) Automatisierung zu aktivieren oder zu deaktivieren, sende ON oder OFF als Payload an dieses Topic:
 ::: code-group
 ``` [Topic]
-doorman-s3/switch/rto_entrance_door/command
+doorman-s3/switch/rto__entrance_door/command
 ```
 ``` [Payload]
 ON

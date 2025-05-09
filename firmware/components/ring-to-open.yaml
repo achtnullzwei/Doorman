@@ -299,12 +299,12 @@ select:
     icon: "mdi:door"
     optimistic: true
     options:
-      - "Entrance Door"
+      - "Entrance"
       - "Second Entrance"
       - "Any Entrance"
       - "Apartment"
       - "Any Entrance & Apartment"
-    initial_option: "Any Entrance"
+    initial_option: "Entrance"
     restore_value: true
     entity_category: CONFIG
     web_server:
