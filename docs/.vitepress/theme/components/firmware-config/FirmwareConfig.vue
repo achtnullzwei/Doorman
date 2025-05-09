@@ -43,7 +43,7 @@ export default {
                 name: 'MQTT',
                 icon: '<img src="/mqtt-ver-transp.svg" />',
                 iconColor: '#606',
-                details: 'I want Doorman to connect directly to my MQTT broker, without using Home Assistant or other platforms.',
+                details: 'I want Doorman to connect directly to my MQTT broker to use it with other platforms.',
             },
             {
                 key: 'custom',
@@ -80,11 +80,11 @@ export default {
       return this.baseUrl + this.fw_string + '/manifest.json';
     },
     valid_manifest() {
-        return this.platform != '' && this.integration != '' && this.variant != '';
+        return this.platform && this.integration && this.variant;
     },
     notes() {
         if(this.integration == 'mqtt') {
-            return 'The MQTT Integration requires further setup! You need to setup your Broker details after flashing the firmware via the web interface.';
+            return 'The MQTT Integration requires further setup! Please take a look at the `MQTT` section below.';
         }
         return '';
     }
@@ -95,7 +95,7 @@ export default {
 <template>
     <div class="custom-layout">
         <div>
-            <div class="title_row">1️⃣ Which platform do you use?</div>
+            <div class="title_row">1️⃣ Which hardware do you use?</div>
             <div class="firmware_option_row">
                 <label class="firmware_option" v-for="fw_platform in platform_options" :key="fw_platform.key">
                     <input type="radio" class="reset_default" v-model="platform" :value="fw_platform.key">
@@ -109,7 +109,7 @@ export default {
         </div>
 
         <div v-if="platform != ''">
-            <div class="title_row">2️⃣ How should Doorman connect to your setup?</div>
+            <div class="title_row">2️⃣ Do you have any smart home system?</div>
             <div class="firmware_option_row">
                 <label class="firmware_option" v-for="fw_integration in integration_options" :key="fw_integration.key">
                     <input type="radio" class="reset_default" v-model="integration" :value="fw_integration.key">
@@ -165,10 +165,6 @@ export default {
         
     </div>
 </template>
-  
-<script setup>
-  
-</script>
 
 <style>
 .title_row
