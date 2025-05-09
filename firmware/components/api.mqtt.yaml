@@ -123,6 +123,7 @@ mqtt:
   enable_on_boot: false
   discovery: false
   discover_ip: false
+  idf_send_async: true
   on_json_message:
     - topic: doorman-s3/send_tc_command_raw
       then:

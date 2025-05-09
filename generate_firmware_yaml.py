@@ -43,6 +43,7 @@ def get_packages(host, api_variant, firmware, branch):
         
         ('api', '!include ../components/api.homeassistant.yaml', api_variant == 'ha'),
         ('api', '!include ../components/api.mqtt.yaml', api_variant == 'mqtt'),
+        ('api_arduino', '!include ../components/api.mqtt.arduino.yaml', api_variant == 'mqtt' and not is_esp32),
         ('api', '!include ../components/api.custom.yaml', api_variant == 'custom'),
 
         ('debug_utilities', '!include ../components/debug-utilities.yaml', branch == 'dev'),
