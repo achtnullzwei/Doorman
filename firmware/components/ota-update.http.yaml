@@ -18,8 +18,6 @@ update:
     name: Doorman Firmware
     source: ${update_url_stable}
     update_interval: 1h
-    on_update_available:
-      - logger.log: "A new Doorman Firmware Update is available!"
     disabled_by_default: false
     web_server:
       sorting_group_id: sorting_group_system
