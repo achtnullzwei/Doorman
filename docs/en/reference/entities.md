@@ -18,13 +18,13 @@ Reports the bluetooth strength of the paired Nuki smart lock.
 
 ## Binary Sensors
 
-### Entrance Doorbell <Badge type="tip" text="entrance_doorbell" />
+### Entrance Doorbell <Badge type="tip" text="entrance_doorbell" /> <Badge type="info" text="Disabled by default" />
 Activates whenever the `door_call` command type is received.
 
 ### Second Entrance Doorbell <Badge type="tip" text="second_entrance_doorbell" /> <Badge type="info" text="Disabled by default" />
 Activates whenever the `door_call` command type with the second entrance door station `address` is received.
 
-### Apartment Doorbell <Badge type="tip" text="apartment_doorbell" />
+### Apartment Doorbell <Badge type="tip" text="apartment_doorbell" /> <Badge type="info" text="Disabled by default" />
 Activates whenever the `floor_call` command type is received.
 
 ### Pick up phone <Badge type="tip" text="pick_up_phone" /> <Badge type="info" text="Disabled by default" />

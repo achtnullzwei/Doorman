@@ -45,6 +45,9 @@ Welcome to the latest updates! Here's a breakdown of all the **new features**, *
 - **Firmware Configuration Assistant**  
    The new assistant makes flashing the firmware easier than ever — not much technical experience required.
 
+- **Command Binary Sensors Disabled by Default**  
+   Since event entities offer the most convenient way to work with the doorbell, binary sensors are now disabled by default when adding Doorman to Home Assistant. You can still enable them manually at any time if needed.
+
 - **More Readable Log Messages**  
    Log messages have been refined for improved clarity and readability.
 

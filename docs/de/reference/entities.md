@@ -17,13 +17,13 @@ Meldet die Bluetooth Signalstärke des verbundenen Nuki Smart Locks.
 
 ## Binäre Sensoren
 
-### Entrance Doorbell <Badge type="tip" text="entrance_doorbell" />
+### Entrance Doorbell <Badge type="tip" text="entrance_doorbell" /> <Badge type="info" text="Deaktiviert" />
 Wird aktiviert, wenn der Befehl vom Typ `door_call` empfangen wird.
 
 ### Second Entrance Doorbell <Badge type="tip" text="second_entrance_doorbell" /> <Badge type="info" text="Deaktiviert" />
 Wird aktiviert, wenn der Befehl vom Typ `door_call` mit zweiter Außenstation `address` empfangen wird.
 
-### Apartment Doorbell <Badge type="tip" text="apartment_doorbell" />
+### Apartment Doorbell <Badge type="tip" text="apartment_doorbell" /> <Badge type="info" text="Deaktiviert" />
 Wird aktiviert, wenn der Befehl vom Typ `floor_call` empfangen wird.
 
 ### Pick up phone <Badge type="tip" text="pick_up_phone" /> <Badge type="info" text="Deaktiviert" />
