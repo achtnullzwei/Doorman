@@ -21,12 +21,12 @@ light:
           update_interval: 2s
           min_brightness: 0%
           max_brightness: 40%
-      - pulse:
+      - lambda:
           name: error_api
           update_interval: 1s
           lambda: |-
             static bool state = false;
-            
+
             auto call = id(doorman_rgb_status_led).turn_on();
 
             // Transition of 1000ms = 1s

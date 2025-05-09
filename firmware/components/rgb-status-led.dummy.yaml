@@ -10,25 +10,6 @@ light:
     red: output_component_dummy_1
     green: output_component_dummy_2
     blue: output_component_dummy_3
-    effects:
-      - pulse:
-          name: pulse
-          transition_length: 250ms
-          update_interval: 250ms
-          min_brightness: 0%
-          max_brightness: 40%
-      - pulse:
-          name: slow_pulse
-          transition_length: 1s
-          update_interval: 2s
-          min_brightness: 0%
-          max_brightness: 40%
-      - pulse:
-          name: slow_partymode
-          transition_length: 4s
-          update_interval: 2s
-          min_brightness: 0%
-          max_brightness: 40%
 
 output:
   - platform: template
