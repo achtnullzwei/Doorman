@@ -3,106 +3,125 @@ import { inBrowser } from 'vitepress'
 </script>
 <script>
 export default {
-  data() {
-    return {
-        baseUrl: '../../firmware/release/',
-        platform: '',
-        integration: '',
-        variant: '',
-        platform_options: [
-            {
-                key: 'esp32-s3',
-                name: 'ESP32-S3 <span class="VPBadge tip">Octal</span>',
-                icon: '',
-                iconColor: '',
-                details: 'Best choice for the <b>Doorman-S3</b> and any ESP32-S3 board with 8MB (octal) PSRAM.',
-            },
-            {
-                key: 'esp32-s3-quad',
-                name: 'ESP32-S3 <span class="VPBadge tip">Quad</span>',
-                icon: '',
-                iconColor: '',
-                details: 'For <b>Doorman-S3 rev 1.4</b> and ESP32-S3 boards with 4MB (quad) PSRAM.',
-            },
-            {
-                key: 'esp32',
-                name: 'ESP32',
-                icon: '',
-                iconColor: '',
-                details: 'For standard ESP32 boards without PSRAM or with other custom configurations.',
-            },
-        ],
-        integration_options: [
-            {
-                key: 'ha',
-                name: 'Home Assistant',
-                icon: '<img src="/home-assistant.svg" />',
-                iconColor: '',
-                details: 'I use Home Assistant and want the easiest way to integrate Doorman with my smart home.',
-            },
-            {
-                key: 'mqtt',
-                name: 'MQTT',
-                icon: '<img src="/mqtt-ver-transp.svg" />',
-                iconColor: '#606',
-                details: 'I want Doorman to connect directly to my MQTT broker to use it with other platforms.',
-            },
-            {
-                key: 'custom',
-                name: 'Standalone',
-                icon: '✨',
-                iconColor: '',
-                details: 'I don\'t use a smart home system — I just want Doorman to work on its own over Wi-Fi.',
-            },
-        ],
-        variant_options: [
-            {
-                key: 'stock',
-                name: 'Standard',
-                icon: '',
-                iconColor: '',
-                details: 'I only need the basic features to control my intercom — nothing extra.',
-            },
-            {
-                key: 'nuki-bridge',
-                name: 'Nuki Bridge',
-                icon: '',
-                iconColor: '',
-                details: 'I also want to control my Nuki Smart Lock and use Ring to Open with the apartment doorbell.',
-            },
-        ],
-    }
-  },
-  watch: {
-    integration(newIntegration, oldIntegration) {
-      if (newIntegration == 'mqtt' && this.variant == 'nuki-bridge') {
-        this.variant = 'stock';
-      }
-    }
-  },
-  computed: {
-    fw_string() {
-      return [this.platform, this.integration, this.variant].join('.');
-    },
-    manifest_file() {
-      return this.baseUrl + this.fw_string + '/manifest.json';
-    },
-    valid_manifest() {
-        return this.platform && this.integration && this.variant;
-    },
-    notes() {
-        if(this.integration == 'mqtt') {
-            return 'The firmware requires further setup after flashing! Please take a look at the <a href="./mqtt#setup">MQTT Setup instructions</a>.<br><br>Unfortunately this firmware variant is not compatible with the Nuki Bridge Addon due to <b>RAM limitations</b>.';
+    data() {
+        return {
+            test: '',
+            baseUrl: '../../firmware/release/',
+            platform: '',
+            integration: '',
+            variant: '',
+            platform_options: [
+                {
+                    key: 'esp32-s3',
+                    name: 'ESP32-S3 <span class="VPBadge tip">Octal</span>',
+                    icon: '',
+                    iconColor: '',
+                    details: 'Best choice for the <b>Doorman-S3</b> and any ESP32-S3 board with 8MB (octal) PSRAM.',
+                },
+                {
+                    key: 'esp32-s3-quad',
+                    name: 'ESP32-S3 <span class="VPBadge tip">Quad</span>',
+                    icon: '',
+                    iconColor: '',
+                    details: 'For <b>Doorman-S3 rev 1.4</b> and ESP32-S3 boards with 4MB (quad) PSRAM.',
+                },
+                {
+                    key: 'esp32',
+                    name: 'ESP32',
+                    icon: '',
+                    iconColor: '',
+                    details: 'For standard ESP32 boards without PSRAM or with other custom configurations.',
+                },
+            ],
+            integration_options: [
+                {
+                    key: 'ha',
+                    name: 'Home Assistant',
+                    icon: '<img src="/home-assistant.svg" />',
+                    iconColor: '',
+                    details: 'I use Home Assistant and want the easiest way to integrate Doorman with my smart home.',
+                },
+                {
+                    key: 'mqtt',
+                    name: 'MQTT',
+                    icon: '<img src="/mqtt-ver-transp.svg" />',
+                    iconColor: '#606',
+                    details: 'I want Doorman to connect directly to my MQTT broker to use it with other platforms.',
+                },
+                {
+                    key: 'custom',
+                    name: 'Standalone',
+                    icon: '✨',
+                    iconColor: '',
+                    details: 'I don\'t use a smart home system — I just want Doorman to work on its own over Wi-Fi.',
+                },
+            ],
+            variant_options: [
+                {
+                    key: 'stock',
+                    name: 'Standard',
+                    icon: '',
+                    iconColor: '',
+                    details: 'I only need the basic features to control my intercom — nothing extra.',
+                },
+                {
+                    key: 'nuki-bridge',
+                    name: 'Nuki Bridge',
+                    icon: '',
+                    iconColor: '',
+                    details: 'I also want to control my Nuki Smart Lock and use Ring to Open with the apartment doorbell.',
+                },
+            ],
         }
-        return '';
     },
-    web_serial_available() {
-        if(inBrowser) {
-            return navigator.serial != undefined;
+    watch: {
+        platform(newPlatform, oldPlatform) {
+            localStorage.setItem("fw_platform", newPlatform);
+        },
+        integration(newIntegration, oldIntegration) {
+            localStorage.setItem("fw_integration", newIntegration);
+            if (newIntegration == 'mqtt' && this.variant == 'nuki-bridge') {
+                this.variant = 'stock';
+            }
+        },
+        variant(newVariant, oldVariant) {
+            localStorage.setItem("fw_variant", newVariant);
         }
-        return false;
+    },
+    computed: {
+        fw_string() {
+            return [this.platform, this.integration, this.variant].join('.');
+        },
+        manifest_file() {
+            return this.baseUrl + this.fw_string + '/manifest.json';
+        },
+        valid_manifest() {
+            return this.platform && this.integration && this.variant;
+        },
+        notes() {
+            if(this.integration == 'mqtt') {
+                return 'The firmware requires further setup after flashing! Please take a look at the <a href="./mqtt#setup">MQTT Setup instructions</a>.<br><br>Unfortunately this firmware variant is not compatible with the Nuki Bridge Addon due to <b>RAM limitations</b>.';
+            }
+            return '';
+        },
+        web_serial_available() {
+            if(inBrowser) {
+                return navigator.serial != undefined;
+            }
+            return false;
+        }
+    },
+    async mounted() {
+        if (!this.platform) {
+            this.platform = localStorage.getItem("fw_platform");
+        }
+        if (!this.integration) {
+            this.integration = localStorage.getItem("fw_integration");
+        }
+        if (!this.variant) {
+            this.variant = localStorage.getItem("fw_variant");
+        }
     }
-  },
 }
 </script>
 
