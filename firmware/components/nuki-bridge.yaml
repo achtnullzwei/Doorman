@@ -54,8 +54,8 @@ lock:
     id: apartment_door
     icon: "mdi:lock"
     web_server:
-      sorting_group_id: sorting_group_nuki
-      sorting_weight: -100
+      sorting_group_id: sorting_group_controls
+      sorting_weight: 3
 
     # Optional:
     is_connected: 

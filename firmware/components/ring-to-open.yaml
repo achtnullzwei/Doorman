@@ -208,7 +208,8 @@ switch:
             id(rto_apartment_door).turn_off();
           }
     web_server:
-      sorting_group_id: sorting_group_doorman_settings
+      sorting_group_id: sorting_group_controls
+      sorting_weight: 5
 
   # Setting for each Door - Entrance Door
   - platform: template

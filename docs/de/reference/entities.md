@@ -165,8 +165,8 @@ Controls the Nuki Smart Lock Single Lock setting.
 
 ## Buttons
 
-### Turn on the Light <Badge type="tip" text="turn_on_light" /> <Badge type="info" text="Deaktiviert" />
-Schaltet das Licht ein, indem der Befehl `light_button_command` auf dem Bus gesendet wird.
+### Hallway Light <Badge type="tip" text="hallway_light" /> <Badge type="info" text="Deaktiviert" />
+Schaltet das Licht ein, indem der Befehl `light` auf dem Bus gesendet wird.
 
 ### Identify Indoor Station <Badge type="tip" text="identify_indoor_station" /> <Badge type="info" text="Deaktiviert" />
 Ermittelt das Modell der Innenstation und speichert es.

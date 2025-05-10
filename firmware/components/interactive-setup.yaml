@@ -14,8 +14,8 @@ switch:
     on_turn_off:
       - script.execute: update_led
     web_server:
-      sorting_group_id: sorting_group_system
-      sorting_weight: -19
+      sorting_group_id: sorting_group_controls
+      sorting_weight: 100
 
 # Extend TC:BUS Component
 tc_bus:

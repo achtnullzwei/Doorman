@@ -102,7 +102,7 @@ text:
             }
             id(tc_bus_intercom)->send_command(number);
     web_server:
-      sorting_group_id: sorting_group_system
+      sorting_group_id: sorting_group_intercom_settings
 
 button:
   - platform: template
@@ -114,7 +114,7 @@ button:
       - tc_bus.send:
           type: reset
     web_server:
-      sorting_group_id: sorting_group_system
+      sorting_group_id: sorting_group_intercom_settings
 
   - platform: template
     id: debug_system_discovery
@@ -204,7 +204,7 @@ button:
       - delay: 3s
       - script.execute: update_led
     web_server:
-      sorting_group_id: sorting_group_system
+      sorting_group_id: sorting_group_intercom_settings
 
 # Extend TC:BUS Component
 tc_bus:

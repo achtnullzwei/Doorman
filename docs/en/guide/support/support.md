@@ -17,6 +17,34 @@ If you've received a Doorman-S3 PCB that hasn't been pre-flashed with the [Doorm
 To resolve this, hold down the button labeled `FLASH` while connecting the USB cable to your computer. This will put the ESP into bootloader mode, preventing it from constantly restarting.
 :::
 
+::: details "Failed to initialize" when installing firmware
+You receive the error message:
+```
+Failed to initialize. Try resetting your device or holding the BOOT button while clicking INSTALL.
+```
+
+#### Solution
+**Hold down the FLASH button**  
+While connecting the USB cable to your computer, hold down the button labeled `FLASH` on the Doorman PCB. This will put the ESP into bootloader mode and allows falshing.
+
+**Try a different USB port**  
+Unplug your device and connect it to another USB port on your computer. Then, try installing the firmware again using the flash page.
+
+**Use a different USB cable**  
+If the issue persists, try using another USB cable, ensuring it's capable of both power and data transfer.
+:::
+
+::: details Installing firmware stuck at "Preparing Installation"
+If your device gets stuck on **"Preparing installation"**, follow these steps:
+
+#### Solution
+**Try a different USB port**  
+Unplug your device and connect it to another USB port on your computer. Then, restart the installation.
+
+**Press the FLASH button**  
+If the issue persists, while the **"Preparing installation"** screen is displayed, press the **FLASH** button once on the device. Your device should now proceed with the installation. If it still doesn’t proceed you can hold down the boot button for 3-5 seconds whilst on the “Preparing Installation” phase.
+:::
+
 ::: details A loud beeping noise occurs on the speaker
 Please take a look [here](../hardware-compatibility#known-issues).
 :::
@@ -49,6 +77,9 @@ This can happen when other devices are drawing too much current.
 
 You can check the a+b Bus voltage when receiving commands using an oscillosope.
 If the bus voltage constantly goes up and down there's an issue with the power draw of other bus participants.
+
+#### External Power supply issue
+Try using an isolated power supply when powering Doorman via external power supply.
 :::
 
 ## Other Issues
