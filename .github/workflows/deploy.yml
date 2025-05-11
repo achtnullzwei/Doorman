@@ -41,28 +41,29 @@ jobs:
         run: |
           GITHUB_REF_NAME=${{ github.ref_name }}
           SHA=${{ github.sha }}
-
           URL="https://doorman.azon.ai/changelog/firmware"
 
-          if [[ "${GITHUB_REF_NAME}" == "master" ]]; then
-            SUMMARY="Please review the release notes before updating, as some breaking changes might be present."
-          elif [[ "${GITHUB_REF_NAME}" == "dev" ]]; then
-            SUMMARY="This is an experimental update that should be mostly stable but may still have some minor unstable features. Details: $(git log -1 --pretty=%B), ${SHA}"
-            URL="https://dev.doorman.azon.ai/changelog/firmware"
-          elif [[ "${GITHUB_REF_NAME}" == dev* ]]; then
-            SUMMARY="WARNING! This is an experimental update (${GITHUB_REF_NAME}) with unstable features. Proceed with the update only if explicitly instructed by the developers. Details: $(git log -1 --pretty=%B), ${SHA}"
-            URL="https://dev.doorman.azon.ai/changelog/firmware"
-          else
-            SUMMARY=""
-          fi
+          CHANGELOG_FILE="docs/en/changelog/firmware.md"
+          VERSION=$(awk '/project:/, /version:/' firmware/base.yaml | grep 'version:' | awk '{print $2}' | sed 's/[",]//g')
 
-          # Encode special characters
-          SUMMARY="${SUMMARY//'%'/'%25'}"
-          SUMMARY="${SUMMARY//$'\n'/'%0A'}"
-          SUMMARY="${SUMMARY//$'\r'/'%0D'}"
-  
+          # Extract content from the section matching the version
+          RELEASE_BLOCK=$(awk -v version="## $VERSION" '
+            $0 ~ "^"version {flag=1; next}
+            /^## / && $0 != version {flag=0}
+            flag
+          ' "$CHANGELOG_FILE")
+
+          # Add the heading back
+          RELEASE_BLOCK="## $VERSION"$'\n'"$RELEASE_BLOCK"
+
+          # Escape for JSON
+          SUMMARY=$(printf "%s" "$RELEASE_BLOCK" | \
+            sed -e 's/\\/\\\\/g' \
+                -e 's/"/\\"/g' \
+                -e ':a;N;$!ba;s/\n/\\n/g')
+
+          echo "summary=\"$SUMMARY\"" >> "$GITHUB_OUTPUT"
           echo "url=$URL" >> $GITHUB_OUTPUT
-          echo "summary=$SUMMARY" >> $GITHUB_OUTPUT
 
   # Build stable firmware
   build-esp32-ha-stock-stable-firmware:
