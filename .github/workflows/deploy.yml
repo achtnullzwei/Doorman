@@ -60,18 +60,18 @@ jobs:
             flag
           ' "$CHANGELOG_FILE")
 
-          # Add the heading back
-          RELEASE_BLOCK="## $VERSION"$'\n'"$RELEASE_BLOCK"
-
           # Escape for JSON
           SUMMARY=$(printf "%s" "$RELEASE_BLOCK" | \
             sed -e 's/\\/\\\\/g' \
                 -e 's/"/\\"/g' \
                 -e ':a;N;$!ba;s/\n/\\n/g')
 
+          # Write the clean summary to the output file without extra escaping
           echo "url=$URL" >> $GITHUB_OUTPUT
-          echo "summary=$SUMMARY" >> "$GITHUB_OUTPUT"
-          
+          echo "summary<<EOF" >> $GITHUB_OUTPUT
+          echo "$SUMMARY" >> $GITHUB_OUTPUT
+          echo "EOF" >> $GITHUB_OUTPUT
+
 
   # Build stable firmware
   build-esp32-ha-stock-stable-firmware:
