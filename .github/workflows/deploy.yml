@@ -41,10 +41,17 @@ jobs:
         run: |
           GITHUB_REF_NAME=${{ github.ref_name }}
           SHA=${{ github.sha }}
-          URL="https://doorman.azon.ai/changelog/firmware"
 
           CHANGELOG_FILE="docs/en/changelog/firmware.md"
           VERSION=$(awk '/project:/, /version:/' firmware/base.yaml | grep 'version:' | awk '{print $2}' | sed 's/[",]//g')
+
+          if [[ "${GITHUB_REF_NAME}" == "dev" ]]; then
+            URL="https://dev.doorman.azon.ai/changelog/firmware"
+          elif [[ "${GITHUB_REF_NAME}" == dev* ]]; then
+            URL="https://dev.doorman.azon.ai/changelog/firmware"
+          else
+            URL="https://doorman.azon.ai/changelog/firmware"
+          fi
 
           # Extract content from the section matching the version
           RELEASE_BLOCK=$(awk -v version="## $VERSION" '
@@ -62,8 +69,9 @@ jobs:
                 -e 's/"/\\"/g' \
                 -e ':a;N;$!ba;s/\n/\\n/g')
 
-          echo "summary=\"$SUMMARY\"" >> "$GITHUB_OUTPUT"
           echo "url=$URL" >> $GITHUB_OUTPUT
+          echo "summary=$SUMMARY" >> "$GITHUB_OUTPUT"
+          
 
   # Build stable firmware
   build-esp32-ha-stock-stable-firmware:
