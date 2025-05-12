@@ -60,16 +60,10 @@ jobs:
             flag
           ' "$CHANGELOG_FILE")
 
-          # Escape for JSON
-          SUMMARY=$(printf "%s" "$RELEASE_BLOCK" | \
-            sed -e 's/\\/\\\\/g' \
-                -e 's/"/\\"/g' \
-                -e ':a;N;$!ba;s/\n/\\n/g')
-
           # Write the clean summary to the output file without extra escaping
           echo "url=$URL" >> $GITHUB_OUTPUT
           echo "summary<<EOF" >> $GITHUB_OUTPUT
-          echo "$SUMMARY" >> $GITHUB_OUTPUT
+          echo "$RELEASE_BLOCK" >> $GITHUB_OUTPUT
           echo "EOF" >> $GITHUB_OUTPUT
 
 
