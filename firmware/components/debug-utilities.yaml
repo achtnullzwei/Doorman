@@ -30,6 +30,10 @@ globals:
     type: std::vector<int>
     initial_value: ''
 
+  - id: extra_list
+    type: std::vector<int>
+    initial_value: ''
+    
 binary_sensor:
   - platform: template
     id: debug_bus_connected
@@ -172,28 +176,46 @@ button:
           type: search_devices
       # Wait until every indoor station sent response
       - delay: 10s
+      # Search Extras
+      - logger.log: Search extras (6)...
+      - globals.set:
+          id: search_mode
+          value: "4"
+      - tc_bus.send:
+          type: select_device_group
+          payload: 6
+      - delay: 350ms
+      - tc_bus.send:
+          type: search_devices
+      # Wait until every indoor station sent response
+      - delay: 10s
       # Complete
       - globals.set:
           id: search_mode
           value: "0"
       - logger.log:
-          format: "Search complete! Found %i outdoor station(s), %i 0-indoor station(s) and %i 1-indoor station(s)."
-          args: [ 'id(as_list).size()', 'id(is0_list).size()', 'id(is1_list).size()']
+          format: "Search complete! Found %i outdoor station(s), %i type 0 indoor station(s), %i type 1 indoor station(s) and , %i extra(s)."
+          args: [ 'id(as_list).size()', 'id(is0_list).size()', 'id(is1_list).size()', 'id(extra_list).size()']
           level: info
       - lambda: |-
           for (const auto& value : id(as_list))
           {
-            ESP_LOGI("DEBUG", "AS: %d", value);
+            ESP_LOGI("DEBUG", "AS (2): %d", value);
           }
 
           for (const auto& value : id(is0_list))
           {
-            ESP_LOGI("DEBUG", "IS0: %d", value);
+            ESP_LOGI("DEBUG", "IS (0): %d", value);
           }
 
           for (const auto& value : id(is1_list))
           {
-            ESP_LOGI("DEBUG", "IS1: %d", value);
+            ESP_LOGI("DEBUG", "IS (1): %d", value);
+          }
+
+          for (const auto& value : id(extra_list))
+          {
+            ESP_LOGI("DEBUG", "EXTRA (6): %d", value);
           }
       - light.turn_on:
           id: doorman_rgb_status_led
@@ -215,7 +237,23 @@ tc_bus:
               return x.type == COMMAND_TYPE_FOUND_DEVICE && id(search_mode) != 0;
         then:
           - lambda: |-
-              std::vector<int>& list = (id(search_mode) == 1 ? id(as_list) : (id(search_mode) == 2 ? id(is0_list) : id(is1_list)));           
+              std::vector<int>* list_ptr = nullptr;
+
+              int mode = id(search_mode);
+              if (mode == 1) {
+                  list_ptr = &id(as_list);
+              } else if (mode == 2) {
+                  list_ptr = &id(is0_list);
+              } else if (mode == 3) {
+                  list_ptr = &id(is1_list);
+              } else if (mode == 4) {
+                  list_ptr = &id(extra_list);
+              } else {
+                  list_ptr = &id(extra_list);
+              }
+
+              std::vector<int>& list = *list_ptr;
+
               bool found = false;
               for (const auto& s : list) {
                 if (s == x.serial_number) {
