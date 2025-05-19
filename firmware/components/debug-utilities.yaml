@@ -48,7 +48,7 @@ binary_sensor:
       }
     entity_category: DIAGNOSTIC
     web_server:
-      sorting_group_id: sorting_group_diagnostic
+      sorting_group_id: sorting_group_debug_tools
 
   - id: !extend doorman_boot_button
     internal: false
@@ -65,7 +65,7 @@ sensor:
     disabled_by_default: true
     icon: "mdi:current-dc"
     web_server:
-      sorting_group_id: sorting_group_diagnostic
+      sorting_group_id: sorting_group_debug_tools
       sorting_weight: -5
 
   - platform: wifi_signal
@@ -84,7 +84,7 @@ sensor:
     entity_category: DIAGNOSTIC
     device_class: ""
     web_server:
-      sorting_group_id: sorting_group_diagnostic
+      sorting_group_id: sorting_group_debug_tools
 
 text:
   - platform: template
@@ -106,7 +106,7 @@ text:
             }
             id(tc_bus_intercom)->send_command(number);
     web_server:
-      sorting_group_id: sorting_group_intercom_settings
+      sorting_group_id: sorting_group_debug_tools
 
 button:
   - platform: template
@@ -118,7 +118,7 @@ button:
       - tc_bus.send:
           type: reset
     web_server:
-      sorting_group_id: sorting_group_intercom_settings
+      sorting_group_id: sorting_group_debug_tools
 
   - platform: template
     id: debug_system_discovery
@@ -226,7 +226,7 @@ button:
       - delay: 3s
       - script.execute: update_led
     web_server:
-      sorting_group_id: sorting_group_intercom_settings
+      sorting_group_id: sorting_group_debug_tools
 
 # Extend TC:BUS Component
 tc_bus:

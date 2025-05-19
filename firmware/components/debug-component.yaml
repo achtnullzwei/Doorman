@@ -10,7 +10,7 @@ text_sensor:
       id: debug_restart_reason
       entity_category: DIAGNOSTIC
       web_server:
-        sorting_group_id: sorting_group_diagnostic
+        sorting_group_id: sorting_group_debug_tools
 
 sensor:
   - platform: debug
@@ -19,10 +19,10 @@ sensor:
       name: "Heap Free"
       entity_category: DIAGNOSTIC
       web_server:
-        sorting_group_id: sorting_group_diagnostic
+        sorting_group_id: sorting_group_debug_tools
     block:
       id: debug_heap_max_block
       name: "Heap Max Block"
       entity_category: DIAGNOSTIC
       web_server:
-        sorting_group_id: sorting_group_diagnostic
+        sorting_group_id: sorting_group_debug_tools

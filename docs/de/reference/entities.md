@@ -117,7 +117,7 @@ Steuert die Einschaltbestätigung für die [Ring To Open](../guide/automation/ri
 ### RTO: Display Status <Badge type="tip" text="rto_led_status" /> <Badge type="info" text="Deaktiviert" />
 Steuert die Status LED anzeige für die [Ring To Open](../guide/automation/ring-to-open) Automatisierung.
 
-### Enforce long Door Opener Command <Badge type="tip" text="force_long_door_opener_command" /> <Badge type="info" text="Deaktiviert" />
+### Use 32-Bit Door Protocol <Badge type="tip" text="use_32_open_door_protocol" /> <Badge type="info" text="Deaktiviert" />
 Dies erzwingt den langen Türöffner-Befehl und stellt sicher, dass dem kurzen Türöffner-Befehl stets eine Seriennummer hinzugefügt wird.
 
 ### Relay <Badge type="tip" text="doorman_relay" /> <Badge type="info" text="Deaktiviert" />

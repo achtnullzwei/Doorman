@@ -3,7 +3,7 @@
 switch:
   - platform: template
     name: Setup Mode
-    icon: mdi:cog
+    icon: mdi:account-cog
     id: doorman_setup_mode
     restore_mode: RESTORE_DEFAULT_ON
     entity_category: CONFIG
@@ -14,7 +14,7 @@ switch:
     on_turn_off:
       - script.execute: update_led
     web_server:
-      sorting_group_id: sorting_group_controls
+      sorting_group_id: sorting_group_settings
       sorting_weight: 100
 
 # Extend TC:BUS Component

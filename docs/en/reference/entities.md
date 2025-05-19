@@ -121,7 +121,7 @@ Controls the Status LED for the [Ring To Open](../guide/automation/ring-to-open)
 ### Relay <Badge type="tip" text="doorman_relay" /> <Badge type="info" text="Disabled by default" />
 Controls the built-in relay.
 
-### Enforce long Door Opener Command <Badge type="tip" text="force_long_door_opener_command" /> <Badge type="info" text="Disabled by default" />
+### Use 32-Bit Door Protocol <Badge type="tip" text="use_32_open_door_protocol" /> <Badge type="info" text="Disabled by default" />
 This guarantees the long door opener command is used and adds a serial number to the short door opener command.
 
 ### Setup Mode <Badge type="tip" text="doorman_setup_mode" />

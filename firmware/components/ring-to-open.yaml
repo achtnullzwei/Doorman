@@ -228,7 +228,8 @@ switch:
     on_turn_off:
       - script.execute: update_led
     web_server:
-      sorting_group_id: sorting_group_doorman_settings
+      sorting_group_id: sorting_group_rto_settings
+      sorting_weight: -80
 
   # Setting for each Door - Second Entrance Door
   - platform: template
@@ -247,7 +248,8 @@ switch:
     on_turn_off:
       - script.execute: update_led
     web_server:
-      sorting_group_id: sorting_group_doorman_settings
+      sorting_group_id: sorting_group_rto_settings
+      sorting_weight: -70
 
   # Setting for each Door - Apartment Door
   - platform: template
@@ -267,7 +269,8 @@ switch:
     on_turn_off:
       - script.execute: update_led
     web_server:
-      sorting_group_id: sorting_group_doorman_settings
+      sorting_group_id: sorting_group_rto_settings
+      sorting_weight: -50
 
   # Global Setting for all Doors
   - platform: template
@@ -279,7 +282,8 @@ switch:
     entity_category: CONFIG
     disabled_by_default: true
     web_server:
-      sorting_group_id: sorting_group_doorman_settings
+      sorting_group_id: sorting_group_rto_settings
+      sorting_weight: -100
 
   # Global Setting for all Doors
   - platform: template
@@ -291,7 +295,8 @@ switch:
     entity_category: CONFIG
     disabled_by_default: true
     web_server:
-      sorting_group_id: sorting_group_doorman_settings
+      sorting_group_id: sorting_group_rto_settings
+      sorting_weight: -99
 
 select:
   - platform: template
@@ -309,7 +314,8 @@ select:
     restore_value: true
     entity_category: CONFIG
     web_server:
-      sorting_group_id: sorting_group_doorman_settings
+      sorting_group_id: sorting_group_rto_settings
+      sorting_weight: -89
 
   - platform: template
     name: "RTO: Entrance Door - Delay"
@@ -331,7 +337,8 @@ select:
     restore_value: true
     entity_category: CONFIG
     web_server:
-      sorting_group_id: sorting_group_doorman_settings
+      sorting_group_id: sorting_group_rto_settings
+      sorting_weight: -78
 
   - platform: template
     name: "RTO: Second Entrance Door - Delay"
@@ -353,7 +360,8 @@ select:
     restore_value: true
     entity_category: CONFIG
     web_server:
-      sorting_group_id: sorting_group_doorman_settings
+      sorting_group_id: sorting_group_rto_settings
+      sorting_weight: -68
 
   - platform: template
     name: "RTO: Apartment Door - Delay"
@@ -376,7 +384,8 @@ select:
     restore_value: true
     entity_category: CONFIG
     web_server:
-      sorting_group_id: sorting_group_doorman_settings
+      sorting_group_id: sorting_group_rto_settings
+      sorting_weight: -48
 
   # Setting for each Door - Entrance Door
   - platform: template
@@ -403,7 +412,8 @@ select:
     restore_value: true
     entity_category: CONFIG
     web_server:
-      sorting_group_id: sorting_group_doorman_settings
+      sorting_group_id: sorting_group_rto_settings
+      sorting_weight: -77
 
   # Setting for each Door - Second Entrance Door
   - platform: template
@@ -431,7 +441,8 @@ select:
     restore_value: true
     entity_category: CONFIG
     web_server:
-      sorting_group_id: sorting_group_doorman_settings
+      sorting_group_id: sorting_group_rto_settings
+      sorting_weight: -67
 
   # Setting for each Door - Apartment Door
   - platform: template
@@ -459,7 +470,8 @@ select:
     restore_value: true
     entity_category: CONFIG
     web_server:
-      sorting_group_id: sorting_group_doorman_settings
+      sorting_group_id: sorting_group_rto_settings
+      sorting_weight: -47
 
   # Setting for each Door - Entrance Door
   - platform: template
@@ -477,7 +489,8 @@ select:
     restore_value: true
     entity_category: CONFIG
     web_server:
-      sorting_group_id: sorting_group_doorman_settings
+      sorting_group_id: sorting_group_rto_settings
+      sorting_weight: -79
 
   # Setting for each Door - Second Entrance Door
   - platform: template
@@ -495,7 +508,8 @@ select:
     restore_value: true
     entity_category: CONFIG
     web_server:
-      sorting_group_id: sorting_group_doorman_settings
+      sorting_group_id: sorting_group_rto_settings
+      sorting_weight: -69
 
   # Setting for each Door - Apartment Door
   - platform: template
@@ -514,7 +528,8 @@ select:
     restore_value: true
     entity_category: CONFIG
     web_server:
-      sorting_group_id: sorting_group_doorman_settings
+      sorting_group_id: sorting_group_rto_settings
+      sorting_weight: -49
 
   # Global Setting
   - platform: template
@@ -531,7 +546,8 @@ select:
     entity_category: CONFIG
     disabled_by_default: true
     web_server:
-      sorting_group_id: sorting_group_doorman_settings
+      sorting_group_id: sorting_group_rto_settings
+      sorting_weight: -90
 
 script:
   - id: rto_entrance_door_timer

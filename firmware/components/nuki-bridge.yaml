@@ -52,7 +52,7 @@ lock:
   - platform: nuki_lock
     name: Apartment Door
     id: apartment_door
-    icon: "mdi:lock"
+    icon: "mdi:door"
     web_server:
       sorting_group_id: sorting_group_controls
       sorting_weight: 3

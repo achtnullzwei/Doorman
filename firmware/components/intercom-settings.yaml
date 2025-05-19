@@ -43,7 +43,7 @@ select:
       entity_category: CONFIG
       disabled_by_default: true
       web_server:
-        sorting_group_id: sorting_group_intercom_settings
+        sorting_group_id: sorting_group_settings
         sorting_weight: -97
         
     ringtone_entrance_door_call:
@@ -141,5 +141,5 @@ button:
     on_press:
       - tc_bus.identify:
     web_server:
-      sorting_group_id: sorting_group_intercom_settings
+      sorting_group_id: sorting_group_settings
       sorting_weight: -96
