@@ -799,15 +799,7 @@ namespace esphome
             // Forced modifications
             if(this->force_long_door_opener_ && cmd_data.type == COMMAND_TYPE_OPEN_DOOR)
             {
-                if(cmd_data.serial_number != 0)
-                {
-                    cmd_data.type = COMMAND_TYPE_OPEN_DOOR_LONG;
-                    cmd_data.is_long = true;
-                }
-                else
-                {
-                    ESP_LOGW(TAG, "The long door opener command cannot be enforced without a serial number!");
-                }
+                cmd_data = buildCommand(COMMAND_TYPE_OPEN_DOOR_LONG, cmd_data.address, cmd_data.payload, cmd_data.serial_number);
             }
 
             this->command_queue_.push({cmd_data, wait_duration});
