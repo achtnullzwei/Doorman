@@ -60,6 +60,13 @@ The `tc_bus` Select component offers the following configuration options:
 | `ringtone_floor_call`                | Floor Call Ringtone Select to set the floor call ringtone of your indoor station.                              | No       | |
 | `ringtone_internal_call`             | Internal Call Ringtone Select to set the internal call ringtone of your indoor station.                        | No       | |
 
+### Switches
+The `tc_bus` Switch component offers the following configuration options:
+
+| Option                               | Description                                                                                                    | Required | Default       |
+|--------------------------------------|----------------------------------------------------------------------------------------------------------------|----------|---------------|
+| `force_long_door_opener`             | This enforces execution of the long door opener command and mandates inclusion of a serial number in the short door opener command. | No       | |
+
 
 ### Binary Sensors
 

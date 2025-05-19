@@ -80,6 +80,10 @@ select:
     ringtone_internal_call:
       name: "Ringtone: Internal Call"
 
+switch:
+  - platform: tc_bus
+    force_long_door_opener:
+      name: "Enforce long Door Opener Command"
 button:
   - platform: template
     id: open_entrance_door

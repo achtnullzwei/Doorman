@@ -51,11 +51,12 @@ namespace esphome
 
             if (!this->pref_.load(&recovered))
             {
-                recovered = {MODEL_NONE, 0};
+                recovered = {MODEL_NONE, 0, false};
             }
 
             this->model_ = recovered.model;
             this->serial_number_ = recovered.serial_number;
+            this->force_long_door_opener_ = recovered.force_long_door_opener;
 
 #ifdef USE_SELECT
             if (this->model_select_ != nullptr)
@@ -67,6 +68,12 @@ namespace esphome
             if (this->serial_number_number_ != nullptr)
             {
                 this->serial_number_number_->publish_state(this->serial_number_);
+            }
+#endif
+#ifdef USE_SWITCH
+            if (this->force_long_door_opener_switch_ != nullptr)
+            {
+                this->force_long_door_opener_switch_->publish_state(this->force_long_door_opener_);
             }
 #endif
 
@@ -111,7 +118,9 @@ namespace esphome
         {
             TCBusSettings settings{
                 this->model_,
-                this->serial_number_};
+                this->serial_number_,
+                this->force_long_door_opener_
+            };
 
             if (!this->pref_.save(&settings))
             {
@@ -785,6 +794,20 @@ namespace esphome
             if (cmd_data.command == 0)
             {
                 ESP_LOGW(TAG, "Sending commands of type %s is not yet supported.", command_type_to_string(cmd_data.type));
+            }
+
+            // Forced modifications
+            if(this->force_long_door_opener_ && cmd_data.type == COMMAND_TYPE_OPEN_DOOR)
+            {
+                if(cmd_data.serial_number != 0)
+                {
+                    cmd_data.type = COMMAND_TYPE_OPEN_DOOR_LONG;
+                    cmd_data.is_long = true;
+                }
+                else
+                {
+                    ESP_LOGW(TAG, "The long door opener command cannot be enforced without a serial number!");
+                }
             }
 
             this->command_queue_.push({cmd_data, wait_duration});

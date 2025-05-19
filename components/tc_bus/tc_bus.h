@@ -29,6 +29,9 @@
 #ifdef USE_NUMBER
 #include "esphome/components/number/number.h"
 #endif
+#ifdef USE_SWITCH
+#include "esphome/components/switch/switch.h"
+#endif
 
 #include <queue>
 
@@ -85,6 +88,7 @@ namespace esphome
         {
             Model model;
             uint32_t serial_number;
+            bool force_long_door_opener;
         };
 
         class TCBusComponent :
@@ -111,6 +115,9 @@ namespace esphome
             SUB_NUMBER(volume_handset_internal_call);
             SUB_NUMBER(volume_ringtone);
 #endif
+#ifdef USE_SWITCH
+            SUB_SWITCH(force_long_door_opener);
+#endif
 
         public:
             void set_tx(remote_transmitter::RemoteTransmitterComponent *tx) { this->tx_ = tx; }
@@ -119,6 +126,7 @@ namespace esphome
             void set_event(const char *event) { this->event_ = event; }
             void set_model(Model model) { this->model_ = model; }
             void set_serial_number(uint32_t serial_number) { this->serial_number_ = serial_number; }
+            void set_force_long_door_opener(bool force_long_door_opener) { this->force_long_door_opener_ = force_long_door_opener; }
 
             void setup() override;
             void dump_config() override;
@@ -209,6 +217,7 @@ namespace esphome
             // Indoor station data
             Model model_;
             uint32_t serial_number_;
+            bool force_long_door_opener_;
 
             // Misc
             const char *event_;

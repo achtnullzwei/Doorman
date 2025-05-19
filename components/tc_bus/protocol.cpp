@@ -95,6 +95,8 @@ namespace esphome
 
                 case COMMAND_TYPE_OPEN_DOOR_LONG:
                     if(serial_number == 0) {
+                        // Convert to short door opener command
+                        data.type = COMMAND_TYPE_OPEN_DOOR;
                         data.address = address;
                         data.is_long = false;
                         data.command |= (1 << 12); // 1
@@ -793,7 +795,7 @@ namespace esphome
 
         ModelData getModelData(Model model)
         {
-            ModelData modelData;
+            ModelData modelData{};
             modelData.model = model;
             modelData.capabilities = 0;
 
