@@ -939,12 +939,22 @@ namespace esphome
                 return;
             }
 
-            ESP_LOGD(TAG, "Reading EEPROM for model %s (Serial: %i)...", model_to_string(model), serial_number);
+            ModelData model_data = getModelData(model);
+
+            if (model_data.memory_size == 0)
+            {
+                ESP_LOGE(TAG, "This model %s (Serial: %i) does not support reading memory!", model_to_string(model), serial_number);
+                // Call timeout callback for unsupported models
+                this->read_memory_timeout_callback_.call();
+                return;
+            }
+            else
+            {
+                ESP_LOGD(TAG, "Reading EEPROM for model %s (Serial: %i)...", model_to_string(model), serial_number);
+            }
 
             this->cancel_timeout("wait_for_memory_reading");
             reading_memory_ = false;
-
-            ModelData model_data = getModelData(model);
 
             send_command(COMMAND_TYPE_SELECT_DEVICE_GROUP, 0, model_data.category);
             send_command(COMMAND_TYPE_SELECT_MEMORY_PAGE, 0, 0, serial_number);
