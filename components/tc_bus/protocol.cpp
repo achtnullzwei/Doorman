@@ -795,56 +795,131 @@ namespace esphome
         {
             ModelData modelData;
             modelData.model = model;
+            modelData.capabilities = 0;
 
             switch (model) {
                 // Category 1
                 case MODEL_ISW3030: /* TC50 */
                     modelData.category = 1;
                     modelData.memory_size = 32;
+                    modelData.capabilities |= CAP_RINGTONE_ENTRANCE_DOOR_CALL;
+                    modelData.capabilities |= CAP_RINGTONE_INTERNAL_CALL;
+                    modelData.capabilities |= CAP_RINGTONE_FLOOR_CALL;
+                    modelData.capabilities |= CAP_VOLUME_RINGTONE;
+                    modelData.capabilities |= CAP_VOLUME_HANDSET_DOOR_CALL;
                     break;
                 case MODEL_ISW3130: /* TC50P */
                     modelData.category = 1;
                     modelData.memory_size = 32;
+                    modelData.capabilities |= CAP_RINGTONE_ENTRANCE_DOOR_CALL;
+                    modelData.capabilities |= CAP_RINGTONE_INTERNAL_CALL;
+                    modelData.capabilities |= CAP_RINGTONE_FLOOR_CALL;
+                    modelData.capabilities |= CAP_VOLUME_RINGTONE;
+                    modelData.capabilities |= CAP_VOLUME_HANDSET_DOOR_CALL;
                     break;
                 case MODEL_ISW3230: /* TC50 GFA */
                     modelData.category = 1;
                     modelData.memory_size = 40;
+                    modelData.capabilities |= CAP_RINGTONE_ENTRANCE_DOOR_CALL;
+                    modelData.capabilities |= CAP_RINGTONE_INTERNAL_CALL;
+                    modelData.capabilities |= CAP_RINGTONE_FLOOR_CALL;
+                    modelData.capabilities |= CAP_VOLUME_RINGTONE;
+                    modelData.capabilities |= CAP_VOLUME_HANDSET_DOOR_CALL;
                     break;
                 case MODEL_ISW3330: /* TC50 BW */
                     modelData.category = 1;
                     modelData.memory_size = 64;
+                    modelData.capabilities |= CAP_RINGTONE_ENTRANCE_DOOR_CALL;
+                    modelData.capabilities |= CAP_RINGTONE_INTERNAL_CALL;
+                    modelData.capabilities |= CAP_RINGTONE_FLOOR_CALL;
+                    modelData.capabilities |= CAP_VOLUME_RINGTONE;
+                    modelData.capabilities |= CAP_VOLUME_HANDSET_DOOR_CALL;
                     break;
                 case MODEL_ISW3340:
                     modelData.category = 1;
                     modelData.memory_size = 128;
+                    modelData.capabilities |= CAP_RINGTONE_ENTRANCE_DOOR_CALL;
+                    modelData.capabilities |= CAP_RINGTONE_INTERNAL_CALL;
+                    modelData.capabilities |= CAP_RINGTONE_FLOOR_CALL;
+                    modelData.capabilities |= CAP_VOLUME_RINGTONE;
+                    modelData.capabilities |= CAP_VOLUME_HANDSET_DOOR_CALL;
                     break;
                 case MODEL_ISW5010: /* TC60 */
                     modelData.category = 1;
                     modelData.memory_size = 32;
+                    modelData.capabilities |= CAP_RINGTONE_ENTRANCE_DOOR_CALL;
+                    modelData.capabilities |= CAP_RINGTONE_INTERNAL_CALL;
+                    modelData.capabilities |= CAP_RINGTONE_FLOOR_CALL;
+                    modelData.capabilities |= CAP_RINGTONE_SECOND_ENTRANCE_DOOR_CALL;
+                    modelData.capabilities |= CAP_VOLUME_RINGTONE;
+                    modelData.capabilities |= CAP_VOLUME_HANDSET_DOOR_CALL;
+                    modelData.capabilities |= CAP_VOLUME_HANDSET_INTERNAL_CALL;
                     break;
                 case MODEL_ISW5020:
                     modelData.category = 1;
                     modelData.memory_size = 32;
+                    modelData.capabilities |= CAP_RINGTONE_ENTRANCE_DOOR_CALL;
+                    modelData.capabilities |= CAP_RINGTONE_INTERNAL_CALL;
+                    modelData.capabilities |= CAP_RINGTONE_FLOOR_CALL;
+                    modelData.capabilities |= CAP_RINGTONE_SECOND_ENTRANCE_DOOR_CALL;
+                    modelData.capabilities |= CAP_VOLUME_RINGTONE;
+                    modelData.capabilities |= CAP_VOLUME_HANDSET_DOOR_CALL;
+                    modelData.capabilities |= CAP_VOLUME_HANDSET_INTERNAL_CALL;
                     break;
                 case MODEL_ISW5030:
                     modelData.category = 1;
                     modelData.memory_size = 32;
+                    modelData.capabilities |= CAP_RINGTONE_ENTRANCE_DOOR_CALL;
+                    modelData.capabilities |= CAP_RINGTONE_INTERNAL_CALL;
+                    modelData.capabilities |= CAP_RINGTONE_FLOOR_CALL;
+                    modelData.capabilities |= CAP_RINGTONE_SECOND_ENTRANCE_DOOR_CALL;
+                    modelData.capabilities |= CAP_VOLUME_RINGTONE;
+                    modelData.capabilities |= CAP_VOLUME_HANDSET_DOOR_CALL;
+                    modelData.capabilities |= CAP_VOLUME_HANDSET_INTERNAL_CALL;
                     break;
                 case MODEL_ISW5031:
                     modelData.category = 1;
                     modelData.memory_size = 32;
+                    modelData.capabilities |= CAP_RINGTONE_ENTRANCE_DOOR_CALL;
+                    modelData.capabilities |= CAP_RINGTONE_INTERNAL_CALL;
+                    modelData.capabilities |= CAP_RINGTONE_FLOOR_CALL;
+                    modelData.capabilities |= CAP_RINGTONE_SECOND_ENTRANCE_DOOR_CALL;
+                    modelData.capabilities |= CAP_VOLUME_RINGTONE;
+                    modelData.capabilities |= CAP_VOLUME_HANDSET_DOOR_CALL;
+                    modelData.capabilities |= CAP_VOLUME_HANDSET_INTERNAL_CALL;
                     break;
                 case MODEL_ISW5033:
                     modelData.category = 1;
                     modelData.memory_size = 32;
+                    modelData.capabilities |= CAP_RINGTONE_ENTRANCE_DOOR_CALL;
+                    modelData.capabilities |= CAP_RINGTONE_INTERNAL_CALL;
+                    modelData.capabilities |= CAP_RINGTONE_FLOOR_CALL;
+                    modelData.capabilities |= CAP_RINGTONE_SECOND_ENTRANCE_DOOR_CALL;
+                    modelData.capabilities |= CAP_VOLUME_RINGTONE;
+                    modelData.capabilities |= CAP_VOLUME_HANDSET_DOOR_CALL;
+                    modelData.capabilities |= CAP_VOLUME_HANDSET_INTERNAL_CALL;
                     break;
                 case MODEL_IVW511X: /* VTC60 */
                     modelData.category = 1;
                     modelData.memory_size = 48;
+                    modelData.capabilities |= CAP_RINGTONE_ENTRANCE_DOOR_CALL;
+                    modelData.capabilities |= CAP_RINGTONE_INTERNAL_CALL;
+                    modelData.capabilities |= CAP_RINGTONE_FLOOR_CALL;
+                    modelData.capabilities |= CAP_RINGTONE_SECOND_ENTRANCE_DOOR_CALL;
+                    modelData.capabilities |= CAP_VOLUME_RINGTONE;
+                    modelData.capabilities |= CAP_VOLUME_HANDSET_DOOR_CALL;
+                    modelData.capabilities |= CAP_VOLUME_HANDSET_INTERNAL_CALL;
                     break;
                 case MODEL_IVW521X: /* VTC60/2D */
                     modelData.category = 1;
                     modelData.memory_size = 48;
+                    modelData.capabilities |= CAP_RINGTONE_ENTRANCE_DOOR_CALL;
+                    modelData.capabilities |= CAP_RINGTONE_INTERNAL_CALL;
+                    modelData.capabilities |= CAP_RINGTONE_FLOOR_CALL;
+                    modelData.capabilities |= CAP_RINGTONE_SECOND_ENTRANCE_DOOR_CALL;
+                    modelData.capabilities |= CAP_VOLUME_RINGTONE;
+                    modelData.capabilities |= CAP_VOLUME_HANDSET_DOOR_CALL;
+                    modelData.capabilities |= CAP_VOLUME_HANDSET_INTERNAL_CALL;
                     break;
                 case MODEL_ISW6031:
                     modelData.category = 1;
@@ -893,30 +968,75 @@ namespace esphome
                 case MODEL_IVW2210: /* Ecoos */
                     modelData.category = 1;
                     modelData.memory_size = 64;
+                    modelData.capabilities |= CAP_RINGTONE_ENTRANCE_DOOR_CALL;
+                    modelData.capabilities |= CAP_RINGTONE_INTERNAL_CALL;
+                    modelData.capabilities |= CAP_RINGTONE_FLOOR_CALL;
+                    modelData.capabilities |= CAP_RINGTONE_SECOND_ENTRANCE_DOOR_CALL;
+                    modelData.capabilities |= CAP_VOLUME_RINGTONE;
+                    // Supported? Not documented
+                    //modelData.capabilities |= CAP_VOLUME_HANDSET_DOOR_CALL;
                     break;
                 case MODEL_IVW2211: /* Ecoos */
                     modelData.category = 1;
                     modelData.memory_size = 64;
+                    modelData.capabilities |= CAP_RINGTONE_ENTRANCE_DOOR_CALL;
+                    modelData.capabilities |= CAP_RINGTONE_INTERNAL_CALL;
+                    modelData.capabilities |= CAP_RINGTONE_FLOOR_CALL;
+                    modelData.capabilities |= CAP_RINGTONE_SECOND_ENTRANCE_DOOR_CALL;
+                    modelData.capabilities |= CAP_VOLUME_RINGTONE;
+                    // Supported? Not documented
+                    //modelData.capabilities |= CAP_VOLUME_HANDSET_DOOR_CALL;
                     break;
                 case MODEL_IVW2212: /* Ecoos */
                     modelData.category = 1;
                     modelData.memory_size = 64;
+                    modelData.capabilities |= CAP_RINGTONE_ENTRANCE_DOOR_CALL;
+                    modelData.capabilities |= CAP_RINGTONE_INTERNAL_CALL;
+                    modelData.capabilities |= CAP_RINGTONE_FLOOR_CALL;
+                    modelData.capabilities |= CAP_RINGTONE_SECOND_ENTRANCE_DOOR_CALL;
+                    modelData.capabilities |= CAP_VOLUME_RINGTONE;
+                    // Supported? Not documented
+                    //modelData.capabilities |= CAP_VOLUME_HANDSET_DOOR_CALL;
                     break;
                 case MODEL_VTC42V2:
                     modelData.category = 1;
                     modelData.memory_size = 64;
+                    modelData.capabilities |= CAP_RINGTONE_ENTRANCE_DOOR_CALL;
+                    modelData.capabilities |= CAP_RINGTONE_INTERNAL_CALL;
+                    modelData.capabilities |= CAP_RINGTONE_FLOOR_CALL;
+                    modelData.capabilities |= CAP_RINGTONE_SECOND_ENTRANCE_DOOR_CALL;
+                    modelData.capabilities |= CAP_VOLUME_RINGTONE;
+                    modelData.capabilities |= CAP_VOLUME_HANDSET_DOOR_CALL;
                     break;
                 case MODEL_TC40V2:
                     modelData.category = 1;
                     modelData.memory_size = 64;
+                    modelData.capabilities |= CAP_RINGTONE_ENTRANCE_DOOR_CALL;
+                    modelData.capabilities |= CAP_RINGTONE_INTERNAL_CALL;
+                    modelData.capabilities |= CAP_RINGTONE_FLOOR_CALL;
+                    modelData.capabilities |= CAP_RINGTONE_SECOND_ENTRANCE_DOOR_CALL;
+                    modelData.capabilities |= CAP_VOLUME_RINGTONE;
+                    modelData.capabilities |= CAP_VOLUME_HANDSET_DOOR_CALL;
                     break;
                 case MODEL_VTC40:
                     modelData.category = 1;
                     modelData.memory_size = 40;
+                    modelData.capabilities |= CAP_RINGTONE_ENTRANCE_DOOR_CALL;
+                    modelData.capabilities |= CAP_RINGTONE_INTERNAL_CALL;
+                    modelData.capabilities |= CAP_RINGTONE_FLOOR_CALL;
+                    modelData.capabilities |= CAP_RINGTONE_SECOND_ENTRANCE_DOOR_CALL;
+                    modelData.capabilities |= CAP_VOLUME_RINGTONE;
+                    modelData.capabilities |= CAP_VOLUME_HANDSET_DOOR_CALL;
                     break;
                 case MODEL_TC40:
                     modelData.category = 1;
                     modelData.memory_size = 40;
+                    modelData.capabilities |= CAP_RINGTONE_ENTRANCE_DOOR_CALL;
+                    modelData.capabilities |= CAP_RINGTONE_INTERNAL_CALL;
+                    modelData.capabilities |= CAP_RINGTONE_FLOOR_CALL;
+                    modelData.capabilities |= CAP_RINGTONE_SECOND_ENTRANCE_DOOR_CALL;
+                    modelData.capabilities |= CAP_VOLUME_RINGTONE;
+                    modelData.capabilities |= CAP_VOLUME_HANDSET_DOOR_CALL;
                     break;
                 case MODEL_TC2000:
                     modelData.category = 1;
@@ -979,22 +1099,41 @@ namespace esphome
                 case MODEL_ISH3230: /* TCH50 GFA */
                     modelData.category = 0;
                     modelData.memory_size = 40;
+                    modelData.capabilities |= CAP_RINGTONE_ENTRANCE_DOOR_CALL;
+                    modelData.capabilities |= CAP_RINGTONE_INTERNAL_CALL;
+                    modelData.capabilities |= CAP_RINGTONE_FLOOR_CALL;
+                    modelData.capabilities |= CAP_VOLUME_RINGTONE;
+                    modelData.capabilities |= CAP_VOLUME_HANDSET_DOOR_CALL;
                     break;
                 case MODEL_ISH3030: /* TCH50 */
                     modelData.category = 0;
                     modelData.memory_size = 32;
+                    modelData.capabilities |= CAP_RINGTONE_ENTRANCE_DOOR_CALL;
+                    modelData.capabilities |= CAP_RINGTONE_INTERNAL_CALL;
+                    modelData.capabilities |= CAP_RINGTONE_FLOOR_CALL;
+                    modelData.capabilities |= CAP_VOLUME_RINGTONE;
+                    modelData.capabilities |= CAP_VOLUME_HANDSET_DOOR_CALL;
                     break;
                 case MODEL_ISH1030: /* TTS25 */
                     modelData.category = 0;
                     modelData.memory_size = 16;
+                    modelData.capabilities |= CAP_RINGTONE_ENTRANCE_DOOR_CALL;
+                    modelData.capabilities |= CAP_RINGTONE_INTERNAL_CALL;
+                    modelData.capabilities |= CAP_RINGTONE_FLOOR_CALL;
                     break;
                 case MODEL_TTCXX:
                     modelData.category = 0;
                     modelData.memory_size = 16;
+                    modelData.capabilities |= CAP_RINGTONE_ENTRANCE_DOOR_CALL;
+                    modelData.capabilities |= CAP_RINGTONE_INTERNAL_CALL;
+                    modelData.capabilities |= CAP_RINGTONE_FLOOR_CALL;
                     break;
                 case MODEL_TTSXX:
                     modelData.category = 0;
                     modelData.memory_size = 16;
+                    modelData.capabilities |= CAP_RINGTONE_ENTRANCE_DOOR_CALL;
+                    modelData.capabilities |= CAP_RINGTONE_INTERNAL_CALL;
+                    modelData.capabilities |= CAP_RINGTONE_FLOOR_CALL;
                     break;
                 case MODEL_IMM1000: /* TCH30 */
                     modelData.category = 0;
@@ -1023,10 +1162,18 @@ namespace esphome
                 case MODEL_IVH3222: /* VTCH50 */
                     modelData.category = 0;
                     modelData.memory_size = 32;
+                    modelData.capabilities |= CAP_RINGTONE_ENTRANCE_DOOR_CALL;
+                    modelData.capabilities |= CAP_RINGTONE_INTERNAL_CALL;
+                    modelData.capabilities |= CAP_RINGTONE_FLOOR_CALL;
                     break;
                 case MODEL_IVH4222: /* VTCH50/2D */
                     modelData.category = 0;
                     modelData.memory_size = 32;
+                    modelData.capabilities |= CAP_RINGTONE_ENTRANCE_DOOR_CALL;
+                    modelData.capabilities |= CAP_RINGTONE_INTERNAL_CALL;
+                    modelData.capabilities |= CAP_RINGTONE_FLOOR_CALL;
+                    modelData.capabilities |= CAP_VOLUME_RINGTONE;
+                    modelData.capabilities |= CAP_VOLUME_HANDSET_DOOR_CALL;
                     break;
                 case MODEL_VMH:
                     modelData.category = 0;
@@ -1059,245 +1206,44 @@ namespace esphome
 
         SettingCellData getSettingCellData(SettingType setting, Model model)
         {
-            SettingCellData data;
+            SettingCellData data{};
+            ModelData model_data = getModelData(model);
 
-            switch (model) {
-                case MODEL_ISH3030:
-                case MODEL_ISH3230:
-                case MODEL_ISW3030:
-                case MODEL_ISW3230:
-                case MODEL_ISW3340:
-                case MODEL_ISW3130:
-                case MODEL_ISW3330:
-                case MODEL_IVH4222:
-                    switch (setting) {
-                        case SETTING_RINGTONE_ENTRANCE_DOOR_CALL:
-                            data.index = 3;
-                            data.left_nibble = true;
-                            break;
-
-                        case SETTING_RINGTONE_INTERNAL_CALL:
-                            data.index = 6;
-                            data.left_nibble = true;
-                            break;
-
-                        case SETTING_RINGTONE_FLOOR_CALL:
-                            data.index = 9;
-                            data.left_nibble = true;
-                            break;
-
-                        case SETTING_VOLUME_RINGTONE:
-                            data.index = 20;
-                            data.left_nibble = false;
-                            break;
-
-                        case SETTING_VOLUME_HANDSET_DOOR_CALL:
-                            data.index = 21;
-                            data.left_nibble = false;
-                            break;
-
-                        default: break;
-                    }
-                    break;
-
-                case MODEL_ISH1030:
-                case MODEL_TTCXX:
-                case MODEL_TTSXX:
-                case MODEL_IVH3222:
-                    switch (setting) {
-                        case SETTING_RINGTONE_ENTRANCE_DOOR_CALL:
-                            data.index = 3;
-                            data.left_nibble = true;
-                            break;
-
-                        case SETTING_RINGTONE_INTERNAL_CALL:
-                            data.index = 6;
-                            data.left_nibble = true;
-                            break;
-
-                        case SETTING_RINGTONE_FLOOR_CALL:
-                            data.index = 9;
-                            data.left_nibble = true;
-                            break;
-
-                        default: break;
-                    }
-                    break;
-
-                case MODEL_VTC42V2:
-                case MODEL_TC40V2:
-                case MODEL_VTC40:
-                case MODEL_TC40:
-                    switch (setting) {
-                        case SETTING_RINGTONE_ENTRANCE_DOOR_CALL:
-                            data.index = 3;
-                            data.left_nibble = true;
-                            break;
-
-                        case SETTING_RINGTONE_INTERNAL_CALL:
-                            data.index = 6;
-                            data.left_nibble = true;
-                            break;
-
-                        case SETTING_RINGTONE_FLOOR_CALL:
-                            data.index = 9;
-                            data.left_nibble = true;
-                            break;
-
-                        case SETTING_RINGTONE_SECOND_ENTRANCE_DOOR_CALL:
-                            data.index = 12;
-                            data.left_nibble = true;
-                            break;
-
-                        case SETTING_VOLUME_RINGTONE:
-                            data.index = 20;
-                            data.left_nibble = false;
-                            break;
-
-                        case SETTING_VOLUME_HANDSET_DOOR_CALL:
-                            data.index = 21;
-                            data.left_nibble = false;
-                            break;
-
-                        default: break;
-                    }
-                    break;
-
-                case MODEL_IVW511X:
-                case MODEL_IVW521X:
-                    // TASTA Video
-                    switch (setting) {
-                        case SETTING_RINGTONE_ENTRANCE_DOOR_CALL:
-                            data.index = 3;
-                            data.left_nibble = true;
-                            break;
-
-                        case SETTING_RINGTONE_INTERNAL_CALL:
-                            data.index = 6;
-                            data.left_nibble = true;
-                            break;
-
-                        case SETTING_RINGTONE_FLOOR_CALL:
-                            data.index = 9;
-                            data.left_nibble = true;
-                            break;
-
-                        case SETTING_RINGTONE_SECOND_ENTRANCE_DOOR_CALL:
-                            data.index = 12;
-                            data.left_nibble = true;
-                            break;
-
-                        // Values: 0,2,4,6
-                        case SETTING_VOLUME_RINGTONE:
-                            data.index = 20;
-                            data.left_nibble = false;
-                            break;
-
-                        // Values: 0,2,4,7
-                        case SETTING_VOLUME_HANDSET_DOOR_CALL:
-                            data.index = 21;
-                            data.left_nibble = false;
-                            break;
-
-                        // Values: 0,2,4,7
-                        case SETTING_VOLUME_HANDSET_INTERNAL_CALL:
-                            data.index = 21;
-                            data.left_nibble = true;
-                            break;
-
-                        default: break;
-                    }
-                    break;
-
-                case MODEL_ISW5010:
-                case MODEL_ISW5020:
-                case MODEL_ISW5030:
-                case MODEL_ISW5031:
-                case MODEL_ISW5033:
-                    // TASTA Audio
-                    switch (setting) {
-                        case SETTING_RINGTONE_ENTRANCE_DOOR_CALL:
-                            data.index = 3;
-                            data.left_nibble = true;
-                            break;
-
-                        case SETTING_RINGTONE_INTERNAL_CALL:
-                            data.index = 6;
-                            data.left_nibble = true;
-                            break;
-
-                        case SETTING_RINGTONE_FLOOR_CALL:
-                            data.index = 9;
-                            data.left_nibble = true;
-                            break;
-
-                        case SETTING_RINGTONE_SECOND_ENTRANCE_DOOR_CALL:
-                            data.index = 12;
-                            data.left_nibble = true;
-                            break;
-
-                        // Values: 0,2,4,6
-                        case SETTING_VOLUME_RINGTONE:
-                            data.index = 20;
-                            data.left_nibble = false;
-                            break;
-
-                        // Values: 0,2,4,7
-                        case SETTING_VOLUME_HANDSET_DOOR_CALL:
-                            data.index = 21;
-                            data.left_nibble = false;
-                            break;
-
-                        // Values: 0,2,4,7
-                        case SETTING_VOLUME_HANDSET_INTERNAL_CALL:
-                            data.index = 21;
-                            data.left_nibble = true;
-                            break;
-
-                        default: break;
-                    }
-                    break;
-
-                case MODEL_IVW2210:
-                case MODEL_IVW2211:
-                case MODEL_IVW2212:
-                    // ECOOS
-                    switch (setting) {
-                        case SETTING_RINGTONE_ENTRANCE_DOOR_CALL:
-                            data.index = 3;
-                            data.left_nibble = true;
-                            break;
-
-                        case SETTING_RINGTONE_INTERNAL_CALL:
-                            data.index = 6;
-                            data.left_nibble = true;
-                            break;
-
-                        case SETTING_RINGTONE_FLOOR_CALL:
-                            data.index = 9;
-                            data.left_nibble = true;
-                            break;
-
-                        case SETTING_RINGTONE_SECOND_ENTRANCE_DOOR_CALL:
-                            data.index = 12;
-                            data.left_nibble = true;
-                            break;
-
-                        case SETTING_VOLUME_RINGTONE:
-                            data.index = 20;
-                            data.left_nibble = false;
-                            break;
-
-                        // Supported? Not documented.
-                        /*case SETTING_VOLUME_HANDSET_DOOR_CALL:
-                            data.index = 21;
-                            data.left_nibble = false;
-                            break;*/
-
-                        default: break;
-                    }
-                    break;
-                default: break;
+            // Only set data if model supports the capability
+            if (setting == SETTING_RINGTONE_ENTRANCE_DOOR_CALL && 
+                (model_data.capabilities & CAP_RINGTONE_ENTRANCE_DOOR_CALL)) {
+                data.index = 3;
+                data.left_nibble = true;
+            }
+            else if (setting == SETTING_RINGTONE_INTERNAL_CALL && 
+                    (model_data.capabilities & CAP_RINGTONE_INTERNAL_CALL)) {
+                data.index = 6;
+                data.left_nibble = true;
+            }
+            else if (setting == SETTING_RINGTONE_FLOOR_CALL && 
+                    (model_data.capabilities & CAP_RINGTONE_FLOOR_CALL)) {
+                data.index = 9;
+                data.left_nibble = true;
+            }
+            else if (setting == SETTING_RINGTONE_SECOND_ENTRANCE_DOOR_CALL && 
+                    (model_data.capabilities & CAP_RINGTONE_SECOND_ENTRANCE_DOOR_CALL)) {
+                data.index = 12;
+                data.left_nibble = true;
+            }
+            else if (setting == SETTING_VOLUME_RINGTONE && 
+                    (model_data.capabilities & CAP_VOLUME_RINGTONE)) {
+                data.index = 20;
+                data.left_nibble = false;
+            }
+            else if (setting == SETTING_VOLUME_HANDSET_DOOR_CALL && 
+                    (model_data.capabilities & CAP_VOLUME_HANDSET_DOOR_CALL)) {
+                data.index = 21;
+                data.left_nibble = false;
+            }
+            else if (setting == SETTING_VOLUME_HANDSET_INTERNAL_CALL && 
+                    (model_data.capabilities & CAP_VOLUME_HANDSET_INTERNAL_CALL)) {
+                data.index = 21;
+                data.left_nibble = true;
             }
 
             return data;

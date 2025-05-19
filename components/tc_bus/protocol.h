@@ -137,6 +137,16 @@ namespace esphome
             bool left_nibble = false;
         };
 
+        enum ModelCapabilities {
+            CAP_RINGTONE_ENTRANCE_DOOR_CALL = (1 << 0),
+            CAP_RINGTONE_INTERNAL_CALL = (1 << 1),
+            CAP_RINGTONE_FLOOR_CALL = (1 << 2),
+            CAP_RINGTONE_SECOND_ENTRANCE_DOOR_CALL = (1 << 3),
+            CAP_VOLUME_RINGTONE = (1 << 4),
+            CAP_VOLUME_HANDSET_DOOR_CALL = (1 << 5),
+            CAP_VOLUME_HANDSET_INTERNAL_CALL = (1 << 6)
+        };
+
         struct ModelData {
             Model model = MODEL_NONE;
             uint32_t firmware_version = 0;
@@ -146,6 +156,7 @@ namespace esphome
             uint8_t hardware_version = 0; 
             uint8_t category = 0;
             uint8_t memory_size = 0;
+            uint32_t capabilities = 0;
         };
 
         CommandData buildCommand(CommandType type, uint8_t address = 0, uint32_t payload = 0, uint32_t serial_number = 0);
