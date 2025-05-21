@@ -618,19 +618,15 @@ script:
 
   - id: rto_entrance_door_action
     then:
-      - tc_bus.send:
-          type: open_door
-          address: !lambda "return id(entrance_door_station_id).state;"
+      - lock.open: entrance_door
 
   - id: rto_second_entrance_door_action
     then:
-      - tc_bus.send:
-          type: open_door
-          address: !lambda "return id(second_entrance_door_station_id).state;"
+      - lock.open: second_entrance_door
 
   - id: rto_apartment_door_action
     then:
-      - logger.log: "RTO: Apartment Door Action"
+      - logger.log: "RTO: Apartment Door Action Placeholder"
 
   - id: !extend update_led
     then:
