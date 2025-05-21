@@ -69,7 +69,7 @@ Welcome to the latest updates! Here's a breakdown of all the **new features**, *
   The `Nuki Lock` entity has been renamed to `Apartment Door` for better alignment with the naming convention used for other doors.
 
 - **Minimum ESPHome Version Set**  
-   The minimum required version has been updated to **2025.3.0**.
+   The minimum required version has been updated to **2025.5.0**.
 
 ## 2025.3.0
 ### ✨ Improvements
