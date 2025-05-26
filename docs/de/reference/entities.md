@@ -124,7 +124,7 @@ Dies erzwingt den langen Türöffner-Befehl und stellt sicher, dass dem kurzen T
 Steuert das eingebaute Relais.
 
 ### Setup Mode <Badge type="tip" text="doorman_setup_mode" />
-Aktiviert oder deaktiviert den Modus für die [interaktive Einrichtung](../guide/getting-started#schritt-3-interaktive-einrichtung).
+Aktiviert oder deaktiviert den Modus für die [interaktive Einrichtung](../guide/getting-started#interaktive-einrichtung).
 
 ### Experimental Firmware <Badge type="tip" text="dev_firmware" />
 Schaltet experimentelle Updates frei, damit du ganz einfach zwischen dem Master- und Dev-Zweig wechseln und die neuesten Änderungen ausprobieren kannst.

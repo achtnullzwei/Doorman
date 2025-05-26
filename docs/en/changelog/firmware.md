@@ -229,7 +229,7 @@ Welcome to the latest updates! Here's a breakdown of all the **new features**, *
 - **Re-setup Required!**  
    The new protocol means you’ll need to **reconfigure** your system. Old stored commands won't work anymore. Simply **press the apartment or entrance doorbell** to start the setup again.  
 
-   👉 **Check the [setup guide](../guide/getting-started#step-3-interactive-setup) for details!**
+   👉 **Check the [setup guide](../guide/getting-started#interactive-setup) for details!**
 
 - **New Service Names**  
    We’ve made changes to the Home Assistant service names to make them easier to understand and use:

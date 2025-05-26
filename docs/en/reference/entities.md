@@ -125,7 +125,7 @@ Controls the built-in relay.
 This guarantees the long door opener command is used and adds a serial number to the short door opener command.
 
 ### Setup Mode <Badge type="tip" text="doorman_setup_mode" />
-Toggles the [Interactive Setup](../guide/getting-started#step-3-interactive-setup) Mode to easily setup your Doorman.
+Toggles the [Interactive Setup](../guide/getting-started#interactive-setup) Mode to easily setup your Doorman.
 
 ### Experimental Firmware <Badge type="tip" text="dev_firmware" />
 Enables experimental updates, allowing you to easily switch between the master and dev branches to check for the latest changes.

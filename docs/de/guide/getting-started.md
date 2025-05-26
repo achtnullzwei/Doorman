@@ -8,6 +8,12 @@ Sofern du selbst ein PCB produzieren lassen hast, musst du zuerst die Firmware f
 
 **Vielen Dank, dass du Doorman verwendest! ❤️**
 
+
+## Firmware flashen
+Wenn du eine **vorgeflashte Doorman-Platine** gekauft hast, kannst du diesen Schritt überspringen.
+Falls du jedoch deine **eigene Platine gebaut** hast oder ein **Firmware-Update** benötigst, [flashe die Firmware hier](./firmware/installation), bevor du fortfährst.
+
+
 ## Verkabelung
 Öffne als Erstes das Gehäuse deiner Innenstation. In den meisten Fällen findest du dort eine Schraubklemme mit den Bezeichnungen `a`, `b`, `E` und `P`.
 
@@ -60,31 +66,44 @@ Beispiel:
 :::
 
 
-## Einrichtung
+## Einschalten und mit W-LAN verbinden
+Wenn du deinen Doorman-S3 zum ersten Mal einschaltest, wird er schnell (orange) blinken und einen neuen Access Point namens `Doorman-S3 Setup` erstellen. Du kannst deine WLAN-Zugangsdaten über den Access Point, Improv Serial oder Improv Bluetooth einrichten.
 
-### Schritt 1: Mit Wi-Fi verbinden
-Wenn du deinen Doorman-S3 zum ersten Mal einschaltest, wird er schnell (orange) blinken und einen neuen Access Point namens `Doorman-S3 Setup` erstellen. Du kannst deine WiFi-Zugangsdaten über den Access Point, Improv Serial oder Improv Bluetooth einrichten.
 
+### Access Point
+::: info
 Das Passwort für den Access Point lautet `Op3n-Sesame!`.
+:::
 
-Sobald du mit dem Access Point verbunden bist, sollte sich die Web-Oberfläche automatisch öffnen (siehe auch Netzwerk-Benachrichtigungen).\
+Sobald du mit dem Access Point verbunden bist, sollte sich die Web-Oberfläche automatisch öffnen (siehe auch Netzwerk-Benachrichtigungen).  
 Falls nicht, kannst du manuell zu http://192.168.4.1/ in deinem Browser navigieren.
 
-::: tip
-Wenn dein Home Assistant Bluetooth aktiviert hat, kannst du die automatische Einrichtung nutzen.
+### Verwende Improv Bluetooth mit Home Assistant
+Wenn Bluetooth in deinem Home Assistant aktiviert ist, wird der Doorman-S3 automatisch erkannt.
 
-Dank mDNS-Unterstützung wird Home Assistant deinen Doorman automatisch entdecken, sobald er mit dem WiFi verbunden ist.
-:::
-![Home Assistant Discovery](./images/discovery.png)
+* Achte auf eine Benachrichtigung in Home Assistant.
+* Klicke auf `Konfigurieren`, um dein WLAN einzurichten.
 
-### Schritt 2: Mit Home Assistant verbinden
-Nachdem du deinen Doorman mit deinem Netzwerk verbunden hast, wird die RGB Status LED langsam (blau) blinken. Er sollte automatisch von Home Assistant entdeckt werden. Klicke einfach auf `Konfigurieren`, um das neu entdeckte ESPHome-Gerät hinzuzufügen.
+![Home Assistant Discovery](./images/discovery_ble.png)
 
-Falls nicht, kannst du ihn manuell per IP Addresse hinzufügen.
+### Verwende Improv Bluetooth oder Serial
+Du kannst dein WLAN auch über Bluetooth oder eine USB-Verbindung einrichten:
+
+* Gehe auf [improv-wifi.com](https://www.improv-wifi.com/)
+* Folge den Anweisungen auf der Website, um eine Verbindung herzustellen und deine WLAN-Daten einzugeben.
+
+
+## Zu Home Assistant hinzufügen
+Nachdem du deinen Doorman mit deinem Netzwerk verbunden hast, wird die RGB Status LED langsam (blau) blinken. Er sollte automatisch von Home Assistant entdeckt werden (mDNS notwendig). Falls nicht, kannst du ihn manuell per IP Addresse hinzufügen.
+
+Klicke einfach auf `Konfigurieren`, um das neu entdeckte ESPHome-Gerät hinzuzufügen.
+
+![Home Assistant Discovery](./images/discovery_ble.png)
 
 Nach erfolgreicher Verbindung leuchtet er für 3 sekunden lang durchgehend blau.
 
-### Schritt 3: Interaktive Einrichtung
+
+## Interaktive Einrichtung
 ::: tip
 Wenn du deinen Doorman zum ersten Mal mit Home Assistant verbindest,\
 befindet er sich bereits im `Setup Mode` für die interaktive Einrichtung.
@@ -92,31 +111,33 @@ befindet er sich bereits im `Setup Mode` für die interaktive Einrichtung.
 Du musst den Modus nicht manuell aktivieren; er wird bei jedem Neustart automatisch gestartet, solange der Einrichtungsprozess nicht abgeschlossen oder abgebrochen wurde.
 :::
 
-1. **Zugriff auf die Einstellungen:**
-   Öffne die Einstellungen entweder über die Weboberfläche deines Doormans oder besuche die [ESPHome Integrationsseite](https://my.home-assistant.io/redirect/integration/?domain=esphome) und wähle das Doorman S3-Gerät aus.
+### 1. Zugriff auf die Einstellungen
+Öffne die Einstellungen entweder über die Weboberfläche deines Doormans oder besuche die [ESPHome Integrationsseite](https://my.home-assistant.io/redirect/integration/?domain=esphome) und wähle das Doorman S3-Gerät aus.
 
-2. **Aktiviere den Setup-Modus:**  
-   Geh zum Bereich `Konfiguration` und schalte den `Setup-Modus` ein, um mit der interaktiven Einrichtung zu beginnen.  
-   Sobald der Setup-Prozess beginnt, wird die RGB-Status-LED grün-türkis pulsieren.
+### 2. Aktiviere den Setup-Modus
+Geh zum Bereich `Konfiguration` und schalte den `Setup-Modus` ein, um mit der interaktiven Einrichtung zu beginnen.  
+Sobald der Setup-Prozess beginnt, wird die RGB-Status-LED grün-türkis pulsieren.
 
 ::: warning BEVOR DU WEITERMACHST
 Deine Innenstation muss angeschlossen und das Gehäuse verschlossen sein, damit die Einrichtung abgeschlossen werden kann.
 :::
 
-3. **Warte, bis du auf die Klingel drückst:**  
-   Wenn du den Klingelknopf an deiner Wohnung oder am Eingang drückst, speichert das System die Seriennummer deiner Innenstation und versucht, das Modell zu erkennen.
+### 3. Warte, bis du auf die Klingel drückst
+Wenn du den Klingelknopf an deiner Wohnung oder am Eingang drückst, speichert das System die Seriennummer deiner Innenstation und versucht, das Modell zu erkennen.
 
-   Sobald das Modell erfolgreich erkannt wurde, wird der Speicher deiner Innenstation ausgelesen.  
-   **Hinweis:** Der gesamte Prozess kann **bis zu 30 Sekunden** dauern.
+Sobald das Modell erfolgreich erkannt wurde, wird der Speicher deiner Innenstation ausgelesen.  
+**Hinweis:** Der gesamte Prozess kann **bis zu 30 Sekunden** dauern.
 
-   Wenn das Modell erfolgreich erkannt wurde oder die Zeit abläuft, wird die Einrichtung abgeschlossen.
+Wenn das Modell erfolgreich erkannt wurde oder die Zeit abläuft, wird die Einrichtung abgeschlossen.
 
-4. **Einrichtung abgeschlossen:**  
-   Die LED leuchtet 3 Sekunden lang grün-türkis und geht dann aus, der Setup-Modus wird deaktiviert. Die Einrichtung ist abgeschlossen.
+### 4. Einrichtung abgeschlossen
+Die LED leuchtet 3 Sekunden lang grün-türkis und geht dann aus, der Setup-Modus wird deaktiviert. Die Einrichtung ist abgeschlossen.
 
+
+## Mehrere Eingangstüren
 Wenn du mehrere Außenstationen hast, wird die Firmware versuchen, die zusätzliche Station automatisch zu erkennen.
 Um die Erkennung der zweiten Türklingel und das Öffnen der zweiten Tür zu ermöglichen, musst du die zweite Türklingel einmal betätigen oder den physischen Entsperrknopf der zweiten Tür mindestens einmal betätigen, damit die Adresse gespeichert wird.
 
-::: tip MEHRERE INNENSTATIONEN
+
+## Mehrere Innenstationen
 Wenn du mehrere Innenstationen hast, wird's etwas tricky. Du musst dann eine eigene YAML-Konfiguration erstellen, damit alle zusammen funktionieren. Die Standard-Firmware kann nämlich nur mit einer Innenstation umgehen.
-:::

@@ -7,7 +7,13 @@ Please note that these instructions are based on the pre-flashed Doorman PCB tha
 
 **Thank you so much for using Doorman! ❤️**
 
-## Wiring
+
+## Flashing the Firmware
+If you purchased a **pre-flashed Doorman PCB**, you can skip this step.
+However, if you **built your own PCB** or need to **update the firmware**, make sure to [flash it here](./firmware/installation) before moving on.
+
+
+## Connect the Wires
 First, open your indoor station enclosure. On most models, you will find a screw terminal labeled with `a`, `b`, `E`, and `P`.
 
 ::: danger
@@ -59,58 +65,73 @@ Example:
 :::
 
 
-## Setup
+## Power Up & Connect to Wi-Fi
+When you power on your Doorman-S3 for the first time, it will blink rapidly (orange) and create a new Access Point named `Doorman-S3 Setup`. You can set up your Wi-Fi credentials using the Access Point, Improv Serial, or Improv Bluetooth.
 
-### Step 1: Connect to Wi-Fi
-When you power on your Doorman-S3 for the first time, it will blink rapidly (orange) and create a new Access Point named `Doorman-S3 Setup`. You can set up your WiFi credentials using the Access Point, Improv Serial, or Improv Bluetooth.
-
+### Access Point
+::: info
 The Access Point password is `Op3n-Sesame!`.
-
-Once connected to the Access Point, the web interface should open automatically (see also login to network notifications).\
-If it doesn't, you can manually navigate to http://192.168.4.1/ in your browser.
-
-::: tip
-You can take advantage of automatic setup in Home Assistant if your Home Assistant has Bluetooth enabled.
-
-Additionally, with mDNS support, Home Assistant will automatically discover your Doorman once it's connected to WiFi.
 :::
-![Home Assistant Discovery](./images/discovery.png)
 
-### Step 2: Connect to Home Assistant
-After connecting Doorman to your network, it will blink slowly (blue) and should be automatically discovered by Home Assistant. Simply click on `Configure` to add the newly discovered ESPHome node.
+Once connected to the Access Point, the web interface should open automatically (see also login to network notifications).  
+If it doesn't, just open your browser and go to http://192.168.4.1.
 
-### Step 3: Interactive Setup
+### Use Improv Bluetooth with Home Assistant
+If your Home Assistant has Bluetooth enabled, it will automatically detect the Doorman-S3.
+* Look for a notification in Home Assistant.
+* Click `Configure` to set up your Wi-Fi.
+
+![Home Assistant Discovery](./images/discovery_ble.png)
+
+### Use Improv Bluetooth or Serial
+You can also set up your Wi-Fi using Bluetooth or a USB connection:
+* Go to [improv-wifi.com](https://www.improv-wifi.com/)
+* Follow the steps on the site to connect and enter your Wi-Fi details.
+
+## Add to Home Assistant
+After connecting Doorman to your network, it will blink slowly (blue) and should be automatically discovered by Home Assistant (mDNS required).
+
+Simply click on `Configure` to add the newly discovered ESPHome node.
+
+![Home Assistant Discovery](./images/discovery_ha.png)
+
+After a successful connection, it will light up solid blue for 3 seconds.
+
+
+## Interactive Setup
 ::: tip
 When you first connect your Doorman to Home Assistant, it will be in `Setup Mode` for interactive setup already.
 
 You don't need to manually activate this mode; it will start automatically at each reboot as long as the setup process has not been completed or canceled.
 :::
 
-1. **Access the Settings:**  
-   Open the settings either through your Doorman's Webinterface or visit the [ESPHome Integration page](https://my.home-assistant.io/redirect/integration/?domain=esphome) and select the Doorman S3 device.
+### 1. Access the Settings
+Open the settings either through your Doorman's Webinterface or visit the [ESPHome Integration page](https://my.home-assistant.io/redirect/integration/?domain=esphome) and select the Doorman S3 device.
 
-2. **Activate Setup Mode:**  
-   Go to the `Configuration` section and enable `Setup Mode` to begin the interactive setup.  
-   Once the setup process begins, the RGB status LED will pulse green-turquoise.
+### 2. Activate Setup Mode
+Go to the `Configuration` section and enable `Setup Mode` to begin the interactive setup.  
+Once the setup process begins, the RGB status LED will pulse green-turquoise.
 
 ::: warning BEFORE YOU PROCEED
 The indoor station must be connected, and the enclosure securely closed, to complete the setup process.
 :::
 
-3. **Wait until you ring the doorbell:**  
-    When you press the doorbell button at your apartment or entrance, the system will save your indoor station's serial number and attempt to detect the model.
+### 3. Wait until you ring the doorbell
+When you press the doorbell button at your apartment or entrance, the system will save your indoor station's serial number and attempt to detect the model.
 
-    Once the model is successfully detected, the system will read the memory of your indoor station.
-    **Note:** This entire process can take **up to 30 seconds**.
+Once the model is successfully detected, the system will read the memory of your indoor station.
+**Note:** This entire process can take **up to 30 seconds**.
 
-    If the model detection is successful or if it times out, the setup will be considered finished.
+If the model detection is successful or if it times out, the setup will be considered finished.
 
-4. **Setup complete:**  
-   The LED will remain green-turquoise for 3 seconds, then turn off, and the setup mode will be turned off. The setup is complete.
+### 4. Setup complete
+The LED will remain green-turquoise for 3 seconds, then turn off, and the setup mode will be turned off. The setup is complete.
 
+
+## Multiple Entrance Doors
 If you have multiple door stations, the firmware will attempt to automatically detect the additional station.
 To enable detection of the second doorbell and the ability to unlock the second door, you need to press the second doorbell or physically push the unlock button for the second door at least once to store its address.
 
-::: tip MULTIPLE INDOOR STATIONS
+
+## Multiple Indoor Stations
 If you have multiple indoor stations, things become a bit more complex. You'll need to create a custom YAML configuration to integrate all the indoor stations. The default firmware only supports a single indoor station.
-:::
