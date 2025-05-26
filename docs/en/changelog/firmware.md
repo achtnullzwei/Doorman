@@ -54,6 +54,9 @@ Welcome to the latest updates! Here's a breakdown of all the **new features**, *
 - **Command Binary Sensors Disabled by Default**  
    Since event entities offer the most convenient way to work with the doorbell, binary sensors are now disabled by default when adding Doorman to Home Assistant. You can still enable them manually at any time if needed.
 
+- **Enhanced Captive Portal UX**  
+   Building upon the ESPHome foundation, Doorman now features a custom-branded captive portal, offering a more consistent UX for Wi-Fi configuration.
+
 - **More Readable Log Messages**  
    Log messages have been refined for improved clarity and readability.
 
