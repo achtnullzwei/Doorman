@@ -246,6 +246,12 @@ Sets the MQTT Broker Username.
 ### MQTT Broker Password <Badge type="tip" text="mqtt_broker_password" /> <Badge type="info" text="MQTT Integration" /> <Badge type="info" text="Deaktiviert" />
 Sets the MQTT Broker Password.
 
+### Entrance Door Pre-Open-Commands <Badge type="tip" text="entrance_door_before_open_cmds" /> <Badge type="info" text="Deaktiviert" />
+Gib eine Liste von Befehlen an (durch Semikolons getrennt), die auf den Bus gesendet werden, bevor der Befehl `open_door` ausgeführt wird.
+
+### Second Entrance Door Pre-Open-Commands <Badge type="tip" text="second_entrance_door_before_open_cmds" /> <Badge type="info" text="Deaktiviert" />
+Gib eine Liste von Befehlen an (durch Semikolons getrennt), die auf den Bus gesendet werden, bevor der Befehl `open_door` ausgeführt wird.
+
 
 ## Dropdowns
 
