@@ -85,7 +85,7 @@ blueprint:
           name: "Confirmation Action"
           description: "Action to run when notification is confirmed"
           default:
-            - action: lock.open
+            - action: lock.unlock
               target:
                 entity_id: lock.doorman_s3_entrance_door
           selector:

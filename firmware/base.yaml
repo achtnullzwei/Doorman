@@ -56,6 +56,10 @@ web_server:
 
     - id: sorting_group_settings
       name: "Settings - General"
+      sorting_weight: -91
+
+    - id: sorting_group_settings_advanced
+      name: "Settings - Advanced"
       sorting_weight: -90
 
     - id: sorting_group_rto_settings
@@ -179,6 +183,38 @@ number:
       sorting_group_id: sorting_group_settings
       sorting_weight: -98
 
+text:
+  - platform: template
+    id: entrance_door_before_open_cmds
+    name: "Entrance Door Pre-Open-Commands"
+    icon: "mdi:link-lock"
+    optimistic: true
+    min_length: 0
+    max_length: 255
+    mode: text
+    restore_value: true
+    initial_value : ""
+    entity_category: CONFIG
+    web_server:
+      sorting_group_id: sorting_group_settings_advanced
+      sorting_weight: -70
+
+  - platform: template
+    id: second_entrance_door_before_open_cmds
+    name: "Second Entrance Door Pre-Open-Commands"
+    icon: "mdi:link-lock"
+    optimistic: true
+    min_length: 0
+    max_length: 255
+    mode: text
+    restore_value: true
+    initial_value : ""
+    entity_category: CONFIG
+    web_server:
+      sorting_group_id: sorting_group_settings_advanced
+      sorting_weight: -69
+
+
 text_sensor:
   - platform: tc_bus
     hardware_version:
@@ -229,7 +265,7 @@ switch:
       entity_category: CONFIG
       disabled_by_default: true
       web_server:
-        sorting_group_id: sorting_group_settings
+        sorting_group_id: sorting_group_settings_advanced
         sorting_weight: -50
 
   - platform: gpio
@@ -481,17 +517,9 @@ lock:
       - lock.template.publish:
           id: entrance_door
           state: UNLOCKED
-      - tc_bus.send:
-          type: open_door
-          address: !lambda "return id(entrance_door_station_id).state;"
-      - delay: 5s
-      - lock.template.publish:
-          id: entrance_door
-          state: LOCKED
-    open_action:
-      - lock.template.publish:
-          id: entrance_door
-          state: UNLOCKED
+      - script.execute:
+          id: send_command_chain
+          command_list: !lambda "return id(entrance_door_before_open_cmds).state;"
       - tc_bus.send:
           type: open_door
           address: !lambda "return id(entrance_door_station_id).state;"
@@ -517,17 +545,9 @@ lock:
       - lock.template.publish:
           id: second_entrance_door
           state: UNLOCKED
-      - tc_bus.send:
-          type: open_door
-          address: !lambda "return id(second_entrance_door_station_id).state;"
-      - delay: 5s
-      - lock.template.publish:
-          id: second_entrance_door
-          state: LOCKED
-    open_action:
-      - lock.template.publish:
-          id: second_entrance_door
-          state: UNLOCKED
+      - script.execute:
+          id: send_command_chain
+          command_list: !lambda "return id(second_entrance_door_before_open_cmds).state;"
       - tc_bus.send:
           type: open_door
           address: !lambda "return id(second_entrance_door_station_id).state;"
@@ -584,8 +604,61 @@ event:
       sorting_group_id: sorting_group_listeners
       sorting_weight: -20
 
-
 script:
+  - id: send_command_chain
+    parameters:
+      command_list: string
+    then:
+      - lambda: |-
+          size_t start = 0;
+          size_t end;
+
+          while ((end = command_list.find(';', start)) != std::string::npos) {
+              std::string token = command_list.substr(start, end - start);
+
+              // Remove non-hex characters
+              token.erase(std::remove_if(token.begin(), token.end(), [](char c) {
+                  return !std::isxdigit(static_cast<unsigned char>(c));
+              }), token.end());
+
+              if (token.length() == 4 || token.length() == 8) {
+                  const char* str = token.c_str();
+                  char* endptr = nullptr;
+                  errno = 0;  // Reset errno before call
+                  unsigned long number = std::strtoul(str, &endptr, 16);
+
+                  // Check if entire string was converted and no errors occurred
+                  if (endptr == str + token.size() && errno == 0) {
+                      if (token.length() == 8) {
+                          id(tc_bus_intercom)->send_command(number, true);
+                      } else {
+                          id(tc_bus_intercom)->send_command(number);
+                      }
+                  }
+              }
+              start = end + 1;
+          }
+
+          // Handle last token
+          std::string token = command_list.substr(start);
+          token.erase(std::remove_if(token.begin(), token.end(), [](char c) {
+              return !std::isxdigit(static_cast<unsigned char>(c));
+          }), token.end());
+
+          if (token.length() == 4 || token.length() == 8) {
+              const char* str = token.c_str();
+              char* endptr = nullptr;
+              errno = 0;
+              unsigned long number = std::strtoul(str, &endptr, 16);
+              if (endptr == str + token.size() && errno == 0) {
+                  if (token.length() == 8) {
+                      id(tc_bus_intercom)->send_command(number, true);
+                  } else {
+                      id(tc_bus_intercom)->send_command(number);
+                  }
+              }
+          }
+
   - id: update_led
     then:
       - logger.log: "Conditionally set LED State"

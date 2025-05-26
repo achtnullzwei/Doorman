@@ -34,7 +34,7 @@ blueprint:
       name: "Action"
       description: "Action to run when the pattern is detected"
       default:
-        - action: lock.open
+        - action: lock.unlock
           target:
             entity_id: lock.doorman_s3_entrance_door
       selector:

@@ -618,11 +618,11 @@ script:
 
   - id: rto_entrance_door_action
     then:
-      - lock.open: entrance_door
+      - lock.unlock: entrance_door
 
   - id: rto_second_entrance_door_action
     then:
-      - lock.open: second_entrance_door
+      - lock.unlock: second_entrance_door
 
   - id: rto_apartment_door_action
     then:

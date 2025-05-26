@@ -36,7 +36,7 @@ trigger:
     to: double
 condition: []
 action:
-  - service: lock.open
+  - service: lock.unlock
     target:
         entity_id: lock.doorman_s3_entrance_door
 mode: single

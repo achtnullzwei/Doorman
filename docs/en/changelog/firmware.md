@@ -11,7 +11,7 @@ Welcome to the latest updates! Here's a breakdown of all the **new features**, *
 
 - **Streamlined Door Control with Unified Lock Entities**  
   The `Open Door` buttons have been replaced by new, standardized lock entities.  
-  You can now use `lock.open` and `lock.unlock` actions in Home Assistant for seamless door control.
+  You can now use the `lock.unlock` action in Home Assistant for seamless door control.
   This change simplifies dashboard integration and delivers a more consistent, intuitive experience.
 
 - **Extended Ring to Open to Apartment Doorbells**  
