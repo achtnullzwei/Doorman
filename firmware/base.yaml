@@ -194,6 +194,7 @@ text:
     mode: text
     restore_value: true
     initial_value : ""
+    disabled_by_default: true
     entity_category: CONFIG
     web_server:
       sorting_group_id: sorting_group_settings_advanced
@@ -209,6 +210,7 @@ text:
     mode: text
     restore_value: true
     initial_value : ""
+    disabled_by_default: true
     entity_category: CONFIG
     web_server:
       sorting_group_id: sorting_group_settings_advanced
@@ -508,7 +510,6 @@ lock:
     id: entrance_door
     name: "Entrance Door"
     icon: mdi:door
-    assumed_state: true
     lock_action:
       - lock.template.publish:
           id: entrance_door
@@ -536,7 +537,6 @@ lock:
     name: "Second Entrance Door"
     icon: mdi:door
     disabled_by_default: true
-    assumed_state: true
     lock_action:
       - lock.template.publish:
           id: second_entrance_door
