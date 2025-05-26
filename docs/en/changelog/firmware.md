@@ -20,6 +20,9 @@ Welcome to the latest updates! Here's a breakdown of all the **new features**, *
 - **Runtime MQTT Configuration**  
    If you flashed the firmware with MQTT integration, you can now enter your broker credentials via the built-in web interface.
 
+- **Pre-Open Commands**  
+   In some setups, it’s necessary to send one or more preparatory commands to select the correct door. This feature allows you to define and send a sequence of commands before the `open_door` command is executed.
+
 ### ✨ Improvements
 - **Refined Configuration for Ring to Open**  
    The configuration options have been separated per door, giving you greater flexibility to customize the [Ring To Open](../guide/automation/ring-to-open) behavior according to your specific requirements.
@@ -57,7 +60,7 @@ Welcome to the latest updates! Here's a breakdown of all the **new features**, *
 ### 🚨 Breaking Changes
 - **Transition to RMT Components**  
    The `TC:BUS` component no longer supports the `rx_pin` and `tx_pin` options.  
-   Instead, you must now define the `remote_receiver` and `remote_transmitter` components.
+   Instead, you must now define the `remote_receiver` and `remote_transmitter` components when using your own custom config.
 
 - **Removed Open Door Buttons**  
   The `Open Door` buttons have been removed in favor of more efficient control methods.
