@@ -30,9 +30,13 @@
     "dependencies": {
         "@tresjs/cientos": "^4.0.0",
         "@tresjs/core": "^4.2.7",
+        "esp-web-tools": "^10.1.1",
+        "improv-wifi-sdk": "^1.4.0",
+        "improv-wifi-serial-sdk": "^2.5.0",
         "three": "^0.167.1",
         "tweakpane": "^4.0.4",
         "vitepress-plugin-group-icons": "^1.5.2",
+        "vitepress-plugin-image-viewer": "^1.1.6",
         "vitepress-plugin-tabs": "^0.7.1"
     }
 }

@@ -60,14 +60,6 @@ export const shared = defineConfig({
       {
         async: '',
         type: 'module',
-        src: 'https://unpkg.com/esp-web-tools@10/dist/web/install-button.js?module'
-      }
-    ],
-    [
-      'script',
-      {
-        async: '',
-        type: 'module',
         src: 'https://kicanvas.org/kicanvas/kicanvas.js'
       }
     ],

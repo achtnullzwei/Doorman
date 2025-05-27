@@ -1,17 +1,18 @@
 # Getting Started
 
-Is this your first time here? Don't worry, we've got you covered!
-Below, you'll find a detailed guide for setting up your Doorman for the first time.
+First time here? Don't worry — we've got you covered! 😊
 
-Please note that these instructions are based on the pre-flashed Doorman PCB that I sell. If you've had a PCB manufactured yourself, make sure to flash the firmware first; otherwise, you might be waiting a long time for anything described below to happen. 😄
+Below is a step-by-step guide to help you set up your Doorman for the very first time. Just follow along — everything is laid out in the order you need to do it.
 
-**Thank you so much for using Doorman! ❤️**
-
+Thank you so much for choosing Doorman and supporting this project! ❤️
 
 ## Flashing the Firmware
-If you purchased a **pre-flashed Doorman PCB**, you can skip this step.
-However, if you **built your own PCB** or need to **update the firmware**, make sure to [flash it here](./firmware/installation) before moving on.
+If you bought a **pre-flashed Doorman PCB**, you're good to go — skip this step! 🎉
 
+But if you **built your own board** or need to **update the firmware**, now's the time to flash it.
+Otherwise, you'll be staring at a very quiet device while wondering why nothing works. 😄
+
+<div class="custom-layout"><a class="btn" target="_blank" href="./firmware/installation">Install or Update Firmware</a></div>
 
 ## Connect the Wires
 First, open your indoor station enclosure. On most models, you will find a screw terminal labeled with `a`, `b`, `E`, and `P`.
@@ -65,37 +66,151 @@ Example:
 :::
 
 
-## Power Up & Connect to Wi-Fi
-When you power on your Doorman-S3 for the first time, it will blink rapidly (orange) and create a new Access Point named `Doorman-S3 Setup`. You can set up your Wi-Fi credentials using the Access Point, Improv Serial, or Improv Bluetooth.
+## Connect to Wi-Fi
+When you power on your **Doorman-S3** for the first time, it will start **blinking rapidly in orange** — that means it's ready for Wi-Fi setup!
+
+You can connect it to Wi-Fi using one of three methods:  
+**Access Point**, **Improv Serial (USB)**, or **Improv Bluetooth**.
 
 ### Access Point
-::: info
-The Access Point password is `Op3n-Sesame!`.
+
+<div style="display: flex; flex-direction: row; flex-wrap: wrap; justify-content: space-between; gap: 20px;align-items: center;" markdown>
+   <div style="min-width:260px;flex: 1 1 260px;" markdown>
+
+   1. **Connect to the Wi-Fi network** named `Doorman-S3 Setup`.
+      Use the password: `Op3n-Sesame!`
+
+   2. Once connected, the **setup page should open automatically**.
+      ::: tip
+      You might also see a pop-up or notification asking you to sign in to the network.
+      :::
+
+      If nothing happens, just open your browser and go to **http://192.168.4.1** or click the button below:
+
+      <div class="custom-layout">
+         <a class="btn" target="_blank" href="http://192.168.4.1">Connect Doorman to Wi-Fi</a>
+      </div>
+
+   3. Enter the **Wi-Fi credentials** for the network you want your Doorman to join.
+
+   4. Once you see **“Wi-Fi connected successfully”**, you can close the window.
+
+   5. Your **Doorman** is now connected and ready to be added to **Home Assistant** using the **ESPHome integration**.
+
+   </div>
+   <div style="min-width: 185px;max-width:200px;flex: 1 1 185px;" markdown>
+      <img style="" src="./images/ap.png">
+   </div>
+</div>
+
+### Improv Bluetooth <Badge type="tip" text="Home Assistant" />
+<div style="display: flex; flex-direction: row; flex-wrap: wrap; justify-content: space-between; gap: 20px;align-items: center;" markdown>
+   <div style="min-width:250px;flex: 1 1 250px;" markdown>
+
+   1. Make sure your **Home Assistant** is updated to the latest version — this ensures full compatibility with your **Doorman** device.
+
+   2. Open the **Home Assistant** app on your mobile device.
+
+   3. Go to **Settings → Devices & Services**.
+
+   4. Look for a new device named **`doorman-s3` (Improv via BLE)** and tap **Add**.
+
+   5. Enter the **Wi-Fi credentials** for the network you want the device to connect to.
+
+   6. When you see **“Wi-Fi connected successfully”**, you're all set — you can close the prompt.
+
+   7. Your **Doorman** is now ready to be added to Home Assistant using the **ESPHome integration**.
+
+   </div>
+   <div style="min-width: 185px;max-width:200px;flex: 1 1 185px;" markdown>
+      <img style="" src="./images/discovery_ble.png">
+   </div>
+</div>
+
+### Improv Bluetooth
+You can also connect your Doorman to Wi-Fi using Bluetooth. This is a quick and easy option — especially if you're using a phone or laptop with Bluetooth support.
+
+Make sure your Doorman is powered on and nearby, then click the button below to start:
+
+<improv-wifi-launch-button>
+   <button slot="activate">
+         <div class="custom-layout">
+            <a class="btn">Connect Doorman to Wi-Fi</a>
+         </div>
+   </button>
+   <div slot="unsupported">
+         <div class="danger custom-block">
+            <p class="custom-block-title">OH SNAP!</p>
+            <p>Your browser does not support provisioning :(</p>
+         </div>
+   </div>
+</improv-wifi-launch-button>
+
+### Improv Serial <Badge type="tip" text="USB Connection" />
+If your device isn't showing up automatically, or you're setting it up for the first time, this method is a great alternative.
+
+Just connect your Doorman to this computer using a USB cable, then click the button below to connect it to Wi-Fi:
+
+<improv-wifi-serial-launch-button>
+   <button slot="activate">
+         <div class="custom-layout">
+            <a class="btn">Connect Doorman to Wi-Fi</a>
+         </div>
+   </button>
+   <div slot="unsupported">
+         <div class="danger custom-block">
+            <p class="custom-block-title">OH SNAP!</p>
+            <p>Your browser does not support provisioning :(</p>
+         </div>
+   </div>
+</improv-wifi-serial-launch-button>
+
+
+## Add to Home Assistant <Badge type="tip" text="Home Assistant variant only" />
+
+:::warning BEFORE YOU PROCEED
+This is the **default** for all **pre-flashed Doorman** units.  
+You can skip this step if you haven't flashed the `Home Assistant` Smart Home variant.
 :::
 
-Once connected to the Access Point, the web interface should open automatically (see also login to network notifications).  
-If it doesn't, just open your browser and go to http://192.168.4.1.
+After you connect your Doorman to your Wi-Fi network, it will start blinking slowly in blue. This means it's waiting for Home Assistant to connect.
 
-### Use Improv Bluetooth with Home Assistant
-If your Home Assistant has Bluetooth enabled, it will automatically detect the Doorman-S3.
-* Look for a notification in Home Assistant.
-* Click `Configure` to set up your Wi-Fi.
+<div style="display: flex; flex-direction: row; flex-wrap: wrap; justify-content: space-between; gap: 20px;align-items: center;" markdown>
+   <div style="min-width:260px;flex: 1 1 260px;" markdown>
 
-![Home Assistant Discovery](./images/discovery_ble.png)
+   It should appear automatically in Home Assistant. If it doesn't, your network may be blocking mDNS (Multicast DNS), which is required for device discovery.
 
-### Use Improv Bluetooth or Serial
-You can also set up your Wi-Fi using Bluetooth or a USB connection:
-* Go to [improv-wifi.com](https://www.improv-wifi.com/)
-* Follow the steps on the site to connect and enter your Wi-Fi details.
+   1. Make sure your **Home Assistant** instance is **updated** to the latest version to ensure compatibility with your Doorman device.
 
-## Add to Home Assistant
-After connecting Doorman to your network, it will blink slowly (blue) and should be automatically discovered by Home Assistant (mDNS required).
+   2. Open the **Home Assistant** app on your mobile device and navigate to **Settings → Devices & Services**.
 
-Simply click on `Configure` to add the newly discovered ESPHome node.
+   3. Look for a new device labeled **`Doorman S3` (ESPHome)** and tap **Add**.
 
-![Home Assistant Discovery](./images/discovery_ha.png)
+   4. After a successful connection, it will light up solid blue for 3 seconds. Your **Doorman** is now added to **Home Assistant** and ready to use.
 
-After a successful connection, it will light up solid blue for 3 seconds.
+   </div>
+   <div style="min-width: 185px;max-width:200px;flex: 1 1 185px;" markdown>
+      <img style="" src="./images/discovery_ha.png">
+   </div>
+</div>
+
+## Setup MQTT Broker <Badge type="tip" text="MQTT variant only" />
+
+:::warning BEFORE YOU PROCEED
+You can skip this step if you haven't flashed the `MQTT` Smart Home variant.
+:::
+
+After you connect your Doorman to your Wi-Fi network, it will **pulse red and blue**. This means the MQTT broker is not yet configured.
+
+1. Open the web interface and go to the `MQTT Configuration` section.
+
+2. Enter your MQTT broker credentials.
+
+   ![broker-credentials](./images/mqtt-details.png)
+
+3. Save the settings — the firmware will then try to connect to your MQTT broker.
+
+4. If it connects successfully, the status LED will light up **solid blue for 3 seconds** to confirm.
 
 
 ## Interactive Setup
@@ -119,6 +234,12 @@ The indoor station must be connected, and the enclosure securely closed, to comp
 ### 3. Wait until you ring the doorbell
 When you press the doorbell button at your apartment or entrance, the system will save your indoor station's serial number and attempt to detect the model.
 
+:::info
+If you have multiple door stations, the firmware will attempt to automatically detect the additional station.
+
+To enable detection of the second doorbell and the ability to unlock the second door, you need to press the second doorbell or physically push the unlock button for the second door at least once **after the setup is finished** to store its address.
+:::
+
 Once the model is successfully detected, the system will read the memory of your indoor station.
 **Note:** This entire process can take **up to 30 seconds**.
 
@@ -127,11 +248,6 @@ If the model detection is successful or if it times out, the setup will be consi
 ### 4. Setup complete
 The LED will remain green-turquoise for 3 seconds, then turn off, and the setup mode will be turned off. The setup is complete.
 
-
-## Multiple Entrance Doors
-If you have multiple door stations, the firmware will attempt to automatically detect the additional station.
-To enable detection of the second doorbell and the ability to unlock the second door, you need to press the second doorbell or physically push the unlock button for the second door at least once to store its address.
-
-
-## Multiple Indoor Stations
-If you have multiple indoor stations, things become a bit more complex. You'll need to create a custom YAML configuration to integrate all the indoor stations. The default firmware only supports a single indoor station.
+## Still having issues?
+If you're having trouble setting up your Doorman in Home Assistant, we're here to help.  
+Join us on [Discord](https://discord.gg/t2d34dvmBf) to get assistance and discuss with other users.

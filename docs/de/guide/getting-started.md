@@ -1,18 +1,18 @@
 # Erste Schritte
 
-Ist das dein erster Besuch hier? Keine Sorge, wir haben alles für dich vorbereitet!
-Unten findest du eine ausführliche Anleitung zur Ersteinrichtung deines Doormans.
+Ist das dein erster Besuch hier? Keine Sorge, wir haben alles für dich vorbereitet! 😊
 
-Bitte beachte, dass diese Anweisungen auf dem bereits geflashten Doorman-PCB basieren welches ich verkaufe.
-Sofern du selbst ein PCB produzieren lassen hast, musst du zuerst die Firmware flashen. Solltest du dem nicht nachgehen, kannst du lange warten, dass irgendwas von dem unten beschriebenen passiert. 😄
+Unten findest du eine Schritt-für-Schritt-Anleitung, die dich beim ersten Einrichten deines **Doorman** begleitet. Folge einfach den Schritten — alles ist genau in der Reihenfolge, wie du es brauchst.
 
-**Vielen Dank, dass du Doorman verwendest! ❤️**
-
+**Vielen Dank, dass du Doorman verwendest und dieses Projekt unterstützt! ❤️**
 
 ## Firmware flashen
-Wenn du eine **vorgeflashte Doorman-Platine** gekauft hast, kannst du diesen Schritt überspringen.
-Falls du jedoch deine **eigene Platine gebaut** hast oder ein **Firmware-Update** benötigst, [flashe die Firmware hier](./firmware/installation), bevor du fortfährst.
+Wenn du ein **vorgeflashtes Doorman-Board** gekauft hast, kannst du diesen Schritt einfach überspringen — du bist startklar! 🎉
 
+Falls du aber dein **eigenes Board gebaut** hast oder die **Firmware aktualisieren** möchtest, ist jetzt der richtige Zeitpunkt zum Flashen.
+Sonst sitzt du da und wunderst dich, warum nichts passiert. 😄
+
+<div class="custom-layout"><a class="btn" target="_blank" href="./firmware/installation">Firmware installieren oder updaten</a></div>
 
 ## Verkabelung
 Öffne als Erstes das Gehäuse deiner Innenstation. In den meisten Fällen findest du dort eine Schraubklemme mit den Bezeichnungen `a`, `b`, `E` und `P`.
@@ -66,41 +66,148 @@ Beispiel:
 :::
 
 
-## Einschalten und mit W-LAN verbinden
-Wenn du deinen Doorman-S3 zum ersten Mal einschaltest, wird er schnell (orange) blinken und einen neuen Access Point namens `Doorman-S3 Setup` erstellen. Du kannst deine WLAN-Zugangsdaten über den Access Point, Improv Serial oder Improv Bluetooth einrichten.
+## Mit WLAN verbinden
+Wenn du deinen **Doorman-S3** zum ersten Mal einschaltest, beginnt er **schnell orange zu blinken** — das bedeutet, er ist bereit für die WLAN-Einrichtung!
+
+Du kannst ihn auf eine von drei Arten mit dem WLAN verbinden:  
+**Access Point**, **Improv Serial (USB)** oder **Improv Bluetooth**.
 
 
 ### Access Point
-::: info
-Das Passwort für den Access Point lautet `Op3n-Sesame!`.
+<div style="display: flex; flex-direction: row; flex-wrap: wrap; justify-content: space-between; gap: 20px;align-items: center;" markdown>
+   <div style="min-width:260px;flex: 1 1 260px;" markdown>
+
+   1. **Verbinde dich mit dem WLAN-Netzwerk** namens `Doorman-S3 Setup`.
+      Verwende das Passwort: `Op3n-Sesame!`
+
+   2. Sobald die Verbindung steht, sollte sich die **Einrichtungsseite automatisch öffnen**.
+      ::: tip
+      Eventuell erscheint auch ein Pop-up oder eine Benachrichtigung, um dich beim Netzwerk anzumelden.
+      :::
+
+      Falls nichts passiert, öffne einfach deinen Browser und gehe zu **http://192.168.4.1** oder klicke auf den Button unten:
+
+      <div class="custom-layout">
+         <a class="btn" target="_blank" href="http://192.168.4.1">Verbinde Doorman mit dem WLAN</a>
+      </div>
+
+   3. Gib die **WLAN-Zugangsdaten** für das Netzwerk ein, mit dem dein Doorman verbunden werden soll.
+
+   4. Sobald die Meldung **„Wi-Fi connected successfully“** erscheint, kannst du das Fenster schließen.
+
+   5. Dein **Doorman** ist jetzt verbunden und kann in **Home Assistant** über die **ESPHome-Integration** hinzugefügt werden.
+
+   </div>
+   <div style="min-width: 185px;max-width:200px;flex: 1 1 185px;" markdown>
+      <img style="" src="./images/ap.png">
+   </div>
+</div>
+
+### Improv Bluetooth <Badge type="tip" text="Home Assistant" />
+<div style="display: flex; flex-direction: row; flex-wrap: wrap; justify-content: space-between; gap: 20px;align-items: center;" markdown>
+   <div style="min-width:250px;flex: 1 1 250px;" markdown>
+
+   1. Stelle sicher, dass dein **Home Assistant** auf dem neuesten Stand ist — so ist die volle Kompatibilität mit deinem **Doorman** gewährleistet.
+
+   2. Öffne die **Home Assistant**-App auf deinem Mobilgerät.
+
+   3. Gehe zu **Einstellungen → Geräte & Dienste**.
+
+   4. Suche nach einem neuen Gerät namens **`doorman-s3` (Improv via BLE)** und tippe auf **Hinzufügen**.
+
+   5. Gib die **WLAN-Zugangsdaten** für das Netzwerk ein, mit dem dein Doorman verbunden werden soll.
+
+   6. Sobald die Meldung **„Wi-Fi connected successfully“** erscheint, bist du fertig — du kannst das Popup schließen.
+
+   7. Dein **Doorman** ist jetzt bereit, über die **ESPHome-Integration** in Home Assistant hinzugefügt zu werden.
+
+   </div>
+   <div style="min-width: 185px;max-width:200px;flex: 1 1 185px;" markdown>
+      <img style="" src="./images/discovery_ble.png">
+   </div>
+</div>
+
+### Improv Bluetooth
+Du kannst deinen Doorman auch über Bluetooth mit dem WLAN verbinden. Das ist eine schnelle und einfache Möglichkeit — besonders praktisch, wenn du ein Handy oder einen Laptop mit Bluetooth nutzt.
+
+Stelle sicher, dass dein Doorman eingeschaltet und in der Nähe ist, und klicke dann auf den Button unten, um zu starten:
+
+<improv-wifi-launch-button>
+   <button slot="activate">
+         <div class="custom-layout">
+            <a class="btn">Verbinde Doorman mit dem WLAN</a>
+         </div>
+   </button>
+   <div slot="unsupported">
+         <div class="danger custom-block">
+            <p class="custom-block-title">OH SNAP!</p>
+            <p>Your browser does not support provisioning :(</p>
+         </div>
+   </div>
+</improv-wifi-launch-button>
+
+### Improv Serial <Badge type="tip" text="USB Verbindung" />
+Wenn dein Doorman nicht automatisch angezeigt wird oder du ihn zum ersten Mal einrichtest, ist diese Methode eine super Alternative.
+
+Schließe deinen Doorman einfach per USB-Kabel an deinen Computer an und klicke dann auf den Button unten, um die WLAN-Verbindung einzurichten:
+
+<improv-wifi-serial-launch-button>
+   <button slot="activate">
+         <div class="custom-layout">
+            <a class="btn">Verbinde Doorman mit dem WLAN</a>
+         </div>
+   </button>
+   <div slot="unsupported">
+         <div class="danger custom-block">
+            <p class="custom-block-title">OH SNAP!</p>
+            <p>Your browser does not support provisioning :(</p>
+         </div>
+   </div>
+</improv-wifi-serial-launch-button>
+
+## Zu Home Assistant hinzufügen <Badge type="tip" text="Nur Home Assistant Variante" />
+:::warning BEVOR DU WEITERMACHST
+Dies ist die Standard-Variante für alle vorgeflashten Doorman-Geräte.
+Diesen Schritt kannst du überspringen, wenn du nicht die `Home Assistant Smart Home` Variante geflasht hast.
 :::
 
-Sobald du mit dem Access Point verbunden bist, sollte sich die Web-Oberfläche automatisch öffnen (siehe auch Netzwerk-Benachrichtigungen).  
-Falls nicht, kannst du manuell zu http://192.168.4.1/ in deinem Browser navigieren.
+Nachdem deinen Doorman mit dem WLAN verbunden ist, blinkt die LED langsam blau. Das bedeutet, er wartet darauf, dass sich Home Assistant verbindet.
 
-### Verwende Improv Bluetooth mit Home Assistant
-Wenn Bluetooth in deinem Home Assistant aktiviert ist, wird der Doorman-S3 automatisch erkannt.
+<div style="display: flex; flex-direction: row; flex-wrap: wrap; justify-content: space-between; gap: 20px;align-items: center;" markdown>
+   <div style="min-width:260px;flex: 1 1 260px;" markdown>
 
-* Achte auf eine Benachrichtigung in Home Assistant.
-* Klicke auf `Konfigurieren`, um dein WLAN einzurichten.
+   Dein Doorman sollte automatisch in Home Assistant erscheinen. Falls nicht, blockiert dein Netzwerk möglicherweise mDNS (Multicast DNS), das für die automatische Geräteerkennung notwendig ist.
 
-![Home Assistant Discovery](./images/discovery_ble.png)
+   1. Stelle sicher, dass deine **Home Assistant**-Installation auf dem neuesten Stand ist, um die volle Kompatibilität mit deinem Doorman-Gerät zu gewährleisten.
 
-### Verwende Improv Bluetooth oder Serial
-Du kannst dein WLAN auch über Bluetooth oder eine USB-Verbindung einrichten:
+   2. Öffne die **Home Assistant**-App auf deinem mobilen Gerät und gehe zu **Einstellungen → Geräte & Dienste**.
 
-* Gehe auf [improv-wifi.com](https://www.improv-wifi.com/)
-* Folge den Anweisungen auf der Website, um eine Verbindung herzustellen und deine WLAN-Daten einzugeben.
+   3. Suche nach einem neuen Gerät mit der Bezeichnung **`Doorman S3` (ESPHome)** und tippe auf **Hinzufügen**.
 
+   4. Nach erfolgreicher Verbindung leuchtet die LED für 3 Sekunden durchgehend blau. Dein **Doorman** ist jetzt in **Home Assistant** eingebunden und einsatzbereit.
 
-## Zu Home Assistant hinzufügen
-Nachdem du deinen Doorman mit deinem Netzwerk verbunden hast, wird die RGB Status LED langsam (blau) blinken. Er sollte automatisch von Home Assistant entdeckt werden (mDNS notwendig). Falls nicht, kannst du ihn manuell per IP Addresse hinzufügen.
+   </div>
+   <div style="min-width: 185px;max-width:200px;flex: 1 1 185px;" markdown>
+      <img style="" src="./images/discovery_ha.png">
+   </div>
+</div>
 
-Klicke einfach auf `Konfigurieren`, um das neu entdeckte ESPHome-Gerät hinzuzufügen.
+## MQTT Broker einrichten <Badge type="tip" text="Nur MQTT Variante" />
+:::warning BEVOR DU WEITERMACHST
+Diesen Schritt kannst du überspringen, wenn du nicht die `MQTT Smart Home` Variante geflasht hast.
+:::
 
-![Home Assistant Discovery](./images/discovery_ble.png)
+Nachdem du deinen Doorman mit dem WLAN verbunden hast, wird die LED **rot und blau pulsieren**. Das bedeutet, der MQTT-Broker ist noch nicht konfiguriert.
 
-Nach erfolgreicher Verbindung leuchtet er für 3 sekunden lang durchgehend blau.
+1. Öffne die Weboberfläche deines Doormans und gehe zum Abschnitt **`MQTT-Konfiguration`**.
+
+2. Gib deine MQTT-Broker-Zugangsdaten ein.
+
+   ![broker-credentials](./images/mqtt-details.png)
+
+3. Speichere die Einstellungen — die Firmware versucht dann, eine Verbindung zu deinem MQTT-Broker herzustellen.
+
+4. Wenn die Verbindung erfolgreich ist, leuchtet die Status-LED zur Bestätigung **3 Sekunden lang durchgehend blau**.
 
 
 ## Interaktive Einrichtung
@@ -125,6 +232,11 @@ Deine Innenstation muss angeschlossen und das Gehäuse verschlossen sein, damit 
 ### 3. Warte, bis du auf die Klingel drückst
 Wenn du den Klingelknopf an deiner Wohnung oder am Eingang drückst, speichert das System die Seriennummer deiner Innenstation und versucht, das Modell zu erkennen.
 
+:::info
+Wenn du mehrere Außenstationen hast, wird die Firmware versuchen, die zusätzliche Station automatisch zu erkennen.
+Um die Erkennung der zweiten Türklingel und das Öffnen der zweiten Tür zu ermöglichen, musst du die zweite Türklingel einmal betätigen oder den physischen Entsperrknopf der zweiten Tür mindestens einmal betätigen, damit die Adresse gespeichert wird.
+:::
+
 Sobald das Modell erfolgreich erkannt wurde, wird der Speicher deiner Innenstation ausgelesen.  
 **Hinweis:** Der gesamte Prozess kann **bis zu 30 Sekunden** dauern.
 
@@ -133,11 +245,6 @@ Wenn das Modell erfolgreich erkannt wurde oder die Zeit abläuft, wird die Einri
 ### 4. Einrichtung abgeschlossen
 Die LED leuchtet 3 Sekunden lang grün-türkis und geht dann aus, der Setup-Modus wird deaktiviert. Die Einrichtung ist abgeschlossen.
 
-
-## Mehrere Eingangstüren
-Wenn du mehrere Außenstationen hast, wird die Firmware versuchen, die zusätzliche Station automatisch zu erkennen.
-Um die Erkennung der zweiten Türklingel und das Öffnen der zweiten Tür zu ermöglichen, musst du die zweite Türklingel einmal betätigen oder den physischen Entsperrknopf der zweiten Tür mindestens einmal betätigen, damit die Adresse gespeichert wird.
-
-
-## Mehrere Innenstationen
-Wenn du mehrere Innenstationen hast, wird's etwas tricky. Du musst dann eine eigene YAML-Konfiguration erstellen, damit alle zusammen funktionieren. Die Standard-Firmware kann nämlich nur mit einer Innenstation umgehen.
+## Hast du noch Probleme?
+Falls du Probleme hast, deinen Doorman in Home Assistant einzurichten, helfen wir dir gerne weiter.
+Tritt unserem [Discord](https://discord.gg/t2d34dvmBf) bei, um Unterstützung zu bekommen und dich mit anderen Nutzern auszutauschen.
