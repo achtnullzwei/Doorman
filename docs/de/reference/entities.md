@@ -1,10 +1,20 @@
 # Entitäten
-Die Doorman-Firmware stellt standardmäßig viele Entitäten zur Verfügung. Auf dieser Seite wird erklärt, wozu jede einzelne dient.
+Die Doorman-Firmware stellt standardmäßig viele Entitäten zur Verfügung.
+Unten findest du eine Liste der verfügbaren Sensoren und Steuerungen sowie eine Erklärung, wie du sie konfigurieren kannst.
+
+## Anzeigen der Entitäten in Home Assistant
+
+1. Öffne die Benutzeroberfläche von Home Assistant und gehe zu **ESPHome**.
+2. Wähle dein Doorman-Gerät aus.
+3. Es erscheint ein Dashboard, das alle verfügbaren Sensoren und Steuerungen für Automatisierungen auflistet.
 
 ## Sensoren
 
 ### Uptime <Badge type="tip" text="doorman_uptime" /> <Badge type="info" text="Deaktiviert" />
 Meldet die Betriebszeit in Sekunden.
+
+### WiFi Signal <Badge type="tip" text="doorman_wifi_signal" /> <Badge type="info" text="Deaktiviert" />
+Meldet die WLAN Signalstärke in Prozent.
 
 ### Nuki Battery Level <Badge type="tip" text="nuki_battery_level" /> <Badge type="info" text="Nuki Bridge" />
 Meldet den Akkustand des verbundenen Nuki Smart Locks.

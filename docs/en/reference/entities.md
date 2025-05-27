@@ -1,10 +1,19 @@
 # Entities
-The Doorman firmware exposes many entities by default. This page explains the purpose of each one.
+The Doorman firmware exposes many entities by default. Below is a list of the available sensors and controls, along with an explanation of how to configure them.
+
+## Viewing Entities in Home Assistant
+
+1. In the Home Assistant UI, navigate to **ESPHome**.
+2. Select your Doorman device.
+3. A dashboard will appear, listing all sensors and controls available for automations.
 
 ## Sensors
 
 ### Uptime <Badge type="tip" text="doorman_uptime" /> <Badge type="info" text="Disabled by default" />
 Reports the uptime in seconds.
+
+### WiFi Signal <Badge type="tip" text="doorman_wifi_signal" /> <Badge type="info" text="Disabled by default" />
+Reports the wifi signal in percent.
 
 ### Nuki Battery Level <Badge type="tip" text="nuki_battery_level" /> <Badge type="info" text="Nuki Bridge only" />
 Reports the battery level of the paired Nuki smart lock.
