@@ -2,6 +2,9 @@
 Welcome to the latest updates! Here's a breakdown of all the **new features**, **improvements**, and important **changes** you need to know. Be sure to check out the **Breaking Changes** section for any actions needed to keep everything running smoothly.
 
 ## 2025.5.0
+### 🚨 Breaking Changes Included
+Please review the breaking changes listed below carefully before updating!
+
 ### 🚀 What's New?
 - **Expanded Support for Model-Specific Settings**  
    Settings compatibility has been added for TCS TASTA / Koch TC60 (`IVW5xxx`, `ISW5xxx`) and Ecoos (`IVW22xx`) models.
