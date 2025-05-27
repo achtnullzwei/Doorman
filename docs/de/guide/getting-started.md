@@ -168,7 +168,7 @@ Schließe deinen Doorman einfach per USB-Kabel an deinen Computer an und klicke 
 ## Zu Home Assistant hinzufügen <Badge type="tip" text="Nur Home Assistant Variante" />
 :::warning BEVOR DU WEITERMACHST
 Dies ist die Standard-Variante für alle vorgeflashten Doorman-Geräte.
-Diesen Schritt kannst du überspringen, wenn du nicht die `Home Assistant Smart Home` Variante geflasht hast.
+Diesen Schritt kannst du überspringen, wenn du nicht die `Home Assistant` Smart Home Variante geflasht hast.
 :::
 
 Nachdem deinen Doorman mit dem WLAN verbunden ist, blinkt die LED langsam blau. Das bedeutet, er wartet darauf, dass sich Home Assistant verbindet.
@@ -194,7 +194,7 @@ Nachdem deinen Doorman mit dem WLAN verbunden ist, blinkt die LED langsam blau. 
 
 ## MQTT Broker einrichten <Badge type="tip" text="Nur MQTT Variante" />
 :::warning BEVOR DU WEITERMACHST
-Diesen Schritt kannst du überspringen, wenn du nicht die `MQTT Smart Home` Variante geflasht hast.
+Diesen Schritt kannst du überspringen, wenn du nicht die `MQTT` Smart Home Variante geflasht hast.
 :::
 
 Nachdem du deinen Doorman mit dem WLAN verbunden hast, wird die LED **rot und blau pulsieren**. Das bedeutet, der MQTT-Broker ist noch nicht konfiguriert.
@@ -204,6 +204,8 @@ Nachdem du deinen Doorman mit dem WLAN verbunden hast, wird die LED **rot und bl
 2. Gib deine MQTT-Broker-Zugangsdaten ein.
 
    ![broker-credentials](./images/mqtt-details.png)
+
+   Wenn du die Einstellungen nicht findest, scrolle ganz nach unten und klicke auf "Alle anzeigen".
 
 3. Speichere die Einstellungen — die Firmware versucht dann, eine Verbindung zu deinem MQTT-Broker herzustellen.
 

@@ -9,11 +9,6 @@ import '@mdi/font/css/materialdesignicons.css';
 import 'uno.css'
 import "./custom.css";
 
-import 'improv-wifi-sdk/dist/web/launch-button.js'
-import 'improv-wifi-serial-sdk/dist/web/serial-launch-button.js'
-
-import 'esp-web-tools/dist/web/install-button.js'
-
 export default {
     extends: DefaultTheme,
     // override the Layout with a wrapper component that
@@ -21,6 +16,13 @@ export default {
     Layout: Layout,
     enhanceApp({ app }) {
         enhanceAppWithTabs(app);
+
+        if (typeof window !== 'undefined')
+        {
+            import('improv-wifi-sdk/dist/web/launch-button.js');
+            import('improv-wifi-serial-sdk/dist/web/serial-launch-button.js');
+            import('esp-web-tools/dist/web/install-button.js');
+        }
     },
     setup() {
 
