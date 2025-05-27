@@ -15,7 +15,7 @@ Welcome to the latest updates! Here's a breakdown of all the **new features**, *
   This change simplifies dashboard integration and delivers a more consistent, intuitive experience.
 
 - **Extended Ring to Open to Apartment Doorbells**  
-   [Ring To Open](../guide/automation/ring-to-open) now also works with your apartment doorbell when paired with a Nuki Smart Lock — making access even more convenient and seamless.
+   [Ring To Open](https://doorman.azon.ai/guide/automation/ring-to-open) now also works with your apartment doorbell when paired with a Nuki Smart Lock — making access even more convenient and seamless.
 
 - **Runtime MQTT Configuration**  
    If you flashed the firmware with MQTT integration, you can now enter your broker credentials via the built-in web interface.
@@ -25,7 +25,7 @@ Welcome to the latest updates! Here's a breakdown of all the **new features**, *
 
 ### ✨ Improvements
 - **Refined Configuration for Ring to Open**  
-   The configuration options have been separated per door, giving you greater flexibility to customize the [Ring To Open](../guide/automation/ring-to-open) behavior according to your specific requirements.
+   The configuration options have been separated per door, giving you greater flexibility to customize the [Ring To Open](https://doorman.azon.ai/guide/automation/ring-to-open) behavior according to your specific requirements.
 
    Additionally, the Delay settings are now presented as dropdown menus, making it more intuitive to use the random delay feature—which was previously hidden behind the 60-second setting.
 
@@ -46,6 +46,9 @@ Welcome to the latest updates! Here's a breakdown of all the **new features**, *
 
 - **Install Update Button**  
    A new button lets you install the latest available Doorman firmware version directly from the web interface.
+
+- **Wi-Fi Signal Sensor**  
+   The default firmware now includes a Wi-Fi signal strength sensor, which was previously only available in the developer version.
 
 ### 📝 Other Updates
 - **Firmware Configuration Assistant**  
@@ -69,7 +72,7 @@ Welcome to the latest updates! Here's a breakdown of all the **new features**, *
   The `Open Door` buttons have been removed in favor of more efficient control methods.
 
 - **Renamed Ring to Open Entities**  
-  The [Ring To Open](../guide/automation/ring-to-open) entities are now labeled as `RTO: Door Name – Setting` to reflect the updated configuration structure, improving clarity and consistency.
+  The [Ring To Open](https://doorman.azon.ai/guide/automation/ring-to-open) entities are now labeled as `RTO: Door Name – Setting` to reflect the updated configuration structure, improving clarity and consistency.
 
 - **Renamed Nuki Lock**  
   The `Nuki Lock` entity has been renamed to `Apartment Door` for better alignment with the naming convention used for other doors.
@@ -152,25 +155,25 @@ Welcome to the latest updates! Here's a breakdown of all the **new features**, *
    For assistance, please contact me via [Discord](https://discord.gg/t2d34dvmBf) or open an issue on [GitHub](https://github.com/azoninc/doorman/issues).
 
 - **Hexadecimal Command-String Length changed**  
-   With the command parser now fixed, the hexadecimal string representation has been updated to correctly display the [Last Bus Command](../reference/entities#last-bus-command) sensor.
+   With the command parser now fixed, the hexadecimal string representation has been updated to correctly display the [Last Bus Command](https://doorman.azon.ai/reference/entities#last-bus-command) sensor.
 
 - **Separate Event entities**  
    [Skaronator](https://github.com/azoninc/doorman/pull/37) introduced separate event entities for each physical doorbell button.  
    This enhancement enables event tracking on a per-button basis, providing more granular and precise support for doorbell interactions.  
    You will need to adjust your automations if you previously used the Doorbell Pattern Event Entity. Additionally, the event types have been changed.
 
-   👉 **Check the [Entities](../reference/entities#events) for details!**
+   👉 **Check the [Entities](https://doorman.azon.ai/reference/entities#events) for details!**
 
 - **Intercom Models Renamed**  
    As part of streamlining the models for each manufacturer, you may need to reconfigure your intercom model.
    Now, you can also see the Koch and Scantron models.
 
-   👉 **Check the [Model Setting availability](../reference/esphome-component#model-setting-availability) for details!**
+   👉 **Check the [Model Setting availability](https://doorman.azon.ai/reference/esphome-component#model-setting-availability) for details!**
 
 - **Intercom Settings Updated**  
    To accommodate compatibility with new models, the settings `ringtone_door_call` and `volume_handset` have been renamed.  
 
-   👉 **Refer to the [Setting Types](../reference/esphome-component#setting-types) for the updated names and additional settings!**
+   👉 **Refer to the [Setting Types](https://doorman.azon.ai/reference/esphome-component#setting-types) for the updated names and additional settings!**
 
 ## 2024.11.2
 ### ✨ Improvements
@@ -192,7 +195,7 @@ Welcome to the latest updates! Here's a breakdown of all the **new features**, *
    Unleash more power with the **new protocol support**!
    You can now use intuitive command types with parameters like `address`, `payload`, and `serial_number`.  
 
-   👉 **Explore the [Supported Commands](../reference/esphome-component#command-types)**
+   👉 **Explore the [Supported Commands](https://doorman.azon.ai/reference/esphome-component#command-types)**
 
 - **Interactive Setup Enhancements**  
    The system now **remembers** your indoor station's serial number and automatically detects any additional outdoor stations during setup.
@@ -203,7 +206,7 @@ Welcome to the latest updates! Here's a breakdown of all the **new features**, *
 - **New Memory Management Tools**  
    You can now **customize ringtones** and **adjust volumes** of indoor stations.  
 
-   👉 **Check the [Supported Models and Settings](../reference/esphome-component#model-setting-availability)**
+   👉 **Check the [Supported Models and Settings](https://doorman.azon.ai/reference/esphome-component#model-setting-availability)**
 
 - **Programming Mode Actions**  
    Just **toggle the control unit’s programming mode** using ESPHome for instant actions.
@@ -219,17 +222,17 @@ Welcome to the latest updates! Here's a breakdown of all the **new features**, *
    We’ve made the ESPHome config files **more modular**! Configurations are now split into separate add-ons for smoother management.
 
 - **Doorman Discovery**  
-   We've introduced a new custom protocol that enables seamless discovery of other devices running this firmware for troubleshooting, as well as those utilizing the [custom Doorman firmware](../guide/firmware/custom-firmware) .
+   We've introduced a new custom protocol that enables seamless discovery of other devices running this firmware for troubleshooting, as well as those utilizing the [custom Doorman firmware](https://doorman.azon.ai/guide/firmware/custom-firmware) .
 
 ### 📝 Other Updates
 - **Component Name Change**  
-   The `tcs_intercom` component has been renamed to **`tc_bus`** and merged into this repository. All documentation is now centralized [here](../reference/esphome-component).
+   The `tcs_intercom` component has been renamed to **`tc_bus`** and merged into this repository. All documentation is now centralized [here](https://doorman.azon.ai/reference/esphome-component).
 
 ### 🚨 Breaking Changes
 - **Re-setup Required!**  
    The new protocol means you’ll need to **reconfigure** your system. Old stored commands won't work anymore. Simply **press the apartment or entrance doorbell** to start the setup again.  
 
-   👉 **Check the [setup guide](../guide/getting-started#interactive-setup) for details!**
+   👉 **Check the [setup guide](https://doorman.azon.ai/guide/getting-started#interactive-setup) for details!**
 
 - **New Service Names**  
    We’ve made changes to the Home Assistant service names to make them easier to understand and use:

@@ -60,6 +60,10 @@ jobs:
             flag
           ' "$CHANGELOG_FILE")
 
+          if [[ "${GITHUB_REF_NAME}" != "master" ]]; then
+            RELEASE_BLOCK=$(echo "$RELEASE_BLOCK" | sed 's/doorman\.azon\.ai/dev.doorman.azon.ai/g')
+          fi
+
           # Write the clean summary to the output file without extra escaping
           echo "url=$URL" >> $GITHUB_OUTPUT
           echo "summary<<EOF" >> $GITHUB_OUTPUT
