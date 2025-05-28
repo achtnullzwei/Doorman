@@ -230,16 +230,18 @@ Go to the `Configuration` section and enable `Setup Mode` to begin the interacti
 Once the setup process begins, the RGB status LED will pulse green-turquoise.
 
 ::: warning BEFORE YOU PROCEED
-The indoor station must be connected, and the enclosure securely closed, to complete the setup process.
+The indoor station **must be connected**, to complete the setup process.
 :::
 
 ### 3. Wait until you ring the doorbell
 When you press the doorbell button at your apartment or entrance, the system will save your indoor station's serial number and attempt to detect the model.
 
 :::info
-If you have multiple door stations, the firmware will attempt to automatically detect the additional station.
+If you have multiple door stations, the firmware will try to detect additional stations automatically.
 
-To enable detection of the second doorbell and the ability to unlock the second door, you need to press the second doorbell or physically push the unlock button for the second door at least once **after the setup is finished** to store its address.
+To enable detection of the **second doorbell** and allow unlocking of the **second door**, you need to **press the second doorbell** or **manually press the unlock button** on the second door **at least once** — but only **after setup is complete**.
+
+🕒 Wait about **one minute after setup finishes** before doing this, so the system can correctly store the second door's address.
 :::
 
 Once the model is successfully detected, the system will read the memory of your indoor station.

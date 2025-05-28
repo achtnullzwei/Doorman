@@ -228,15 +228,18 @@ Geh zum Bereich `Konfiguration` und schalte den `Setup-Modus` ein, um mit der in
 Sobald der Setup-Prozess beginnt, wird die RGB-Status-LED grün-türkis pulsieren.
 
 ::: warning BEVOR DU WEITERMACHST
-Deine Innenstation muss angeschlossen und das Gehäuse verschlossen sein, damit die Einrichtung abgeschlossen werden kann.
+Deine Innenstation **muss angeschlossen sein**, damit die Einrichtung abgeschlossen werden kann.
 :::
 
 ### 3. Warte, bis du auf die Klingel drückst
 Wenn du den Klingelknopf an deiner Wohnung oder am Eingang drückst, speichert das System die Seriennummer deiner Innenstation und versucht, das Modell zu erkennen.
 
 :::info
-Wenn du mehrere Außenstationen hast, wird die Firmware versuchen, die zusätzliche Station automatisch zu erkennen.
-Um die Erkennung der zweiten Türklingel und das Öffnen der zweiten Tür zu ermöglichen, musst du die zweite Türklingel einmal betätigen oder den physischen Entsperrknopf der zweiten Tür mindestens einmal betätigen, damit die Adresse gespeichert wird.
+Wenn du mehrere Außenstationen hast, versucht die Firmware, zusätzliche Stationen automatisch zu erkennen.
+
+Um die **zweite Klingel** zu erkennen und das **Öffnen der zweiten Tür** zu ermöglichen, musst du **die zweite Klingeltaste drücken** oder **den Tür der zweiten Tür manuell betätigen** – aber erst **nachdem die Einrichtung abgeschlossen ist**.
+
+🕒 Warte etwa **eine Minute nach Abschluss der Einrichtung**, damit die Adresse der zweiten Tür korrekt gespeichert werden kann.
 :::
 
 Sobald das Modell erfolgreich erkannt wurde, wird der Speicher deiner Innenstation ausgelesen.  
