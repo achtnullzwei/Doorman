@@ -650,6 +650,7 @@ select:
 
 script:
   - id: rto_entrance_door_timer
+    mode: restart
     then:
       # Turn off Ring To Open Mode after selected time
       - if:
@@ -668,6 +669,7 @@ script:
             - switch.turn_off: rto_entrance_door
 
   - id: rto_second_entrance_door_timer
+    mode: restart
     then:
       # Turn off Ring To Open Mode after selected time
       - if:
@@ -686,6 +688,7 @@ script:
             - switch.turn_off: rto_second_entrance_door
 
   - id: rto_apartment_door_timer
+    mode: restart
     then:
       # Turn off Ring To Open Mode after selected time
       - if:
