@@ -64,6 +64,18 @@ jobs:
             RELEASE_BLOCK=$(echo "$RELEASE_BLOCK" | sed 's/doorman\.azon\.ai/dev.doorman.azon.ai/g')
           fi
 
+          # Reduce heading levels safely using placeholders
+          RELEASE_BLOCK=$(echo "$RELEASE_BLOCK" | \
+            sed -e 's/^#### /<h4>/' \
+                -e 's/^### /<h3>/' \
+                -e 's/^## /<h2>/')
+
+          # Replace placeholders with the reduced heading levels
+          RELEASE_BLOCK=$(echo "$RELEASE_BLOCK" | \
+            sed -e 's/<h4>/### /' \
+                -e 's/<h3>/## /' \
+                -e 's/<h2>/# /')
+
           # Write the clean summary to the output file without extra escaping
           echo "url=$URL" >> $GITHUB_OUTPUT
           echo "summary<<EOF" >> $GITHUB_OUTPUT
