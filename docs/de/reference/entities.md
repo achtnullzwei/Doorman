@@ -269,91 +269,97 @@ Gib eine Liste von Befehlen an (durch Semikolons getrennt), die auf den Bus gese
 Legt die Türen fest, bei denen der zentrale `Ring To Open`-Schalter die [Ring To Open](../guide/automation/ring-to-open) Automation umschaltet.
 
 ##### Modi:
-- Entrance
-- Second Entrance
-- Any Entrance
-- Apartment
-- Any Entrance & Apartment
+- **Entrance**
+- **Second Entrance**
+- **Any Entrance**
+- **Apartment**
+- **Any Entrance & Apartment**
 
 ### RTO: Entrance Door - Delay <Badge type="tip" text="rto_entrance_door_delay" /> <Badge type="info" text="Deaktiviert" />
-Legt die Verzögerung für die [Ring To Open](../guide/automation/ring-to-open) Automatisierung fest. Um Kollisionen mit Klingelmustern zu vermeiden, startet die Verzögerung erst bei 2 Sekunden.
+Dieser Wert legt die **Verzögerung zum Türöffnen** fest, die von der [Ring To Open](../guide/automation/ring-to-open)-Automation verwendet wird.
+Um Störungen bei der Erkennung von Klingelmustern zu vermeiden, beginnt die Verzögerung standardmäßig bei **2 Sekunden** – außer du verwendest das **`single`**-Klingelmuster, das auch kürzere Zeiten erlaubt.
 
-##### Optionen:
-- 2 to 25 seconds
-- Random
+##### Verfügbare Optionen:
+* **0–1 seconds** → nur gültig mit dem **`single`**-Klingelmuster
+* **2–25 seconds**
+* **Random** → wählt automatisch einen gültigen Wert innerhalb des Bereichs
 
 ### RTO: Second Entrance Door - Delay <Badge type="tip" text="rto_second_entrance_door_delay" /> <Badge type="info" text="Deaktiviert" />
-Legt die Verzögerung für die [Ring To Open](../guide/automation/ring-to-open) Automatisierung fest. Um Kollisionen mit Klingelmustern zu vermeiden, startet die Verzögerung erst bei 2 Sekunden.
+Dieser Wert legt die **Verzögerung zum Türöffnen** fest, die von der [Ring To Open](../guide/automation/ring-to-open)-Automation verwendet wird.
+Um Störungen bei der Erkennung von Klingelmustern zu vermeiden, beginnt die Verzögerung standardmäßig bei **2 Sekunden** – außer du verwendest das **`single`**-Klingelmuster, das auch kürzere Zeiten erlaubt.
 
-##### Optionen:
-- 2 to 25 seconds
-- Random
+##### Verfügbare Optionen:
+* **0–1 seconds** → nur gültig mit dem **`single`**-Klingelmuster
+* **2–25 seconds**
+* **Random** → wählt automatisch einen gültigen Wert innerhalb des Bereichs
 
 ### RTO: Apartment Door - Delay <Badge type="tip" text="rto_apartment_door_delay" /> <Badge type="info" text="Nuki Bridge" /> <Badge type="info" text="Deaktiviert" />
-Legt die Verzögerung für die [Ring To Open](../guide/automation/ring-to-open) Automatisierung fest. Um Kollisionen mit Klingelmustern zu vermeiden, startet die Verzögerung erst bei 2 Sekunden.
+Dieser Wert legt die **Verzögerung zum Türöffnen** fest, die von der [Ring To Open](../guide/automation/ring-to-open)-Automation verwendet wird.
+Um Störungen bei der Erkennung von Klingelmustern zu vermeiden, beginnt die Verzögerung standardmäßig bei **2 Sekunden** – außer du verwendest das **`single`**-Klingelmuster, das auch kürzere Zeiten erlaubt.
 
-##### Optionen:
-- 2 to 25 seconds
-- Random
+##### Verfügbare Optionen:
+* **0–1 seconds** → nur gültig mit dem **`single`**-Klingelmuster
+* **2–25 seconds**
+* **Random** → wählt automatisch einen gültigen Wert innerhalb des Bereichs
 
 ### RTO: Entrance Door - Timeout <Badge type="tip" text="rto_entrance_door_timeout_mode" />
 Legt den Timeout-Modus für die [Ring To Open](../guide/automation/ring-to-open) Automation fest.
 
 ##### Modi:
-- Ring once
-- 5...60 Minutes
-- Never
+- **Ring once**
+- **5...60 Minutes**
+- **Never**
 
 ### RTO: Second Entrance Door - Timeout <Badge type="tip" text="rto_second_entrance_door_timeout_mode" /> <Badge type="info" text="Deaktiviert" />
 Legt den Timeout-Modus für die [Ring To Open](../guide/automation/ring-to-open) Automation fest.
 
 ##### Modi:
-- Ring once
-- 5...60 Minutes
-- Never
+- **Ring once**
+- **5...60 Minutes**
+- **Never**
 
 ### RTO: Apartment Door - Timeout <Badge type="tip" text="rto_apartment_door_timeout_mode" /> <Badge type="info" text="Nuki Bridge" />
 Legt den Timeout-Modus für die [Ring To Open](../guide/automation/ring-to-open) Automation fest.
 
 ##### Modi:
-- Ring once
-- 5...60 Minutes
-- Never
+- **Ring once**
+- **5...60 Minutes**
+- **Never**
 
 ### RTO: Entrance Door - Pattern Condition <Badge type="tip" text="rto_entrance_door_pattern_condition" /> <Badge type="info" text="Deaktiviert" />
 Legt das Muster fest, welches Bedingung zum auslösen der [Ring To Open](../guide/automation/ring-to-open) automation fest.
 
 ##### Options:
-- single
-- double
-- triple
-- quadruple
+- **single**
+- **double**
+- **triple**
+- **quadruple**
 
 ### RTO: Second Entrance Door - Pattern Condition <Badge type="tip" text="rto_second_entrance_door_pattern_condition" /> <Badge type="info" text="Deaktiviert" />
 Legt das Muster fest, welches Bedingung zum auslösen der [Ring To Open](../guide/automation/ring-to-open) automation fest.
 
 ##### Options:
-- single
-- double
-- triple
-- quadruple
+- **single**
+- **double**
+- **triple**
+- **quadruple**
 
 ### RTO: Apartment Door - Pattern Condition <Badge type="tip" text="rto_apartment_door_pattern_condition" /> <Badge type="info" text="Nuki Bridge" /> <Badge type="info" text="Deaktiviert" />
 Legt das Muster fest, welches Bedingung zum auslösen der [Ring To Open](../guide/automation/ring-to-open) automation fest.
 
 ##### Options:
-- single
-- double
-- triple
-- quadruple
+- **single**
+- **double**
+- **triple**
+- **quadruple**
 
 ### RTO: Central Toggle - Trigger <Badge type="tip" text="rto_toggle_trigger" /> <Badge type="info" text="Deaktiviert" />
 Legt den Auslöser zum umschalten für die [Ring To Open](../guide/automation/ring-to-open) automation fest.
 
 ##### Optionen:
-- Manual
-- Function Button
-- External Button
+- **Manual**
+- **Function Button**
+- **External Button**
 
 ### Intercom Model <Badge type="tip" text="intercom_model" /> <Badge type="info" text="Deaktiviert" />
 Legt das Modell deiner Innenstation fest. Finde mehr über die [unterstützten Modelle und Einstellungen](esphome-component#model-setting-availability) heraus.
@@ -362,88 +368,88 @@ Legt das Modell deiner Innenstation fest. Finde mehr über die [unterstützten M
 Legt den Klingelton für Tür-Rufe (Eingang) deiner Innenstation fest.
 
 ##### Optionen:
-- Ringtone 1 ... 13
+- **Ringtone 1 ... 13**
 
 ### Ringtone: Second Entrance Door Call <Badge type="tip" text="intercom_ringtone_second_entrance_door_call" /> <Badge type="info" text="Deaktiviert" />
 Legt den Klingelton für Tür-Rufe (Zweiter Eingang) deiner Innenstation fest.
 
 ##### Optionen:
-- Ringtone 1 ... 13
+- **Ringtone 1 ... 13**
 
 ### Ringtone: Floor Call <Badge type="tip" text="intercom_ringtone_floor_call" /> <Badge type="info" text="Deaktiviert" />
 Legt den Klingelton für Etagen-Rufe deiner Innenstation fest.
 
 ##### Optionen:
-- Ringtone 1 ... 13
+- **Ringtone 1 ... 13**
 
 ### Ringtone: Internal Call <Badge type="tip" text="intercom_ringtone_internal_call" /> <Badge type="info" text="Deaktiviert" />
 Legt den Klingelton für Intern-Rufe deiner Innenstation fest.
 
 ##### Optionen:
-- Ringtone 1 ... 13
+- **Ringtone 1 ... 13**
 
 ### Nuki Button: Single Press Action <Badge type="tip" text="nuki_single_button_press_action" /> <Badge type="info" text="Nuki Bridge" /> <Badge type="info" text="Deaktiviert" />
 Controls the Nuki Smart Lock Single Button Press Action setting.
 
 ##### Optionen:
-- No Action
-- Intelligent
-- Unlock
-- Lock
-- Unlatch
-- Lock n Go
-- Show Status
+- **No Action**
+- **Intelligent**
+- **Unlock**
+- **Lock**
+- **Unlatch**
+- **Lock n Go**
+- **Show Status**
 
 ### Nuki Button: Double Press Action <Badge type="tip" text="nuki_double_button_press_action" /> <Badge type="info" text="Nuki Bridge" /> <Badge type="info" text="Deaktiviert" />
 Controls the Nuki Smart Lock Double Button Press Action setting.
 
 ##### Optionen:
-- No Action
-- Intelligent
-- Unlock
-- Lock
-- Unlatch
-- Lock n Go
-- Show Status
+- **No Action**
+- **Intelligent**
+- **Unlock**
+- **Lock**
+- **Unlatch**
+- **Lock n Go**
+- **Show Status**
 
 ### Nuki Fob: Action 1 <Badge type="tip" text="nuki_fob_action_1" /> <Badge type="info" text="Nuki Bridge" /> <Badge type="info" text="Deaktiviert" />
 Controls the Nuki Smart Lock Fob Action 1 setting.
 
 ##### Optionen:
-- No Action
-- Unlock
-- Lock
-- Lock n Go
-- Intelligent
+- **No Action**
+- **Unlock**
+- **Lock**
+- **Lock n Go**
+- **Intelligent**
 
 ### Nuki Fob: Action 2 <Badge type="tip" text="nuki_fob_action_2" /> <Badge type="info" text="Nuki Bridge" /> <Badge type="info" text="Deaktiviert" />
 Controls the Nuki Smart Lock Fob Action 2 setting.
 
 ##### Optionen:
-- No Action
-- Unlock
-- Lock
-- Lock n Go
-- Intelligent
+- **No Action**
+- **Unlock**
+- **Lock**
+- **Lock n Go**
+- **Intelligent**
 
 ### Nuki Fob: Action 3 <Badge type="tip" text="nuki_fob_action_3" /> <Badge type="info" text="Nuki Bridge" /> <Badge type="info" text="Deaktiviert" />
 Controls the Nuki Smart Lock Fob Action 3 setting.
 
 ##### Optionen:
-- No Action
-- Unlock
-- Lock
-- Lock n Go
-- Intelligent
+- **No Action**
+- **Unlock**
+- **Lock**
+- **Lock n Go**
+- **Intelligent**
 
 ### Nuki Advertising Mode <Badge type="tip" text="nuki_advertising_mode" /> <Badge type="info" text="Nuki Bridge only" /> <Badge type="info" text="Deaktiviert" />
 Controls the Nuki Smart Lock Advertising Mode setting.
 
 ##### Optionen:
-- Automatic
-- Normal
-- Slow
-- Slowest
+- **Automatic**
+- **Normal**
+- **Slow**
+- **Slowest**
 
 
 ## Schlösser
@@ -464,37 +470,37 @@ Repräsentiert das gekoppelte Nuki Smart Lock deiner Wohnungs- oder Haustür.
 Wird ausgelöst, wenn ein Klingelmuster an der Eingangstür erkannt wird. Erfahre mehr über Musterereignisse [hier](../guide/automation/pattern-events).
 
 ##### Ereignistypen
-- single
-- double
-- triple
-- quadruple
+- **single**
+- **double**
+- **triple**
+- **quadruple**
 
 ### Second Entrance Doorbell <Badge type="tip" text="second_entrance_doorbell_pattern" />
 Wird ausgelöst, wenn ein Klingelmuster an der zweiten Eingangstür erkannt wird. Erfahre mehr über Musterereignisse [hier](../guide/automation/pattern-events).
 
 ##### Ereignistypen
-- single
-- double
-- triple
-- quadruple
+- **single**
+- **double**
+- **triple**
+- **quadruple**
 
 ### Apartment Doorbell <Badge type="tip" text="apartment_doorbell_pattern" />
 Wird ausgelöst, wenn ein Klingelmuster an der Wohnungstür erkannt wird. Erfahre mehr über Musterereignisse [hier](../guide/automation/pattern-events).
 
 ##### Ereignistypen
-- single
-- double
-- triple
-- quadruple
+- **single**
+- **double**
+- **triple**
+- **quadruple**
 
 ### Phone pick up <Badge type="tip" text="phone_pick_up_pattern" />
 Wird ausgelöst, wenn ein Abhebe-Muster des Telefons der Innenstation erkannt wird. Erfahre mehr über Musterereignisse [hier](../guide/automation/pattern-events).
 
 ##### Ereignistypen
-- single
-- double
-- triple
-- quadruple
+- **single**
+- **double**
+- **triple**
+- **quadruple**
 
 ## Updates
 
@@ -513,12 +519,12 @@ Du kannst die LED ausschalten, wenn sie störend wirkt. Selbst im ausgeschaltete
 Eine kleine WS2812B RGB-LED auf der Doorman-Platine, die verwendet wird, um bestimmte Ereignisse anzuzeigen. Die LED kann verschiedene Farben und Muster anzeigen, um visuelles Feedback zu unterschiedlichen Zuständen und Aktionen zu geben.
 
 ##### Ereignistypen
-- Warten auf WiFi / AP aktiviert <Badge type="tip" text="Blinkt schnell orange" />
-- Warten auf Home Assistant / MQTT Verbindung<Badge type="tip" text="Pulsiert langsam blau" />
-- Home Assistant / MQTT verbunden <Badge type="tip" text="Durchgängig blau (für 3 sekunden)" />
-- MQTT Einrichtung ausstehend <Badge type="tip" text="Pulsiert rot-blau" />
-- Setup Mode ist aktiv <Badge type="tip" text="Blinkt schnell grün-türkis" />
-- Setup abgeschlossen <Badge type="tip" text="Durchgängig grün-türkis (für 3 sekunden)" />
-- Ring To Open ist aktiv <Badge type="tip" text="Pulsiert langsam gelb" />
-- Nuki Kopplungsmodus ist aktiv <Badge type="tip" text="Pulsiert langsam lila" /> <Badge type="info" text="Nuki Bridge" />
-- Nuki erfolgreich gekoppelt <Badge type="tip" text="Durchgängig lila (für 3 sekunden)" /> <Badge type="info" text="Nuki Bridge" />
+- **Warten auf WiFi / AP aktiviert** <Badge type="tip" text="Blinkt schnell orange" />
+- **Warten auf Home Assistant / MQTT Verbindung** <Badge type="tip" text="Pulsiert langsam blau" />
+- **Home Assistant / MQTT verbunden** <Badge type="tip" text="Durchgängig blau (für 3 sekunden)" />
+- **MQTT Einrichtung ausstehend** <Badge type="tip" text="Pulsiert rot-blau" />
+- **Setup Mode ist aktiv** <Badge type="tip" text="Blinkt schnell grün-türkis" />
+- **Setup abgeschlossen** <Badge type="tip" text="Durchgängig grün-türkis (für 3 sekunden)" />
+- **Ring To Open ist aktiv** <Badge type="tip" text="Pulsiert langsam gelb" />
+- **Nuki Kopplungsmodus ist aktiv** <Badge type="tip" text="Pulsiert langsam lila" /> <Badge type="info" text="Nuki Bridge" />
+- **Nuki erfolgreich gekoppelt** <Badge type="tip" text="Durchgängig lila (für 3 sekunden)" /> <Badge type="info" text="Nuki Bridge" />

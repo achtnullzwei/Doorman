@@ -3,8 +3,8 @@ The Doorman firmware exposes many entities by default. Below is a list of the av
 
 ## Viewing Entities in Home Assistant
 
-1. In the Home Assistant UI, navigate to **ESPHome**.
-2. Select your Doorman device.
+1. In the Home Assistant UI, navigate to [ESPHome](https://my.home-assistant.io/redirect/integration/?domain=esphome).
+2. Select your Doorman.
 3. A dashboard will appear, listing all sensors and controls available for automations.
 
 ## Sensors
@@ -268,91 +268,100 @@ Specify a list of hex-commands (separated by semicolons) to be sent on the bus b
 Defines the doors for which the central `Ring To Open` switch will toggle the [Ring To Open](../guide/automation/ring-to-open) automation.
 
 ##### Modes:
-- Entrance
-- Second Entrance
-- Any Entrance
-- Apartment
-- Any Entrance & Apartment
+- **Entrance**
+- **Second Entrance**
+- **Any Entrance**
+- **Apartment**
+- **Any Entrance & Apartment**
 
 ### RTO: Entrance Door - Delay <Badge type="tip" text="rto_entrance_door_delay" /> <Badge type="info" text="Disabled by default" />
-Sets the delay for the [Ring To Open](../guide/automation/ring-to-open) automation. To avoid interference with patterns, the delay starts at 2 seconds.
+This sets the door opener delay used by the [Ring To Open](../guide/automation/ring-to-open) automation.  
+To prevent interference with ring pattern detection, the delay starts at **2 seconds** — unless you're using the **`single`** ring pattern condition, which allows shorter delays.
 
-##### Options:
-- 2 to 25 seconds
-- Random
+##### Available options:
+
+* **0–1 seconds** → only applies when using the **`single`** ring pattern
+* **2–25 seconds**
+* **Random** → picks a value in the valid range automatically
 
 ### RTO: Second Entrance Door - Delay <Badge type="tip" text="rto_second_entrance_door_delay" /> <Badge type="info" text="Disabled by default" />
-Sets the delay for the [Ring To Open](../guide/automation/ring-to-open) automation. To avoid interference with patterns, the delay starts at 2 seconds.
+This sets the door opener delay used by the [Ring To Open](../guide/automation/ring-to-open) automation.  
+To prevent interference with ring pattern detection, the delay starts at **2 seconds** — unless you're using the **`single`** ring pattern condition, which allows shorter delays.
 
-##### Options:
-- 2 to 25 seconds
-- Random
+##### Available options:
+
+* **0–1 seconds** → only applies when using the **`single`** ring pattern
+* **2–25 seconds**
+* **Random** → picks a value in the valid range automatically
 
 ### RTO: Apartment Door - Delay <Badge type="tip" text="rto_apartment_door_delay" /> <Badge type="info" text="Nuki Bridge only" /> <Badge type="info" text="Disabled by default" />
-Sets the delay for the [Ring To Open](../guide/automation/ring-to-open) automation. To avoid interference with patterns, the delay starts at 2 seconds.
+This sets the door opener delay used by the [Ring To Open](../guide/automation/ring-to-open) automation.  
+To prevent interference with ring pattern detection, the delay starts at **2 seconds** — unless you're using the **`single`** ring pattern condition, which allows shorter delays.
 
-##### Options:
-- 2 to 25 seconds
-- Random
+##### Available options:
+
+* **0–1 seconds** → only applies when using the **`single`** ring pattern
+* **2–25 seconds**
+* **Random** → picks a value in the valid range automatically
 
 ### RTO: Entrance Door - Timeout <Badge type="tip" text="rto_entrance_door_timeout_mode" />
 Sets the timeout mode for the [Ring To Open](../guide/automation/ring-to-open) automation.
 
 ##### Modes:
-- Ring once
-- 5 to 60 minutes
-- Never
+- **Ring once**
+- **5 to 60 minutes**
+- **Never**
 
 ### RTO: Second Entrance Door - Timeout <Badge type="tip" text="rto_second_entrance_door_timeout_mode" /> <Badge type="info" text="Disabled by default" />
 Sets the timeout mode for the [Ring To Open](../guide/automation/ring-to-open) automation.
 
 ##### Modes:
-- Ring once
-- 5 to 60 minutes
-- Never
+- **Ring once**
+- **5 to 60 minutes**
+- **Never**
 
 ### RTO: Apartment Door - Timeout <Badge type="tip" text="rto_apartment_door_timeout_mode" /> <Badge type="info" text="Nuki Bridge only" /> 
 Sets the timeout mode for the [Ring To Open](../guide/automation/ring-to-open) automation.
 
 ##### Modes:
-- Ring once
-- 5 to 60 minutes
-- Never
+- **Ring once**
+- **5 to 60 minutes**
+- **Never**
 
 ### RTO: Entrance Door - Pattern Condition <Badge type="tip" text="rto_entrance_door_pattern_condition" /> <Badge type="info" text="Disabled by default" />
 Defines the trigger pattern condition of the [Ring To Open](../guide/automation/ring-to-open) automation.
 
 ##### Options:
-- single
-- double
-- triple
-- quadruple
+- **single**
+- **double**
+- **triple**
+- **quadruple**
 
 ### RTO: Second Entrance Door - Pattern Condition <Badge type="tip" text="rto_second_entrance_door_pattern_condition" /> <Badge type="info" text="Disabled by default" />
 Defines the trigger pattern condition of the [Ring To Open](../guide/automation/ring-to-open) automation.
 
 ##### Options:
-- single
-- double
-- triple
-- quadruple
+- **single**
+- **double**
+- **triple**
+- **quadruple**
 
 ### RTO: Apartment Door - Pattern Condition <Badge type="tip" text="rto_apartment_door_pattern_condition" /> <Badge type="info" text="Nuki Bridge only" /> <Badge type="info" text="Disabled by default" />
 Defines the trigger pattern condition of the [Ring To Open](../guide/automation/ring-to-open) automation.
 
 ##### Options:
-- single
-- double
-- triple
-- quadruple
+- **single**
+- **double**
+- **triple**
+- **quadruple**
 
 ### RTO: Central Toggle - Trigger <Badge type="tip" text="rto_toggle_trigger" /> <Badge type="info" text="Disabled by default" />
 Defines the trigger to toggle the [Ring To Open](../guide/automation/ring-to-open) automation.
 
 ##### Options:
-- Manual
-- Function Button
-- External Button
+- **Manual**
+- **Function Button**
+- **External Button**
 
 ### Intercom Model <Badge type="tip" text="intercom_model" /> <Badge type="info" text="Disabled by default" />
 Sets the intercom phone model. Check the [Supported Models and Settings](esphome-component#model-setting-availability) to see your options.
@@ -361,88 +370,88 @@ Sets the intercom phone model. Check the [Supported Models and Settings](esphome
 Sets the intercom phone ringtone for entrance door calls.
 
 ##### Options:
-- Ringtone 1 ... 13
+- ****Ringtone 1 ... 13****
 
 ### Ringtone: Second Entrance Door Call <Badge type="tip" text="intercom_ringtone_second_entrance_door_call" /> <Badge type="info" text="Disabled by default" />
 Sets the intercom phone ringtone for second entrance door calls.
 
 ##### Options:
-- Ringtone 1 ... 13
+- **Ringtone 1 ... 13**
 
 ### Ringtone: Floor Call <Badge type="tip" text="intercom_ringtone_floor_call" /> <Badge type="info" text="Disabled by default" />
 Sets the intercom phone ringtone for floor calls.
 
 ##### Options:
-- Ringtone 1 ... 13
+- **Ringtone 1 ... 13**
 
 ### Ringtone: Internal Call <Badge type="tip" text="intercom_ringtone_internal_call" /> <Badge type="info" text="Disabled by default" />
 Sets the intercom phone ringtone for internal calls.
 
 ##### Options:
-- Ringtone 1 ... 13
+- **Ringtone 1 ... 13**
 
 ### Nuki Button: Single Press Action <Badge type="tip" text="nuki_single_button_press_action" /> <Badge type="info" text="Nuki Bridge only" /> <Badge type="info" text="Disabled by default" />
 Controls the Nuki Smart Lock Single Button Press Action setting.
 
 ##### Options:
-- No Action
-- Intelligent
-- Unlock
-- Lock
-- Unlatch
-- Lock n Go
-- Show Status
+- **No Action**
+- **Intelligent**
+- **Unlock**
+- **Lock**
+- **Unlatch**
+- **Lock n Go**
+- **Show Status**
 
 ### Nuki Button: Double Press Action <Badge type="tip" text="nuki_double_button_press_action" /> <Badge type="info" text="Nuki Bridge only" /> <Badge type="info" text="Disabled by default" />
 Controls the Nuki Smart Lock Double Button Press Action setting.
 
 ##### Options:
-- No Action
-- Intelligent
-- Unlock
-- Lock
-- Unlatch
-- Lock n Go
-- Show Status
+- **No Action**
+- **Intelligent**
+- **Unlock**
+- **Lock**
+- **Unlatch**
+- **Lock n Go**
+- **Show Status**
 
 ### Nuki Fob: Action 1 <Badge type="tip" text="nuki_fob_action_1" /> <Badge type="info" text="Nuki Bridge only" /> <Badge type="info" text="Disabled by default" />
 Controls the Nuki Smart Lock Fob Action 1 setting.
 
 ##### Options:
-- No Action
-- Unlock
-- Lock
-- Lock n Go
-- Intelligent
+- **No Action**
+- **Unlock**
+- **Lock**
+- **Lock n Go**
+- **Intelligent**
 
 ### Nuki Fob: Action 2 <Badge type="tip" text="nuki_fob_action_2" /> <Badge type="info" text="Nuki Bridge only" /> <Badge type="info" text="Disabled by default" />
 Controls the Nuki Smart Lock Fob Action 2 setting.
 
 ##### Options:
-- No Action
-- Unlock
-- Lock
-- Lock n Go
-- Intelligent
+- **No Action**
+- **Unlock**
+- **Lock**
+- **Lock n Go**
+- **Intelligent**
 
 ### Nuki Fob: Action 3 <Badge type="tip" text="nuki_fob_action_3" /> <Badge type="info" text="Nuki Bridge only" /> <Badge type="info" text="Disabled by default" />
 Controls the Nuki Smart Lock Fob Action 3 setting.
 
 ##### Options:
-- No Action
-- Unlock
-- Lock
-- Lock n Go
-- Intelligent
+- **No Action**
+- **Unlock**
+- **Lock**
+- **Lock n Go**
+- **Intelligent**
 
 ### Nuki Advertising Mode <Badge type="tip" text="nuki_advertising_mode" /> <Badge type="info" text="Nuki Bridge only" /> <Badge type="info" text="Disabled by default" />
 Controls the Nuki Smart Lock Advertising Mode setting.
 
 ##### Options:
-- Automatic
-- Normal
-- Slow
-- Slowest
+- **Automatic**
+- **Normal**
+- **Slow**
+- **Slowest**
 
 
 ## Locks
@@ -463,37 +472,37 @@ Represents the apartment door Nuki smart lock.
 Triggers each time a doorbell pattern is detected at the entrance. Learn more about pattern events [here](../guide/automation/pattern-events).
 
 ##### Event Types
-- single
-- double
-- triple
-- quadruple
+- **single**
+- **double**
+- **triple**
+- **quadruple**
 
 ### Second Entrance Doorbell <Badge type="tip" text="second_entrance_doorbell_pattern" />
 Triggers each time a doorbell pattern is detected at the second entrance. Learn more about pattern events [here](../guide/automation/pattern-events).
 
 ##### Event Types
-- single
-- double
-- triple
-- quadruple
+- **single**
+- **double**
+- **triple**
+- **quadruple**
 
 ### Apartment Doorbell <Badge type="tip" text="apartment_doorbell_pattern" />
 Triggers each time a doorbell pattern is detected at the apartment. Learn more about pattern events [here](../guide/automation/pattern-events).
 
 ##### Event Types
-- single
-- double
-- triple
-- quadruple
+- **single**
+- **double**
+- **triple**
+- **quadruple**
 
 ### Phone pick up <Badge type="tip" text="phone_pick_up_pattern" />
 Triggers each time a phone pick up pattern is detected. Learn more about pattern events [here](../guide/automation/pattern-events).
 
 ##### Event Types
-- single
-- double
-- triple
-- quadruple
+- **single**
+- **double**
+- **triple**
+- **quadruple**
 
 ## Updates
 
@@ -512,12 +521,12 @@ You can turn off the LED if it becomes annoying. Even when turned off, it will s
 A small WS2812B RGB LED on the Doorman's PCB is used to indicate specific events. The LED can display various colors and patterns to provide visual feedback on different states and actions.
 
 ##### Event Types
-- Waiting for WiFi / AP Enabled <Badge type="tip" text="Fast orange pulse" />
-- Waiting for Home Assistant / MQTT to Connect <Badge type="tip" text="Slow blue pulse" />
-- Home Assistant / MQTT Connected <Badge type="tip" text="Solid blue light (for 3 seconds)" />
-- MQTT setup required <Badge type="tip" text="Red-blue pulse" />
-- Setup Mode is Active <Badge type="tip" text="Fast green-turquoise pulse" />
-- Setup Mode completed <Badge type="tip" text="Solid green-turquoise (for 3 seconds)" />
-- Ring To Open is Active <Badge type="tip" text="Slow yellow pulse" />
-- Nuki Pairing Mode is Active <Badge type="tip" text="Slow purple pulse" /> <Badge type="info" text="Nuki Bridge only" />
-- Nuki Paired Successfully <Badge type="tip" text="Solid purple light (for 3 seconds)" /> <Badge type="info" text="Nuki Bridge only" />
+- **Waiting for WiFi / AP Enabled** <Badge type="tip" text="Fast orange pulse" />
+- **Waiting for Home Assistant / MQTT to Connect** <Badge type="tip" text="Slow blue pulse" />
+- **Home Assistant / MQTT Connected** <Badge type="tip" text="Solid blue light (for 3 seconds)" />
+- **MQTT setup required** <Badge type="tip" text="Red-blue pulse" />
+- **Setup Mode is Active** <Badge type="tip" text="Fast green-turquoise pulse" />
+- **Setup Mode completed** <Badge type="tip" text="Solid green-turquoise (for 3 seconds)" />
+- **Ring To Open is Active** <Badge type="tip" text="Slow yellow pulse" />
+- **Nuki Pairing Mode is Active** <Badge type="tip" text="Slow purple pulse" /> <Badge type="info" text="Nuki Bridge only" />
+- **Nuki Paired Successfully** <Badge type="tip" text="Solid purple light (for 3 seconds)" /> <Badge type="info" text="Nuki Bridge only" />

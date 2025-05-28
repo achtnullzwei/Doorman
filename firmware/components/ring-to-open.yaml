@@ -1,13 +1,12 @@
 # Ring To Open Addon
 
-event:
-  - id: !extend entrance_doorbell_pattern
-    on_event:
-      # Ring To Open Action
+binary_sensor:
+  - id: !extend entrance_doorbell
+    on_press:
       - if:
           condition:
             - switch.is_on: rto_entrance_door
-            - lambda: !lambda 'return event_type.c_str() == id(rto_entrance_door_pattern_condition).state;'
+            - lambda: !lambda 'return id(rto_entrance_door_pattern_condition).state == "single";'
           then:
             # Deactivate Ring To Open when Ring once is selected
             - if:
@@ -24,27 +23,19 @@ event:
                 else:
                   - delay: !lambda |-
                       std::string str = id(rto_entrance_door_delay).state;
-                      std::vector<std::string> v;
-                      char * token;
-                      char seps[] = " ";
-                      token = strtok (&str[0],seps);
-                      while (token != NULL)
-                      {
-                        v.push_back(token);
-                        token = strtok (NULL, seps);
-                      }
-                      return ((std::stoi(v[0].c_str()) - 2) * 1000) + 300;
+                      size_t pos = str.find(' ');
+                      std::string first_token = (pos != std::string::npos) ? str.substr(0, pos) : str;
+                      int value = std::stoi(first_token);
+                      return value * 1000 + 300;
 
             - script.execute: rto_entrance_door_action
 
-
-  - id: !extend second_entrance_doorbell_pattern
-    on_event:
-      # Ring To Open Action
+  - id: !extend second_entrance_doorbell
+    on_press:
       - if:
           condition:
             - switch.is_on: rto_second_entrance_door
-            - lambda: !lambda 'return event_type.c_str() == id(rto_second_entrance_door_pattern_condition).state;'
+            - lambda: !lambda 'return id(rto_second_entrance_door_pattern_condition).state == "single";'
           then:
             # Deactivate Ring To Open when Ring once is selected
             - if:
@@ -61,26 +52,19 @@ event:
                 else:
                   - delay: !lambda |-
                       std::string str = id(rto_second_entrance_door_delay).state;
-                      std::vector<std::string> v;
-                      char * token;
-                      char seps[] = " ";
-                      token = strtok (&str[0],seps);
-                      while (token != NULL)
-                      {
-                        v.push_back(token);
-                        token = strtok (NULL, seps);
-                      }
-                      return ((std::stoi(v[0].c_str()) - 2) * 1000) + 300;
+                      size_t pos = str.find(' ');
+                      std::string first_token = (pos != std::string::npos) ? str.substr(0, pos) : str;
+                      int value = std::stoi(first_token);
+                      return value * 1000 + 300;
 
             - script.execute: rto_second_entrance_door_action
 
-  - id: !extend apartment_doorbell_pattern
-    on_event:
-      # Ring To Open Action
+  - id: !extend apartment_doorbell
+    on_press:
       - if:
           condition:
             - switch.is_on: rto_apartment_door
-            - lambda: !lambda 'return event_type.c_str() == id(rto_apartment_door_pattern_condition).state;'
+            - lambda: !lambda 'return id(rto_apartment_door_pattern_condition).state == "single";'
           then:
             # Deactivate Ring To Open when Ring once is selected
             - if:
@@ -97,20 +81,13 @@ event:
                 else:
                   - delay: !lambda |-
                       std::string str = id(rto_apartment_door_delay).state;
-                      std::vector<std::string> v;
-                      char * token;
-                      char seps[] = " ";
-                      token = strtok (&str[0],seps);
-                      while (token != NULL)
-                      {
-                        v.push_back(token);
-                        token = strtok (NULL, seps);
-                      }
-                      return ((std::stoi(v[0].c_str()) - 2) * 1000) + 300;
+                      size_t pos = str.find(' ');
+                      std::string first_token = (pos != std::string::npos) ? str.substr(0, pos) : str;
+                      int value = std::stoi(first_token);
+                      return value * 1000 + 300;
 
             - script.execute: rto_apartment_door_action
 
-binary_sensor:
   - id: !extend doorman_external_button
     on_press:
       - if:
@@ -121,6 +98,7 @@ binary_sensor:
             - delay: 300ms
 
             # Confirm Ring To Open activation
+            # Ring Apartment Doorbell once
             - if: 
                 condition:
                   - switch.is_on: rto_central
@@ -143,6 +121,7 @@ binary_sensor:
             - delay: 300ms
 
             # Confirm Ring To Open activation
+            # Ring Apartment Doorbell once
             - if: 
                 condition:
                   - switch.is_on: rto_central
@@ -154,6 +133,120 @@ binary_sensor:
             # Reset to prevent address conflict
             - tc_bus.send:
                 type: reset
+
+
+event:
+  - id: !extend entrance_doorbell_pattern
+    on_event:
+      # Ring To Open Action
+      - if:
+          condition:
+            - switch.is_on: rto_entrance_door
+            - lambda: !lambda 'return event_type.c_str() != "single";'
+            - lambda: !lambda 'return event_type.c_str() == id(rto_entrance_door_pattern_condition).state;'
+          then:
+            # Deactivate Ring To Open when Ring once is selected
+            - if:
+                condition:
+                  - lambda: !lambda 'return id(rto_entrance_door_timeout_mode).state == "Ring once";'
+                then:
+                  - switch.turn_off: rto_entrance_door
+
+            - if:
+                condition:
+                  - lambda: !lambda 'return id(rto_entrance_door_delay).state == "Random";'
+                then:
+                  - delay: !lambda "return 5000 + (rand() % 10000);"
+                else:
+                  - delay: !lambda |-
+                      std::string str = id(rto_entrance_door_delay).state;
+                      size_t pos = str.find(' ');
+                      std::string first_token = (pos != std::string::npos) ? str.substr(0, pos) : str;
+                      int value = std::stoi(first_token);
+
+                      // Subtract 2 seconds for the pattern offset
+                      if(value < 2)
+                      {
+                        value = 2;
+                      }
+                      return (value - 2) * 1000;
+
+            - script.execute: rto_entrance_door_action
+
+
+  - id: !extend second_entrance_doorbell_pattern
+    on_event:
+      # Ring To Open Action
+      - if:
+          condition:
+            - switch.is_on: rto_second_entrance_door
+            - lambda: !lambda 'return event_type.c_str() != "single";'
+            - lambda: !lambda 'return event_type.c_str() == id(rto_second_entrance_door_pattern_condition).state;'
+          then:
+            # Deactivate Ring To Open when Ring once is selected
+            - if:
+                condition:
+                  - lambda: !lambda 'return id(rto_second_entrance_door_timeout_mode).state == "Ring once";'
+                then:
+                  - switch.turn_off: rto_second_entrance_door
+
+            - if:
+                condition:
+                  - lambda: !lambda 'return id(rto_second_entrance_door_delay).state == "Random";'
+                then:
+                  - delay: !lambda "return 5000 + (rand() % 10000);"
+                else:
+                  - delay: !lambda |-
+                      std::string str = id(rto_second_entrance_door_delay).state;
+                      size_t pos = str.find(' ');
+                      std::string first_token = (pos != std::string::npos) ? str.substr(0, pos) : str;
+                      int value = std::stoi(first_token);
+
+                      // Subtract 2 seconds for the pattern offset
+                      if(value < 2)
+                      {
+                        value = 2;
+                      }
+                      return (value - 2) * 1000;
+
+            - script.execute: rto_second_entrance_door_action
+
+  - id: !extend apartment_doorbell_pattern
+    on_event:
+      # Ring To Open Action
+      - if:
+          condition:
+            - switch.is_on: rto_apartment_door
+            - lambda: !lambda 'return event_type.c_str() != "single";'
+            - lambda: !lambda 'return event_type.c_str() == id(rto_apartment_door_pattern_condition).state;'
+          then:
+            # Deactivate Ring To Open when Ring once is selected
+            - if:
+                condition:
+                  - lambda: !lambda 'return id(rto_apartment_door_timeout_mode).state == "Ring once";'
+                then:
+                  - switch.turn_off: rto_apartment_door
+
+            - if:
+                condition:
+                  - lambda: !lambda 'return id(rto_apartment_door_delay).state == "Random";'
+                then:
+                  - delay: !lambda "return 5000 + (rand() % 10000);"
+                else:
+                  - delay: !lambda |-
+                      std::string str = id(rto_apartment_door_delay).state;
+                      size_t pos = str.find(' ');
+                      std::string first_token = (pos != std::string::npos) ? str.substr(0, pos) : str;
+                      int value = std::stoi(first_token);
+                      
+                      // Subtract 2 seconds for the pattern offset
+                      if(value < 2)
+                      {
+                        value = 2;
+                      }
+                      return (value - 2) * 1000;
+
+            - script.execute: rto_apartment_door_action
 
 switch:
   # Global Setting
@@ -324,6 +417,8 @@ select:
     icon: "mdi:clock-end"
     optimistic: true
     options:
+      - "0 seconds"
+      - "1 second"
       - "2 seconds"
       - "3 seconds"
       - "4 seconds"
@@ -347,6 +442,8 @@ select:
     icon: "mdi:clock-end"
     optimistic: true
     options:
+      - "0 seconds"
+      - "1 second"
       - "2 seconds"
       - "3 seconds"
       - "4 seconds"
@@ -371,6 +468,8 @@ select:
     icon: "mdi:clock-end"
     optimistic: true
     options:
+      - "0 seconds"
+      - "1 second"
       - "2 seconds"
       - "3 seconds"
       - "4 seconds"
@@ -555,21 +654,17 @@ script:
       # Turn off Ring To Open Mode after selected time
       - if:
           condition:
-            - lambda: !lambda 'return id(rto_entrance_door_timeout_mode).state != "Never" && id(rto_entrance_door_timeout_mode).state != "Ring once";'
+            - lambda: |-
+                return id(rto_entrance_door_timeout_mode).state != "Never" && 
+                       id(rto_entrance_door_timeout_mode).state != "Ring once";
           then:
             - delay: !lambda |-
                 std::string str = id(rto_entrance_door_timeout_mode).state;
-                std::vector<std::string> v;
-                char * token;
-                char seps[] = " ";
-                token = strtok (&str[0],seps);
-                while (token != NULL)
-                {
-                  v.push_back(token);
-                  token = strtok (NULL, seps);
-                }
-                ESP_LOGD("main", "Ring To Open will stay turned on for %s minutes", v[0].c_str());
-                return std::stoi(v[0].c_str()) * 60 * 1000;
+                size_t pos = str.find(' ');
+                std::string first_token = (pos != std::string::npos) ? str.substr(0, pos) : str;
+                int value = std::stoi(first_token);
+                ESP_LOGD("main", "RTO: Entrance Door will stay turned on for %i minutes", value);
+                return value * 60 * 1000;
             - switch.turn_off: rto_entrance_door
 
   - id: rto_second_entrance_door_timer
@@ -577,21 +672,17 @@ script:
       # Turn off Ring To Open Mode after selected time
       - if:
           condition:
-            - lambda: !lambda 'return id(rto_second_entrance_door_timeout_mode).state != "Never" && id(rto_second_entrance_door_timeout_mode).state != "Ring once";'
+            - lambda: |-
+                return id(rto_second_entrance_door_timeout_mode).state != "Never" &&
+                       id(rto_second_entrance_door_timeout_mode).state != "Ring once";
           then:
             - delay: !lambda |-
                 std::string str = id(rto_second_entrance_door_timeout_mode).state;
-                std::vector<std::string> v;
-                char * token;
-                char seps[] = " ";
-                token = strtok (&str[0],seps);
-                while (token != NULL)
-                {
-                  v.push_back(token);
-                  token = strtok (NULL, seps);
-                }
-                ESP_LOGD("main", "Ring To Open will stay turned on for %s minutes", v[0].c_str());
-                return std::stoi(v[0].c_str()) * 60 * 1000;
+                size_t pos = str.find(' ');
+                std::string first_token = (pos != std::string::npos) ? str.substr(0, pos) : str;
+                int value = std::stoi(first_token);
+                ESP_LOGD("main", "RTO: Second Entrance Door will stay turned on for %i minutes", value);
+                return value * 60 * 1000;
             - switch.turn_off: rto_second_entrance_door
 
   - id: rto_apartment_door_timer
@@ -599,21 +690,17 @@ script:
       # Turn off Ring To Open Mode after selected time
       - if:
           condition:
-            - lambda: !lambda 'return id(rto_apartment_door_timeout_mode).state != "Never" && id(rto_apartment_door_timeout_mode).state != "Ring once";'
+            - lambda: |-
+                return id(rto_apartment_door_timeout_mode).state != "Never" && 
+                       id(rto_apartment_door_timeout_mode).state != "Ring once";
           then:
             - delay: !lambda |-
                 std::string str = id(rto_apartment_door_timeout_mode).state;
-                std::vector<std::string> v;
-                char * token;
-                char seps[] = " ";
-                token = strtok (&str[0],seps);
-                while (token != NULL)
-                {
-                  v.push_back(token);
-                  token = strtok (NULL, seps);
-                }
-                ESP_LOGD("main", "Ring To Open will stay turned on for %s minutes", v[0].c_str());
-                return std::stoi(v[0].c_str()) * 60 * 1000;
+                size_t pos = str.find(' ');
+                std::string first_token = (pos != std::string::npos) ? str.substr(0, pos) : str;
+                int value = std::stoi(first_token);
+                ESP_LOGD("main", "RTO: Apartment Door will stay turned on for %i minutes", value);
+                return value * 60 * 1000;
             - switch.turn_off: rto_apartment_door
 
   - id: rto_entrance_door_action
@@ -632,9 +719,14 @@ script:
     then:
       - if:
           condition:
-            - lambda: !lambda 'return id(rto_entrance_door).state || id(rto_second_entrance_door).state || id(rto_apartment_door).state;'
+            - lambda: |-
+                return id(rto_entrance_door).state || 
+                       id(rto_second_entrance_door).state || 
+                       id(rto_apartment_door).state;
             - switch.is_on: rto_led_status
           then:
+            # TODO: improve status by using multiple colors / effects
+            #       to indicate each RTO status
             - light.turn_on:
                 id: doorman_rgb_status_led
                 red: 100%
