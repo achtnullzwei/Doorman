@@ -130,6 +130,9 @@ Steuert die Status LED anzeige für die [Ring To Open](../guide/automation/ring-
 ### Use 32-Bit Door Protocol <Badge type="tip" text="use_32_open_door_protocol" /> <Badge type="info" text="Deaktiviert" />
 Dies erzwingt den langen Türöffner-Befehl und stellt sicher, dass dem kurzen Türöffner-Befehl stets eine Seriennummer hinzugefügt wird.
 
+### Status LED: Show Bus Activity <Badge type="tip" text="doorman_status_led_bus_activity" /> <Badge type="info" text="Deaktiviert" />
+Wenn diese Option aktiviert ist, blinkt die Status-LED kurz bei Aktivität auf dem Bus – praktisch zur Fehlersuche oder einfach, um die Kommunikation im Blick zu behalten.
+
 ### Relay <Badge type="tip" text="doorman_relay" /> <Badge type="info" text="Deaktiviert" />
 Steuert das eingebaute Relais.
 

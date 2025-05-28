@@ -132,11 +132,23 @@ remote_transmitter:
     mode: OUTPUT
   carrier_duty_percent: 100%
   eot_level: false
+  on_complete:
+    - if:
+        condition:
+          - switch.is_on: doorman_status_led_bus_activity
+        then:
+          - script.execute: blink_status_led
 
 # Setup TC:BUS Component
 tc_bus:
   id: tc_bus_intercom
   event: "doorman"
+  on_command:
+    - if:
+        condition:
+          - switch.is_on: doorman_status_led_bus_activity
+        then:
+          - script.execute: blink_status_led
   
 number:
   - platform: tc_bus
@@ -281,6 +293,18 @@ switch:
       sorting_group_id: sorting_group_controls
       sorting_weight: 6
 
+  - platform: template
+    id: doorman_status_led_bus_activity
+    name: "Status LED: Show Bus Activity"
+    icon: "mdi:swap-vertical"
+    restore_mode: RESTORE_DEFAULT_OFF
+    disabled_by_default: true
+    optimistic: true
+    web_server:
+      sorting_group_id: sorting_group_settings_advanced
+      sorting_weight: -40
+
+
 button:
   # System Actions
   - platform: restart
@@ -321,7 +345,7 @@ light:
     name: Status LED
     icon: "mdi:led-on"
     pin: ${led_pin}
-    restore_mode: RESTORE_DEFAULT_ON
+    restore_mode: RESTORE_DEFAULT_OFF
     entity_category: CONFIG
     web_server:
       sorting_group_id: sorting_group_system
@@ -625,6 +649,14 @@ event:
       sorting_weight: -20
 
 script:
+  - id: blink_status_led
+    mode: restart
+    then:
+      - light.turn_off: doorman_status_led
+      - light.turn_on: doorman_status_led
+      - delay: 100ms
+      - light.turn_off: doorman_status_led
+
   - id: send_command_chain
     parameters:
       command_list: string

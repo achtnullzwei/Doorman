@@ -3,7 +3,8 @@ Welcome to the latest updates! Here's a breakdown of all the **new features**, *
 
 ## 2025.5.0
 ### 🚨 Breaking Changes Included
-Please review the breaking changes listed below carefully before updating!
+Please carefully review the breaking changes listed below before updating!  
+This release **may impact your current setup** and **could require** you to go through the **setup process again**.
 
 ### 🚀 What's New?
 - **Expanded Support for Model-Specific Settings**  
@@ -25,6 +26,9 @@ Please review the breaking changes listed below carefully before updating!
 
 - **Pre-Open Commands**  
    In some setups, it’s necessary to send one or more preparatory commands to select the correct door. This feature allows you to define and send a sequence of commands before the `open_door` command is executed.
+
+- **Show Bus Activity via Status LED**  
+   Added a new switch that, when enabled, makes the status LED blink briefly to indicate bus activity. Helpful for debugging and verifying communication with the door system. Disabled by default.
 
 ### ✨ Improvements
 - **Refined Configuration for Ring to Open**  

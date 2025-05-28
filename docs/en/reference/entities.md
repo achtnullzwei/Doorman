@@ -133,6 +133,9 @@ Controls the built-in relay.
 ### Use 32-Bit Door Protocol <Badge type="tip" text="use_32_open_door_protocol" /> <Badge type="info" text="Disabled by default" />
 This guarantees the long door opener command is used and adds a serial number to the short door opener command.
 
+### Status LED: Show Bus Activity <Badge type="tip" text="doorman_status_led_bus_activity" /> <Badge type="info" text="Disabled by default" />
+When enabled, the status LED will briefly blink to indicate activity on the bus — useful for debugging or just keeping an eye on communication.
+
 ### Setup Mode <Badge type="tip" text="doorman_setup_mode" />
 Toggles the [Interactive Setup](../guide/getting-started#interactive-setup) Mode to easily setup your Doorman.
 
