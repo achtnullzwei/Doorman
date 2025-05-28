@@ -25,8 +25,12 @@ binary_sensor:
                       std::string str = id(rto_entrance_door_delay).state;
                       size_t pos = str.find(' ');
                       std::string first_token = (pos != std::string::npos) ? str.substr(0, pos) : str;
-                      int value = std::stoi(first_token);
-                      return value * 1000 + 300;
+                      int value = std::stoi(first_token) * 1000;
+                      if(value == 0)
+                      {
+                        value += 300; // Ensure at least 300ms delay
+                      }
+                      return value;
 
             - script.execute: rto_entrance_door_action
 
@@ -54,8 +58,12 @@ binary_sensor:
                       std::string str = id(rto_second_entrance_door_delay).state;
                       size_t pos = str.find(' ');
                       std::string first_token = (pos != std::string::npos) ? str.substr(0, pos) : str;
-                      int value = std::stoi(first_token);
-                      return value * 1000 + 300;
+                      int value = std::stoi(first_token) * 1000;
+                      if(value == 0)
+                      {
+                        value += 300; // Ensure at least 300ms delay
+                      }
+                      return value;
 
             - script.execute: rto_second_entrance_door_action
 
@@ -83,8 +91,8 @@ binary_sensor:
                       std::string str = id(rto_apartment_door_delay).state;
                       size_t pos = str.find(' ');
                       std::string first_token = (pos != std::string::npos) ? str.substr(0, pos) : str;
-                      int value = std::stoi(first_token);
-                      return value * 1000 + 300;
+                      int value = std::stoi(first_token) * 1000;
+                      return value;
 
             - script.execute: rto_apartment_door_action
 
