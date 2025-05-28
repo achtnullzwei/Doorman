@@ -342,3 +342,12 @@ esphome run <yamlfile.yaml>
 <!--@include: ../../../../firmware/examples/esp8266.custom.nuki-bridge.master.example.yaml-->
 ```
 :::
+
+## Firmware Alternativen
+
+### Doorman <Badge type="tip" text="Arduino Framework" />
+Wenn du nach einer Firmware suchst, bei der du wirklich alles anpassen kannst wie du es magst, gibt es eine coole Alternative von [@peteh](https://github.com/peteh). Schau sie dir auf [GitHub](https://github.com/peteh/doorman) an.
+
+::: tip
+Diese Version eignet sich besonders für Entwickler oder fortgeschrittene Nutzer, die die Logik und das Verhalten ihres Doorman-Setups vollständig kontrollieren möchten.
+:::

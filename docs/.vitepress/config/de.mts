@@ -113,8 +113,7 @@ function sidebarGuide(): DefaultTheme.SidebarItem[] {
       text: 'Firmware',
       items: [
         { text: 'Installation und Updates', link: 'installation', base: '/de/guide/firmware/' },
-        { text: 'Anpassungen', link: 'customization', base: '/de/guide/firmware/' },
-        { text: 'Alternative Firmware', link: 'custom-firmware', base: '/de/guide/firmware/' }
+        { text: 'Anpassungen', link: 'customization', base: '/de/guide/firmware/' }
       ]
     },
     {

@@ -17,13 +17,13 @@ Check out the [example](../firmware/customization#create-your-own-doorbell-patte
 - Apartment Doorbell <Badge type="tip" text="apartment_doorbell_pattern" />
 
 ### Event Types
-- single
-- double
-- triple
-- quadruple
+- **single**
+- **double**
+- **triple**
+- **quadruple**
 
 ### Example Automation
-::: details Automatically open the door when the Entrance Doorbell is pressed twice in a specific pattern.
+::: details Automatically open the door when the Entrance Doorbell is pressed twice.
 Make sure to replace the `entity_id` with your specific Doorman entities.
 ```yaml
 alias: Automatically open the entrance door
@@ -46,10 +46,10 @@ mode: single
 ## Phone pickup Pattern
 
 ### Event Types
-- single
-- double
-- triple
-- quadruple
+- **single**
+- **double**
+- **triple**
+- **quadruple**
 
 ### Example Automation
 ::: details Toggle Ring To Open Mode by quickly picking up the phone three times.

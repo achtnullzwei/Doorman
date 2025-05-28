@@ -17,13 +17,13 @@ Sieh dir das [Beispiel](../firmware/customization#erstelle-dein-eigenes-klingelm
 - Apartment Doorbell <Badge type="tip" text="apartment_doorbell_pattern" />
 
 ### Ereignistypen
-- single
-- double
-- triple
-- quadruple
+- **single**
+- **double**
+- **triple**
+- **quadruple**
 
 ### Beispiel-Automatisierung
-::: details Tür automatisch öffnen, wenn die Eingangsklingel zweimal in einem bestimmten Muster gedrückt wird.
+::: details Tür automatisch öffnen, wenn die Eingangsklingel zweimal gedrückt wird.
 Stelle sicher, dass du die `entity_id` durch deine spezifischen Doorman-Entitäten ersetzt.
 ```yaml
 alias: Eingangstür automatisch öffnen
@@ -46,13 +46,13 @@ mode: single
 ## Phone Hang up-Muster
 
 ### Ereignistypen
-- single
-- double
-- triple
-- quadruple
+- **single**
+- **double**
+- **triple**
+- **quadruple**
 
 ### Beispiel-Automatisierung
-::: details Ring-To-Open-Modus umschalten, indem du schnell dreimal den Telefonhörer auflegst.
+::: details Ring-To-Open-Modus umschalten, indem du dreimal den Telefonhörer auflegst.
 Stelle sicher, dass du die `entity_id` durch deine spezifischen Doorman-Entitäten ersetzt.
 ```yaml
 alias: Ring-To-Open-Modus umschalten (Telefon-Auflegen-Muster)
