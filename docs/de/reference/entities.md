@@ -4,7 +4,7 @@ Unten findest du eine Liste der verfügbaren Sensoren und Steuerungen sowie eine
 
 ## Anzeigen der Entitäten in Home Assistant
 
-1. Öffne die Benutzeroberfläche von Home Assistant und gehe zu **ESPHome**.
+1. Öffne die Benutzeroberfläche von Home Assistant und gehe zu [ESPHome](https://my.home-assistant.io/redirect/integration/?domain=esphome).
 2. Wähle dein Doorman-Gerät aus.
 3. Es erscheint ein Dashboard, das alle verfügbaren Sensoren und Steuerungen für Automatisierungen auflistet.
 

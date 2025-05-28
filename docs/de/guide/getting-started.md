@@ -6,6 +6,18 @@ Unten findest du eine Schritt-für-Schritt-Anleitung, die dich beim ersten Einri
 
 **Vielen Dank, dass du Doorman verwendest und dieses Projekt unterstützt! ❤️**
 
+## Haftungsausschluss
+
+Durch die Nutzung oder Installation von Doorman übernimmst du die volle Verantwortung für alle Änderungen an deiner Gegensprechanlage.
+Das Verhalten des Systems kann je nach individueller Installation und Umgebung variieren.
+
+Wenn du dir bei der Einrichtung oder Verkabelung unsicher bist, konsultiere bitte eine **qualifizierte Elektrofachkraft**.
+Eine unsachgemäße Installation kann zu **Fehlfunktionen oder Schäden an deiner Türsprechanlage** führen.
+
+:::tip HINWEIS
+Dies ist **kein offizielles oder zertifiziertes Produkt**. Es basiert auf Reverse Engineering und wird **ohne Garantie auf Kompatibilität, Sicherheit oder Funktionalität** bereitgestellt.
+:::
+
 ## Firmware flashen
 Wenn du ein **vorgeflashtes Doorman-Board** gekauft hast, kannst du diesen Schritt einfach überspringen — du bist startklar! 🎉
 
@@ -14,55 +26,74 @@ Sonst sitzt du da und wunderst dich, warum nichts passiert. 😄
 
 <div class="custom-layout"><a class="btn" target="_blank" href="./firmware/installation">Firmware installieren oder updaten</a></div>
 
-## Verkabelung
-Öffne als Erstes das Gehäuse deiner Innenstation. In den meisten Fällen findest du dort eine Schraubklemme mit den Bezeichnungen `a`, `b`, `E` und `P`.
+## Kabel anschließen
+Öffne als Erstes das Gehäuse deiner Innenstation. Bei den meisten Modellen findest du Schraubklemmen mit der Beschriftung `a`, `b`, `E` und `P`.
+
+Der Doorman wird — wie jedes andere Gerät — **parallel zum Bus** angeschlossen.
 
 ::: danger VORSICHT
-**SCHLIEßE AUF KEINEN FALL EINE EXTERNE STROMQUELLE AN DIE TC:BUS-TERMINALE AN.  
-DAS KÖNNTE DAS RICHTIG SCHADEN ANRICHTEN!**
-:::
+**Schließe NIEMALS eine externe Stromquelle an die TC:BUS-Terminale an!**
 
-Schließe die `b`-Leitung (Ground) an einen der TC:BUS-Anschlüsse deines Doorman an und die `a`-Leitung (24V Bus) an den anderen TC:BUS-Anschluss deines Doorman. Doorman ist wie jedes andere Gerät am Bus und wird **parallel angeschlossen**.
-
-::: warning HINWEIS
-Standardmäßig versende ich Revision 1.5 mit einer Jumper-Kappe auf `BUS PWR`. Bitte entferne diese, sofern du Doorman nicht nach dem Schema `2-Draht-Modus über die Innenstation` anschließt.
+Dies kann zu **erheblichen Schäden** führen.  
+Bitte überprüfe alle Verbindungen stets sorgfältig und mehrmals, bevor du etwas anschließt.
 :::
 
 ### Stromversorgungsoptionen:
 ::: details 3-Draht-Modus über die Innenstation <Badge type="tip" text="Empfohlen" />
-Verbinde die `P`-Leitung (+24V) mit dem `P`-Terminal an deinem Doorman.
+> [!DANGER] WICHTIG
+> **Bitte entferne die Jumper-Kappe auf `BUS PWR`, bevor du fortfährst!**
+>
+> Die Stromversorgung der Türsprechanlage muss **mindestens 60 mA** liefern können – das ist in der Regel der Fall.
+> Da die verfügbare Leistung jedoch begrenzt ist, kann das **direkte Anschließen zusätzlicher Geräte wie des Doorman-S3 an den Bus zu Instabilitäten im System führen**.
 
-> [!WARNING]
-> Die Stromversorgung der Gegensprechanlage muss mindestens 60mA liefern.
+Schließe die `b`-Leitung (Ground) an einen der TC:BUS-Anschlüsse deines Doorman und die `a`-Leitung (24V Bus) an den anderen TC:BUS-Anschluss an.
+
+Verbinde anschließend die `P`-Leitung (+24V) mit dem `P`-Terminal an deinem Doorman.
 
 Beispiel:
 ![3-wire](./images/3wire.png){width=300px}
 :::
 
+::: details 2-Draht-Modus über die Innenstation <Badge type="danger" text="Hardware Revision 1.5 und neuer" />
+> [!INFO] INFO
+> Die Nutzung der `a`-Bus-Leitung als Stromquelle bei älteren Hardware Revisionen als `1.5` führt zu einem lauten Piepton. Dieses Problem tritt wahrscheinlich aufgrund der Hochfrequenz-Schaltstromversorgung auf.
+>
+> Ab Hardware Revision `1.5` erzeugt diese Methode nur noch ein leises, aber dennoch wahrnehmbares Rauschen im Lautsprecher.
+
+> [!DANGER] WICHTIG
+> Die Stromversorgung der Türsprechanlage muss **mindestens 60 mA** liefern können – das ist in der Regel der Fall.
+> Da die verfügbare Leistung jedoch begrenzt ist, kann das **direkte Anschließen zusätzlicher Geräte wie des Doorman-S3 an den Bus zu Instabilitäten im System führen**.
+
+Schließe die `b`-Leitung (Ground) an einen der TC:BUS-Anschlüsse deines Doorman und die `a`-Leitung (24V Bus) an den anderen TC:BUS-Anschluss an.
+
+Setze anschließend die Jumper-Kappe auf `BUS PWR`, um die Stromversorgung zu aktivieren.
+
+Beispiel:
+![2-wire via intercom jumper](./images/2wire_intercom.png){width=300px}
+:::
+
 ::: details 2-Draht-Modus über externe Stromversorgung
-Schließe die externe Stromversorgung an deinen Doorman an. Nutze dazu die `P` (+5V bis +30V) und `G` (Ground) Schraubklemmen an deinem Doorman.
+> [!DANGER] WICHTIG
+> Bitte entferne die Jumper-Kappe auf `BUS PWR`, bevor du fortfährst!
+
+Schließe die `b`-Leitung (Ground) an einen der TC:BUS-Anschlüsse deines Doorman und die `a`-Leitung (24V Bus) an den anderen TC:BUS-Anschluss an.
+
+Verbinde die externe Stromversorgung mit deinem Doorman über die Schraubklemmen `P` (+5V bis +30V) und `G` (Ground).
 
 Beispiel:
 ![2-wire external via screw terminal](./images/2wire_power_screwterminal.png){width=300px}
 :::
 
 ::: details 2-Draht-Modus über externe USB-C-Stromversorgung
-Schließe die externe Stromversorgung über den USB-C-Anschluss an.
+> [!DANGER] WICHTIG
+> Bitte entferne die Jumper-Kappe auf `BUS PWR`, bevor du fortfährst!
+
+Schließe die `b`-Leitung (Ground) an einen der TC:BUS-Anschlüsse deines Doorman und die `a`-Leitung (24V Bus) an den anderen TC:BUS-Anschluss an.
+
+Verbinde anschließend die externe Stromversorgung über den USB-C-Anschluss.
 
 Beispiel:
 ![2-wire external via usb](./images/2wire_power_usb_c.png){width=300px}
-:::
-
-::: details 2-Draht-Modus über die Innenstation <Badge type="danger" text="Hardware Revision 1.5 und neuer" />
-> [!DANGER] Wichtig
-> Die Nutzung der `a`-Bus-Leitung als Stromquelle bei älteren Hardware Revisionen als `1.5` führt zu einem lauten Piepton. Dieses Problem tritt wahrscheinlich aufgrund der Hochfrequenz-Schaltstromversorgung auf.
->
-> Ab Hardware Revision `1.5` erzeugt diese Methode nur noch ein leises, aber dennoch wahrnehmbares Rauschen im Lautsprecher.
-
-Nachdem du die `a` und `b` Leitung angeschlossen hast musst du noch `BUS PWR` mittels Jumper Kappe verbinden.
-
-Beispiel:
-![2-wire via intercom jumper](./images/2wire_intercom.png){width=300px}
 :::
 
 
@@ -249,6 +280,11 @@ Wenn das Modell erfolgreich erkannt wurde oder die Zeit abläuft, wird die Einri
 
 ### 4. Einrichtung abgeschlossen
 Die LED leuchtet 3 Sekunden lang grün-türkis und geht dann aus, der Setup-Modus wird deaktiviert. Die Einrichtung ist abgeschlossen.
+
+## Nächste Schritte
+Du möchtest deinen Doorman konfigurieren? Öffne dafür die Weboberfläche von Doorman oder das [Geräte-Dashboard](https://my.home-assistant.io/redirect/integration/?domain=esphome) in Home Assistant.
+
+Falls du dir unsicher bist, was jede Entität macht, welche Funktionen sie steuert oder wie du sie einrichtest, findest du in der [Entitätsreferenz](../reference/entities) eine ausführliche Anleitung zu allen verfügbaren Entitäten und deren Konfigurationsmöglichkeiten.
 
 ## Hast du noch Probleme?
 Falls du Probleme hast, deinen Doorman in Home Assistant einzurichten, helfen wir dir gerne weiter.

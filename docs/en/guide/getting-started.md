@@ -6,6 +6,16 @@ Below is a step-by-step guide to help you set up your Doorman for the very first
 
 Thank you so much for choosing Doorman and supporting this project! ❤️
 
+## Disclaimer
+By using or installing Doorman, you accept full responsibility for any modifications made to your intercom system.
+System behavior may vary depending on your specific installation and environment.
+
+If you are uncertain about any part of the setup or wiring, please consult a qualified electrician. Improper installation may result in **device malfunction or damage to your intercom system**.
+
+:::tip NOTE
+This is **not an official or certified product**. It is the result of a reverse engineering effort and is provided **as-is**, with **no guarantee of compatibility, safety, or functionality**.
+:::
+
 ## Flashing the Firmware
 If you bought a **pre-flashed Doorman PCB**, you're good to go — skip this step! 🎉
 
@@ -15,54 +25,75 @@ Otherwise, you'll be staring at a very quiet device while wondering why nothing 
 <div class="custom-layout"><a class="btn" target="_blank" href="./firmware/installation">Install or Update Firmware</a></div>
 
 ## Connect the Wires
-First, open your indoor station enclosure. On most models, you will find a screw terminal labeled with `a`, `b`, `E`, and `P`.
+Start by opening your indoor station's enclosure. On most models, you'll find screw terminals labeled `a`, `b`, `E`, and `P`.
 
-::: danger
-**NEVER CONNECT AN EXTERNAL POWER SOURCE TO THE TC:BUS TERMINALS  
-DOING SO CAN CAUSE SEVERE DAMAGE.**
-:::
+The Doorman connects **in parallel** to the bus — just like any other device.
 
-Connect the `b` line (Ground) to one of the TC:BUS terminals on your Doorman, and connect the `a` line (24V Bus) to the other TC:BUS terminal on your Doorman. Doorman is just like any other device on the bus, **connected in parallel**.
+Before proceeding, review the power supply options below and choose the one that best suits your setup.
 
-::: warning NOTE
-By default, I ship version 1.5 with a jumper cap on `BUS PWR`. Please remove this if you are not connecting Doorman in the `2-Wire Mode via indoor station` configuration.
+::: danger CAUTION
+**NEVER connect an external power source to the TC:BUS terminals!**
+
+Doing so can cause **serious damage**.  
+Always double-check all connections carefully before plugging anything in.
 :::
 
 ### Power supply options:
 ::: details 3-Wire Mode via indoor station <Badge type="tip" text="Recommended" />
-Connect the `P` line (+24V) to the `P` terminal on your Doorman.
+> [!DANGER] IMPORTANT
+> **Please remove the jumper cap on `BUS PWR` before you proceed!**
+> 
+> The intercom’s power supply must provide **at least 60 mA**, which is usually the case.  
+> However, since the available power is limited, **connecting additional devices like the Doorman-S3 directly to the bus may cause instability** in the system.
 
-> [!WARNING]
-> The intercom power supply must provide at least 60mA.
+Connect the `b` line (Ground) and the `a` line (24V Bus) to the TC:BUS terminals on your Doorman—one line per terminal.
+
+Then connect the `P` line (+24V) to the `P` terminal on your Doorman.
 
 Example:
 ![3-wire](./images/3wire.png){width=300px}
 :::
 
+::: details 2-Wire Mode via indoor station <Badge type="danger" text="Hardware revision 1.5 and later" />
+> [!INFO] INFO
+> Using the `a`-bus line as a power source on revisions older than `1.5` results in a loud beeping noise. This issue is likely due to the high-frequency switching power supply.
+>
+> Starting with revision `1.5` this method will only produce a subtle, yet noticeable hissing sound on the speaker.
+
+> [!DANGER] IMPORTANT
+> The intercom’s power supply must provide **at least 60 mA**, which is usually the case.  
+> However, since the available power is limited, **connecting additional devices like the Doorman-S3 directly to the bus may cause instability** in the system.
+
+Connect the `b` line (Ground) and the `a` line (24V Bus) to the TC:BUS terminals on your Doorman—one line per terminal.
+
+Once connected, place a jumper cap on `BUS PWR` to enable power from the bus.
+
+Example:
+![2-wire via bus pwr jumper](./images/2wire_intercom.png){width=300px}
+:::
+
 ::: details 2-Wire Mode via external wired Power Supply
-Connect the external power supply to your Doorman using the `P` (+5V to +30V) and `G` (Ground) screw terminals.
+> [!DANGER] IMPORTANT
+> Please remove the jumper cap on `BUS PWR` before you proceed!
+
+Connect the `b` line (Ground) and the `a` line (24V Bus) to the TC:BUS terminals on your Doorman—one line per terminal.
+
+Then connect the external power supply to your Doorman using the `P` (+5V to +30V) and `G` (Ground) screw terminals.
 
 Example:
 ![2-wire external via screw terminal](./images/2wire_power_screwterminal.png){width=300px}
 :::
 
 ::: details 2-Wire Mode via external USB-C Power Supply
-Connect the external power supply via the USB-C port.
+> [!DANGER] IMPORTANT
+> Please remove the jumper cap on `BUS PWR` before you proceed!
+
+Connect the `b` line (Ground) and the `a` line (24V Bus) to the TC:BUS terminals on your Doorman—one line per terminal.
+
+Then, power your Doorman using the USB-C port.
 
 Example:
 ![2-wire external via usb](./images/2wire_power_usb_c.png){width=300px}
-:::
-
-::: details 2-Wire Mode via indoor station <Badge type="danger" text="Hardware revision 1.5 and later" />
-> [!DANGER] Important Info
-> Using the `a`-bus line as a power source on revisions older than `1.5` results in a loud beeping noise. This issue is likely due to the high-frequency switching power supply.
->
-> Starting with revision `1.5` this method will only produce a subtle, yet noticeable hissing sound on the speaker.
-
-After connecting the `a` and `b` lines, you need to connect `BUS PWR` using a jumper cap.
-
-Example:
-![2-wire via bus pwr jumper](./images/2wire_intercom.png){width=300px}
 :::
 
 
@@ -251,6 +282,11 @@ If the model detection is successful or if it times out, the setup will be consi
 
 ### 4. Setup complete
 The LED will remain green-turquoise for 3 seconds, then turn off, and the setup mode will be turned off. The setup is complete.
+
+## Next Steps
+You're probably looking to configure your Doorman. To get started, open the Doorman web interface or the Home Assistant [device dashboard](https://my.home-assistant.io/redirect/integration/?domain=esphome).
+
+If you're unsure about what each entity does, what it controls, or how to configure it, check out the [Entity Reference](../reference/entities) for a detailed guide on all available entities, their functions, and setup options.
 
 ## Still having issues?
 If you're having trouble setting up your Doorman in Home Assistant, we're here to help.  
