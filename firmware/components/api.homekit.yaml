@@ -1,0 +1,58 @@
+# API: HomeKit
+
+esphome:
+  on_boot:
+    then:
+      - light.turn_on:
+          id: doorman_rgb_status_led
+          effect: pulse
+          red: 100%
+          green: 65%
+          blue: 0%
+      - wait_until:
+          condition:
+            wifi.connected:
+      - light.turn_on:
+          id: doorman_rgb_status_led
+          effect: none
+          red: 100%
+          green: 65%
+          blue: 0%
+      - delay: 3s
+      - script.execute: update_led
+
+esp32:
+  framework:
+    sdkconfig_options:
+      CONFIG_MBEDTLS_HKDF_C: "y"
+      CONFIG_LWIP_MAX_SOCKETS: "16"
+      
+external_components:
+  source: github://NonaSuomy/HAP-ESPHome@main
+  refresh: 0s
+
+homekit_base:
+  meta:
+    name: "Doorman"
+    manufacturer: "AzonInc"
+    model: "Doorman-S3"
+    fw_rev: "2025.5.1"
+  setup_code: '159-35-728'
+
+homekit:
+  lock:
+    - id: entrance_door
+      meta:
+        name: "Entrance Door"
+        manufacturer: "ESPHome"
+        model: "Template Lock"
+    - id: second_entrance_door
+      meta:
+        name: "Second Entrance Door"
+        manufacturer: "ESPHome"
+        model: "Template Lock"
+
+button:
+  - platform: homekit_base
+    factory_reset:
+      name: "Reset HomeKit"

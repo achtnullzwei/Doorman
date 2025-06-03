@@ -41,6 +41,7 @@ def get_packages(host, api_variant, firmware, branch):
         
         ('api', '!include ../components/api.homeassistant.yaml', api_variant == 'ha'),
         ('api', '!include ../components/api.mqtt.yaml', api_variant == 'mqtt'),
+        ('api', '!include ../components/api.homekit.yaml', api_variant == 'homekit'),
         ('api', '!include ../components/api.custom.yaml', api_variant == 'custom'),
 
         ('debug_utilities', '!include ../components/debug-utilities.yaml', branch == 'dev'),
@@ -121,7 +122,7 @@ def generate_example_yaml(host, api_variant, firmware, branch):
 # Configuration options
 HOST_ARCHITECTURES = get_host_architectures()
 
-API_VARIANTS = ['ha', 'mqtt', 'custom']
+API_VARIANTS = ['ha', 'mqtt', 'homekit', 'custom']
 FIRMWARES = ['stock', 'nuki-bridge']
 BRANCHES = ['master', 'dev']
 

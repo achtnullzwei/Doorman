@@ -48,6 +48,13 @@ export default {
                     details: 'Ich möchte Doorman direkt mit meinem MQTT-Broker verbinden und auf anderen Plattformen nutzen.',
                 },
                 {
+                    key: 'homekit',
+                    name: 'HomeKit',
+                    icon: '<img src="/homekit.png" />',
+                    iconColor: '#606',
+                    details: 'Text fehlt!',
+                },
+                {
                     key: 'custom',
                     name: 'Standalone',
                     icon: '✨',
@@ -79,7 +86,7 @@ export default {
         },
         integration(newIntegration, oldIntegration) {
             localStorage.setItem("fw_integration", newIntegration);
-            if (newIntegration == 'mqtt' && this.variant == 'nuki-bridge') {
+            if ((newIntegration == 'mqtt' || newIntegration == 'homekit') && this.variant == 'nuki-bridge') {
                 this.variant = 'stock';
             }
         },
@@ -100,6 +107,9 @@ export default {
         notes() {
             if(this.integration == 'mqtt') {
                 return 'Die Firmware benötigt nach dem flashen noch etwas Handarbeit. Schau dir dazu bitte die Anleitung zur <a href="./mqtt#setup">MQTT Einrichtung</a> an.<br><br>Diese Firmware-Variante ist aufgrund von <b>RAM-Einschränkungen</b> leider nicht mit der Nuki Bridge Erweiterung kompatibel.';
+            }
+            if(this.integration == 'mqtt') {
+                return 'Diese Firmware-Variante ist aufgrund von <b>RAM-Einschränkungen</b> leider nicht mit der Nuki Bridge Erweiterung kompatibel.';
             }
             return '';
         },
@@ -170,7 +180,7 @@ Dieser geführte Prozess sorgt für eine nahtlose Integration mit der Home Assis
         <h5 class="firmware_title_row"><i class="mdi mdi-package-variant-plus"></i> Darf's vielleicht etwas mehr sein?</h5>
         <div class="firmware_option_row">
             <label class="firmware_option" v-for="fw_variant in variant_options" :key="fw_variant.key">
-                <input type="radio" class="reset_default" :disabled="integration=='mqtt' && fw_variant.key == 'nuki-bridge'" v-model="variant" :value="fw_variant.key">
+                <input type="radio" class="reset_default" :disabled="(integration=='mqtt' || integration=='homekit') && fw_variant.key == 'nuki-bridge'" v-model="variant" :value="fw_variant.key">
                 <span class="checkmark">
                     <div class="icon" v-if="fw_variant.icon" v-html="fw_variant.icon"></div>
                     <div class="title" v-html="fw_variant.name"></div>
