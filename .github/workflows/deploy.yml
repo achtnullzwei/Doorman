@@ -108,6 +108,18 @@ jobs:
       directory_name: esp32.mqtt.stock
       summary: ${{ needs.prepare-release.outputs.release_summary }}
       url: ${{ needs.prepare-release.outputs.release_url }}
+  build-esp32-homekit-stock-stable-firmware:
+    if: github.ref_name == 'master'
+    name: Build ESP32 Stock Firmware (HomeKit, stable)
+    uses: ./.github/workflows/build-esphome.yml
+    needs: prepare-release
+    with:
+      files: firmware/configurations/esp32.homekit.stock.master.yaml
+      name: AzonInc.Doorman
+      esphome_version: latest
+      directory_name: esp32.homekit.stock
+      summary: ${{ needs.prepare-release.outputs.release_summary }}
+      url: ${{ needs.prepare-release.outputs.release_url }}
   build-esp32-custom-stock-stable-firmware:
     if: github.ref_name == 'master'
     name: Build ESP32 Stock Firmware (Custom, stable)
@@ -143,6 +155,18 @@ jobs:
       name: AzonInc.Doorman
       esphome_version: latest
       directory_name: esp32-s3.mqtt.stock
+      summary: ${{ needs.prepare-release.outputs.release_summary }}
+      url: ${{ needs.prepare-release.outputs.release_url }}
+  build-esp32-s3-homekit-stock-stable-firmware:
+    if: github.ref_name == 'master'
+    name: Build ESP32-S3 Stock Firmware (HomeKit, stable)
+    uses: ./.github/workflows/build-esphome.yml
+    needs: prepare-release
+    with:
+      files: firmware/configurations/esp32-s3.homekit.stock.master.yaml
+      name: AzonInc.Doorman
+      esphome_version: latest
+      directory_name: esp32-s3.homekit.stock
       summary: ${{ needs.prepare-release.outputs.release_summary }}
       url: ${{ needs.prepare-release.outputs.release_url }}
   build-esp32-s3-custom-stock-stable-firmware:
@@ -182,6 +206,18 @@ jobs:
       directory_name: esp32-s3-quad.mqtt.stock
       summary: ${{ needs.prepare-release.outputs.release_summary }}
       url: ${{ needs.prepare-release.outputs.release_url }}
+  build-esp32-s3-quad-homekit-stock-stable-firmware:
+    if: github.ref_name == 'master'
+    name: Build ESP32-S3-QUAD Stock Firmware (HomeKit, stable)
+    uses: ./.github/workflows/build-esphome.yml
+    needs: prepare-release
+    with:
+      files: firmware/configurations/esp32-s3-quad.homekit.stock.master.yaml
+      name: AzonInc.Doorman
+      esphome_version: latest
+      directory_name: esp32-s3-quad.homekit.stock
+      summary: ${{ needs.prepare-release.outputs.release_summary }}
+      url: ${{ needs.prepare-release.outputs.release_url }}
   build-esp32-s3-quad-custom-stock-stable-firmware:
     if: github.ref_name == 'master'
     name: Build ESP32-S3-QUAD Stock Firmware (Custom, stable)
@@ -217,6 +253,18 @@ jobs:
   #    name: AzonInc.Doorman-Nuki-Bridge
   #    esphome_version: latest
   #    directory_name: esp32.mqtt.nuki-bridge
+  #    summary: ${{ needs.prepare-release.outputs.release_summary }}
+  #    url: ${{ needs.prepare-release.outputs.release_url }}
+  #build-esp32-homekit-nuki-bridge-stable-firmware:
+  #  if: github.ref_name == 'master'
+  #  name: Build ESP32 Nuki Bridge Firmware (HomeKit, stable)
+  #  uses: ./.github/workflows/build-esphome.yml
+  #  needs: prepare-release
+  #  with:
+  #    files: firmware/configurations/esp32.homekit.nuki-bridge.master.yaml
+  #    name: AzonInc.Doorman-Nuki-Bridge
+  #    esphome_version: latest
+  #    directory_name: esp32.homekit.nuki-bridge
   #    summary: ${{ needs.prepare-release.outputs.release_summary }}
   #    url: ${{ needs.prepare-release.outputs.release_url }}
   build-esp32-custom-nuki-bridge-stable-firmware:
@@ -256,6 +304,18 @@ jobs:
   #    directory_name: esp32-s3.mqtt.nuki-bridge
   #    summary: ${{ needs.prepare-release.outputs.release_summary }}
   #    url: ${{ needs.prepare-release.outputs.release_url }}
+  #build-esp32-s3-homekit-nuki-bridge-stable-firmware:
+  #  if: github.ref_name == 'master'
+  #  name: Build ESP32-S3 Nuki Bridge Firmware (HomeKit, stable)
+  #  uses: ./.github/workflows/build-esphome.yml
+  #  needs: prepare-release
+  #  with:
+  #    files: firmware/configurations/esp32-s3.homekit.nuki-bridge.master.yaml
+  #    name: AzonInc.Doorman-Nuki-Bridge
+  #    esphome_version: latest
+  #    directory_name: esp32-s3.homekit.nuki-bridge
+  #    summary: ${{ needs.prepare-release.outputs.release_summary }}
+  #    url: ${{ needs.prepare-release.outputs.release_url }}
   build-esp32-s3-custom-nuki-bridge-stable-firmware:
     if: github.ref_name == 'master'
     name: Build ESP32-S3 Nuki Bridge Firmware (Custom, stable)
@@ -291,6 +351,18 @@ jobs:
   #    name: AzonInc.Doorman-Nuki-Bridge
   #    esphome_version: latest
   #    directory_name: esp32-s3-quad.mqtt.nuki-bridge
+  #    summary: ${{ needs.prepare-release.outputs.release_summary }}
+  #    url: ${{ needs.prepare-release.outputs.release_url }}
+  #build-esp32-s3-quad-homekit-nuki-bridge-stable-firmware:
+  #  if: github.ref_name == 'master'
+  #  name: Build ESP32-S3-QUAD Nuki Bridge Firmware (HomeKit, stable)
+  #  uses: ./.github/workflows/build-esphome.yml
+  #  needs: prepare-release
+  #  with:
+  #    files: firmware/configurations/esp32-s3-quad.homekit.nuki-bridge.master.yaml
+  #    name: AzonInc.Doorman-Nuki-Bridge
+  #    esphome_version: latest
+  #    directory_name: esp32-s3-quad.homekit.nuki-bridge
   #    summary: ${{ needs.prepare-release.outputs.release_summary }}
   #    url: ${{ needs.prepare-release.outputs.release_url }}
   build-esp32-s3-quad-custom-nuki-bridge-stable-firmware:
@@ -332,6 +404,18 @@ jobs:
       directory_name: esp32.mqtt.stock
       summary: ${{ needs.prepare-release.outputs.release_summary }}
       url: ${{ needs.prepare-release.outputs.release_url }}
+  build-esp32-homekit-stock-dev-firmware:
+    if: startsWith(github.ref_name, 'dev')
+    name: Build ESP32 Stock Firmware (HomeKit, dev)
+    uses: ./.github/workflows/build-esphome.yml
+    needs: prepare-release
+    with:
+      files: firmware/configurations/esp32.homekit.stock.dev.yaml
+      name: AzonInc.Doorman
+      esphome_version: dev
+      directory_name: esp32.homekit.stock
+      summary: ${{ needs.prepare-release.outputs.release_summary }}
+      url: ${{ needs.prepare-release.outputs.release_url }}
   build-esp32-custom-stock-dev-firmware:
     if: startsWith(github.ref_name, 'dev')
     name: Build ESP32 Stock Firmware (Custom, dev)
@@ -367,6 +451,18 @@ jobs:
       name: AzonInc.Doorman
       esphome_version: dev
       directory_name: esp32-s3.mqtt.stock
+      summary: ${{ needs.prepare-release.outputs.release_summary }}
+      url: ${{ needs.prepare-release.outputs.release_url }}
+  build-esp32-s3-homekit-stock-dev-firmware:
+    if: startsWith(github.ref_name, 'dev')
+    name: Build ESP32-S3 Stock Firmware (HomeKit, dev)
+    uses: ./.github/workflows/build-esphome.yml
+    needs: prepare-release
+    with:
+      files: firmware/configurations/esp32-s3.homekit.stock.dev.yaml
+      name: AzonInc.Doorman
+      esphome_version: dev
+      directory_name: esp32-s3.homekit.stock
       summary: ${{ needs.prepare-release.outputs.release_summary }}
       url: ${{ needs.prepare-release.outputs.release_url }}
   build-esp32-s3-custom-stock-dev-firmware:
@@ -406,6 +502,18 @@ jobs:
       directory_name: esp32-s3-quad.mqtt.stock
       summary: ${{ needs.prepare-release.outputs.release_summary }}
       url: ${{ needs.prepare-release.outputs.release_url }}
+  build-esp32-s3-quad-homekit-stock-dev-firmware:
+    if: startsWith(github.ref_name, 'dev')
+    name: Build ESP32-S3-QUAD Stock Firmware (HomeKit, dev)
+    uses: ./.github/workflows/build-esphome.yml
+    needs: prepare-release
+    with:
+      files: firmware/configurations/esp32-s3-quad.homekit.stock.dev.yaml
+      name: AzonInc.Doorman
+      esphome_version: dev
+      directory_name: esp32-s3-quad.homekit.stock
+      summary: ${{ needs.prepare-release.outputs.release_summary }}
+      url: ${{ needs.prepare-release.outputs.release_url }}
   build-esp32-s3-quad-custom-stock-dev-firmware:
     if: startsWith(github.ref_name, 'dev')
     name: Build ESP32-S3-QUAD Stock Firmware (Custom, dev)
@@ -441,6 +549,18 @@ jobs:
   #    name: AzonInc.Doorman-Nuki-Bridge
   #    esphome_version: dev
   #    directory_name: esp32.mqtt.nuki-bridge
+  #    summary: ${{ needs.prepare-release.outputs.release_summary }}
+  #    url: ${{ needs.prepare-release.outputs.release_url }}
+  #build-esp32-homekit-nuki-bridge-dev-firmware:
+  #  if: startsWith(github.ref_name, 'dev')
+  #  name: Build ESP32 Nuki Bridge Firmware (HomeKit, dev)
+  #  uses: ./.github/workflows/build-esphome.yml
+  #  needs: prepare-release
+  #  with:
+  #    files: firmware/configurations/esp32.homekit.nuki-bridge.dev.yaml
+  #    name: AzonInc.Doorman-Nuki-Bridge
+  #    esphome_version: dev
+  #    directory_name: esp32.homekit.nuki-bridge
   #    summary: ${{ needs.prepare-release.outputs.release_summary }}
   #    url: ${{ needs.prepare-release.outputs.release_url }}
   build-esp32-custom-nuki-bridge-dev-firmware:
@@ -480,6 +600,18 @@ jobs:
   #    directory_name: esp32-s3.mqtt.nuki-bridge
   #    summary: ${{ needs.prepare-release.outputs.release_summary }}
   #    url: ${{ needs.prepare-release.outputs.release_url }}
+  #build-esp32-s3-homekit-nuki-bridge-dev-firmware:
+  #  if: startsWith(github.ref_name, 'dev')
+  #  name: Build ESP32-S3 Nuki Bridge Firmware (HomeKit, dev)
+  #  uses: ./.github/workflows/build-esphome.yml
+  #  needs: prepare-release
+  #  with:
+  #    files: firmware/configurations/esp32-s3.homekit.nuki-bridge.dev.yaml
+  #    name: AzonInc.Doorman-Nuki-Bridge
+  #    esphome_version: dev
+  #    directory_name: esp32-s3.homekit.nuki-bridge
+  #    summary: ${{ needs.prepare-release.outputs.release_summary }}
+  #    url: ${{ needs.prepare-release.outputs.release_url }}
   build-esp32-s3-custom-nuki-bridge-dev-firmware:
     if: startsWith(github.ref_name, 'dev')
     name: Build ESP32-S3 Nuki Bridge Firmware (Custom, dev)
@@ -517,6 +649,18 @@ jobs:
   #    directory_name: esp32-s3-quad.mqtt.nuki-bridge
   #    summary: ${{ needs.prepare-release.outputs.release_summary }}
   #    url: ${{ needs.prepare-release.outputs.release_url }}
+  #build-esp32-s3-quad-homekit-nuki-bridge-dev-firmware:
+  #  if: startsWith(github.ref_name, 'dev')
+  #  name: Build ESP32-S3-QUAD Nuki Bridge Firmware (HomeKit, dev)
+  #  uses: ./.github/workflows/build-esphome.yml
+  #  needs: prepare-release
+  #  with:
+  #    files: firmware/configurations/esp32-s3-quad.homekit.nuki-bridge.dev.yaml
+  #    name: AzonInc.Doorman-Nuki-Bridge
+  #    esphome_version: dev
+  #    directory_name: esp32-s3-quad.homekit.nuki-bridge
+  #    summary: ${{ needs.prepare-release.outputs.release_summary }}
+  #    url: ${{ needs.prepare-release.outputs.release_url }}
   build-esp32-s3-quad-custom-nuki-bridge-dev-firmware:
     if: startsWith(github.ref_name, 'dev')
     name: Build ESP32-S3-QUAD Nuki Bridge Firmware (Custom, dev)
@@ -539,21 +683,27 @@ jobs:
       build-docs,
       build-esp32-ha-stock-stable-firmware,
       build-esp32-mqtt-stock-stable-firmware,
+      build-esp32-homekit-stock-stable-firmware,
       build-esp32-custom-stock-stable-firmware,
       build-esp32-s3-ha-stock-stable-firmware,
       build-esp32-s3-mqtt-stock-stable-firmware,
+      build-esp32-s3-homekit-stock-stable-firmware,
       build-esp32-s3-custom-stock-stable-firmware,
       build-esp32-s3-quad-ha-stock-stable-firmware,
       build-esp32-s3-quad-mqtt-stock-stable-firmware,
+      build-esp32-s3-quad-homekit-stock-stable-firmware,
       build-esp32-s3-quad-custom-stock-stable-firmware,
       build-esp32-ha-nuki-bridge-stable-firmware,
       #build-esp32-mqtt-nuki-bridge-stable-firmware,
+      #build-esp32-homekit-nuki-bridge-stable-firmware,
       build-esp32-custom-nuki-bridge-stable-firmware,
       build-esp32-s3-ha-nuki-bridge-stable-firmware,
       #build-esp32-s3-mqtt-nuki-bridge-stable-firmware,
+      #build-esp32-s3-homekit-nuki-bridge-stable-firmware,
       build-esp32-s3-custom-nuki-bridge-stable-firmware,
       build-esp32-s3-quad-ha-nuki-bridge-stable-firmware,
       #build-esp32-s3-quad-mqtt-nuki-bridge-stable-firmware,
+      #build-esp32-s3-quad-homekit-nuki-bridge-stable-firmware,
       build-esp32-s3-quad-custom-nuki-bridge-stable-firmware
     ]
 
@@ -565,21 +715,27 @@ jobs:
       build-docs,
       build-esp32-ha-stock-dev-firmware,
       build-esp32-mqtt-stock-dev-firmware,
+      build-esp32-homekit-stock-dev-firmware,
       build-esp32-custom-stock-dev-firmware,
       build-esp32-s3-ha-stock-dev-firmware,
       build-esp32-s3-mqtt-stock-dev-firmware,
+      build-esp32-s3-homekit-stock-dev-firmware,
       build-esp32-s3-custom-stock-dev-firmware,
       build-esp32-s3-quad-ha-stock-dev-firmware,
       build-esp32-s3-quad-mqtt-stock-dev-firmware,
+      build-esp32-s3-quad-homekit-stock-dev-firmware,
       build-esp32-s3-quad-custom-stock-dev-firmware,
       build-esp32-ha-nuki-bridge-dev-firmware,
       #build-esp32-mqtt-nuki-bridge-dev-firmware,
+      #build-esp32-homekit-nuki-bridge-dev-firmware,
       build-esp32-custom-nuki-bridge-dev-firmware,
       build-esp32-s3-ha-nuki-bridge-dev-firmware,
       #build-esp32-s3-mqtt-nuki-bridge-dev-firmware,
+      #build-esp32-s3-homekit-nuki-bridge-dev-firmware,
       build-esp32-s3-custom-nuki-bridge-dev-firmware,
       build-esp32-s3-quad-ha-nuki-bridge-dev-firmware,
       #build-esp32-s3-quad-mqtt-nuki-bridge-dev-firmware,
+      #build-esp32-s3-quad-homekit-nuki-bridge-dev-firmware,
       build-esp32-s3-quad-custom-nuki-bridge-dev-firmware
     ]
 
