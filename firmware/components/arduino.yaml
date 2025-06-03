@@ -1,4 +1,0 @@
-# General Arduino removal Addon
-
-remote_transmitter:
-  eot_level: !remove

@@ -82,23 +82,6 @@ jobs:
           name: firmware.esp32-s3-quad.custom.stock
           path: output/firmware/release
 
-      # Stock Firmware - ESP8266
-      - name: Download Doorman Stock for Home Assistant (ESP8266, HA) artifact
-        uses: actions/download-artifact@v4
-        with:
-          name: firmware.esp8266.ha.stock
-          path: output/firmware/release
-      - name: Download Doorman Stock for Home Assistant (ESP8266, MQTT) artifact
-        uses: actions/download-artifact@v4
-        with:
-          name: firmware.esp8266.mqtt.stock
-          path: output/firmware/release
-      - name: Download Doorman Stock for Home Assistant (ESP8266, Custom) artifact
-        uses: actions/download-artifact@v4
-        with:
-          name: firmware.esp8266.custom.stock
-          path: output/firmware/release
-
 
       # Nuki-Bridge Firmware - ESP32
       - name: Download Doorman Nuki Bridge for Home Assistant (ESP32, HA) artifact

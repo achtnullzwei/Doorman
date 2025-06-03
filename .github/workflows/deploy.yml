@@ -195,43 +195,6 @@ jobs:
       summary: ${{ needs.prepare-release.outputs.release_summary }}
       url: ${{ needs.prepare-release.outputs.release_url }}
 
-  build-esp8266-ha-stock-stable-firmware:
-    if: github.ref_name == 'master'
-    name: Build ESP8266 Stock Firmware (Home Assistant, stable)
-    uses: ./.github/workflows/build-esphome.yml
-    needs: prepare-release
-    with:
-      files: firmware/configurations/esp8266.ha.stock.master.yaml
-      name: AzonInc.Doorman
-      esphome_version: latest
-      directory_name: esp8266.ha.stock
-      summary: ${{ needs.prepare-release.outputs.release_summary }}
-      url: ${{ needs.prepare-release.outputs.release_url }}
-  build-esp8266-mqtt-stock-stable-firmware:
-    if: github.ref_name == 'master'
-    name: Build ESP8266 Stock Firmware (MQTT, stable)
-    uses: ./.github/workflows/build-esphome.yml
-    needs: prepare-release
-    with:
-      files: firmware/configurations/esp8266.mqtt.stock.master.yaml
-      name: AzonInc.Doorman
-      esphome_version: latest
-      directory_name: esp8266.mqtt.stock
-      summary: ${{ needs.prepare-release.outputs.release_summary }}
-      url: ${{ needs.prepare-release.outputs.release_url }}
-  build-esp8266-custom-stock-stable-firmware:
-    if: github.ref_name == 'master'
-    name: Build ESP8266 Stock Firmware (Custom, stable)
-    uses: ./.github/workflows/build-esphome.yml
-    needs: prepare-release
-    with:
-      files: firmware/configurations/esp8266.custom.stock.master.yaml
-      name: AzonInc.Doorman
-      esphome_version: latest
-      directory_name: esp8266.custom.stock
-      summary: ${{ needs.prepare-release.outputs.release_summary }}
-      url: ${{ needs.prepare-release.outputs.release_url }}
-
   build-esp32-ha-nuki-bridge-stable-firmware:
     if: github.ref_name == 'master'
     name: Build ESP32 Nuki Bridge Firmware (Home Assistant, stable)
@@ -456,43 +419,6 @@ jobs:
       summary: ${{ needs.prepare-release.outputs.release_summary }}
       url: ${{ needs.prepare-release.outputs.release_url }}
 
-  build-esp8266-ha-stock-dev-firmware:
-    if: startsWith(github.ref_name, 'dev')
-    name: Build ESP8266 Stock Firmware (Home Assistant, dev)
-    uses: ./.github/workflows/build-esphome.yml
-    needs: prepare-release
-    with:
-      files: firmware/configurations/esp8266.ha.stock.dev.yaml
-      name: AzonInc.Doorman
-      esphome_version: dev
-      directory_name: esp8266.ha.stock
-      summary: ${{ needs.prepare-release.outputs.release_summary }}
-      url: ${{ needs.prepare-release.outputs.release_url }}
-  build-esp8266-mqtt-stock-dev-firmware:
-    if: startsWith(github.ref_name, 'dev')
-    name: Build ESP8266 Stock Firmware (MQTT, dev)
-    uses: ./.github/workflows/build-esphome.yml
-    needs: prepare-release
-    with:
-      files: firmware/configurations/esp8266.mqtt.stock.dev.yaml
-      name: AzonInc.Doorman
-      esphome_version: dev
-      directory_name: esp8266.mqtt.stock
-      summary: ${{ needs.prepare-release.outputs.release_summary }}
-      url: ${{ needs.prepare-release.outputs.release_url }}
-  build-esp8266-custom-stock-dev-firmware:
-    if: startsWith(github.ref_name, 'dev')
-    name: Build ESP8266 Stock Firmware (Custom, dev)
-    uses: ./.github/workflows/build-esphome.yml
-    needs: prepare-release
-    with:
-      files: firmware/configurations/esp8266.custom.stock.dev.yaml
-      name: AzonInc.Doorman
-      esphome_version: dev
-      directory_name: esp8266.custom.stock
-      summary: ${{ needs.prepare-release.outputs.release_summary }}
-      url: ${{ needs.prepare-release.outputs.release_url }}
-
   build-esp32-ha-nuki-bridge-dev-firmware:
     if: startsWith(github.ref_name, 'dev')
     name: Build ESP32 Nuki Bridge Firmware (Home Assistant, dev)
@@ -611,9 +537,6 @@ jobs:
     uses: ./.github/workflows/bundle-assets.yml
     needs: [
       build-docs,
-      build-esp8266-ha-stock-stable-firmware,
-      build-esp8266-mqtt-stock-stable-firmware,
-      build-esp8266-custom-stock-stable-firmware,
       build-esp32-ha-stock-stable-firmware,
       build-esp32-mqtt-stock-stable-firmware,
       build-esp32-custom-stock-stable-firmware,
@@ -640,9 +563,6 @@ jobs:
     uses: ./.github/workflows/bundle-assets.yml
     needs: [
       build-docs,
-      build-esp8266-ha-stock-dev-firmware,
-      build-esp8266-mqtt-stock-dev-firmware,
-      build-esp8266-custom-stock-dev-firmware,
       build-esp32-ha-stock-dev-firmware,
       build-esp32-mqtt-stock-dev-firmware,
       build-esp32-custom-stock-dev-firmware,

@@ -23,13 +23,11 @@ def get_packages(host, api_variant, firmware, branch):
     # Define packages in exact order with their conditions
     is_esp32 = 'esp32' in host.lower()
     has_psram = host in ['esp32-s2', 'esp32-s3', 'esp32-s3-quad']
-    has_status_led = is_esp32
 
     packages_config = [
         ('host', f'!include ../hosts/{host}.yaml', True),
         
-        ('rgb_status_led', '!include ../components/rgb-status-led.yaml', has_status_led),
-        ('rgb_status_led', '!include ../components/rgb-status-led.dummy.yaml', not has_status_led),
+        ('rgb_status_led', '!include ../components/rgb-status-led.yaml', True),
         ('rgb_status_led_effects', '!include ../components/rgb-status-led.effects.yaml', True),
 
         ('base', '!include ../base.yaml', True),
@@ -46,7 +44,6 @@ def get_packages(host, api_variant, firmware, branch):
         ('api', '!include ../components/api.custom.yaml', api_variant == 'custom'),
 
         ('debug_utilities', '!include ../components/debug-utilities.yaml', branch == 'dev'),
-        ('debug_utilities_arduino', '!include ../components/debug-utilities.arduino.yaml', branch == 'dev' and not is_esp32),
 
         ('debug_component', '!include ../components/debug-component.yaml', branch == 'dev'),
         ('debug_component_psram', '!include ../components/debug-component.psram.yaml', branch == 'dev' and has_psram),
@@ -57,8 +54,6 @@ def get_packages(host, api_variant, firmware, branch):
         ('intercom_settings', '!include ../components/intercom-settings.yaml', True),
         ('addon_nuki_bridge', '!include ../components/nuki-bridge.yaml', firmware == 'nuki-bridge'),
         ('interactive_setup', '!include ../components/interactive-setup.yaml', True),
-        
-        ('arduino_removals', '!include ../components/arduino.yaml', not is_esp32),
     ]
     
     return [(name, path) for name, path, condition in packages_config if condition]
@@ -139,7 +134,7 @@ def main():
     combinations = [
         (host, api_variant, firmware, branch)
         for host, api_variant, firmware, branch in product(HOST_ARCHITECTURES, API_VARIANTS, FIRMWARES, BRANCHES)
-        if not (firmware == 'nuki-bridge' and 'esp8266' in host.lower())
+        if not (firmware == 'nuki-bridge' and 'mqtt' in api_variant)
     ]
 
     for host, api_variant, firmware, branch in combinations:

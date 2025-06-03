@@ -108,8 +108,8 @@ This release **may impact your current setup** and **could require** you to go t
 - **Configuration YAML Files Restructured**  
    The configuration files have been reorganized to enhance modularity and enable support for additional host platforms.
 
-- **Precompiled binaries for ESP32-S3, ESP32 and ESP8266**  
-   The Doorman ESPHome firmware is finally available for these platforms as well.
+- **Precompiled binaries for ESP32-S3, ESP32**  
+   The Doorman ESPHome firmware is available for these platforms.
 
 ### 🚨 Breaking Changes
 - **Ring to Open Toggle Trigger**  

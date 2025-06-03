@@ -240,15 +240,15 @@ esphome run <yamlfile.yaml>
 ## Board Configuration Files
 
 ### Default GPIO configuration
-| Component      | ESP32-S3 | ESP32    | ESP8266  |
-| -------------- | :------: | :------: | :------: |
-| TC:BUS RX      | GPIO 9   | GPIO 22  | GPIO 12  |
-| TC:BUS TX      | GPIO 8   | GPIO 23  | GPIO 13  |
-| Status LED     | GPIO 1   | GPIO 2   | GPIO 2   |
-| RGB Status LED | GPIO 2   | GPIO 4   | Dummy    |
-| Relay          | GPIO 42  | GPIO 21  | GPIO 14  |
-| External Button| GPIO 41  | GPIO 20  | GPIO 15  |
-| ADC Input      | GPIO 10  | GPIO 36  | GPIO A0  |
+| Component      | ESP32-S3 | ESP32    |
+| -------------- | :------: | :------: |
+| TC:BUS RX      | GPIO 9   | GPIO 22  |
+| TC:BUS TX      | GPIO 8   | GPIO 23  |
+| Status LED     | GPIO 1   | GPIO 2   |
+| RGB Status LED | GPIO 2   | GPIO 4   |
+| Relay          | GPIO 42  | GPIO 21  |
+| External Button| GPIO 41  | GPIO 20  |
+| ADC Input      | GPIO 10  | GPIO 36  |
 
 ### Stock Firmware
 ::: details ESP32-S3 (Octal PSRAM) / Doorman-S3 (1.5)
@@ -290,19 +290,6 @@ esphome run <yamlfile.yaml>
 ```
 :::
 
-::: details Generic ESP8266
-::: code-group
-```yaml [Home Assistant]
-<!--@include: ../../../../firmware/examples/esp8266.ha.stock.master.example.yaml-->
-```
-```yaml [MQTT]
-<!--@include: ../../../../firmware/examples/esp8266.mqtt.stock.master.example.yaml-->
-```
-```yaml [Custom]
-<!--@include: ../../../../firmware/examples/esp8266.custom.stock.master.example.yaml-->
-```
-:::
-
 ### Nuki Bridge Firmware
 ::: details ESP32-S3 (Octal PSRAM) / Doorman-S3 (1.5)
 ::: code-group
@@ -331,16 +318,6 @@ esphome run <yamlfile.yaml>
 ```
 ```yaml [Custom]
 <!--@include: ../../../../firmware/examples/esp32.custom.nuki-bridge.master.example.yaml-->
-```
-:::
-
-::: details Generic ESP8266
-::: code-group
-```yaml [Home Assistant]
-<!--@include: ../../../../firmware/examples/esp8266.ha.nuki-bridge.master.example.yaml-->
-```
-```yaml [Custom]
-<!--@include: ../../../../firmware/examples/esp8266.custom.nuki-bridge.master.example.yaml-->
 ```
 :::
 
