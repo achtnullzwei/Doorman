@@ -122,6 +122,7 @@ function sidebarGuide(): DefaultTheme.SidebarItem[] {
       items: [
         { text: 'Nuki Bridge Addon', link: 'nuki-bridge-addon', base: '/de/guide/firmware/' },
         { text: 'MQTT Integration', link: 'mqtt', base: '/de/guide/firmware/' },
+        { text: 'HomeKit Integration', link: 'homekit', base: '/de/guide/firmware/' },
       ]
     },
     {

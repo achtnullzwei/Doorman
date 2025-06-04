@@ -108,6 +108,9 @@ export default {
             if(this.integration == 'mqtt') {
                 return 'Die Firmware benötigt nach dem flashen noch etwas Handarbeit. Schau dir dazu bitte die Anleitung zur <a href="./mqtt#setup">MQTT Einrichtung</a> an.';
             }
+            else if(this.integration == 'homekit') {
+                return 'Schau dir nach dem flashen bitte die Anleitung zur <a href="./homekit#koppeln">HomeKit Kopplung</a> an.';
+            }
             return '';
         },
         is_variant_allowed() {
@@ -198,7 +201,7 @@ Dieser geführte Prozess sorgt für eine nahtlose Integration mit der Home Assis
     </div>
     <div v-if="valid_manifest">
         <h5 class="firmware_title_row"><i class="mdi mdi-auto-fix"></i> Jetzt wird geflasht – und zwar mit Stil!</h5>
-        <div v-if="notes" class="tip custom-block">
+        <div v-if="notes" class="note custom-block">
             <p class="custom-block-title">HINWEIS</p>
             <p v-html="notes"></p>
         </div>

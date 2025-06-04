@@ -193,6 +193,9 @@ Not all models are supported as old models might not support this feature.
 ### Read Memory <Badge type="tip" text="read_memory" /> <Badge type="info" text="Disabled by default" />
 Reads the memory of the intercom phone with the specified serial number.
 
+### Reset HomeKit Pairing <Badge type="tip" text="homekit_reset_pairing" /> <Badge type="info" text="HomeKit integration only" />
+Unpairs all paired HomeKit devices.
+
 ### Nuki Unpair Device <Badge type="tip" text="nuki_unpair_device" /> <Badge type="info" text="Nuki Bridge only" /> <Badge type="info" text="Disabled by default" />
 Unpairs your Nuki smart lock.
 

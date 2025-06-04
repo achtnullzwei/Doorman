@@ -31,13 +31,20 @@ external_components:
   - source: github://NonaSuomy/HAP-ESPHome@main
     refresh: 0s
 
+web_server:
+  sorting_groups:
+    - id: sorting_group_homekit
+      name: "HomeKit Configuration"
+      sorting_weight: -2
+
 homekit_base:
   meta:
     name: "Doorman"
     manufacturer: "AzonInc"
     model: "Doorman-S3"
     fw_rev: "2025.5.1"
-  setup_code: '159-35-728'
+  setup_code: '291-21-998'
+  setup_id: DMS3
 
 homekit:
   lock:
@@ -55,4 +62,9 @@ homekit:
 button:
   - platform: homekit_base
     factory_reset:
-      name: "Reset HomeKit"
+      id: homekit_reset_pairing
+      name: "Reset HomeKit Pairing"
+      icon: "mdi:link-off"
+      web_server:
+        sorting_group_id: sorting_group_homekit
+        sorting_weight: 4

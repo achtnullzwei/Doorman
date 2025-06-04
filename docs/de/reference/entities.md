@@ -193,6 +193,9 @@ Es werden nicht alle Modelle unterstützt, da ältere Modelle diese Funktion ggf
 ### Read Memory <Badge type="tip" text="read_memory" /> <Badge type="info" text="Deaktiviert" />
 Liest den internen speicher deiner Innenstation mit der angegebenen Seriennummer aus.
 
+### Reset HomeKit Pairing <Badge type="tip" text="homekit_reset_pairing" /> <Badge type="info" text="HomeKit Integration" />
+Entkoppelt alle Geräte die per HomeKit gekoppelt sind.
+
 ### Nuki Unpair Device <Badge type="tip" text="nuki_unpair_device" /> <Badge type="info" text="Nuki Bridge" /> <Badge type="info" text="Deaktiviert" />
 Entkoppelt dein Nuki Smart Lock.
 

@@ -109,6 +109,9 @@ export default {
             if(this.integration == 'mqtt') {
                 return 'The firmware requires further setup after flashing! Please take a look at the <a href="./mqtt#setup">MQTT Setup instructions</a>.';
             }
+            else if(this.integration == 'homekit') {
+                return 'Please take a look at the <a href="./homekit#pairing">HomeKit pairing instructions</a> after flashing.';
+            }
             return '';
         },
         is_variant_allowed() {
@@ -199,7 +202,7 @@ This guided process ensures seamless integration with the Home Assistant API and
     </div>
     <div v-if="valid_manifest">
         <h5 class="firmware_title_row"><i class="mdi mdi-auto-fix"></i> Let's summon the firmware spirits!</h5>
-        <div v-if="notes" class="tip custom-block">
+        <div v-if="notes" class="note custom-block">
             <p class="custom-block-title">NOTE</p>
             <p v-html="notes"></p>
         </div>
