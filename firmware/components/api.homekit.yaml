@@ -28,8 +28,8 @@ esp32:
       CONFIG_LWIP_MAX_SOCKETS: "16"
       
 external_components:
-  source: github://NonaSuomy/HAP-ESPHome@main
-  refresh: 0s
+  - source: github://NonaSuomy/HAP-ESPHome@main
+    refresh: 0s
 
 homekit_base:
   meta:
