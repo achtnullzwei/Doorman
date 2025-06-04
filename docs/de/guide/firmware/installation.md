@@ -282,6 +282,9 @@ esphome run <yamlfile.yaml>
 ```yaml [MQTT]
 <!--@include: ../../../../firmware/examples/esp32-s3.mqtt.stock.master.example.yaml-->
 ```
+```yaml [HomeKit]
+<!--@include: ../../../../firmware/examples/esp32-s3.homekit.stock.master.example.yaml-->
+```
 ```yaml [Custom]
 <!--@include: ../../../../firmware/examples/esp32-s3.custom.stock.master.example.yaml-->
 ```
@@ -295,6 +298,9 @@ esphome run <yamlfile.yaml>
 ```yaml [MQTT]
 <!--@include: ../../../../firmware/examples/esp32-s3-quad.mqtt.stock.master.example.yaml-->
 ```
+```yaml [HomeKit]
+<!--@include: ../../../../firmware/examples/esp32-s3-quad.homekit.stock.master.example.yaml-->
+```
 ```yaml [Custom]
 <!--@include: ../../../../firmware/examples/esp32-s3-quad.custom.stock.master.example.yaml-->
 ```
@@ -307,6 +313,9 @@ esphome run <yamlfile.yaml>
 ```
 ```yaml [MQTT]
 <!--@include: ../../../../firmware/examples/esp32.mqtt.stock.master.example.yaml-->
+```
+```yaml [HomeKit]
+<!--@include: ../../../../firmware/examples/esp32.homekit.stock.master.example.yaml-->
 ```
 ```yaml [Custom]
 <!--@include: ../../../../firmware/examples/esp32.custom.stock.master.example.yaml-->

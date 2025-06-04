@@ -1,6 +1,6 @@
 import { defineConfig } from 'vitepress'
 import { tabsMarkdownPlugin } from 'vitepress-plugin-tabs'
-import { groupIconMdPlugin, groupIconVitePlugin } from 'vitepress-plugin-group-icons'
+import { groupIconMdPlugin, groupIconVitePlugin, localIconLoader } from 'vitepress-plugin-group-icons'
 
 import { shared } from './shared.mts'
 import { en } from './en.mts'
@@ -20,7 +20,13 @@ export default defineConfig({
   },
   vite: {
     plugins: [
-      groupIconVitePlugin()
+      groupIconVitePlugin({
+        customIcon: {
+          'homekit': localIconLoader(import.meta.url, '../../public/homekit-white.svg'),
+          'home assistant': localIconLoader(import.meta.url, '../../public/home-assistant.svg'),
+          'mqtt': localIconLoader(import.meta.url, '../../public/mqtt-icon-transparent.svg'),
+        },
+      })
     ],
   }
 })

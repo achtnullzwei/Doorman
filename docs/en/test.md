@@ -10,15 +10,15 @@ b content 2
 
 ::: code-group
 
-```sh [npm]
+```sh [mqtt]
 npm install vitepress-plugin-group-icons
 ```
 
-```sh [yarn]
+```sh [homeassistant]
 yarn add vitepress-plugin-group-icons
 ```
 
-```sh [pnpm]
+```sh [homekit]
 pnpm add vitepress-plugin-group-icons
 ```
 

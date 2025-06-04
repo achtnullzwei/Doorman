@@ -81,8 +81,15 @@ def generate_example_yaml(host, api_variant, firmware, branch):
 
     filename = f'github://azoninc/doorman/firmware/configurations/{host}.{api_variant}.{firmware}.{branch}.yaml@{branch}'
     
-    api_variant_desc = "Home Assistant" if api_variant == "ha" else "MQTT" if api_variant == "mqtt" else "Custom"
-
+    if api_variant == "ha":
+        api_variant_desc = "Home Assistant"
+    elif api_variant == "mqtt":
+        api_variant_desc = "MQTT"
+    elif api_variant == "homekit":
+        api_variant_desc = "HomeKit"
+    else:
+        api_variant_desc = "Custom"
+    
     content = [
         f'# Doorman {"Nuki Bridge" if firmware == "nuki-bridge" else "Stock"} Firmware ({api_variant_desc})',
         f'# Base Board {host.upper()}',
@@ -108,14 +115,14 @@ def generate_example_yaml(host, api_variant, firmware, branch):
         '  password: !secret wifi_password'
     ]
 
-    if api_variant == 'mqtt':
-        content.extend([
-            '',
-            'mqtt:',
-            '  broker: "10.10.0.2"',
-            '  username: ""',
-            '  password: ""'
-        ])
+    #if api_variant == 'mqtt':
+    #    content.extend([
+    #        '',
+    #        'mqtt:',
+    #        '  broker: "10.10.0.2"',
+    #        '  username: ""',
+    #        '  password: ""'
+    #    ])
     
     return '\n'.join(content)
 

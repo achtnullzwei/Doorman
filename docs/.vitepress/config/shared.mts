@@ -1,14 +1,3 @@
-
-
-export default defineConfig({
-  head: [
-    // og:site_name, og:type, og:image:width, og:image:height, twitter:card go here
-  ],
-  
-  // …
-});
-
-
 import { createRequire } from 'module'
 import { defineConfig } from 'vitepress'
 import { search as deSearch } from './de.mts'
