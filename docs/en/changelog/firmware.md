@@ -15,7 +15,12 @@ This release **may impact your current setup** and **could require** you to go t
 
 - **Streamlined Door Control with Unified Lock Entities**  
   The `Open Door` buttons have been replaced by new, standardized lock entities.  
-  You can now use the `lock.unlock` action in Home Assistant for seamless door control.
+  You can now use the `lock.unlock` action in Home Assistant for seamless door control.  
+  This change simplifies dashboard integration and delivers a more consistent, intuitive experience.
+
+- **Use Light Entity instead of Button for Hallway Light**  
+  The `Turn on the light` button have been replaced by a light entity.  
+  You can now use the `light.turn_on` action in Home Assistant to turn on the hallway light.  
   This change simplifies dashboard integration and delivers a more consistent, intuitive experience.
 
 - **Extended Ring to Open to Apartment Doorbells**  
@@ -23,6 +28,9 @@ This release **may impact your current setup** and **could require** you to go t
 
 - **Runtime MQTT Configuration**  
    If you flashed the firmware with MQTT integration, you can now enter your broker credentials via the built-in web interface.
+
+- **HomeKit Support**
+   Firmware flashing now includes an option for seamless [HomeKit integration](https://doorman.azon.ai/guide/firmware/homekit), enabling native control through Apple's Home app and Siri.
 
 - **Pre-Open Commands**  
    In some setups, it’s necessary to send one or more preparatory commands to select the correct door. This feature allows you to define and send a sequence of commands before the `open_door` command is executed.
@@ -75,8 +83,8 @@ This release **may impact your current setup** and **could require** you to go t
    The `TC:BUS` component no longer supports the `rx_pin` and `tx_pin` options.  
    Instead, you must now define the `remote_receiver` and `remote_transmitter` components when using your own custom config.
 
-- **Removed Open Door Buttons**  
-  The `Open Door` buttons have been removed in favor of more efficient control methods.
+- **Removed Open Door and Light Buttons**  
+  The `Turn on the light` and `Open Door` buttons have been removed in favor of more efficient control methods.
 
 - **Renamed Ring to Open Entities**  
   The [Ring To Open](https://doorman.azon.ai/guide/automation/ring-to-open) entities are now labeled as `RTO: Door Name – Setting` to reflect the updated configuration structure, improving clarity and consistency.

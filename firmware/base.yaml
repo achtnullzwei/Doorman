@@ -338,7 +338,9 @@ output:
             - tc_bus.send:
                 type: light
             - delay: 5s
-            - output.turn_off: hallway_light_output
+            - light.turn_off: hallway_light
+          else:
+            - light.turn_off: hallway_light
 
 # Onboard Status LEDs
 light:
