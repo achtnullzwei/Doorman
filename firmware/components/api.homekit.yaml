@@ -28,7 +28,7 @@ esp32:
       CONFIG_LWIP_MAX_SOCKETS: "16"
       
 external_components:
-  - source: github://NonaSuomy/HAP-ESPHome@main
+  - source: github://NonaSuomy/HAP-ESPHome@Fixes
     refresh: 0s
 
 web_server:
