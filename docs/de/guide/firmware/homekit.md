@@ -6,6 +6,9 @@ Diese Seite bietet dir alle Informationen, die du brauchst, um dein Doorman-Ger�
 Die HomeKit-Integration unterst체tzt derzeit nur die wichtigsten und grundlegendsten Funktionen deines Doormans. Erweiterte Einstellungen und weniger h채ufig genutzte Funktionen stehen 체ber HomeKit nicht zur Verf체gung und m체ssen weiterhin 체ber Home Assistant oder die Weboberfl채che gesteuert werden.
 
 ### Unterst체tzte Entit채ten
+- **Ereignis:** Entrance Doorbell
+- **Ereignis:** Second Entrance Doorbell
+- **Ereignis:** Apartment Doorbell
 - **Schloss:** Entrance Door
 - **Schloss:** Second Entrance Door
 - **Schalter:** Ring To Open

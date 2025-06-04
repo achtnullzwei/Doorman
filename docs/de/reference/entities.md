@@ -526,9 +526,10 @@ Eine kleine WS2812B RGB-LED auf der Doorman-Platine, die verwendet wird, um best
 
 ##### Ereignistypen
 - **Warten auf WiFi / AP aktiviert** <Badge type="tip" text="Blinkt schnell orange" />
-- **Warten auf Home Assistant / MQTT Verbindung** <Badge type="tip" text="Pulsiert langsam blau" />
-- **Home Assistant / MQTT verbunden** <Badge type="tip" text="Durchgängig blau (für 3 sekunden)" />
-- **MQTT Einrichtung ausstehend** <Badge type="tip" text="Pulsiert rot-blau" />
+- **Warten auf Home Assistant / MQTT / HomeKit Verbindung** <Badge type="tip" text="Pulsiert langsam blau" />
+- **Home Assistant / MQTT / HomeKit verbunden** <Badge type="tip" text="Durchgängig blau (für 3 sekunden)" />
+- **MQTT Einrichtung ausstehend** <Badge type="tip" text="Pulsiert rot-blau" /> <Badge type="info" text="MQTT Integration" />
+- **HomeKit Kopplung ausstehend** <Badge type="tip" text="Pulsiert rot-blau" /> <Badge type="info" text="HomeKit Integration" />
 - **Setup Mode ist aktiv** <Badge type="tip" text="Blinkt schnell grün-türkis" />
 - **Setup abgeschlossen** <Badge type="tip" text="Durchgängig grün-türkis (für 3 sekunden)" />
 - **Ring To Open ist aktiv** <Badge type="tip" text="Pulsiert langsam gelb" />

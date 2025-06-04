@@ -6,11 +6,12 @@ This page provides everything you need to set up and control your Doorman device
 The HomeKit integration currently supports only the most essential and basic functions of your Doorman. Advanced settings and less commonly used features are not available through HomeKit and must still be managed via Home Assistant or the web interface.
 
 ### Supported Entites
+- **Event:** Entrance Doorbell
+- **Event:** Second Entrance Doorbell
+- **Event:** Apartment Doorbell
 - **Lock:** Entrance Doorbell
 - **Lock:** Second Entrance Doorbell
 - **Switch:** Ring To Open
-- **Switch:** Ring To Open: Entrance Door
-- **Switch:** Ring To Open: Second Entrance Door
 
 ## Pairing
 After flashing the firmware with HomeKit integration and connecting Doorman to your Wi-Fi network, follow the steps below to pair it with the Home app on your iPhone or iPad.

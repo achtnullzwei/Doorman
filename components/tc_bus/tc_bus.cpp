@@ -43,7 +43,7 @@ namespace esphome
 
         void TCBusComponent::setup()
         {
-            ESP_LOGCONFIG(TAG, "Setting up TC:BUS Intercom...");
+            ESP_LOGCONFIG(TAG, "Running setup");
 
             this->pref_ = global_preferences->make_preference<TCBusSettings>(global_tc_bus_id);
 

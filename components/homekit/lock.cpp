@@ -5,19 +5,9 @@
 namespace esphome {
 namespace homekit {
 
-#ifdef USE_HOMEKEY
-readerData_t LockEntity::readerData;
-nvs_handle LockEntity::savedHKdata;
-pn532::PN532* LockEntity::nfc_ctx;
-
-void LockEntity::set_hk_hw_finish(HKFinish color) {
-    ESP_LOGI("homekit", "SELECTED HK FINISH: %d", static_cast<int>(color));
-    hkFinishTlvData = std::make_unique<hap_tlv8_val_t>();
-    hkFinishTlvData->val_len = 1;  // Using val_len
-    hkFinishTlvData->val = new uint8_t[1];  // Using val
-    hkFinishTlvData->val[0] = static_cast<uint8_t>(color);
+void LockEntity::register_on_identify_trigger(HKIdentifyTrigger* trig) {
+    triggers_identify_.push_back(trig);
 }
-#endif
 
 void LockEntity::on_lock_update(lock::Lock* obj) {
     ESP_LOGD("on_lock_update", "%s state: %s", obj->get_name().c_str(), lock_state_to_string(obj->state));
@@ -77,7 +67,7 @@ int LockEntity::acc_identify(hap_acc_t* ha) {
 
 LockEntity::LockEntity(lock::Lock* lockPtr) : ptrToLock(lockPtr) {}
 
-void LockEntity::setInfo(std::map<AInfo, const char*> info) {
+void LockEntity::set_meta(std::map<AInfo, const char*> info) {
     std::map<AInfo, const char*> merged_info;
     merged_info.merge(info);
     merged_info.merge(this->accessory_info);
@@ -93,17 +83,14 @@ void LockEntity::setup() {
                             std::to_string(ptrToLock->get_object_id_hash()).c_str()),
         .fw_rev = strdup(accessory_info[AInfo::FW_REV]),
         .hw_rev = NULL,
-#ifdef USE_HOMEKEY
-        .hw_finish = hkFinishTlvData.get(),
-#else
         .hw_finish = NULL,
-#endif
         .pv = strdup("1.1.0"),
-        .cid = HAP_CID_BRIDGE,
+        .cid = HAP_CID_LOCK,
         .identify_routine = acc_identify,
     };
 
     hap_acc_t* accessory = hap_acc_create(&acc_cfg);
+
     hap_serv_t* lockMechanism = hap_serv_lock_mechanism_create(ptrToLock->state, ptrToLock->state);
 
     ESP_LOGD("homekit", "ID HASH: %lu", ptrToLock->get_object_id_hash());

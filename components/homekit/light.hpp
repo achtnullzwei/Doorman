@@ -6,6 +6,7 @@
 #include <hap_apple_servs.h>
 #include <hap_apple_chars.h>
 #include <map>
+#include "automation.h"
 
 namespace esphome
 {
@@ -15,8 +16,9 @@ namespace esphome
     {
     private:
       static constexpr const char* TAG = "LightEntity";
-      std::map<AInfo, const char*> accessory_info = {{NAME, NULL}, {MODEL, "HAP-LIGHT"}, {SN, NULL}, {MANUFACTURER, "rednblkx"}, {FW_REV, "0.1"}};
+
       light::LightState* lightPtr;
+
       static int light_write(hap_write_data_t write_data[], int count, void* serv_priv, void* write_priv) {
         light::LightState* lightPtr = (light::LightState*)serv_priv;
         ESP_LOGD(TAG, "Write called for Accessory %s (%s)", std::to_string(lightPtr->get_object_id_hash()).c_str(), lightPtr->get_name().c_str());
@@ -87,6 +89,7 @@ namespace esphome
         }
         return ret;
       }
+
       void on_light_update(light::LightState* obj) {
         bool rgb = obj->current_values.get_color_mode() & light::ColorCapability::RGB;
         bool level = obj->get_traits().supports_color_capability(light::ColorCapability::BRIGHTNESS);
@@ -130,18 +133,36 @@ namespace esphome
           }
         }
       }
+
       static int acc_identify(hap_acc_t* ha) {
-        ESP_LOGI(TAG, "Accessory identified");
+        ESP_LOGI("homekit", "Accessory identified");
         return HAP_SUCCESS;
       }
+
+      std::vector<HKIdentifyTrigger *> triggers_identify_;
+
     public:
       LightEntity(light::LightState* lightPtr) : lightPtr(lightPtr) {}
-      void setInfo(std::map<AInfo, const char*> info) {
+
+      void set_meta(std::map<AInfo, const char*> info) {
         std::map<AInfo, const char*> merged_info;
         merged_info.merge(info);
         merged_info.merge(this->accessory_info);
         this->accessory_info.swap(merged_info);
       }
+
+      std::map<AInfo, const char*> accessory_info = {
+        {NAME, NULL},
+        {MODEL, "Light"},
+        {SN, NULL},
+        {MANUFACTURER, "ESPHome"},
+        {FW_REV, "0.1"}
+      };
+
+      void register_on_identify_trigger(HKIdentifyTrigger* trig) {
+          triggers_identify_.push_back(trig);
+      }
+
       void setup() {
         hap_acc_cfg_t acc_cfg = {
             .model = strdup(accessory_info[MODEL]),
@@ -149,42 +170,40 @@ namespace esphome
             .fw_rev = strdup(accessory_info[FW_REV]),
             .hw_rev = NULL,
             .pv = strdup("1.1.0"),
-            .cid = HAP_CID_BRIDGE,
+            .cid = HAP_CID_LIGHTING,
             .identify_routine = acc_identify,
         };
-        hap_acc_t* accessory = nullptr;
-        hap_serv_t* service = nullptr;
+
         std::string accessory_name = lightPtr->get_name();
-        if (accessory_info[NAME] == NULL) {
-          acc_cfg.name = strdup(accessory_name.c_str());
-        }
-        else {
-          acc_cfg.name = strdup(accessory_info[NAME]);
-        }
-        if (accessory_info[SN] == NULL) {
-          acc_cfg.serial_num = strdup(std::to_string(lightPtr->get_object_id_hash()).c_str());
-        }
-        else {
-          acc_cfg.serial_num = strdup(accessory_info[SN]);
-        }
-        accessory = hap_acc_create(&acc_cfg);
+        acc_cfg.name = strdup(accessory_info[NAME] ? accessory_info[NAME] : accessory_name.c_str());
+        acc_cfg.serial_num = strdup(accessory_info[SN] ? accessory_info[SN] : std::to_string(lightPtr->get_object_id_hash()).c_str());
+
+        hap_acc_t* accessory = hap_acc_create(&acc_cfg);
+        
         int hue = 0;
         float saturation = 0;
         float colorValue = 0;
+
         rgb_to_hsv(lightPtr->current_values.get_red(), lightPtr->current_values.get_green(), lightPtr->current_values.get_blue(), hue, saturation, colorValue);
-        service = hap_serv_lightbulb_create(lightPtr->current_values.get_state());
+        
+        hap_serv_t* service = hap_serv_lightbulb_create(lightPtr->current_values.get_state());
+
         hap_serv_add_char(service, hap_char_name_create(accessory_name.data()));
+        
         if (lightPtr->get_traits().supports_color_capability(light::ColorCapability::BRIGHTNESS)) {
           hap_serv_add_char(service, hap_char_brightness_create(lightPtr->current_values.get_brightness() * 100));
         }
+
         if (lightPtr->get_traits().supports_color_capability(light::ColorCapability::RGB)) {
           hap_serv_add_char(service, hap_char_hue_create(hue));
           hap_serv_add_char(service, hap_char_saturation_create(saturation * 100));
         }
+
         if (lightPtr->get_traits().supports_color_capability(light::ColorCapability::COLOR_TEMPERATURE) ||
             lightPtr->get_traits().supports_color_capability(light::ColorCapability::COLD_WARM_WHITE)) {
           hap_serv_add_char(service, hap_char_color_temperature_create(lightPtr->current_values.get_color_temperature()));
         }
+
         ESP_LOGD(TAG, "ID HASH: %lu", lightPtr->get_object_id_hash());
         hap_serv_set_priv(service, lightPtr);
 
@@ -196,6 +215,7 @@ namespace esphome
 
         /* Add the Accessory to the HomeKit Database */
         hap_add_bridged_accessory(accessory, hap_get_unique_aid(std::to_string(lightPtr->get_object_id_hash()).c_str()));
+
         if (!lightPtr->is_internal())
           lightPtr->add_new_target_state_reached_callback([this]() { this->on_light_update(lightPtr); });
 

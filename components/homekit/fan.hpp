@@ -6,6 +6,7 @@
 #include <hap_apple_servs.h>
 #include <hap_apple_chars.h>
 #include <map>
+#include "automation.h"
 
 namespace esphome
 {
@@ -15,8 +16,9 @@ namespace esphome
     {
     private:
       static constexpr const char* TAG = "FanEntity";
-      std::map<AInfo, const char*> accessory_info = {{NAME, NULL}, {MODEL, "HAP-FAN"}, {SN, NULL}, {MANUFACTURER, "rednblkx"}, {FW_REV, "0.1"}};
+
       fan::Fan* fanPtr;
+
       static int fanwrite(hap_write_data_t write_data[], int count, void* serv_priv, void* write_priv) {
         fan::Fan* fanPtr = (fan::Fan*)serv_priv;
         ESP_LOGD(TAG, "Write called for Accessory %s (%s)", std::to_string(fanPtr->get_object_id_hash()).c_str(), fanPtr->get_name().c_str());
@@ -37,6 +39,7 @@ namespace esphome
         }
         return ret;
       }
+
       void on_fanupdate(fan::Fan* obj) {
         ESP_LOGD(TAG, "%s state: %s", obj->get_name().c_str(), ONOFF(obj->state));
         hap_acc_t* acc = hap_acc_get_by_aid(hap_get_unique_aid(std::to_string(obj->get_object_id_hash()).c_str()));
@@ -48,18 +51,36 @@ namespace esphome
           hap_char_update_val(on_char, &state);
         }
       }
+
       static int acc_identify(hap_acc_t* ha) {
-        ESP_LOGI(TAG, "Accessory identified");
+        ESP_LOGI("homekit", "Accessory identified");
         return HAP_SUCCESS;
       }
+
+      std::vector<HKIdentifyTrigger *> triggers_identify_;
+
     public:
       FanEntity(fan::Fan* fanPtr) : fanPtr(fanPtr) {}
-      void setInfo(std::map<AInfo, const char*> info) {
+
+      void set_meta(std::map<AInfo, const char*> info) {
         std::map<AInfo, const char*> merged_info;
         merged_info.merge(info);
         merged_info.merge(this->accessory_info);
         this->accessory_info.swap(merged_info);
       }
+
+      std::map<AInfo, const char*> accessory_info = {
+        {NAME, NULL},
+        {MODEL, "Fan"},
+        {SN, NULL},
+        {MANUFACTURER, "ESPHome"},
+        {FW_REV, "0.1"}
+      };
+
+      void register_on_identify_trigger(HKIdentifyTrigger* trig) {
+          triggers_identify_.push_back(trig);
+      }
+
       void setup() {
         hap_acc_cfg_t acc_cfg = {
             .model = strdup(accessory_info[MODEL]),
@@ -67,28 +88,20 @@ namespace esphome
             .fw_rev = strdup(accessory_info[FW_REV]),
             .hw_rev = NULL,
             .pv = strdup("1.1.0"),
-            .cid = HAP_CID_BRIDGE,
+            .cid = HAP_CID_FAN,
             .identify_routine = acc_identify,
         };
-        hap_acc_t* accessory = nullptr;
-        hap_serv_t* service = nullptr;
+
         std::string accessory_name = fanPtr->get_name();
-        if (accessory_info[NAME] == NULL) {
-          acc_cfg.name = strdup(accessory_name.c_str());
-        }
-        else {
-          acc_cfg.name = strdup(accessory_info[NAME]);
-        }
-        if (accessory_info[SN] == NULL) {
-          acc_cfg.serial_num = strdup(std::to_string(fanPtr->get_object_id_hash()).c_str());
-        }
-        else {
-          acc_cfg.serial_num = strdup(accessory_info[SN]);
-        }
+        acc_cfg.name = strdup(accessory_info[NAME] ? accessory_info[NAME] : accessory_name.c_str());
+        acc_cfg.serial_num = strdup(accessory_info[SN] ? accessory_info[SN] : std::to_string(fanPtr->get_object_id_hash()).c_str());
+
         /* Create accessory object */
-        accessory = hap_acc_create(&acc_cfg);
+        hap_acc_t* accessory = hap_acc_create(&acc_cfg);
+        
+
         /* Create the fan Service. */
-        service = hap_serv_fan_create(fanPtr->state);
+        hap_serv_t* service = hap_serv_fan_create(fanPtr->state);
 
         ESP_LOGD(TAG, "ID HASH: %lu", fanPtr->get_object_id_hash());
         hap_serv_set_priv(service, fanPtr);

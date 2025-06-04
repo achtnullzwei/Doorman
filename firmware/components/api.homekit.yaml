@@ -1,5 +1,5 @@
 # API: HomeKit
-
+   
 esphome:
   on_boot:
     then:
@@ -12,13 +12,47 @@ esphome:
       - wait_until:
           condition:
             wifi.connected:
+
+      # Check if is already paired with HomeKit
+      - if:
+          condition:
+             - homekit.paired:
+          then:
+            # Regular blue pulse while connecting
+            - light.turn_on:
+                id: doorman_rgb_status_led
+                effect: slow_pulse
+                red: 0%
+                green: 22%
+                blue: 100%
+          else:
+            # Red/Blue pulse because homekit is not paired
+            - light.turn_on:
+                id: doorman_rgb_status_led
+                effect: error_api
+            - logger.log: "Wait for HomeKit pairing..."
+            - wait_until:
+                condition:
+                  homekit.paired:
+
+      - logger.log: "Wait for HomeKit connection..."
+
+      - wait_until:
+          condition:
+            homekit.connected:
+
+      - logger.log: "HomeKit connected!"
+
       - light.turn_on:
           id: doorman_rgb_status_led
           effect: none
-          red: 100%
-          green: 65%
-          blue: 0%
+          red: 0%
+          green: 22%
+          blue: 100%
+          color_brightness: 60%
+
       - delay: 3s
+
       - script.execute: update_led
 
 esp32:
@@ -44,21 +78,33 @@ homekit_base:
     manufacturer: "AzonInc"
     model: "Doorman-S3"
     fw_rev: "2025.5.1"
+    serial_number: "DMS3-291-21-998"
   setup_code: '291-21-998'
   setup_id: DMS3
-
-homekit:
-  lock:
-    - id: entrance_door
-      meta:
-        name: "Entrance Door"
-        manufacturer: "ESPHome"
-        model: "Template Lock"
-    - id: second_entrance_door
-      meta:
-        name: "Second Entrance Door"
-        manufacturer: "ESPHome"
-        model: "Template Lock"
+  task_stack_size: 3072
+  on_identify:
+    - logger.log: "HomeKit identify called"
+  on_pairing_started:
+    - logger.log: "HomeKit pairing started"
+  on_pairing_aborted:
+    - logger.log: "HomeKit pairing started"
+  on_pairing_timeout:
+    - logger.log: "HomeKit pairing timed out"
+  on_pairing_completed:
+    - logger.log:
+        format: "HomeKit paired successfully with: %s"
+        args: [ 'x.c_str()' ]
+        level: INFO
+  on_controller_connected:
+    - logger.log:
+        format: "HomeKit controller %s connected!"
+        args: [ 'x.c_str()' ]
+        level: INFO
+  on_controller_disconnected:
+    - logger.log:
+        format: "HomeKit controller %s disconnected!"
+        args: [ 'x.c_str()' ]
+        level: INFO
 
 button:
   - platform: homekit_base
@@ -69,3 +115,33 @@ button:
       web_server:
         sorting_group_id: sorting_group_homekit
         sorting_weight: 4
+
+homekit:
+  lock:
+    - id: entrance_door
+      meta:
+        name: "Entrance Door"
+        manufacturer: "ESPHome"
+        model: "Door Opener"
+    - id: second_entrance_door
+      meta:
+        name: "Second Entrance Door"
+        manufacturer: "ESPHome"
+        model: "Door Opener"
+  
+  event:
+    - id: entrance_doorbell_pattern
+      meta:
+        name: "Entrance Doorbell"
+        manufacturer: "ESPHome"
+        model: "Doorbell Event"
+    - id: second_entrance_doorbell_pattern
+      meta:
+        name: "Second Entrance Doorbell"
+        manufacturer: "ESPHome"
+        model: "Doorbell Event"
+    - id: apartment_doorbell_pattern
+      meta:
+        name: "Apartment Doorbell"
+        manufacturer: "ESPHome"
+        model: "Doorbell Event"

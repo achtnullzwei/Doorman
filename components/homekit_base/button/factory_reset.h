@@ -1,12 +1,12 @@
 #pragma once
 
 #include "esphome/components/button/button.h"
-#include "../HAPRootComponent.h"
+#include "../homekit_base.h"
 
 namespace esphome {
 namespace homekit {
 
-class ResetButton : public button::Button, public Parented<HAPRootComponent> {
+class ResetButton : public button::Button, public Parented<HomeKitBaseComponent> {
  public:
   ResetButton() = default;
 

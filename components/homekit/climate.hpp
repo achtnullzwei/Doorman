@@ -6,7 +6,9 @@
 #include <hap.h>
 #include <hap_apple_servs.h>
 #include <hap_apple_chars.h>
-#include "const.h"
+#include "esphome/components/homekit_base/const.h"
+#include "automation.h"
+
 namespace esphome
 {
   namespace homekit
@@ -15,6 +17,7 @@ namespace esphome
     {
     private:
       static constexpr const char* TAG = "ClimateEntity";
+
       void on_climate_update(climate::Climate& obj) {
         ESP_LOGI(TAG, "%s Mode: %d Action: %d CTemp: %.2f TTemp: %.2f CHum: %.2f THum: %.2f", obj.get_name().c_str(), obj.mode, obj.action, obj.current_temperature, obj.target_temperature, obj.current_humidity, obj.target_humidity);
         hap_acc_t* acc = hap_acc_get_by_aid(hap_get_unique_aid(std::to_string(obj.get_object_id_hash()).c_str()));
@@ -42,6 +45,7 @@ namespace esphome
         }
         return;
       }
+
       static int climate_read(hap_char_t* hc, hap_status_t* status_code, void* serv_priv, void* read_priv) {
         std::string key((char*)serv_priv);
         ESP_LOGI(TAG, "Write called for Accessory %s", (char*)serv_priv);
@@ -52,22 +56,22 @@ namespace esphome
           hap_val_t state;
           switch (obj->action)
           {
-          case climate::CLIMATE_ACTION_OFF:
-            state.i = 0;
-            hap_char_update_val(hc, &state);
-            break;
-          case climate::CLIMATE_ACTION_HEATING:
-            state.i = 1;
-            hap_char_update_val(hc, &state);
-            break;
-          case climate::CLIMATE_ACTION_COOLING:
-            state.i = 2;
-            hap_char_update_val(hc, &state);
-            break;
-          default:
-            state.i = 0;
-            hap_char_update_val(hc, &state);
-            break;
+            case climate::CLIMATE_ACTION_OFF:
+              state.i = 0;
+              hap_char_update_val(hc, &state);
+              break;
+            case climate::CLIMATE_ACTION_HEATING:
+              state.i = 1;
+              hap_char_update_val(hc, &state);
+              break;
+            case climate::CLIMATE_ACTION_COOLING:
+              state.i = 2;
+              hap_char_update_val(hc, &state);
+              break;
+            default:
+              state.i = 0;
+              hap_char_update_val(hc, &state);
+              break;
           }
         } else if (!strcmp(type, HAP_CHAR_UUID_CURRENT_TEMPERATURE)) {
             hap_val_t state;
@@ -80,6 +84,7 @@ namespace esphome
         }
         return ret;
       }
+
       static int climate_write(hap_write_data_t write_data[], int count, void* serv_priv, void* write_priv) {
         std::string key((char*)serv_priv);
         ESP_LOGI(TAG, "Write called for Accessory %s", (char*)serv_priv);
@@ -92,20 +97,20 @@ namespace esphome
           if (!strcmp(type, HAP_CHAR_UUID_TARGET_HEATING_COOLING_STATE)) {
             switch (write->val.i)
             {
-            case 0:
-              obj->make_call().set_mode(climate::ClimateMode::CLIMATE_MODE_OFF).perform();
-              break;
-            case 1:
-              obj->make_call().set_mode(climate::ClimateMode::CLIMATE_MODE_HEAT).perform();
-              break;
-            case 2:
-              obj->make_call().set_mode(climate::ClimateMode::CLIMATE_MODE_COOL).perform();
-              break;
-            case 3:
-              obj->make_call().set_mode(climate::ClimateMode::CLIMATE_MODE_AUTO).perform();
-              break;
-            default:
-              break;
+              case 0:
+                obj->make_call().set_mode(climate::ClimateMode::CLIMATE_MODE_OFF).perform();
+                break;
+              case 1:
+                obj->make_call().set_mode(climate::ClimateMode::CLIMATE_MODE_HEAT).perform();
+                break;
+              case 2:
+                obj->make_call().set_mode(climate::ClimateMode::CLIMATE_MODE_COOL).perform();
+                break;
+              case 3:
+                obj->make_call().set_mode(climate::ClimateMode::CLIMATE_MODE_AUTO).perform();
+                break;
+              default:
+                break;
             }
           }
           else if (!strcmp(type, HAP_CHAR_UUID_TARGET_TEMPERATURE)) {
@@ -117,22 +122,47 @@ namespace esphome
         }
         return ret;
       }
+      
       static int acc_identify(hap_acc_t* ha) {
-        ESP_LOGI(TAG, "Accessory identified");
+        ESP_LOGI("homekit", "Accessory identified");
         return HAP_SUCCESS;
       }
+
+      std::vector<HKIdentifyTrigger *> triggers_identify_;
+
     public:
       ClimateEntity() {}
+
+      void set_meta(std::map<AInfo, const char*> info) {
+        std::map<AInfo, const char*> merged_info;
+        merged_info.merge(info);
+        merged_info.merge(this->accessory_info);
+        this->accessory_info.swap(merged_info);
+      }
+
+      std::map<AInfo, const char*> accessory_info = {
+        {NAME, NULL},
+        {MODEL, "Climate"},
+        {SN, NULL},
+        {MANUFACTURER, "ESPHome"},
+        {FW_REV, "0.1"}
+      };
+
+      void register_on_identify_trigger(HKIdentifyTrigger* trig) {
+          triggers_identify_.push_back(trig);
+      }
+
       void setup(climate::Climate* climatePtr, TemperatureUnits units = CELSIUS) {
         hap_acc_cfg_t acc_cfg = {
-            .model = "ESP-CLIMATE",
-            .manufacturer = "rednblkx",
-            .fw_rev = "0.1.0",
-            .hw_rev = NULL,
-            .pv = "1.1.0",
-            .cid = HAP_CID_BRIDGE,
-            .identify_routine = acc_identify,
+          .model = strdup(accessory_info[MODEL]),
+          .manufacturer = strdup(accessory_info[MANUFACTURER]),
+          .fw_rev = strdup(accessory_info[FW_REV]),
+          .hw_rev = NULL,
+          .pv = strdup("1.1.0"),
+          .cid = HAP_CID_THERMOSTAT,
+          .identify_routine = acc_identify,
         };
+
         hap_acc_t* accessory = nullptr;
         hap_serv_t* service = nullptr;
         hap_serv_t* service_fan = nullptr;
@@ -144,57 +174,66 @@ namespace esphome
         climate::ClimateAction climateAction = climatePtr->action;
         uint8_t current_mode = 0;
         uint8_t target_mode = 0;
+
         switch (climateAction) {
-        case climate::ClimateAction::CLIMATE_ACTION_OFF:
-          current_mode = 0;
-          break;
+          case climate::ClimateAction::CLIMATE_ACTION_OFF:
+            current_mode = 0;
+            break;
 
-        case climate::ClimateAction::CLIMATE_ACTION_HEATING:
-          current_mode = 1;
-          break;
+          case climate::ClimateAction::CLIMATE_ACTION_HEATING:
+            current_mode = 1;
+            break;
 
-        case climate::ClimateAction::CLIMATE_ACTION_COOLING:
-          current_mode = 2;
-          break;
+          case climate::ClimateAction::CLIMATE_ACTION_COOLING:
+            current_mode = 2;
+            break;
 
-        default:
-          current_mode = 0;
-          break;
+          default:
+            current_mode = 0;
+            break;
         }
+
         switch (climateMode) {
-        case climate::ClimateMode::CLIMATE_MODE_OFF:
-          target_mode = 0;
-          break;
+          case climate::ClimateMode::CLIMATE_MODE_OFF:
+            target_mode = 0;
+            break;
 
-        case climate::ClimateMode::CLIMATE_MODE_HEAT:
-          target_mode = 1;
-          break;
+          case climate::ClimateMode::CLIMATE_MODE_HEAT:
+            target_mode = 1;
+            break;
 
-        case climate::ClimateMode::CLIMATE_MODE_COOL:
-          target_mode = 2;
-          break;
+          case climate::ClimateMode::CLIMATE_MODE_COOL:
+            target_mode = 2;
+            break;
 
-        case climate::ClimateMode::CLIMATE_MODE_AUTO:
-          target_mode = 3;
-          break;
+          case climate::ClimateMode::CLIMATE_MODE_AUTO:
+            target_mode = 3;
+            break;
 
-        default:
-          break;
+          default:
+            break;
         }
+
         ESP_LOGI(TAG, "CTemp: %.2f TTemp: %.2f CHum: %.2f THum: %.2f", climatePtr->current_temperature, climatePtr->target_temperature, climatePtr->current_humidity, climatePtr->target_humidity);
         service = hap_serv_thermostat_create(current_mode, target_mode, climatePtr->current_temperature, climatePtr->target_temperature, units);
+        
         if (climateTraits.get_supports_current_humidity()) {
           hap_serv_add_char(service, hap_char_current_relative_humidity_create(climatePtr->current_humidity));
         }
+
         if (climateTraits.get_supports_target_humidity()) {
           hap_serv_add_char(service, hap_char_target_relative_humidity_create(climatePtr->target_humidity));
         }
+
         // service_fan = hap_serv_fan_v2_create(!climatePtr->fan_mode ? 1 : 0);
         // hap_char_swing_mode_create();
         // hap_serv_link_serv()
+
         if (service) {
           /* Create accessory object */
           accessory = hap_acc_create(&acc_cfg);
+          
+
           ESP_LOGI(TAG, "ID HASH: %lu", climatePtr->get_object_id_hash());
           hap_serv_set_priv(service, strdup(std::to_string(climatePtr->get_object_id_hash()).c_str()));
 
@@ -204,7 +243,6 @@ namespace esphome
 
           /* Add the Lock Service to the Accessory Object */
           hap_acc_add_serv(accessory, service);
-
 
           /* Add the Accessory to the HomeKit Database */
           hap_add_bridged_accessory(accessory, hap_get_unique_aid(std::to_string(climatePtr->get_object_id_hash()).c_str()));

@@ -2,11 +2,13 @@
 #include <esphome/core/defines.h>
 #ifdef USE_SENSOR
 #include <map>
-#include "const.h"
 #include <esphome/core/application.h>
 #include <hap.h>
 #include <hap_apple_servs.h>
 #include <hap_apple_chars.h>
+#include "esphome/components/homekit_base/const.h"
+#include "automation.h"
+
 namespace esphome
 {
   namespace homekit
@@ -15,23 +17,28 @@ namespace esphome
     {
     private:
       static constexpr const char* TAG = "SensorEntity";
-      std::map<AInfo, const char*> accessory_info = {{NAME, NULL}, {MODEL, "HAP-SENSOR"}, {SN, NULL}, {MANUFACTURER, "rednblkx"}, {FW_REV, "0.1"}};
+
       sensor::Sensor* sensorPtr;
+
       void on_sensor_update(sensor::Sensor* obj, float v) {
         ESP_LOGD(TAG, "%s value: %.2f", obj->get_name().c_str(), v);
+
         hap_acc_t* acc = hap_acc_get_by_aid(hap_get_unique_aid(std::to_string(obj->get_object_id_hash()).c_str()));
-        if (acc) {
-          hap_serv_t* hs = hap_serv_get_next(hap_acc_get_first_serv(acc));
-          if (hs) {
-            hap_char_t* on_char = hap_serv_get_first_char(hs);
-            ESP_LOGD(TAG, "HAP CURRENT VALUE: %.2f", hap_char_get_val(on_char)->f);
-            hap_val_t state;
-            state.f = v;
-            hap_char_update_val(on_char, &state);
-          }
-        }
-        return;
+        if (!acc) return;
+
+        hap_serv_t* hs = hap_serv_get_next(hap_acc_get_first_serv(acc));
+        if (!hs) return;
+          
+        hap_char_t* on_char = hap_serv_get_first_char(hs);
+        if (!on_char) return;
+
+        ESP_LOGD(TAG, "HAP CURRENT VALUE: %.2f", hap_char_get_val(on_char)->f);
+
+        hap_val_t state;
+        state.f = v;
+        hap_char_update_val(on_char, &state);
       }
+
       static int sensor_read(hap_char_t* hc, hap_status_t* status_code, void* serv_priv, void* read_priv) {
         if (serv_priv) {
           sensor::Sensor* sensorPtr = (sensor::Sensor*)serv_priv;
@@ -43,18 +50,36 @@ namespace esphome
         }
         return HAP_FAIL;
       }
+
       static int acc_identify(hap_acc_t* ha) {
-        ESP_LOGI(TAG, "Accessory identified");
+        ESP_LOGI("homekit", "Accessory identified");
         return HAP_SUCCESS;
       }
+
+      std::vector<HKIdentifyTrigger *> triggers_identify_;
+
     public:
       SensorEntity(sensor::Sensor* sensorPtr) : sensorPtr(sensorPtr) {}
-      void setInfo(std::map<AInfo, const char*> info) {
+
+      void set_meta(std::map<AInfo, const char*> info) {
         std::map<AInfo, const char*> merged_info;
         merged_info.merge(info);
         merged_info.merge(this->accessory_info);
         this->accessory_info.swap(merged_info);
       }
+
+      void register_on_identify_trigger(HKIdentifyTrigger* trig) {
+          triggers_identify_.push_back(trig);
+      }
+
+      std::map<AInfo, const char*> accessory_info = {
+        {NAME, NULL},
+        {MODEL, "Sensor"},
+        {SN, NULL},
+        {MANUFACTURER, "ESPHome"},
+        {FW_REV, "0.1"}
+      };
+
       void setup() {
         hap_serv_t* service = nullptr;
 
@@ -85,6 +110,7 @@ namespace esphome
           service = hap_serv_create(HAP_SERV_UUID_AIR_QUALITY_SENSOR);
           hap_serv_add_char(service, hap_char_pm_2_5_density_create(sensorPtr->state));
         }
+
         if (service) {
           hap_acc_cfg_t acc_cfg = {
               .model = strdup(accessory_info[MODEL]),
@@ -92,25 +118,19 @@ namespace esphome
               .fw_rev = strdup(accessory_info[FW_REV]),
               .hw_rev = NULL,
               .pv = strdup("1.1.0"),
-              .cid = HAP_CID_BRIDGE,
+              .cid = HAP_CID_SENSOR,
               .identify_routine = acc_identify,
           };
-          hap_acc_t* accessory = nullptr;
+
           std::string accessory_name = sensorPtr->get_name();
-          if (accessory_info[NAME] == NULL) {
-            acc_cfg.name = strdup(accessory_name.c_str());
-          }
-          else {
-          acc_cfg.name = strdup(accessory_info[NAME]);
-          }
-          if (accessory_info[SN] == NULL) {
-            acc_cfg.serial_num = strdup(std::to_string(sensorPtr->get_object_id_hash()).c_str());
-          }
-          else {
-            acc_cfg.serial_num = strdup(accessory_info[SN]);
-          }
-          accessory = hap_acc_create(&acc_cfg);
+          acc_cfg.name = strdup(accessory_info[NAME] ? accessory_info[NAME] : accessory_name.c_str());
+          acc_cfg.serial_num = strdup(accessory_info[SN] ? accessory_info[SN] : std::to_string(sensorPtr->get_object_id_hash()).c_str());
+
+          hap_acc_t* accessory = hap_acc_create(&acc_cfg);
+          
+
           ESP_LOGD(TAG, "ID HASH: %lu", sensorPtr->get_object_id_hash());
+
           hap_serv_set_priv(service, sensorPtr);
 
           /* Set the read callback for the service */
@@ -118,7 +138,6 @@ namespace esphome
 
           /* Add the Sensor Service to the Accessory Object */
           hap_acc_add_serv(accessory, service);
-
 
           /* Add the Accessory to the HomeKit Database */
           hap_add_bridged_accessory(accessory, hap_get_unique_aid(std::to_string(sensorPtr->get_object_id_hash()).c_str()));
