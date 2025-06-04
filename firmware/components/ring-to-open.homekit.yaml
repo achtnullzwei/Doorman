@@ -1,0 +1,21 @@
+# Ring To Open Addon - HomeKit
+
+homekit:
+  switch:
+    - id: rto_central
+      meta:
+        name: "Ring To Open"
+        manufacturer: "ESPHome"
+        model: "Template Switch"
+
+    - id: rto_entrance_door
+      meta:
+        name: "Ring To Open: Entrance Door"
+        manufacturer: "ESPHome"
+        model: "Template Switch"
+
+    - id: rto_second_entrance_door
+      meta:
+        name: "Ring To Open: Second Entrance Door"
+        manufacturer: "ESPHome"
+        model: "Template Switch"

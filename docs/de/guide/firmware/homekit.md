@@ -2,6 +2,16 @@
 
 Diese Seite bietet dir alle Informationen, die du brauchst, um dein Doorman-Gerät mit Apple HomeKit einzurichten und zu steuern.
 
+## Einschränkungen
+Die HomeKit-Integration unterstützt derzeit nur die wichtigsten und grundlegendsten Funktionen deines Doormans. Erweiterte Einstellungen und weniger häufig genutzte Funktionen stehen über HomeKit nicht zur Verfügung und müssen weiterhin über Home Assistant oder die Weboberfläche gesteuert werden.
+
+### Unterstützte Entitäten
+- **Schloss:** Entrance Door
+- **Schloss:** Second Entrance Door
+- **Schalter:** Ring To Open
+- **Schalter:** Ring To Open: Entrance Door
+- **Schalter:** Ring To Open: Second Entrance Door
+
 ## Koppeln
 Nachdem du die Firmware mit HomeKit-Unterstützung geflasht und Doorman mit deinem WLAN verbunden hast, folge den untenstehenden Schritten, um die Verbindung mit der Home-App auf deinem iPhone oder iPad herzustellen.
 
