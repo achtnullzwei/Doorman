@@ -326,17 +326,19 @@ button:
       sorting_group_id: sorting_group_system
       sorting_weight: 0
 
+output:
   - platform: template
-    id: hallway_light
-    name: "Hallway Light"
-    icon: mdi:lightbulb-on
-    on_press:
-      - tc_bus.send:
-          type: light
-    disabled_by_default: true
-    web_server:
-      sorting_group_id: sorting_group_controls
-      sorting_weight: 4
+    type: binary
+    id: hallway_light_output
+    write_action:
+      - if:
+          condition:
+            lambda: !lambda return state;
+          then:
+            - tc_bus.send:
+                type: light
+            - delay: 5s
+            - output.turn_off: hallway_light_output
 
 # Onboard Status LEDs
 light:
@@ -350,6 +352,16 @@ light:
     web_server:
       sorting_group_id: sorting_group_system
       sorting_weight: -9
+
+  - platform: binary
+    id: hallway_light
+    name: "Hallway Light"
+    icon: mdi:lightbulb-on
+    output: hallway_light_output
+    disabled_by_default: true
+    web_server:
+      sorting_group_id: sorting_group_controls
+      sorting_weight: 4
 
 sensor:
   - platform: uptime
