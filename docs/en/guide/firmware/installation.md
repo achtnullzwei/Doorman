@@ -50,10 +50,10 @@ export default {
                 },
                 {
                     key: 'homekit',
-                    name: 'HomeKit',
+                    name: 'Apple HomeKit',
                     icon: '<img src="/homekit.png" />',
                     iconColor: '',
-                    details: 'Text missing!',
+                    details: 'I use Apple Home and want to connect Doorman easily through HomeKit.',
                 },
                 {
                     key: 'custom',
@@ -87,7 +87,7 @@ export default {
         },
         integration(newIntegration, oldIntegration) {
             localStorage.setItem("fw_integration", newIntegration);
-            if ((newIntegration == 'mqtt' || newIntegration == 'homekit') && this.variant == 'nuki-bridge') {
+            if (!this.is_variant_allowed(this.variant)) {
                 this.variant = 'stock';
             }
         },
@@ -107,12 +107,23 @@ export default {
         },
         notes() {
             if(this.integration == 'mqtt') {
-                return 'The firmware requires further setup after flashing! Please take a look at the <a href="./mqtt#setup">MQTT Setup instructions</a>.<br><br>Unfortunately this firmware variant is not compatible with the Nuki Bridge Addon due to <b>RAM limitations</b>.';
-            }
-            if(this.integration == 'homekit') {
-                return 'Unfortunately this firmware variant is not compatible with the Nuki Bridge Addon due to <b>RAM limitations</b>.';
+                return 'The firmware requires further setup after flashing! Please take a look at the <a href="./mqtt#setup">MQTT Setup instructions</a>.';
             }
             return '';
+        },
+        is_variant_allowed() {
+            const incompat = {
+                mqtt: ['nuki-bridge'],
+                homekit: ['nuki-bridge'],
+            };
+            return (variant) => {
+                if (!this.integration) return true;
+                return !(incompat[this.integration] && incompat[this.integration].includes(variant));
+            };
+        },
+        variant_incompatibility_message() {
+            const integrationName = this.integration_options.find(opt => opt.key === this.integration)?.name || this.integration;
+            return `Unfortunately this option can't be used together with <b>${integrationName}</b> because of technical limitations.`;
         },
         web_serial_available() {
             if(inBrowser) {
@@ -173,25 +184,25 @@ This guided process ensures seamless integration with the Home Assistant API and
             </label>
         </div>
     </div>
-    <div v-if="notes" class="tip custom-block">
-        <p class="custom-block-title">NOTE</p>
-        <p v-html="notes"></p>
-    </div>
     <div v-if="integration != ''">
         <h5 class="firmware_title_row"><i class="mdi mdi-package-variant-plus"></i> What about some extras?</h5>
         <div class="firmware_option_row">
             <label class="firmware_option" v-for="fw_variant in variant_options" :key="fw_variant.key">
-                <input type="radio" class="reset_default" :disabled="(integration=='mqtt' || integration=='homekit') && fw_variant.key == 'nuki-bridge'" v-model="variant" :value="fw_variant.key">
+                <input type="radio" class="reset_default" :disabled="!is_variant_allowed(fw_variant.key)" v-model="variant" :value="fw_variant.key">
                 <span class="checkmark">
                     <div class="icon" v-if="fw_variant.icon" v-html="fw_variant.icon"></div>
                     <div class="title" v-html="fw_variant.name"></div>
-                    <div class="details" v-html="fw_variant.details"></div>
+                    <div class="details" v-html="is_variant_allowed(fw_variant.key) ? fw_variant.details : variant_incompatibility_message"></div>
                 </span>
             </label>
         </div>
     </div>
     <div v-if="valid_manifest">
         <h5 class="firmware_title_row"><i class="mdi mdi-auto-fix"></i> Let's summon the firmware spirits!</h5>
+        <div v-if="notes" class="tip custom-block">
+            <p class="custom-block-title">NOTE</p>
+            <p v-html="notes"></p>
+        </div>
         <esp-web-install-button :manifest="manifest_file">
             <button slot="activate">
                 <div class="custom-layout">

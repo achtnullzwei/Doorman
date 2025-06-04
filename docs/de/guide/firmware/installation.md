@@ -51,8 +51,8 @@ export default {
                     key: 'homekit',
                     name: 'HomeKit',
                     icon: '<img src="/homekit.png" />',
-                    iconColor: '#606',
-                    details: 'Text fehlt!',
+                    iconColor: '',
+                    details: 'Ich verwende Apple Home und möchte Doorman einfach und bequem über HomeKit einbinden.',
                 },
                 {
                     key: 'custom',
@@ -86,7 +86,7 @@ export default {
         },
         integration(newIntegration, oldIntegration) {
             localStorage.setItem("fw_integration", newIntegration);
-            if ((newIntegration == 'mqtt' || newIntegration == 'homekit') && this.variant == 'nuki-bridge') {
+            if (!this.is_variant_allowed(this.variant)) {
                 this.variant = 'stock';
             }
         },
@@ -106,12 +106,23 @@ export default {
         },
         notes() {
             if(this.integration == 'mqtt') {
-                return 'Die Firmware benötigt nach dem flashen noch etwas Handarbeit. Schau dir dazu bitte die Anleitung zur <a href="./mqtt#setup">MQTT Einrichtung</a> an.<br><br>Diese Firmware-Variante ist aufgrund von <b>RAM-Einschränkungen</b> leider nicht mit der Nuki Bridge Erweiterung kompatibel.';
-            }
-            if(this.integration == 'mqtt') {
-                return 'Diese Firmware-Variante ist aufgrund von <b>RAM-Einschränkungen</b> leider nicht mit der Nuki Bridge Erweiterung kompatibel.';
+                return 'Die Firmware benötigt nach dem flashen noch etwas Handarbeit. Schau dir dazu bitte die Anleitung zur <a href="./mqtt#setup">MQTT Einrichtung</a> an.';
             }
             return '';
+        },
+        is_variant_allowed() {
+            const incompat = {
+                mqtt: ['nuki-bridge'],
+                homekit: ['nuki-bridge'],
+            };
+            return (variant) => {
+                if (!this.integration) return true;
+                return !(incompat[this.integration] && incompat[this.integration].includes(variant));
+            };
+        },
+        variant_incompatibility_message() {
+            const integrationName = this.integration_options.find(opt => opt.key === this.integration)?.name || this.integration;
+            return `Diese Option lässt sich wegen technischer Einschränkungen leider nicht mit <b>${integrationName}</b> kombinieren.`;
         },
         web_serial_available() {
             if(inBrowser) {
@@ -172,25 +183,25 @@ Dieser geführte Prozess sorgt für eine nahtlose Integration mit der Home Assis
             </label>
         </div>
     </div>
-    <div v-if="notes" class="tip custom-block">
-        <p class="custom-block-title">HINWEIS</p>
-        <p v-html="notes"></p>
-    </div>
     <div v-if="integration != ''">
         <h5 class="firmware_title_row"><i class="mdi mdi-package-variant-plus"></i> Darf's vielleicht etwas mehr sein?</h5>
         <div class="firmware_option_row">
             <label class="firmware_option" v-for="fw_variant in variant_options" :key="fw_variant.key">
-                <input type="radio" class="reset_default" :disabled="(integration=='mqtt' || integration=='homekit') && fw_variant.key == 'nuki-bridge'" v-model="variant" :value="fw_variant.key">
+                <input type="radio" class="reset_default" :disabled="!is_variant_allowed(fw_variant.key)" v-model="variant" :value="fw_variant.key">
                 <span class="checkmark">
                     <div class="icon" v-if="fw_variant.icon" v-html="fw_variant.icon"></div>
                     <div class="title" v-html="fw_variant.name"></div>
-                    <div class="details" v-html="fw_variant.details"></div>
+                    <div class="details" v-html="is_variant_allowed(fw_variant.key) ? fw_variant.details : variant_incompatibility_message"></div>
                 </span>
             </label>
         </div>
     </div>
     <div v-if="valid_manifest">
         <h5 class="firmware_title_row"><i class="mdi mdi-auto-fix"></i> Jetzt wird geflasht – und zwar mit Stil!</h5>
+        <div v-if="notes" class="tip custom-block">
+            <p class="custom-block-title">HINWEIS</p>
+            <p v-html="notes"></p>
+        </div>
         <esp-web-install-button :manifest="manifest_file">
             <button slot="activate">
                 <div class="custom-layout">
