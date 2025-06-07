@@ -47,33 +47,49 @@ namespace homekit {
       this->accessory_info_.swap(merged_info);
     }
 
+    void report_heap();
     void factory_reset();
+
     bool is_paired();
     bool is_connected();
 
     static void static_hap_event_handler(hap_event_t event, void *data);
     static int static_identify_handler(hap_acc_t *ha);
 
-    void add_pairing_started_callback(std::function<void()> &&callback);
-    CallbackManager<void()> pairing_started_callback_{};
+    void add_pairing_started_callback(std::function<void()> &&callback)
+    {
+        this->pairing_started_callback_.add(std::move(callback));
+    }
 
-    void add_pairing_aborted_callback(std::function<void()> &&callback);
-    CallbackManager<void()> pairing_aborted_callback_{};
+    void add_pairing_aborted_callback(std::function<void()> &&callback)
+    {
+        this->pairing_aborted_callback_.add(std::move(callback));
+    }
 
-    void add_pairing_timeout_callback(std::function<void()> &&callback);
-    CallbackManager<void()> pairing_timeout_callback_{};
+    void add_pairing_timeout_callback(std::function<void()> &&callback)
+    {
+        this->pairing_timeout_callback_.add(std::move(callback));
+    }
 
-    void add_pairing_completed_callback(std::function<void(std::string)> &&callback);
-    CallbackManager<void(std::string)> pairing_completed_callback_{};
+    void add_pairing_completed_callback(std::function<void(std::string)> &&callback)
+    {
+        this->pairing_completed_callback_.add(std::move(callback));
+    }
 
-    void add_identify_callback(std::function<void()> &&callback);
-    CallbackManager<void()> identify_callback_{};
+    void add_identify_callback(std::function<void()> &&callback)
+    {
+        this->identify_callback_.add(std::move(callback));
+    }
 
-    void add_controller_connected_callback(std::function<void(std::string)> &&callback);
-    CallbackManager<void(std::string)> controller_connected_callback_{};
+    void add_controller_connected_callback(std::function<void(std::string)> &&callback)
+    {
+        this->controller_connected_callback_.add(std::move(callback));
+    }
 
-    void add_controller_disconnected_callback(std::function<void(std::string)> &&callback);
-    CallbackManager<void(std::string)> controller_disconnected_callback_{};
+    void add_controller_disconnected_callback(std::function<void(std::string)> &&callback)
+    {
+        this->controller_disconnected_callback_.add(std::move(callback));
+    }
 
   protected:
     bool is_ready_ = false;
@@ -82,6 +98,14 @@ namespace homekit {
     const char *setup_code_ = "159-35-728";
     const char *setup_id_ = "DMS3";
     std::map<AInfo, const char*> accessory_info_ = {{NAME, "ESPH Bridge"}, {MODEL, "HAP-BRIDGE"}, {SN, "16161616"}, {MANUFACTURER, "rednblkx"}, {FW_REV, "0.1"}};
+
+    CallbackManager<void()> pairing_started_callback_{};
+    CallbackManager<void()> pairing_aborted_callback_{};
+    CallbackManager<void()> pairing_timeout_callback_{};
+    CallbackManager<void(std::string)> pairing_completed_callback_{};
+    CallbackManager<void()> identify_callback_{};
+    CallbackManager<void(std::string)> controller_connected_callback_{};
+    CallbackManager<void(std::string)> controller_disconnected_callback_{};
   };
 
   static HomeKitBaseComponent *global_homekit_base;  // NOLINT(cppcoreguidelines-avoid-non-const-global-variables)

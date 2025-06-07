@@ -15,6 +15,8 @@ namespace esphome {
 namespace homekit {
 
 class LockEntity {
+    static std::unordered_map<hap_acc_t*, LockEntity*> acc_instance_map;
+
 private:
     lock::Lock* ptrToLock;
     std::vector<HKIdentifyTrigger *> triggers_identify_;
@@ -39,6 +41,8 @@ protected:
     static int lock_write(hap_write_data_t write_data[], int count, void* serv_priv, void* write_priv);
     void on_lock_update(lock::Lock* obj);
 };
+
+inline std::unordered_map<hap_acc_t*, LockEntity*> LockEntity::acc_instance_map;
 
 } // namespace homekit
 } // namespace esphome

@@ -90,6 +90,7 @@ void LockEntity::setup() {
     };
 
     hap_acc_t* accessory = hap_acc_create(&acc_cfg);
+    acc_instance_map[accessory] = this;
 
     hap_serv_t* lockMechanism = hap_serv_lock_mechanism_create(ptrToLock->state, ptrToLock->state);
 

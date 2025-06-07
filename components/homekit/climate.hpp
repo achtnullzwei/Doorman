@@ -15,6 +15,8 @@ namespace esphome
   {
     class ClimateEntity
     {
+      static std::unordered_map<hap_acc_t*, ClimateEntity*> acc_instance_map;
+
     private:
       static constexpr const char* TAG = "ClimateEntity";
 
@@ -124,8 +126,18 @@ namespace esphome
       }
       
       static int acc_identify(hap_acc_t* ha) {
-        ESP_LOGI("homekit", "Accessory identified");
+        auto it = acc_instance_map.find(ha);
+        if (it != acc_instance_map.end()) {
+            it->second->on_identify();
+        }
         return HAP_SUCCESS;
+      }
+
+      void on_identify() {
+        ESP_LOGD(TAG, "Accessory identified");
+        for (auto* trig : triggers_identify_) {
+          if (trig) trig->trigger();
+        }
       }
 
       std::vector<HKIdentifyTrigger *> triggers_identify_;
@@ -163,7 +175,6 @@ namespace esphome
           .identify_routine = acc_identify,
         };
 
-        hap_acc_t* accessory = nullptr;
         hap_serv_t* service = nullptr;
         hap_serv_t* service_fan = nullptr;
         std::string accessory_name = climatePtr->get_name();
@@ -231,8 +242,8 @@ namespace esphome
 
         if (service) {
           /* Create accessory object */
-          accessory = hap_acc_create(&acc_cfg);
-          
+          hap_acc_t* accessory = hap_acc_create(&acc_cfg);
+          acc_instance_map[accessory] = this;
 
           ESP_LOGI(TAG, "ID HASH: %lu", climatePtr->get_object_id_hash());
           hap_serv_set_priv(service, strdup(std::to_string(climatePtr->get_object_id_hash()).c_str()));
@@ -249,6 +260,8 @@ namespace esphome
         }
       }
     };
+
+    inline std::unordered_map<hap_acc_t*, ClimateEntity*> ClimateEntity::acc_instance_map;
   }
 }
 #endif

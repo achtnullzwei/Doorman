@@ -14,7 +14,9 @@ The HomeKit integration currently supports only the most essential and basic fun
 - **Switch:** Ring To Open
 
 ## Pairing
-After flashing the firmware with HomeKit integration and connecting Doorman to your Wi-Fi network, follow the steps below to pair it with the Home app on your iPhone or iPad.
+After flashing the firmware with HomeKit integration and connecting Doorman to your Wi-Fi network, the status LED will **pulse red and blue** to indicate that HomeKit is not paired yet.
+
+Follow the steps below to pair it with the Home app on your iPhone or iPad:
 
 <div style="display: flex; flex-direction: row; flex-wrap: wrap; justify-content: space-between; gap: 20px;align-items: center;" markdown>
    <div style="min-width:260px;flex: 1 1 260px;" markdown>
@@ -34,4 +36,5 @@ After flashing the firmware with HomeKit integration and connecting Doorman to y
 </div>
 
 ## Reset Pairing
-You can unpair all devices currently connected to your Doorman by using the `Reset HomeKit Pairing` button in the Home Assistant or Doorman web interface.
+To unpair all controllers currently paired with your Doorman,  
+click the `Reset HomeKit Pairing` button in the `HomeKit Configuration` section of the Doorman web interface.

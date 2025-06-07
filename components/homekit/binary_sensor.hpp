@@ -15,6 +15,8 @@ namespace esphome
   {
     class BinarySensorEntity
     {
+      static std::unordered_map<hap_acc_t*, BinarySensorEntity*> acc_instance_map;
+
     private:
       static constexpr const char* TAG = "BinarySensorEntity";
       
@@ -63,8 +65,18 @@ namespace esphome
       }
 
       static int acc_identify(hap_acc_t* ha) {
-        ESP_LOGI("homekit", "Accessory identified");
+        auto it = acc_instance_map.find(ha);
+        if (it != acc_instance_map.end()) {
+            it->second->on_identify();
+        }
         return HAP_SUCCESS;
+      }
+
+      void on_identify() {
+        ESP_LOGD(TAG, "Accessory identified");
+        for (auto* trig : triggers_identify_) {
+          if (trig) trig->trigger();
+        }
       }
 
       std::vector<HKIdentifyTrigger *> triggers_identify_;
@@ -132,6 +144,7 @@ namespace esphome
           acc_cfg.serial_num = strdup(accessory_info[SN] ? accessory_info[SN] : std::to_string(binarySensorPtr->get_object_id_hash()).c_str());
 
           hap_acc_t* accessory = hap_acc_create(&acc_cfg);
+          acc_instance_map[accessory] = this;
 
           ESP_LOGD(TAG, "ID HASH: %lu", binarySensorPtr->get_object_id_hash());
           hap_serv_set_priv(service, binarySensorPtr);
@@ -152,6 +165,8 @@ namespace esphome
         }
       }
     };
+
+    inline std::unordered_map<hap_acc_t*, BinarySensorEntity*> BinarySensorEntity::acc_instance_map;
   }
 }
 #endif

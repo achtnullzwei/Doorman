@@ -39,6 +39,9 @@ namespace esphome
 {
     namespace tc_bus
     {
+        static const char *const TAG = "tc_bus";
+        static uint32_t global_tc_bus_id = 1911044085ULL;
+        
         struct TCBusCommandQueueItem
         {
             CommandData command_data;
@@ -172,18 +175,35 @@ namespace esphome
             void save_settings();
 
             // Automation Actions
-            void add_received_command_callback(std::function<void(CommandData)> &&callback);
-            CallbackManager<void(CommandData)> received_command_callback_{};
-            void add_read_memory_complete_callback(std::function<void(std::vector<uint8_t>)> &&callback);
-            CallbackManager<void(std::vector<uint8_t>)> read_memory_complete_callback_{};
-            void add_read_memory_timeout_callback(std::function<void()> &&callback);
-            CallbackManager<void()> read_memory_timeout_callback_{};
-            void add_identify_complete_callback(std::function<void(ModelData)> &&callback);
-            CallbackManager<void(ModelData)> identify_complete_callback_{};
-            void add_identify_unknown_callback(std::function<void()> &&callback);
-            CallbackManager<void()> identify_unknown_callback_{};
-            void add_identify_timeout_callback(std::function<void()> &&callback);
-            CallbackManager<void()> identify_timeout_callback_{};
+            void add_received_command_callback(std::function<void(CommandData)> &&callback)
+            {
+                this->received_command_callback_.add(std::move(callback));
+            }
+
+            void add_read_memory_complete_callback(std::function<void(std::vector<uint8_t>)> &&callback)
+            {
+                this->read_memory_complete_callback_.add(std::move(callback));
+            }
+
+            void add_read_memory_timeout_callback(std::function<void()> &&callback)
+            {
+                this->read_memory_timeout_callback_.add(std::move(callback));
+            }
+
+            void add_identify_complete_callback(std::function<void(ModelData)> &&callback)
+            {
+                this->identify_complete_callback_.add(std::move(callback));
+            }
+
+            void add_identify_unknown_callback(std::function<void()> &&callback)
+            {
+                this->identify_unknown_callback_.add(std::move(callback));
+            }
+
+            void add_identify_timeout_callback(std::function<void()> &&callback)
+            {
+                this->identify_timeout_callback_.add(std::move(callback));
+            }
 
             // Misc
             void set_programming_mode(bool enabled);
@@ -219,6 +239,14 @@ namespace esphome
             uint32_t serial_number_;
             bool force_long_door_opener_;
 
+            // Automation Actions
+            CallbackManager<void(CommandData)> received_command_callback_{};
+            CallbackManager<void(std::vector<uint8_t>)> read_memory_complete_callback_{};
+            CallbackManager<void()> read_memory_timeout_callback_{};
+            CallbackManager<void(ModelData)> identify_complete_callback_{};
+            CallbackManager<void()> identify_unknown_callback_{};
+            CallbackManager<void()> identify_timeout_callback_{};
+
             // Misc
             const char *event_;
             std::string hardware_version_str_ = "Generic";
@@ -228,6 +256,8 @@ namespace esphome
 
             ESPPreferenceObject pref_;
         };
+
+        static TCBusComponent *global_tc_bus = nullptr; // NOLINT(cppcoreguidelines-avoid-non-const-global-variables)
 
     } // namespace tc_bus
 

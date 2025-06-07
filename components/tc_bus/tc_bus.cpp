@@ -36,11 +36,6 @@ namespace esphome
 {
     namespace tc_bus
     {
-        static const char *const TAG = "tc_bus";
-
-        uint32_t global_tc_bus_id = 1911044085ULL;
-        TCBusComponent *global_tc_bus = nullptr; // NOLINT(cppcoreguidelines-avoid-non-const-global-variables)
-
         void TCBusComponent::setup()
         {
             ESP_LOGCONFIG(TAG, "Running setup");
@@ -853,36 +848,6 @@ namespace esphome
 
             call.perform();
             ESP_LOGV(TAG, "perform");
-        }
-
-        void TCBusComponent::add_received_command_callback(std::function<void(CommandData)> &&callback)
-        {
-            this->received_command_callback_.add(std::move(callback));
-        }
-
-        void TCBusComponent::add_read_memory_complete_callback(std::function<void(std::vector<uint8_t>)> &&callback)
-        {
-            this->read_memory_complete_callback_.add(std::move(callback));
-        }
-
-        void TCBusComponent::add_read_memory_timeout_callback(std::function<void()> &&callback)
-        {
-            this->read_memory_timeout_callback_.add(std::move(callback));
-        }
-
-        void TCBusComponent::add_identify_complete_callback(std::function<void(ModelData)> &&callback)
-        {
-            this->identify_complete_callback_.add(std::move(callback));
-        }
-
-        void TCBusComponent::add_identify_unknown_callback(std::function<void()> &&callback)
-        {
-            this->identify_unknown_callback_.add(std::move(callback));
-        }
-
-        void TCBusComponent::add_identify_timeout_callback(std::function<void()> &&callback)
-        {
-            this->identify_timeout_callback_.add(std::move(callback));
         }
 
         void TCBusComponent::set_programming_mode(bool enabled)

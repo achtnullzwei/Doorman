@@ -20,25 +20,36 @@ namespace esphome
                 if(event == HAP_EVENT_PAIRING_STARTED) {
                     ESP_LOGD(TAG, "Pairing Started");
                     global_homekit_base->pairing_started_callback_.call();
+                    global_homekit_base->report_heap();
                 } else if(event == HAP_EVENT_PAIRING_ABORTED) {
                     ESP_LOGD(TAG, "Pairing Aborted");
                     global_homekit_base->pairing_aborted_callback_.call();
+                    global_homekit_base->report_heap();
                 } else if(event == HAP_EVENT_PAIRING_MODE_TIMED_OUT) {
                     ESP_LOGD(TAG, "Pairing Timed Out");
                     global_homekit_base->pairing_timeout_callback_.call();
+                    global_homekit_base->report_heap();
                 } else if(event == HAP_EVENT_CTRL_PAIRED) {
                     ESP_LOGD(TAG, "Controller %s Paired. Controller count: %d", (char *)data, hap_get_paired_controller_count());
                     global_homekit_base->pairing_completed_callback_.call(std::string(static_cast<char*>(data)));
+                    global_homekit_base->report_heap();
                 } else if(event == HAP_EVENT_CTRL_CONNECTED) {
                     global_homekit_base->connection_count_++;
                     ESP_LOGD(TAG, "Controller %s connected. Controller count: %d", (char *)data, global_homekit_base->connection_count_);
                     global_homekit_base->controller_connected_callback_.call(std::string(static_cast<char*>(data)));
-                } else if(event == HAP_EVENT_CTRL_CONNECTED) {
+                    global_homekit_base->report_heap();
+                } else if(event == HAP_EVENT_CTRL_DISCONNECTED) {
                     global_homekit_base->connection_count_--;
                     ESP_LOGD(TAG, "Controller %s disconnected. Controller count: %d", (char *)data, global_homekit_base->connection_count_);
                     global_homekit_base->controller_disconnected_callback_.call(std::string(static_cast<char*>(data)));
+                    global_homekit_base->report_heap();
                 }
             }
+        }
+
+        void HomeKitBaseComponent::report_heap() {
+            ESP_LOGD(TAG, "Internal heap: %u", heap_caps_get_free_size(MALLOC_CAP_INTERNAL));
+            ESP_LOGD(TAG, "Total free heap: %u", esp_get_free_heap_size());
         }
 
         void HomeKitBaseComponent::factory_reset() {
@@ -62,8 +73,7 @@ namespace esphome
 
             global_homekit_base = this;
 
-            ESP_LOGD(TAG, "Internal heap: %u", heap_caps_get_free_size(MALLOC_CAP_INTERNAL));
-            ESP_LOGD(TAG, "Total free heap: %u", esp_get_free_heap_size());
+            report_heap();
 
             ESP_LOGD(TAG, "IDF version: %s", esp_get_idf_version());
             ESP_LOGD(TAG, "NVS init: %s", esp_err_to_name(nvs_flash_init()));
@@ -118,12 +128,14 @@ namespace esphome
 
             hap_register_event_handler(static_hap_event_handler);
 
-            ESP_LOGD(TAG, "Internal heap: %u", heap_caps_get_free_size(MALLOC_CAP_INTERNAL));
-            ESP_LOGD(TAG, "Total free heap: %u", esp_get_free_heap_size());
+            report_heap();
 
             // hap_http_debug_enable();
             // hap_set_debug_level(HAP_DEBUG_LEVEL_INFO);
             // esp_log_level_set("HAP", ESP_LOG_DEBUG);
+
+            hap_set_debug_level(HAP_DEBUG_LEVEL_ERR);
+            esp_log_level_set("HAP", ESP_LOG_ERROR);
 
             int start_status = hap_start();
 
@@ -134,47 +146,14 @@ namespace esphome
 
                 int pairing_count = hap_get_paired_controller_count();
                 ESP_LOGI(TAG, "Paired controllers: %d", pairing_count);
+
+                report_heap();
             } else {
                 hap_acc_delete(accessory);
 
                 std::string hap_start_fail_msg = "hap_start() failed with status " + std::to_string(start_status);
                 this->mark_failed(hap_start_fail_msg.c_str());
             }
-        }
-
-        void HomeKitBaseComponent::add_pairing_started_callback(std::function<void()> &&callback)
-        {
-            this->pairing_started_callback_.add(std::move(callback));
-        }
-
-        void HomeKitBaseComponent::add_pairing_aborted_callback(std::function<void()> &&callback)
-        {
-            this->pairing_aborted_callback_.add(std::move(callback));
-        }
-
-        void HomeKitBaseComponent::add_pairing_timeout_callback(std::function<void()> &&callback)
-        {
-            this->pairing_timeout_callback_.add(std::move(callback));
-        }
-
-        void HomeKitBaseComponent::add_pairing_completed_callback(std::function<void(std::string)> &&callback)
-        {
-            this->pairing_completed_callback_.add(std::move(callback));
-        }
-
-        void HomeKitBaseComponent::add_identify_callback(std::function<void()> &&callback)
-        {
-            this->identify_callback_.add(std::move(callback));
-        }
-
-        void HomeKitBaseComponent::add_controller_connected_callback(std::function<void(std::string)> &&callback)
-        {
-            this->controller_connected_callback_.add(std::move(callback));
-        }
-
-        void HomeKitBaseComponent::add_controller_disconnected_callback(std::function<void(std::string)> &&callback)
-        {
-            this->controller_disconnected_callback_.add(std::move(callback));
         }
 
         void HomeKitBaseComponent::loop() {

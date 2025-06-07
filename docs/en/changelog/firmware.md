@@ -1,10 +1,10 @@
 # Release Notes & Changelog
 Welcome to the latest updates! Here's a breakdown of all the **new features**, **improvements**, and important **changes** you need to know. Be sure to check out the **Breaking Changes** section for any actions needed to keep everything running smoothly.
 
-## 2025.5.0
-### 🚨 Breaking Changes Included
+## 2025.6.0
+### 🚨 IMPORTANT
 Please carefully review the breaking changes listed below before updating!  
-This release **may impact your current setup** and **could require** you to go through the **setup process again**.
+This release **will probably impact your current setup** and **could require** you to go through the **setup process again**.
 
 ### 🚀 What's New?
 - **Expanded Support for Model-Specific Settings**  
@@ -19,18 +19,18 @@ This release **may impact your current setup** and **could require** you to go t
   This change simplifies dashboard integration and delivers a more consistent, intuitive experience.
 
 - **Use Light Entity instead of Button for Hallway Light**  
-  The `Turn on the light` button have been replaced by a light entity.  
-  You can now use the `light.turn_on` action in Home Assistant to turn on the hallway light.  
-  This change simplifies dashboard integration and delivers a more consistent, intuitive experience.
+  The `Turn on the light` button have been replaced by the `Hallway Light` light entity.  
+  You can now use the `light.turn_on` action in Home Assistant to turn on the hallway light. This change simplifies dashboard integration and delivers a more consistent, intuitive experience.
 
 - **Extended Ring to Open to Apartment Doorbells**  
    [Ring To Open](https://doorman.azon.ai/guide/automation/ring-to-open) now also works with your apartment doorbell when paired with a Nuki Smart Lock — making access even more convenient and seamless.
 
-- **Runtime MQTT Configuration**  
-   If you flashed the firmware with MQTT integration, you can now enter your broker credentials via the built-in web interface.
+- **MQTT Integration**  
+  The configuration assistant now allows you to select the [MQTT integration](https://doorman.azon.ai/guide/firmware/mqtt).  
+  After flashing, just enter your broker credentials via the built-in web interface.
 
-- **HomeKit Support**
-   Firmware flashing now includes an option for seamless [HomeKit integration](https://doorman.azon.ai/guide/firmware/homekit), enabling native control through Apple's Home app and Siri.
+- **HomeKit Integration**  
+  To enable native control through Apple's Home app and Siri, you can now choose the [HomeKit integration](https://doorman.azon.ai/guide/firmware/homekit) in the configuration assistant.
 
 - **Pre-Open Commands**  
    In some setups, it’s necessary to send one or more preparatory commands to select the correct door. This feature allows you to define and send a sequence of commands before the `open_door` command is executed.

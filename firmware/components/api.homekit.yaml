@@ -13,6 +13,13 @@ esphome:
           condition:
             wifi.connected:
 
+      - script.execute: homekit_connect
+
+
+script:
+  - id: homekit_connect
+    mode: restart
+    then:
       # Check if is already paired with HomeKit
       - if:
           condition:
@@ -123,25 +130,54 @@ homekit:
         name: "Entrance Door"
         manufacturer: "ESPHome"
         model: "Door Opener"
+      on_identify:
+        - logger.log:
+            format: "Entrance Door identify called"
+            level: INFO
+
     - id: second_entrance_door
       meta:
         name: "Second Entrance Door"
         manufacturer: "ESPHome"
         model: "Door Opener"
-  
+      on_identify:
+        - logger.log:
+            format: "Second Entrance Door identify called"
+            level: INFO
+
   event:
     - id: entrance_doorbell_pattern
       meta:
         name: "Entrance Doorbell"
         manufacturer: "ESPHome"
         model: "Doorbell Event"
+      on_identify:
+        - logger.log:
+            format: "Entrance Doorbell identify called"
+            level: INFO
+        - tc_bus.send:
+            type: floor_call
+
     - id: second_entrance_doorbell_pattern
       meta:
         name: "Second Entrance Doorbell"
         manufacturer: "ESPHome"
         model: "Doorbell Event"
+      on_identify:
+        - logger.log:
+            format: "Second Entrance Doorbell identify called"
+            level: INFO
+        - tc_bus.send:
+            type: floor_call
+
     - id: apartment_doorbell_pattern
       meta:
         name: "Apartment Doorbell"
         manufacturer: "ESPHome"
         model: "Doorbell Event"
+      on_identify:
+        - logger.log:
+            format: "Apartment Doorbell identify called"
+            level: INFO
+        - tc_bus.send:
+            type: floor_call
