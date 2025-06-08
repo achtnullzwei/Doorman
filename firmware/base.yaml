@@ -287,6 +287,7 @@ switch:
     name: "Doorbell supression"
     icon: mdi:bell-off
     entity_category: CONFIG
+    optimistic: true
     restore_mode: RESTORE_DEFAULT_OFF
     disabled_by_default: true
     web_server:
