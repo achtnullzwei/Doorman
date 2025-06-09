@@ -18,13 +18,24 @@ export default defineConfig({
       md.use(groupIconMdPlugin)
     }
   },
+  vue: {
+    template: {
+      compilerOptions: {
+        isCustomElement: tag => [
+          'esp-web-install-button',
+          'improv-wifi-launch-button',
+          'improv-wifi-serial-launch-button'
+        ].includes(tag)
+      }
+    }
+  },
   vite: {
     plugins: [
       groupIconVitePlugin({
         customIcon: {
-          'homekit': localIconLoader(import.meta.url, '../../public/homekit-white.svg'),
-          'home assistant': localIconLoader(import.meta.url, '../../public/home-assistant.svg'),
-          'mqtt': localIconLoader(import.meta.url, '../../public/mqtt-icon-transparent.svg'),
+          'homekit': localIconLoader(import.meta.url, '../../public/icons/homekit-white.svg'),
+          'home assistant': localIconLoader(import.meta.url, '../../public/icons/home-assistant.svg'),
+          'mqtt': localIconLoader(import.meta.url, '../../public/icons/mqtt-icon-transparent.svg'),
         },
       })
     ],

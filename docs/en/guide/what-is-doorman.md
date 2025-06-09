@@ -29,7 +29,7 @@ Just received your Doorman? Jump to the [Quickstart](getting-started) guide.
 - External Button (G + BTN)
 - Bridge rectifier for bus-wire input to correct polarity
 - TC:BUS communication for functions like opening the front door and detecting the doorbell
-- Can be used as a Nuki Bridge with the [Nuki Bridge Addon](firmware/nuki-bridge-addon).
+- Can be used as a Nuki Bridge with the [Nuki Bridge Addon](firmware/nuki-bridge).
 
 ## Interested in Buying One?
 

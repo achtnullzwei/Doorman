@@ -106,26 +106,26 @@ Zeigt die Doorman Hardware-Revision an.
 ## Schalter
 
 ### Ring To Open <Badge type="tip" text="rto_central" />
-Schaltet die [Ring To Open](../guide/automation/ring-to-open) Automatisierung für die festgelegten Türen ein/aus.
+Schaltet die [Ring To Open](../guide/features/ring-to-open) Automatisierung für die festgelegten Türen ein/aus.
 
 ::: tip
 Du kannst die Türen mit dem [RTO: Central Toggle - Door Selection](#rto-central-toggle-door-selection)-Dropdown festlegen.
 :::
 
 ### RTO: Entrance Door <Badge type="tip" text="rto_entrance_door" /> <Badge type="info" text="Deaktiviert" />
-Steuert die [Ring To Open](../guide/automation/ring-to-open) Automatisierung der Eingangstür.
+Steuert die [Ring To Open](../guide/features/ring-to-open) Automatisierung der Eingangstür.
 
 ### RTO: Second Entrance Door <Badge type="tip" text="rto_second_entrance_door" /> <Badge type="info" text="Deaktiviert" />
-Steuert die [Ring To Open](../guide/automation/ring-to-open) Automatisierung der zweiten Eingangstür.
+Steuert die [Ring To Open](../guide/features/ring-to-open) Automatisierung der zweiten Eingangstür.
 
 ### RTO: Apartment Door <Badge type="tip" text="rto_apartment_door" /> <Badge type="info" text="Nuki Bridge" /> <Badge type="info" text="Deaktiviert" />
-Steuert die [Ring To Open](../guide/automation/ring-to-open) Automatisierung der Wohnungstür.
+Steuert die [Ring To Open](../guide/features/ring-to-open) Automatisierung der Wohnungstür.
 
 ### RTO: Confirmation <Badge type="tip" text="rto_confirmation" /> <Badge type="info" text="Deaktiviert" />
-Steuert die Einschaltbestätigung für die [Ring To Open](../guide/automation/ring-to-open) Automatisierung.
+Steuert die Einschaltbestätigung für die [Ring To Open](../guide/features/ring-to-open) Automatisierung.
 
 ### RTO: Display Status <Badge type="tip" text="rto_led_status" /> <Badge type="info" text="Deaktiviert" />
-Steuert die Status LED anzeige für die [Ring To Open](../guide/automation/ring-to-open) Automatisierung.
+Steuert die Status LED anzeige für die [Ring To Open](../guide/features/ring-to-open) Automatisierung.
 
 ### Use 32-Bit Door Protocol <Badge type="tip" text="use_32_open_door_protocol" /> <Badge type="info" text="Deaktiviert" />
 Dies erzwingt den langen Türöffner-Befehl und stellt sicher, dass dem kurzen Türöffner-Befehl stets eine Seriennummer hinzugefügt wird.
@@ -272,7 +272,7 @@ Gib eine Liste von Befehlen an (durch Semikolons getrennt), die auf den Bus gese
 ## Dropdowns
 
 ### RTO: Central Toggle - Door Selection <Badge type="tip" text="rto_central_doors" />
-Legt die Türen fest, bei denen der zentrale `Ring To Open`-Schalter die [Ring To Open](../guide/automation/ring-to-open) Automation umschaltet.
+Legt die Türen fest, bei denen der zentrale `Ring To Open`-Schalter die [Ring To Open](../guide/features/ring-to-open) Automation umschaltet.
 
 ##### Modi:
 - **Entrance**
@@ -282,7 +282,7 @@ Legt die Türen fest, bei denen der zentrale `Ring To Open`-Schalter die [Ring T
 - **Any Entrance & Apartment**
 
 ### RTO: Entrance Door - Delay <Badge type="tip" text="rto_entrance_door_delay" /> <Badge type="info" text="Deaktiviert" />
-Dieser Wert legt die **Verzögerung zum Türöffnen** fest, die von der [Ring To Open](../guide/automation/ring-to-open)-Automation verwendet wird.
+Dieser Wert legt die **Verzögerung zum Türöffnen** fest, die von der [Ring To Open](../guide/features/ring-to-open)-Automation verwendet wird.
 Um Störungen bei der Erkennung von Klingelmustern zu vermeiden, beginnt die Verzögerung standardmäßig bei **2 Sekunden** – außer du verwendest das **`single`**-Klingelmuster, das auch kürzere Zeiten erlaubt.
 
 ##### Verfügbare Optionen:
@@ -291,7 +291,7 @@ Um Störungen bei der Erkennung von Klingelmustern zu vermeiden, beginnt die Ver
 * **Random** → wählt automatisch einen gültigen Wert innerhalb des Bereichs
 
 ### RTO: Second Entrance Door - Delay <Badge type="tip" text="rto_second_entrance_door_delay" /> <Badge type="info" text="Deaktiviert" />
-Dieser Wert legt die **Verzögerung zum Türöffnen** fest, die von der [Ring To Open](../guide/automation/ring-to-open)-Automation verwendet wird.
+Dieser Wert legt die **Verzögerung zum Türöffnen** fest, die von der [Ring To Open](../guide/features/ring-to-open)-Automation verwendet wird.
 Um Störungen bei der Erkennung von Klingelmustern zu vermeiden, beginnt die Verzögerung standardmäßig bei **2 Sekunden** – außer du verwendest das **`single`**-Klingelmuster, das auch kürzere Zeiten erlaubt.
 
 ##### Verfügbare Optionen:
@@ -300,7 +300,7 @@ Um Störungen bei der Erkennung von Klingelmustern zu vermeiden, beginnt die Ver
 * **Random** → wählt automatisch einen gültigen Wert innerhalb des Bereichs
 
 ### RTO: Apartment Door - Delay <Badge type="tip" text="rto_apartment_door_delay" /> <Badge type="info" text="Nuki Bridge" /> <Badge type="info" text="Deaktiviert" />
-Dieser Wert legt die **Verzögerung zum Türöffnen** fest, die von der [Ring To Open](../guide/automation/ring-to-open)-Automation verwendet wird.
+Dieser Wert legt die **Verzögerung zum Türöffnen** fest, die von der [Ring To Open](../guide/features/ring-to-open)-Automation verwendet wird.
 Um Störungen bei der Erkennung von Klingelmustern zu vermeiden, beginnt die Verzögerung standardmäßig bei **2 Sekunden** – außer du verwendest das **`single`**-Klingelmuster, das auch kürzere Zeiten erlaubt.
 
 ##### Verfügbare Optionen:
@@ -309,7 +309,7 @@ Um Störungen bei der Erkennung von Klingelmustern zu vermeiden, beginnt die Ver
 * **Random** → wählt automatisch einen gültigen Wert innerhalb des Bereichs
 
 ### RTO: Entrance Door - Timeout <Badge type="tip" text="rto_entrance_door_timeout_mode" />
-Legt den Timeout-Modus für die [Ring To Open](../guide/automation/ring-to-open) Automation fest.
+Legt den Timeout-Modus für die [Ring To Open](../guide/features/ring-to-open) Automation fest.
 
 ##### Modi:
 - **Ring once**
@@ -317,7 +317,7 @@ Legt den Timeout-Modus für die [Ring To Open](../guide/automation/ring-to-open)
 - **Never**
 
 ### RTO: Second Entrance Door - Timeout <Badge type="tip" text="rto_second_entrance_door_timeout_mode" /> <Badge type="info" text="Deaktiviert" />
-Legt den Timeout-Modus für die [Ring To Open](../guide/automation/ring-to-open) Automation fest.
+Legt den Timeout-Modus für die [Ring To Open](../guide/features/ring-to-open) Automation fest.
 
 ##### Modi:
 - **Ring once**
@@ -325,7 +325,7 @@ Legt den Timeout-Modus für die [Ring To Open](../guide/automation/ring-to-open)
 - **Never**
 
 ### RTO: Apartment Door - Timeout <Badge type="tip" text="rto_apartment_door_timeout_mode" /> <Badge type="info" text="Nuki Bridge" />
-Legt den Timeout-Modus für die [Ring To Open](../guide/automation/ring-to-open) Automation fest.
+Legt den Timeout-Modus für die [Ring To Open](../guide/features/ring-to-open) Automation fest.
 
 ##### Modi:
 - **Ring once**
@@ -333,7 +333,7 @@ Legt den Timeout-Modus für die [Ring To Open](../guide/automation/ring-to-open)
 - **Never**
 
 ### RTO: Entrance Door - Pattern Condition <Badge type="tip" text="rto_entrance_door_pattern_condition" /> <Badge type="info" text="Deaktiviert" />
-Legt das Muster fest, welches Bedingung zum auslösen der [Ring To Open](../guide/automation/ring-to-open) automation fest.
+Legt das Muster fest, welches Bedingung zum auslösen der [Ring To Open](../guide/features/ring-to-open) automation fest.
 
 ##### Options:
 - **single**
@@ -342,7 +342,7 @@ Legt das Muster fest, welches Bedingung zum auslösen der [Ring To Open](../guid
 - **quadruple**
 
 ### RTO: Second Entrance Door - Pattern Condition <Badge type="tip" text="rto_second_entrance_door_pattern_condition" /> <Badge type="info" text="Deaktiviert" />
-Legt das Muster fest, welches Bedingung zum auslösen der [Ring To Open](../guide/automation/ring-to-open) automation fest.
+Legt das Muster fest, welches Bedingung zum auslösen der [Ring To Open](../guide/features/ring-to-open) automation fest.
 
 ##### Options:
 - **single**
@@ -351,7 +351,7 @@ Legt das Muster fest, welches Bedingung zum auslösen der [Ring To Open](../guid
 - **quadruple**
 
 ### RTO: Apartment Door - Pattern Condition <Badge type="tip" text="rto_apartment_door_pattern_condition" /> <Badge type="info" text="Nuki Bridge" /> <Badge type="info" text="Deaktiviert" />
-Legt das Muster fest, welches Bedingung zum auslösen der [Ring To Open](../guide/automation/ring-to-open) automation fest.
+Legt das Muster fest, welches Bedingung zum auslösen der [Ring To Open](../guide/features/ring-to-open) automation fest.
 
 ##### Options:
 - **single**
@@ -360,7 +360,7 @@ Legt das Muster fest, welches Bedingung zum auslösen der [Ring To Open](../guid
 - **quadruple**
 
 ### RTO: Central Toggle - Trigger <Badge type="tip" text="rto_toggle_trigger" /> <Badge type="info" text="Deaktiviert" />
-Legt den Auslöser zum umschalten für die [Ring To Open](../guide/automation/ring-to-open) automation fest.
+Legt den Auslöser zum umschalten für die [Ring To Open](../guide/features/ring-to-open) automation fest.
 
 ##### Optionen:
 - **Manual**
@@ -473,7 +473,7 @@ Repräsentiert das gekoppelte Nuki Smart Lock deiner Wohnungs- oder Haustür.
 ## Ereignisse
 
 ### Entrance Doorbell <Badge type="tip" text="entrance_doorbell_pattern" />
-Wird ausgelöst, wenn ein Klingelmuster an der Eingangstür erkannt wird. Erfahre mehr über Musterereignisse [hier](../guide/automation/pattern-events).
+Wird ausgelöst, wenn ein Klingelmuster an der Eingangstür erkannt wird. Erfahre mehr über Musterereignisse [hier](../guide/features/pattern-events).
 
 ##### Ereignistypen
 - **single**
@@ -482,7 +482,7 @@ Wird ausgelöst, wenn ein Klingelmuster an der Eingangstür erkannt wird. Erfahr
 - **quadruple**
 
 ### Second Entrance Doorbell <Badge type="tip" text="second_entrance_doorbell_pattern" />
-Wird ausgelöst, wenn ein Klingelmuster an der zweiten Eingangstür erkannt wird. Erfahre mehr über Musterereignisse [hier](../guide/automation/pattern-events).
+Wird ausgelöst, wenn ein Klingelmuster an der zweiten Eingangstür erkannt wird. Erfahre mehr über Musterereignisse [hier](../guide/features/pattern-events).
 
 ##### Ereignistypen
 - **single**
@@ -491,7 +491,7 @@ Wird ausgelöst, wenn ein Klingelmuster an der zweiten Eingangstür erkannt wird
 - **quadruple**
 
 ### Apartment Doorbell <Badge type="tip" text="apartment_doorbell_pattern" />
-Wird ausgelöst, wenn ein Klingelmuster an der Wohnungstür erkannt wird. Erfahre mehr über Musterereignisse [hier](../guide/automation/pattern-events).
+Wird ausgelöst, wenn ein Klingelmuster an der Wohnungstür erkannt wird. Erfahre mehr über Musterereignisse [hier](../guide/features/pattern-events).
 
 ##### Ereignistypen
 - **single**
@@ -500,7 +500,7 @@ Wird ausgelöst, wenn ein Klingelmuster an der Wohnungstür erkannt wird. Erfahr
 - **quadruple**
 
 ### Phone pick up <Badge type="tip" text="phone_pick_up_pattern" />
-Wird ausgelöst, wenn ein Abhebe-Muster des Telefons der Innenstation erkannt wird. Erfahre mehr über Musterereignisse [hier](../guide/automation/pattern-events).
+Wird ausgelöst, wenn ein Abhebe-Muster des Telefons der Innenstation erkannt wird. Erfahre mehr über Musterereignisse [hier](../guide/features/pattern-events).
 
 ##### Ereignistypen
 - **single**

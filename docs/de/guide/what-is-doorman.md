@@ -29,7 +29,7 @@ Du hast gerade deinen Doorman erhalten? Geh direkt zur [Quickstart](getting-star
 - Externer Button (G + BTN)
 - Brückengleichrichter zur Korrektur der Bus-Leitung-Polarität
 - TC:BUS-Kommunikation für Funktionen wie das Öffnen der Haustür und das Erkennen der Klingel
-- Kann als Nuki Bridge mit dem [Nuki Bridge Addon](firmware/nuki-bridge-addon) verwendet werden.
+- Kann als Nuki Bridge mit dem [Nuki Bridge Addon](firmware/nuki-bridge) verwendet werden.
 
 ## Möchtest du auch einen?
 

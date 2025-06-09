@@ -110,33 +110,34 @@ function sidebarGuide(): DefaultTheme.SidebarItem[] {
       ]
     },
     {
+      text: 'Features',
+      items: [
+        { text: 'Ring To Open', link: 'ring-to-open', base: '/guide/features/' },
+        { text: 'Innenstation Einstellungen', link: 'intercom-settings', base: '/guide/features/' },
+        { text: 'Muster Ereignisse', link: 'pattern-events', base: '/guide/features/' },
+      ]
+    },
+    {
       text: 'Firmware',
       items: [
         { text: 'Installation und Updates', link: 'installation', base: '/de/guide/firmware/' },
+        {
+          text: 'Smart Home Integrationen',
+          collapsed: true,
+          items: [
+            { text: 'Home Assistant', link: 'home-assistant', base: '/de/guide/firmware/' },
+            { text: 'MQTT', link: 'mqtt', base: '/de/guide/firmware/' },
+            { text: 'HomeKit', link: 'homekit', base: '/de/guide/firmware/' },
+          ]
+        },
+        {
+          text: 'Erweiterungen',
+          collapsed: true,
+          items: [
+            { text: 'Nuki Bridge', link: 'nuki-bridge', base: '/de/guide/firmware/' },
+          ]
+        },
         { text: 'Anpassungen', link: 'customization', base: '/de/guide/firmware/' }
-      ]
-    },
-    {
-      text: 'Firmware Erweiterungen',
-      collapsed: true,
-      items: [
-        { text: 'Nuki Bridge Addon', link: 'nuki-bridge-addon', base: '/de/guide/firmware/' },
-        { text: 'MQTT Integration', link: 'mqtt', base: '/de/guide/firmware/' },
-        { text: 'HomeKit Integration', link: 'homekit', base: '/de/guide/firmware/' },
-      ]
-    },
-    {
-      text: 'Beispiele',
-      items: [
-        { text: 'Home Assistant', link: 'home-assistant', base: '/de/guide/examples/' },
-      ]
-    },
-    {
-      text: 'Automationen',
-      items: [
-        { text: 'Muster Ereignisse', link: 'pattern-events', base: '/de/guide/automation/' },
-        { text: 'Ring To Open', link: 'ring-to-open', base: '/de/guide/automation/' },
-        { text: 'Blueprints', link: 'blueprints', base: '/de/guide/automation/' }
       ]
     },
     {

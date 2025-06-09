@@ -83,33 +83,34 @@ function sidebarGuide(): DefaultTheme.SidebarItem[] {
       ]
     },
     {
+      text: 'Features',
+      items: [
+        { text: 'Ring To Open', link: 'ring-to-open', base: '/guide/features/' },
+        { text: 'Indoor Station Settings', link: 'intercom-settings', base: '/guide/features/' },
+        { text: 'Pattern Events', link: 'pattern-events', base: '/guide/features/' },
+      ]
+    },
+    {
       text: 'Firmware',
       items: [
         { text: 'Install or Update', link: 'installation', base: '/guide/firmware/' },
-        { text: 'Customization', link: 'customization', base: '/guide/firmware/' }
-      ]
-    },
-    {
-      text: 'Firmware Additions',
-      collapsed: true,
-      items: [
-        { text: 'Nuki Bridge Addon', link: 'nuki-bridge-addon', base: '/guide/firmware/' },
-        { text: 'MQTT Integration', link: 'mqtt', base: '/guide/firmware/' },
-        { text: 'HomeKit Integration', link: 'homekit', base: '/guide/firmware/' },
-      ]
-    },
-    {
-      text: 'Examples',
-      items: [
-        { text: 'Home Assistant', link: 'home-assistant', base: '/guide/examples/' },
-      ]
-    },
-    {
-      text: 'Automations',
-      items: [
-        { text: 'Pattern Events', link: 'pattern-events', base: '/guide/automation/' },
-        { text: 'Ring To Open', link: 'ring-to-open', base: '/guide/automation/' },
-        { text: 'Blueprints', link: 'blueprints', base: '/guide/automation/' }
+        {
+          text: 'Smart Home Integrations',
+          collapsed: true,
+          items: [
+            { text: 'Home Assistant', link: 'home-assistant', base: '/guide/firmware/' },
+            { text: 'MQTT', link: 'mqtt', base: '/guide/firmware/' },
+            { text: 'HomeKit', link: 'homekit', base: '/guide/firmware/' },
+          ]
+        },
+        {
+          text: 'Addons',
+          collapsed: true,
+          items: [
+            { text: 'Nuki Bridge', link: 'nuki-bridge', base: '/guide/firmware/' },
+          ]
+        },
+        { text: 'Customization', link: 'customization', base: '/guide/firmware/' },
       ]
     },
     {

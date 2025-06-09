@@ -4,10 +4,7 @@ import Layout from './Layout.vue'
 import { enhanceAppWithTabs } from 'vitepress-plugin-tabs/client'
 import 'virtual:group-icons.css'
 
-import '@mdi/font/css/materialdesignicons.css';
-
-import 'uno.css'
-import "./custom.css";
+import "./styles.css";
 
 export default {
     extends: DefaultTheme,

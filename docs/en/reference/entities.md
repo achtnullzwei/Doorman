@@ -106,26 +106,26 @@ Reports the Doorman hardware revision.
 ## Switches
 
 ### Ring To Open <Badge type="tip" text="rto_central" />
-Toggles the [Ring To Open](../guide/automation/ring-to-open) automation for the specified doors.
+Toggles the [Ring To Open](../guide/features/ring-to-open) automation for the specified doors.
 
 ::: tip
 You can define the doors with the [RTO: Central Toggle - Door Selection](#rto-central-toggle-door-selection) select.
 :::
 
 ### RTO: Entrance Door <Badge type="tip" text="rto_entrance_door" /> <Badge type="info" text="Disabled by default" />
-Controls the [Ring To Open](../guide/automation/ring-to-open) automation of the entrance door.
+Controls the [Ring To Open](../guide/features/ring-to-open) automation of the entrance door.
 
 ### RTO: Second Entrance Door <Badge type="tip" text="rto_second_entrance_door" /> <Badge type="info" text="Disabled by default" />
-Controls the [Ring To Open](../guide/automation/ring-to-open) automation of the second entrance door.
+Controls the [Ring To Open](../guide/features/ring-to-open) automation of the second entrance door.
 
 ### RTO: Apartment Door <Badge type="tip" text="rto_apartment_door" /> <Badge type="info" text="Nuki Bridge only" /> <Badge type="info" text="Disabled by default" />
-Controls the [Ring To Open](../guide/automation/ring-to-open) automation of the apartment door.
+Controls the [Ring To Open](../guide/features/ring-to-open) automation of the apartment door.
 
 ### RTO: Confirmation <Badge type="tip" text="rto_confirmation" /> <Badge type="info" text="Disabled by default" />
-Controls the turn-on doorbell-confirmation for the [Ring To Open](../guide/automation/ring-to-open) automation.
+Controls the turn-on doorbell-confirmation for the [Ring To Open](../guide/features/ring-to-open) automation.
 
 ### RTO: Display Status <Badge type="tip" text="rto_led_status" /> <Badge type="info" text="Disabled by default" />
-Controls the Status LED for the [Ring To Open](../guide/automation/ring-to-open) automation.
+Controls the Status LED for the [Ring To Open](../guide/features/ring-to-open) automation.
 
 ### Relay <Badge type="tip" text="doorman_relay" /> <Badge type="info" text="Disabled by default" />
 Controls the built-in relay.
@@ -271,7 +271,7 @@ Specify a list of hex-commands (separated by semicolons) to be sent on the bus b
 ## Selects
 
 ### RTO: Central Toggle - Door Selection <Badge type="tip" text="rto_central_doors" />
-Defines the doors for which the central `Ring To Open` switch will toggle the [Ring To Open](../guide/automation/ring-to-open) automation.
+Defines the doors for which the central `Ring To Open` switch will toggle the [Ring To Open](../guide/features/ring-to-open) automation.
 
 ##### Modes:
 - **Entrance**
@@ -281,7 +281,7 @@ Defines the doors for which the central `Ring To Open` switch will toggle the [R
 - **Any Entrance & Apartment**
 
 ### RTO: Entrance Door - Delay <Badge type="tip" text="rto_entrance_door_delay" /> <Badge type="info" text="Disabled by default" />
-This sets the door opener delay used by the [Ring To Open](../guide/automation/ring-to-open) automation.  
+This sets the door opener delay used by the [Ring To Open](../guide/features/ring-to-open) automation.  
 To prevent interference with ring pattern detection, the delay starts at **2 seconds** — unless you're using the **`single`** ring pattern condition, which allows shorter delays.
 
 ##### Available options:
@@ -291,7 +291,7 @@ To prevent interference with ring pattern detection, the delay starts at **2 sec
 * **Random** → picks a value in the valid range automatically
 
 ### RTO: Second Entrance Door - Delay <Badge type="tip" text="rto_second_entrance_door_delay" /> <Badge type="info" text="Disabled by default" />
-This sets the door opener delay used by the [Ring To Open](../guide/automation/ring-to-open) automation.  
+This sets the door opener delay used by the [Ring To Open](../guide/features/ring-to-open) automation.  
 To prevent interference with ring pattern detection, the delay starts at **2 seconds** — unless you're using the **`single`** ring pattern condition, which allows shorter delays.
 
 ##### Available options:
@@ -301,7 +301,7 @@ To prevent interference with ring pattern detection, the delay starts at **2 sec
 * **Random** → picks a value in the valid range automatically
 
 ### RTO: Apartment Door - Delay <Badge type="tip" text="rto_apartment_door_delay" /> <Badge type="info" text="Nuki Bridge only" /> <Badge type="info" text="Disabled by default" />
-This sets the door opener delay used by the [Ring To Open](../guide/automation/ring-to-open) automation.  
+This sets the door opener delay used by the [Ring To Open](../guide/features/ring-to-open) automation.  
 To prevent interference with ring pattern detection, the delay starts at **2 seconds** — unless you're using the **`single`** ring pattern condition, which allows shorter delays.
 
 ##### Available options:
@@ -311,7 +311,7 @@ To prevent interference with ring pattern detection, the delay starts at **2 sec
 * **Random** → picks a value in the valid range automatically
 
 ### RTO: Entrance Door - Timeout <Badge type="tip" text="rto_entrance_door_timeout_mode" />
-Sets the timeout mode for the [Ring To Open](../guide/automation/ring-to-open) automation.
+Sets the timeout mode for the [Ring To Open](../guide/features/ring-to-open) automation.
 
 ##### Modes:
 - **Ring once**
@@ -319,7 +319,7 @@ Sets the timeout mode for the [Ring To Open](../guide/automation/ring-to-open) a
 - **Never**
 
 ### RTO: Second Entrance Door - Timeout <Badge type="tip" text="rto_second_entrance_door_timeout_mode" /> <Badge type="info" text="Disabled by default" />
-Sets the timeout mode for the [Ring To Open](../guide/automation/ring-to-open) automation.
+Sets the timeout mode for the [Ring To Open](../guide/features/ring-to-open) automation.
 
 ##### Modes:
 - **Ring once**
@@ -327,7 +327,7 @@ Sets the timeout mode for the [Ring To Open](../guide/automation/ring-to-open) a
 - **Never**
 
 ### RTO: Apartment Door - Timeout <Badge type="tip" text="rto_apartment_door_timeout_mode" /> <Badge type="info" text="Nuki Bridge only" /> 
-Sets the timeout mode for the [Ring To Open](../guide/automation/ring-to-open) automation.
+Sets the timeout mode for the [Ring To Open](../guide/features/ring-to-open) automation.
 
 ##### Modes:
 - **Ring once**
@@ -335,7 +335,7 @@ Sets the timeout mode for the [Ring To Open](../guide/automation/ring-to-open) a
 - **Never**
 
 ### RTO: Entrance Door - Pattern Condition <Badge type="tip" text="rto_entrance_door_pattern_condition" /> <Badge type="info" text="Disabled by default" />
-Defines the trigger pattern condition of the [Ring To Open](../guide/automation/ring-to-open) automation.
+Defines the trigger pattern condition of the [Ring To Open](../guide/features/ring-to-open) automation.
 
 ##### Options:
 - **single**
@@ -344,7 +344,7 @@ Defines the trigger pattern condition of the [Ring To Open](../guide/automation/
 - **quadruple**
 
 ### RTO: Second Entrance Door - Pattern Condition <Badge type="tip" text="rto_second_entrance_door_pattern_condition" /> <Badge type="info" text="Disabled by default" />
-Defines the trigger pattern condition of the [Ring To Open](../guide/automation/ring-to-open) automation.
+Defines the trigger pattern condition of the [Ring To Open](../guide/features/ring-to-open) automation.
 
 ##### Options:
 - **single**
@@ -353,7 +353,7 @@ Defines the trigger pattern condition of the [Ring To Open](../guide/automation/
 - **quadruple**
 
 ### RTO: Apartment Door - Pattern Condition <Badge type="tip" text="rto_apartment_door_pattern_condition" /> <Badge type="info" text="Nuki Bridge only" /> <Badge type="info" text="Disabled by default" />
-Defines the trigger pattern condition of the [Ring To Open](../guide/automation/ring-to-open) automation.
+Defines the trigger pattern condition of the [Ring To Open](../guide/features/ring-to-open) automation.
 
 ##### Options:
 - **single**
@@ -362,7 +362,7 @@ Defines the trigger pattern condition of the [Ring To Open](../guide/automation/
 - **quadruple**
 
 ### RTO: Central Toggle - Trigger <Badge type="tip" text="rto_toggle_trigger" /> <Badge type="info" text="Disabled by default" />
-Defines the trigger to toggle the [Ring To Open](../guide/automation/ring-to-open) automation.
+Defines the trigger to toggle the [Ring To Open](../guide/features/ring-to-open) automation.
 
 ##### Options:
 - **Manual**
@@ -475,7 +475,7 @@ Represents the apartment door Nuki smart lock.
 ## Events
 
 ### Entrance Doorbell <Badge type="tip" text="entrance_doorbell_pattern" />
-Triggers each time a doorbell pattern is detected at the entrance. Learn more about pattern events [here](../guide/automation/pattern-events).
+Triggers each time a doorbell pattern is detected at the entrance. Learn more about pattern events [here](../guide/features/pattern-events).
 
 ##### Event Types
 - **single**
@@ -484,7 +484,7 @@ Triggers each time a doorbell pattern is detected at the entrance. Learn more ab
 - **quadruple**
 
 ### Second Entrance Doorbell <Badge type="tip" text="second_entrance_doorbell_pattern" />
-Triggers each time a doorbell pattern is detected at the second entrance. Learn more about pattern events [here](../guide/automation/pattern-events).
+Triggers each time a doorbell pattern is detected at the second entrance. Learn more about pattern events [here](../guide/features/pattern-events).
 
 ##### Event Types
 - **single**
@@ -493,7 +493,7 @@ Triggers each time a doorbell pattern is detected at the second entrance. Learn 
 - **quadruple**
 
 ### Apartment Doorbell <Badge type="tip" text="apartment_doorbell_pattern" />
-Triggers each time a doorbell pattern is detected at the apartment. Learn more about pattern events [here](../guide/automation/pattern-events).
+Triggers each time a doorbell pattern is detected at the apartment. Learn more about pattern events [here](../guide/features/pattern-events).
 
 ##### Event Types
 - **single**
@@ -502,7 +502,7 @@ Triggers each time a doorbell pattern is detected at the apartment. Learn more a
 - **quadruple**
 
 ### Phone pick up <Badge type="tip" text="phone_pick_up_pattern" />
-Triggers each time a phone pick up pattern is detected. Learn more about pattern events [here](../guide/automation/pattern-events).
+Triggers each time a phone pick up pattern is detected. Learn more about pattern events [here](../guide/features/pattern-events).
 
 ##### Event Types
 - **single**

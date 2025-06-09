@@ -11,8 +11,19 @@
         "lunaria:open": "open-cli .vitepress/dist/_translations/index.html"
     },
     "devDependencies": {
+        "@iconify-json/bi": "^1.2.4",
+        "@iconify-json/cbi": "^1.2.14",
+        "@iconify-json/famicons": "^1.2.0",
+        "@iconify-json/fluent": "^1.2.23",
+        "@iconify-json/fluent-emoji": "^1.2.3",
+        "@iconify-json/ic": "^1.2.2",
+        "@iconify-json/line-md": "^1.2.8",
         "@iconify-json/logos": "^1.1.44",
+        "@iconify-json/material-symbols": "^1.2.25",
         "@iconify-json/mdi": "^1.1.68",
+        "@iconify-json/ph": "^1.2.2",
+        "@iconify-json/streamline": "^1.2.5",
+        "@iconify-json/tabler": "^1.2.19",
         "@lunariajs/core": "^0.1.1",
         "@mdi/font": "^7.4.47",
         "@types/three": "^0.167.2",
@@ -20,6 +31,7 @@
         "open-cli": "^8.0.0",
         "unocss": "^0.62.3",
         "unplugin": "^1.12.2",
+        "unplugin-icons": "^22.1.0",
         "unplugin-vue-components": "^0.27.4",
         "vite-svg-loader": "^5.1.0",
         "vitepress": "^1.6.3"

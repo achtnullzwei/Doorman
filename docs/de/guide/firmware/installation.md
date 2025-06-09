@@ -15,49 +15,49 @@ export default {
                     name: 'ESP32-S3 <span class="VPBadge tip">Octal</span>',
                     icon: '',
                     iconColor: '',
-                    details: 'Empfohlen für den <b>Doorman-S3</b> und alle ESP32-S3-Boards mit 8MB (Octal) PSRAM.',
+                    details: 'Empfohlen für den <b>Doorman-S3</b> sowie ESP32-S3 Boards mit mindestens 8&nbsp;MB PSRAM.',
                 },
                 {
                     key: 'esp32-s3-quad',
                     name: 'ESP32-S3 <span class="VPBadge tip">Quad</span>',
                     icon: '',
                     iconColor: '',
-                    details: 'Für <b>Doorman-S3 rev 1.4</b> und ESP32-S3-Boards mit 4MB (Quad) PSRAM.',
+                    details: 'Empfohlen für den <b>Doorman-S3 (Revision 1.4)</b> sowie ESP32-S3 Boards mit bis zu 4&nbsp;MB PSRAM.',
                 },
                 {
                     key: 'esp32',
                     name: 'ESP32',
                     icon: '',
                     iconColor: '',
-                    details: 'Für ESP32-Boards ohne PSRAM oder mit benutzerdefinierten Konfigurationen.',
+                    details: 'Empfohlen für <b>alle ESP32-Boards ohne PSRAM</b>.',
                 },
             ],
             integration_options: [
                 {
                     key: 'ha',
                     name: 'Home Assistant',
-                    icon: '<img src="/home-assistant.svg" />',
+                    icon: '<img src="/icons/home-assistant.svg" />',
                     iconColor: '',
                     details: 'Ich nutze Home Assistant und will Doorman möglichst einfach in mein Smart Home einbinden.',
                 },
                 {
                     key: 'mqtt',
                     name: 'MQTT',
-                    icon: '<img src="/mqtt-ver-transp.svg" />',
+                    icon: '<img src="/icons/mqtt-ver-transp.svg" />',
                     iconColor: '#606',
                     details: 'Ich möchte Doorman direkt mit meinem MQTT-Broker verbinden und auf anderen Plattformen nutzen.',
                 },
                 {
                     key: 'homekit',
                     name: 'HomeKit',
-                    icon: '<img src="/homekit.png" />',
+                    icon: '<img src="/icons/homekit.png" />',
                     iconColor: '',
                     details: 'Ich verwende Apple Home und möchte Doorman einfach und bequem über HomeKit einbinden.',
                 },
                 {
                     key: 'custom',
                     name: 'Standalone',
-                    icon: '✨',
+                    icon: '<img src="/icons/fluent-emoji-sparkles.png" />',
                     iconColor: '',
                     details: 'Ich nutze kein Smart Home – Doorman soll einfach eigenständig über WLAN funktionieren.',
                 },
@@ -135,13 +135,13 @@ export default {
         }
     },
     async mounted() {
-        if (!this.platform) {
+        if (!this.platform && localStorage.getItem("fw_platform") != null) {
             this.platform = localStorage.getItem("fw_platform");
         }
-        if (!this.integration) {
+        if (!this.integration && localStorage.getItem("fw_integration") != null) {
             this.integration = localStorage.getItem("fw_integration");
         }
-        if (!this.variant) {
+        if (!this.variant && localStorage.getItem("fw_variant") != null) {
             this.variant = localStorage.getItem("fw_variant");
         }
     }
@@ -162,7 +162,7 @@ Verbinde deinen **Doorman-S3** per USB-C und nutze den Konfigurationsassistenten
 Dieser geführte Prozess sorgt für eine nahtlose Integration mit der Home Assistant API und ermöglicht es dir, zukünftige Community-Updates ganz einfach zu übernehmen.
 
 <div v-if="web_serial_available">
-    <h5 class="firmware_title_row"><i class="mdi mdi-hammer-wrench"></i> Welche Hardware nutzt du?</h5>
+    <h5 class="firmware_title_row"><icon-ph-cpu-bold /> Welche Hardware nutzt du?</h5>
     <div class="firmware_option_row">
         <label class="firmware_option" v-for="fw_platform in platform_options" :key="fw_platform.key">
             <input type="radio" class="reset_default" v-model="platform" :value="fw_platform.key">
@@ -173,8 +173,8 @@ Dieser geführte Prozess sorgt für eine nahtlose Integration mit der Home Assis
             </span>
         </label>
     </div>
-    <div v-if="platform != ''">
-        <h5 class="firmware_title_row"><i class="mdi mdi-home-automation"></i> Nutzt du irgendein Smart Home System?</h5>
+    <div v-if="platform">
+        <h5 class="firmware_title_row"><icon-ic-round-other-houses /> Nutzt du irgendein Smart Home System?</h5>
         <div class="firmware_option_row">
             <label class="firmware_option" v-for="fw_integration in integration_options" :key="fw_integration.key">
                 <input type="radio" class="reset_default" v-model="integration" :value="fw_integration.key">
@@ -186,8 +186,8 @@ Dieser geführte Prozess sorgt für eine nahtlose Integration mit der Home Assis
             </label>
         </div>
     </div>
-    <div v-if="integration != ''">
-        <h5 class="firmware_title_row"><i class="mdi mdi-package-variant-plus"></i> Darf's vielleicht etwas mehr sein?</h5>
+    <div v-if="integration">
+        <h5 class="firmware_title_row"><icon-mdi-package-variant-plus /> Darf's vielleicht etwas mehr sein?</h5>
         <div class="firmware_option_row">
             <label class="firmware_option" v-for="fw_variant in variant_options" :key="fw_variant.key">
                 <input type="radio" class="reset_default" :disabled="!is_variant_allowed(fw_variant.key)" v-model="variant" :value="fw_variant.key">
@@ -200,7 +200,7 @@ Dieser geführte Prozess sorgt für eine nahtlose Integration mit der Home Assis
         </div>
     </div>
     <div v-if="valid_manifest">
-        <h5 class="firmware_title_row"><i class="mdi mdi-auto-fix"></i> Jetzt wird geflasht – und zwar mit Stil!</h5>
+        <h5 class="firmware_title_row"><icon-line-md-uploading-loop /> Jetzt wird geflasht – und zwar mit Stil!</h5>
         <div v-if="notes" class="note custom-block">
             <p class="custom-block-title">HINWEIS</p>
             <p v-html="notes"></p>

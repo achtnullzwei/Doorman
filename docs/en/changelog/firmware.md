@@ -23,7 +23,7 @@ This release **will probably impact your current setup** and **could require** y
   You can now use the `light.turn_on` action in Home Assistant to turn on the hallway light. This change simplifies dashboard integration and delivers a more consistent, intuitive experience.
 
 - **Extended Ring to Open to Apartment Doorbells**  
-   [Ring To Open](https://doorman.azon.ai/guide/automation/ring-to-open) now also works with your apartment doorbell when paired with a Nuki Smart Lock — making access even more convenient and seamless.
+   [Ring To Open](https://doorman.azon.ai/guide/features/ring-to-open) now also works with your apartment doorbell when paired with a Nuki Smart Lock — making access even more convenient and seamless.
 
 - **MQTT Integration**  
   The configuration assistant now allows you to select the [MQTT integration](https://doorman.azon.ai/guide/firmware/mqtt).  
@@ -40,7 +40,7 @@ This release **will probably impact your current setup** and **could require** y
 
 ### ✨ Improvements
 - **Refined Configuration for Ring to Open**  
-   The configuration options have been separated per door, giving you greater flexibility to customize the [Ring To Open](https://doorman.azon.ai/guide/automation/ring-to-open) behavior according to your specific requirements.
+   The configuration options have been separated per door, giving you greater flexibility to customize the [Ring To Open](https://doorman.azon.ai/guide/features/ring-to-open) behavior according to your specific requirements.
 
    Additionally, the Delay settings are now presented as dropdown menus, making it more intuitive to use the random delay feature—which was previously hidden behind the 60-second setting.
 
@@ -87,7 +87,7 @@ This release **will probably impact your current setup** and **could require** y
   The `Turn on the light` and `Open Door` buttons have been removed in favor of more efficient control methods.
 
 - **Renamed Ring to Open Entities**  
-  The [Ring To Open](https://doorman.azon.ai/guide/automation/ring-to-open) entities are now labeled as `RTO: Door Name – Setting` to reflect the updated configuration structure, improving clarity and consistency.
+  The [Ring To Open](https://doorman.azon.ai/guide/features/ring-to-open) entities are now labeled as `RTO: Door Name – Setting` to reflect the updated configuration structure, improving clarity and consistency.
 
 - **Renamed Nuki Lock**  
   The `Nuki Lock` entity has been renamed to `Apartment Door` for better alignment with the naming convention used for other doors.

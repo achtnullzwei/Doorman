@@ -3,16 +3,7 @@
 Diese Seite bietet alles, was du brauchst – von der Konfiguration bis hin zu praktischen Beispielen mit MQTT-Topics und Payloads.
 
 ## Einrichtung
-Nachdem du die Firmware mit MQTT-Integration geflasht und deinen Doorman mit dem WLAN verbunden hast, **blinkt die Status-LED abwechselnd rot und blau**, weil der MQTT-Broker noch nicht eingerichtet ist.
-
-Öffne jetzt einfach die Web-Oberfläche und gehe zum Bereich `MQTT Configuration`.
-
-Dort gibst du deine Broker-Zugangsdaten ein:
-
-![broker-credentials](../images/mqtt-details.png)
-
-Sobald du die Einstellungen speicherst, versucht die Firmware sich mit deinem MQTT-Broker zu verbinden.
-Klappt das, leuchtet die Status-LED **für 3 Sekunden durchgehend blau** als Bestätigung.
+<!--@include: ./instructions/mqtt.md-->
 
 ## Topics
 Bei Verwendung der MQTT-Firmware werden verschiedene Topics an deinen Broker gesendet. So funktioniert die Struktur der Topics und Steuerung.
@@ -34,7 +25,7 @@ ON oder OFF oder was sonst unterstützt wird
 :::
 
 ### Beispiel
-Um die [Ring-To-Open](../automation/ring-to-open.md) Automatisierung zu aktivieren oder zu deaktivieren, sende ON oder OFF als Payload an dieses Topic:
+Um die [Ring-To-Open](../features/ring-to-open.md) Automatisierung zu aktivieren oder zu deaktivieren, sende ON oder OFF als Payload an dieses Topic:
 ::: code-group
 ``` [Topic]
 doorman-s3/switch/rto__entrance_door/command

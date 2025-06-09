@@ -29,5 +29,4 @@ bun add vitepress-plugin-group-icons
 :::
 
 
-## Make it your own
-<FirmwareConfig />
+<icon-fluent-emoji-sparkles />

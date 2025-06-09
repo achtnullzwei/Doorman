@@ -3,16 +3,7 @@
 This page provides everything you need — from configuration to practical examples using MQTT topics and payloads.
 
 ## Setup
-After flashing the firmware with MQTT integration and connecting to Wi-Fi, the status LED will **pulse red and blue** to indicate that the MQTT broker is not yet configured.
-
-To continue, open the web interface and navigate to the `MQTT Configuration` section.
-
-Enter your broker credentials there:
-
-![broker-credentials](../images/mqtt-details.png)
-
-Once you save the settings, the firmware will attempt to connect to your MQTT broker.
-If the connection is successful, the status LED will turn **solid blue for 3 seconds** to confirm.
+<!--@include: ./instructions/mqtt.md-->
 
 ## Topics
 Various topics are published to your broker. Here's how the topic structure and controls work.
@@ -34,7 +25,7 @@ ON or OFF or whatever is supported
 :::
 
 ### Example
-To enable or disable the [Ring-To-Open](../automation/ring-to-open.md) automation, send `ON` or `OFF` as the payload to the topic:
+To enable or disable the [Ring-To-Open](../features/ring-to-open.md) automation, send `ON` or `OFF` as the payload to the topic:
 ::: code-group
 ``` [Topic]
 doorman-s3/switch/rto__entrance_door/command

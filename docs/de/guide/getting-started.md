@@ -196,52 +196,30 @@ Schließe deinen Doorman einfach per USB-Kabel an deinen Computer an und klicke 
    </div>
 </improv-wifi-serial-launch-button>
 
-## Zu Home Assistant hinzufügen <Badge type="tip" text="Nur Home Assistant Variante" />
+## Zu Home Assistant hinzufügen <Badge type="tip" text="Home Assistant Integration" />
+
 :::warning BEVOR DU WEITERMACHST
 Dies ist die Standard-Variante für alle vorgeflashten Doorman-Geräte.
-Diesen Schritt kannst du überspringen, wenn du nicht die `Home Assistant` Smart Home Variante geflasht hast.
+Diesen Schritt kannst du überspringen, wenn du nicht die Firmware mit `Home Assistant` Smart Home Integration geflasht hast.
 :::
 
-Nachdem deinen Doorman mit dem WLAN verbunden ist, blinkt die LED langsam blau. Das bedeutet, er wartet darauf, dass sich Home Assistant verbindet.
+<!--@include: ./firmware/instructions/home-assistant.md-->
 
-<div style="display: flex; flex-direction: row; flex-wrap: wrap; justify-content: space-between; gap: 20px;align-items: center;" markdown>
-   <div style="min-width:260px;flex: 1 1 260px;" markdown>
+## MQTT Broker einrichten <Badge type="tip" text="MQTT Integration" />
 
-   Dein Doorman sollte automatisch in Home Assistant erscheinen. Falls nicht, blockiert dein Netzwerk möglicherweise mDNS (Multicast DNS), das für die automatische Geräteerkennung notwendig ist.
-
-   1. Stelle sicher, dass deine **Home Assistant**-Installation auf dem neuesten Stand ist, um die volle Kompatibilität mit deinem Doorman-Gerät zu gewährleisten.
-
-   2. Öffne die **Home Assistant**-App auf deinem mobilen Gerät und gehe zu **Einstellungen → Geräte & Dienste**.
-
-   3. Suche nach einem neuen Gerät mit der Bezeichnung **`Doorman S3` (ESPHome)** und tippe auf **Hinzufügen**.
-
-   4. Nach erfolgreicher Verbindung leuchtet die LED für 3 Sekunden durchgehend blau. Dein **Doorman** ist jetzt in **Home Assistant** eingebunden und einsatzbereit.
-
-   </div>
-   <div style="min-width: 185px;max-width:200px;flex: 1 1 185px;" markdown>
-      <img style="" src="./images/discovery_ha.png">
-   </div>
-</div>
-
-## MQTT Broker einrichten <Badge type="tip" text="Nur MQTT Variante" />
 :::warning BEVOR DU WEITERMACHST
-Diesen Schritt kannst du überspringen, wenn du nicht die `MQTT` Smart Home Variante geflasht hast.
+Diesen Schritt kannst du überspringen, wenn du nicht die Firmware mit `MQTT` Smart Home Integration geflasht hast.
 :::
 
-Nachdem du deinen Doorman mit dem WLAN verbunden hast, wird die LED **rot und blau pulsieren**. Das bedeutet, der MQTT-Broker ist noch nicht konfiguriert.
+<!--@include: ./firmware/instructions/mqtt.md-->
 
-1. Öffne die Weboberfläche deines Doormans und gehe zum Abschnitt **`MQTT-Konfiguration`**.
+## HomeKit Pairing <Badge type="tip" text="HomeKit Integration" />
 
-2. Gib deine MQTT-Broker-Zugangsdaten ein.
+:::warning BEVOR DU WEITERMACHST
+Diesen Schritt kannst du überspringen, wenn du nicht die Firmware mit `HomeKit` Smart Home Integration geflasht hast.
+:::
 
-   ![broker-credentials](./images/mqtt-details.png)
-
-   Wenn du die Einstellungen nicht findest, scrolle ganz nach unten und klicke auf "Alle anzeigen".
-
-3. Speichere die Einstellungen — die Firmware versucht dann, eine Verbindung zu deinem MQTT-Broker herzustellen.
-
-4. Wenn die Verbindung erfolgreich ist, leuchtet die Status-LED zur Bestätigung **3 Sekunden lang durchgehend blau**.
-
+<!--@include: ./firmware/instructions/homekit.md-->
 
 ## Interaktive Einrichtung
 ::: tip

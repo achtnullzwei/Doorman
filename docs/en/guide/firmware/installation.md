@@ -16,49 +16,49 @@ export default {
                     name: 'ESP32-S3 <span class="VPBadge tip">Octal</span>',
                     icon: '',
                     iconColor: '',
-                    details: 'Best choice for the <b>Doorman-S3</b> and any ESP32-S3 board with 8MB (octal) PSRAM.',
+                    details: 'Recommended for the <b>Doorman-S3</b> and all ESP32-S3 boards with at least 8&nbsp;MB PSRAM.',
                 },
                 {
                     key: 'esp32-s3-quad',
                     name: 'ESP32-S3 <span class="VPBadge tip">Quad</span>',
                     icon: '',
                     iconColor: '',
-                    details: 'For <b>Doorman-S3 rev 1.4</b> and ESP32-S3 boards with 4MB (quad) PSRAM.',
+                    details: 'Recommended for <b>Doorman-S3 (Revision 1.4)</b> and all ESP32-S3 boards with up to 4&nbsp;MB PSRAM.',
                 },
                 {
                     key: 'esp32',
                     name: 'ESP32',
                     icon: '',
                     iconColor: '',
-                    details: 'For standard ESP32 boards without PSRAM or with other custom configurations.',
+                    details: 'Recommended for <b>all ESP32 boards without PSRAM</b>.',
                 },
             ],
             integration_options: [
                 {
                     key: 'ha',
                     name: 'Home Assistant',
-                    icon: '<img src="/home-assistant.svg" />',
+                    icon: '<img src="/icons/home-assistant.svg" />',
                     iconColor: '',
                     details: 'I use Home Assistant and want the easiest way to integrate Doorman with my smart home.',
                 },
                 {
                     key: 'mqtt',
                     name: 'MQTT',
-                    icon: '<img src="/mqtt-ver-transp.svg" />',
+                    icon: '<img src="/icons/mqtt-ver-transp.svg" />',
                     iconColor: '#606',
                     details: 'I want Doorman to connect directly to my MQTT broker to use it with other platforms.',
                 },
                 {
                     key: 'homekit',
                     name: 'Apple HomeKit',
-                    icon: '<img src="/homekit.png" />',
+                    icon: '<img src="/icons/homekit.png" />',
                     iconColor: '',
                     details: 'I use Apple Home and want to connect Doorman easily through HomeKit.',
                 },
                 {
                     key: 'custom',
                     name: 'Standalone',
-                    icon: '✨',
+                    icon: '<img src="/icons/fluent-emoji-sparkles.png" />',
                     iconColor: '',
                     details: 'I don\'t use a smart home system — I just want Doorman to work on its own over Wi-Fi.',
                 },
@@ -136,13 +136,13 @@ export default {
         }
     },
     async mounted() {
-        if (!this.platform) {
+        if (!this.platform && localStorage.getItem("fw_platform") != null) {
             this.platform = localStorage.getItem("fw_platform");
         }
-        if (!this.integration) {
+        if (!this.integration && localStorage.getItem("fw_integration") != null) {
             this.integration = localStorage.getItem("fw_integration");
         }
-        if (!this.variant) {
+        if (!this.variant && localStorage.getItem("fw_variant") != null) {
             this.variant = localStorage.getItem("fw_variant");
         }
     }
@@ -163,7 +163,7 @@ Connect your **Doorman-S3** via USB-C and use the configuration assistant below 
 This guided process ensures seamless integration with the Home Assistant API and makes future community-driven updates easy to apply.
 
 <div v-if="web_serial_available">
-    <h5 class="firmware_title_row"><i class="mdi mdi-hammer-wrench"></i> Which hardware do you use?</h5>
+    <h5 class="firmware_title_row"><icon-ph-cpu-bold /> Which hardware do you use?</h5>
     <div class="firmware_option_row">
         <label class="firmware_option" v-for="fw_platform in platform_options" :key="fw_platform.key">
             <input type="radio" class="reset_default" v-model="platform" :value="fw_platform.key">
@@ -174,8 +174,8 @@ This guided process ensures seamless integration with the Home Assistant API and
             </span>
         </label>
     </div>
-    <div v-if="platform != ''">
-        <h5 class="firmware_title_row"><i class="mdi mdi-home-automation"></i> Do you use any smart home system?</h5>
+    <div v-if="platform">
+        <h5 class="firmware_title_row"><icon-ic-round-other-houses /> Do you use any smart home system?</h5>
         <div class="firmware_option_row">
             <label class="firmware_option" v-for="fw_integration in integration_options" :key="fw_integration.key">
                 <input type="radio" class="reset_default" v-model="integration" :value="fw_integration.key">
@@ -187,8 +187,8 @@ This guided process ensures seamless integration with the Home Assistant API and
             </label>
         </div>
     </div>
-    <div v-if="integration != ''">
-        <h5 class="firmware_title_row"><i class="mdi mdi-package-variant-plus"></i> What about some extras?</h5>
+    <div v-if="integration">
+        <h5 class="firmware_title_row"><icon-mdi-package-variant-plus /> What about some extras?</h5>
         <div class="firmware_option_row">
             <label class="firmware_option" v-for="fw_variant in variant_options" :key="fw_variant.key">
                 <input type="radio" class="reset_default" :disabled="!is_variant_allowed(fw_variant.key)" v-model="variant" :value="fw_variant.key">
@@ -201,7 +201,7 @@ This guided process ensures seamless integration with the Home Assistant API and
         </div>
     </div>
     <div v-if="valid_manifest">
-        <h5 class="firmware_title_row"><i class="mdi mdi-auto-fix"></i> Let's summon the firmware spirits!</h5>
+        <h5 class="firmware_title_row"><icon-line-md-uploading-loop /> Let's summon the firmware spirits!</h5>
         <div v-if="notes" class="note custom-block">
             <p class="custom-block-title">NOTE</p>
             <p v-html="notes"></p>
