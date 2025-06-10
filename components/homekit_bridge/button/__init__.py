@@ -7,11 +7,11 @@ from esphome.const import (
     ENTITY_CATEGORY_CONFIG,
     ICON_RESTART_ALERT,
 )
-from .. import homekit_ns, HomeKitBaseComponent, CONF_HAP_ID
+from .. import homekit_ns, HomeKitBridgeComponent, CONF_HAP_ID
 ResetButton = homekit_ns.class_("ResetButton", button.Button)
 
 CONFIG_SCHEMA = {
-    cv.GenerateID(CONF_HAP_ID): cv.use_id(HomeKitBaseComponent),
+    cv.GenerateID(CONF_HAP_ID): cv.use_id(HomeKitBridgeComponent),
     cv.Optional(CONF_FACTORY_RESET): button.button_schema(
         ResetButton,
         device_class=DEVICE_CLASS_RESTART,

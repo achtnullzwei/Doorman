@@ -5,14 +5,14 @@ from esphome.components import light, lock, sensor, binary_sensor, event, button
 from esphome.const import PLATFORM_ESP32, CONF_ID, CONF_TRIGGER_ID, CONF_LIGHT, CONF_SENSOR, CONF_BINARY_SENSOR, CONF_BUTTON, CONF_EVENT
 from esphome.core import ID
 from esphome.components.esp32 import add_idf_component
-from .. import homekit_base
+from .. import homekit_bridge
 
-AUTO_LOAD = ["homekit_base"]
-DEPENDENCIES = ['esp32', 'network', 'homekit_base']
+AUTO_LOAD = ["homekit_bridge"]
+DEPENDENCIES = ['esp32', 'network', 'homekit_bridge']
 CODEOWNERS = ["@rednblkx"]
 
-homekit_ns = homekit_base.homekit_ns
-HomeKitBaseComponent = homekit_base.HomeKitBaseComponent
+homekit_ns = homekit_bridge.homekit_ns
+HomeKitBridgeComponent = homekit_bridge.HomeKitBridgeComponent
 
 TemperatureUnits = homekit_ns.enum("TemperatureUnits")
 AInfo = homekit_ns.enum("AInfo")
@@ -43,7 +43,7 @@ CONF_CLIMATE = "climate"
 CONF_META = "meta"
 CONF_TEMP_UNITS = "temp_units"
 
-CONF_HOMEKIT_BASE = "homekit_base_id"
+CONF_homekit_bridge = "homekit_bridge_id"
 
 TEMP_UNITS = {
     "CELSIUS": TemperatureUnits.CELSIUS,
@@ -71,8 +71,8 @@ ACCESSORY_INFORMATION = {
 
 CONFIG_SCHEMA = cv.All(cv.Schema({
     cv.GenerateID() : cv.declare_id(HAPAccessory),
-    cv.GenerateID(CONF_HOMEKIT_BASE): cv.use_id(
-        homekit_base.HomeKitBaseComponent
+    cv.GenerateID(CONF_homekit_bridge): cv.use_id(
+        homekit_bridge.HomeKitBridgeComponent
     ),
     cv.Optional(CONF_LIGHT): cv.ensure_list({
         cv.Required(CONF_ID): cv.use_id(light.LightState),
@@ -146,8 +146,8 @@ async def to_code(config):
     var = cg.new_Pvariable(config[CONF_ID])
     await cg.register_component(var, config)
 
-    homekit_base_component = await cg.get_variable(config[CONF_HOMEKIT_BASE])
-    cg.add(var.set_base_component(homekit_base_component))
+    homekit_bridge_component = await cg.get_variable(config[CONF_homekit_bridge])
+    cg.add(var.set_base_component(homekit_bridge_component))
 
     if 'light' in config:
         for l in config["light"]:

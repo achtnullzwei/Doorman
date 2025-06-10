@@ -3,8 +3,8 @@
 #include <esphome/core/log.h>
 #include <esphome/core/defines.h>
 #include <esphome/core/component.h>
-#include "esphome/components/homekit_base/homekit_base.h"
-#include "esphome/components/homekit_base/const.h"
+#include "esphome/components/homekit_bridge/homekit_bridge.h"
+#include "esphome/components/homekit_bridge/const.h"
 
 #ifdef USE_LIGHT
 #include "light.hpp"
@@ -55,7 +55,7 @@ namespace esphome
       void setup() override;
       void dump_config() override;
 
-      void set_base_component(homekit::HomeKitBaseComponent *base_component) { this->base_component_ = base_component; }
+      void set_base_component(homekit::HomeKitBridgeComponent *base_component) { this->base_component_ = base_component; }
 
       #ifdef USE_LIGHT
       std::vector<LightEntity*> lights;
@@ -103,7 +103,7 @@ namespace esphome
       #endif
 
     protected:
-      homekit::HomeKitBaseComponent *base_component_{nullptr};
+      homekit::HomeKitBridgeComponent *base_component_{nullptr};
     };
   }
 }

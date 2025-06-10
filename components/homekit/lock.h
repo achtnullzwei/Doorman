@@ -7,7 +7,7 @@
 #include <map>
 #include <hap_apple_servs.h>
 #include <hap_apple_chars.h>
-#include "esphome/components/homekit_base/const.h"
+#include "esphome/components/homekit_bridge/const.h"
 
 #include "automation.h"
 

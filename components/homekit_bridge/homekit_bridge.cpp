@@ -1,4 +1,4 @@
-#include "homekit_base.h"
+#include "homekit_bridge.h"
 #include <esp_event.h>
 
 namespace esphome
@@ -9,69 +9,69 @@ namespace esphome
         * In a real accessory, something like LED blink should be implemented
         * got visual identification
         */
-        int HomeKitBaseComponent::static_identify_handler(hap_acc_t *ha) {
-            ESP_LOGI("homekit_base", "Accessory identified");
-            global_homekit_base->identify_callback_.call();
+        int HomeKitBridgeComponent::static_identify_handler(hap_acc_t *ha) {
+            ESP_LOGI("homekit_bridge", "Accessory identified");
+            global_homekit_bridge->identify_callback_.call();
             return HAP_SUCCESS;
         }
 
-        void HomeKitBaseComponent::static_hap_event_handler(hap_event_t event, void *data) {
-            if(global_homekit_base) {
+        void HomeKitBridgeComponent::static_hap_event_handler(hap_event_t event, void *data) {
+            if(global_homekit_bridge) {
                 if(event == HAP_EVENT_PAIRING_STARTED) {
                     ESP_LOGD(TAG, "Pairing Started");
-                    global_homekit_base->pairing_started_callback_.call();
-                    global_homekit_base->report_heap();
+                    global_homekit_bridge->pairing_started_callback_.call();
+                    global_homekit_bridge->report_heap();
                 } else if(event == HAP_EVENT_PAIRING_ABORTED) {
                     ESP_LOGD(TAG, "Pairing Aborted");
-                    global_homekit_base->pairing_aborted_callback_.call();
-                    global_homekit_base->report_heap();
+                    global_homekit_bridge->pairing_aborted_callback_.call();
+                    global_homekit_bridge->report_heap();
                 } else if(event == HAP_EVENT_PAIRING_MODE_TIMED_OUT) {
                     ESP_LOGD(TAG, "Pairing Timed Out");
-                    global_homekit_base->pairing_timeout_callback_.call();
-                    global_homekit_base->report_heap();
+                    global_homekit_bridge->pairing_timeout_callback_.call();
+                    global_homekit_bridge->report_heap();
                 } else if(event == HAP_EVENT_CTRL_PAIRED) {
                     ESP_LOGD(TAG, "Controller %s Paired. Controller count: %d", (char *)data, hap_get_paired_controller_count());
-                    global_homekit_base->pairing_completed_callback_.call(std::string(static_cast<char*>(data)));
-                    global_homekit_base->report_heap();
+                    global_homekit_bridge->pairing_completed_callback_.call(std::string(static_cast<char*>(data)));
+                    global_homekit_bridge->report_heap();
                 } else if(event == HAP_EVENT_CTRL_CONNECTED) {
-                    global_homekit_base->connection_count_++;
-                    ESP_LOGD(TAG, "Controller %s connected. Controller count: %d", (char *)data, global_homekit_base->connection_count_);
-                    global_homekit_base->controller_connected_callback_.call(std::string(static_cast<char*>(data)));
-                    global_homekit_base->report_heap();
+                    global_homekit_bridge->connection_count_++;
+                    ESP_LOGD(TAG, "Controller %s connected. Controller count: %d", (char *)data, global_homekit_bridge->connection_count_);
+                    global_homekit_bridge->controller_connected_callback_.call(std::string(static_cast<char*>(data)));
+                    global_homekit_bridge->report_heap();
                 } else if(event == HAP_EVENT_CTRL_DISCONNECTED) {
-                    global_homekit_base->connection_count_--;
-                    ESP_LOGD(TAG, "Controller %s disconnected. Controller count: %d", (char *)data, global_homekit_base->connection_count_);
-                    global_homekit_base->controller_disconnected_callback_.call(std::string(static_cast<char*>(data)));
-                    global_homekit_base->report_heap();
+                    global_homekit_bridge->connection_count_--;
+                    ESP_LOGD(TAG, "Controller %s disconnected. Controller count: %d", (char *)data, global_homekit_bridge->connection_count_);
+                    global_homekit_bridge->controller_disconnected_callback_.call(std::string(static_cast<char*>(data)));
+                    global_homekit_bridge->report_heap();
                 }
             }
         }
 
-        void HomeKitBaseComponent::report_heap() {
+        void HomeKitBridgeComponent::report_heap() {
             ESP_LOGD(TAG, "Internal heap: %u", heap_caps_get_free_size(MALLOC_CAP_INTERNAL));
             ESP_LOGD(TAG, "Total free heap: %u", esp_get_free_heap_size());
         }
 
-        void HomeKitBaseComponent::factory_reset() {
+        void HomeKitBridgeComponent::factory_reset() {
             int ret = hap_reset_pairings();
 
             int count = hap_get_paired_controller_count();
             ESP_LOGI(TAG, "Reset Result: %d, paired: %d", ret, count);
         }
 
-        bool HomeKitBaseComponent::is_paired() {
+        bool HomeKitBridgeComponent::is_paired() {
             return is_accessory_paired();
         }
 
-        bool HomeKitBaseComponent::is_connected() {
-            return global_homekit_base->connection_count_ > 0;
+        bool HomeKitBridgeComponent::is_connected() {
+            return global_homekit_bridge->connection_count_ > 0;
         }
 
-        void HomeKitBaseComponent::setup() {
+        void HomeKitBridgeComponent::setup() {
 
             ESP_LOGCONFIG(TAG, "Running setup");
 
-            global_homekit_base = this;
+            global_homekit_bridge = this;
 
             report_heap();
 
@@ -156,11 +156,11 @@ namespace esphome
             }
         }
 
-        void HomeKitBaseComponent::loop() {
+        void HomeKitBridgeComponent::loop() {
         }
 
-        void HomeKitBaseComponent::dump_config() {
-            ESP_LOGCONFIG(TAG, "homekit_base:");
+        void HomeKitBridgeComponent::dump_config() {
+            ESP_LOGCONFIG(TAG, "homekit_bridge:");
             ESP_LOGCONFIG(TAG, "  Task Stack Size: %i", this->task_stack_size_);
             ESP_LOGCONFIG(TAG, "  Setup Code: %s", this->setup_code_);
             ESP_LOGCONFIG(TAG, "  Setup ID: %s", this->setup_id_);

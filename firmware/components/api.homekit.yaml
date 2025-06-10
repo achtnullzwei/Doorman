@@ -70,7 +70,7 @@ esp32:
       
 external_components:
   - source: github://azoninc/doorman@${branch}
-    components: [ homekit_base, homekit ]
+    components: [ homekit_bridge, homekit ]
     refresh: 60s
 
 web_server:
@@ -79,7 +79,7 @@ web_server:
       name: "HomeKit Configuration"
       sorting_weight: -2
 
-homekit_base:
+homekit_bridge:
   meta:
     name: "Doorman"
     manufacturer: "AzonInc"
@@ -89,12 +89,10 @@ homekit_base:
   setup_code: '291-21-998'
   setup_id: DMS3
   task_stack_size: 3072
-  on_identify:
-    - logger.log: "HomeKit identify called"
   on_pairing_started:
     - logger.log: "HomeKit pairing started"
   on_pairing_aborted:
-    - logger.log: "HomeKit pairing started"
+    - logger.log: "HomeKit pairing aborted"
   on_pairing_timeout:
     - logger.log: "HomeKit pairing timed out"
   on_pairing_completed:
@@ -114,7 +112,7 @@ homekit_base:
         level: INFO
 
 button:
-  - platform: homekit_base
+  - platform: homekit_bridge
     factory_reset:
       id: homekit_reset_pairing
       name: "Reset HomeKit Pairing"
@@ -128,56 +126,25 @@ homekit:
     - id: entrance_door
       meta:
         name: "Entrance Door"
-        manufacturer: "ESPHome"
         model: "Door Opener"
-      on_identify:
-        - logger.log:
-            format: "Entrance Door identify called"
-            level: INFO
 
     - id: second_entrance_door
       meta:
         name: "Second Entrance Door"
-        manufacturer: "ESPHome"
         model: "Door Opener"
-      on_identify:
-        - logger.log:
-            format: "Second Entrance Door identify called"
-            level: INFO
 
   event:
     - id: entrance_doorbell_pattern
       meta:
         name: "Entrance Doorbell"
-        manufacturer: "ESPHome"
         model: "Doorbell Event"
-      on_identify:
-        - logger.log:
-            format: "Entrance Doorbell identify called"
-            level: INFO
-        - tc_bus.send:
-            type: floor_call
 
     - id: second_entrance_doorbell_pattern
       meta:
         name: "Second Entrance Doorbell"
-        manufacturer: "ESPHome"
         model: "Doorbell Event"
-      on_identify:
-        - logger.log:
-            format: "Second Entrance Doorbell identify called"
-            level: INFO
-        - tc_bus.send:
-            type: floor_call
 
     - id: apartment_doorbell_pattern
       meta:
         name: "Apartment Doorbell"
-        manufacturer: "ESPHome"
         model: "Doorbell Event"
-      on_identify:
-        - logger.log:
-            format: "Apartment Doorbell identify called"
-            level: INFO
-        - tc_bus.send:
-            type: floor_call

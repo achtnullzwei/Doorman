@@ -21,14 +21,14 @@ namespace esphome
 {
 namespace homekit {
 
-  class HomeKitBaseComponent : public Component
+  class HomeKitBridgeComponent : public Component
   {
   #ifdef USE_BUTTON
     SUB_BUTTON(reset)
   #endif
 
   private:
-    static constexpr const char* TAG = "homekit_base";
+    static constexpr const char* TAG = "homekit_bridge";
 
   public:
     float get_setup_priority() const override { return setup_priority::AFTER_WIFI; }
@@ -108,7 +108,7 @@ namespace homekit {
     CallbackManager<void(std::string)> controller_disconnected_callback_{};
   };
 
-  static HomeKitBaseComponent *global_homekit_base;  // NOLINT(cppcoreguidelines-avoid-non-const-global-variables)
+  static HomeKitBridgeComponent *global_homekit_bridge;  // NOLINT(cppcoreguidelines-avoid-non-const-global-variables)
 
 }  // namespace homekit
 }  // namespace esphome

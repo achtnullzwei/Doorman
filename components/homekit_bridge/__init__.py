@@ -11,7 +11,7 @@ CODEOWNERS = ["@rednblkx"]
 MULTI_CONF = False
 
 homekit_ns = cg.esphome_ns.namespace('homekit')
-HomeKitBaseComponent = homekit_ns.class_('HomeKitBaseComponent', cg.Component)
+HomeKitBridgeComponent = homekit_ns.class_('HomeKitBridgeComponent', cg.Component)
 
 AInfo = homekit_ns.enum("AInfo")
 
@@ -64,7 +64,7 @@ ACCESSORY_INFORMATION = {
 
 CONFIG_SCHEMA = cv.All(
     cv.Schema({
-        cv.GenerateID(): cv.declare_id(HomeKitBaseComponent),
+        cv.GenerateID(): cv.declare_id(HomeKitBridgeComponent),
         cv.Optional(CONF_PORT, default=32042): cv.port,
         cv.Optional(CONF_META) : ACCESSORY_INFORMATION,
         cv.Optional(CONF_SETUP_CODE, default="159-35-728"): hk_setup_code,

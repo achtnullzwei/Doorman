@@ -388,7 +388,7 @@ jobs:
     with:
       files: firmware/configurations/esp32.ha.stock.dev.yaml
       name: AzonInc.Doorman
-      esphome_version: dev
+      esphome_version: latest
       directory_name: esp32.ha.stock
       summary: ${{ needs.prepare-release.outputs.release_summary }}
       url: ${{ needs.prepare-release.outputs.release_url }}
@@ -400,7 +400,7 @@ jobs:
     with:
       files: firmware/configurations/esp32.mqtt.stock.dev.yaml
       name: AzonInc.Doorman
-      esphome_version: dev
+      esphome_version: latest
       directory_name: esp32.mqtt.stock
       summary: ${{ needs.prepare-release.outputs.release_summary }}
       url: ${{ needs.prepare-release.outputs.release_url }}
@@ -412,7 +412,7 @@ jobs:
     with:
       files: firmware/configurations/esp32.homekit.stock.dev.yaml
       name: AzonInc.Doorman
-      esphome_version: dev
+      esphome_version: latest
       directory_name: esp32.homekit.stock
       summary: ${{ needs.prepare-release.outputs.release_summary }}
       url: ${{ needs.prepare-release.outputs.release_url }}
@@ -424,7 +424,7 @@ jobs:
     with:
       files: firmware/configurations/esp32.custom.stock.dev.yaml
       name: AzonInc.Doorman
-      esphome_version: dev
+      esphome_version: latest
       directory_name: esp32.custom.stock
       summary: ${{ needs.prepare-release.outputs.release_summary }}
       url: ${{ needs.prepare-release.outputs.release_url }}
@@ -437,7 +437,7 @@ jobs:
     with:
       files: firmware/configurations/esp32-s3.ha.stock.dev.yaml
       name: AzonInc.Doorman
-      esphome_version: dev
+      esphome_version: latest
       directory_name: esp32-s3.ha.stock
       summary: ${{ needs.prepare-release.outputs.release_summary }}
       url: ${{ needs.prepare-release.outputs.release_url }}
@@ -449,7 +449,7 @@ jobs:
     with:
       files: firmware/configurations/esp32-s3.mqtt.stock.dev.yaml
       name: AzonInc.Doorman
-      esphome_version: dev
+      esphome_version: latest
       directory_name: esp32-s3.mqtt.stock
       summary: ${{ needs.prepare-release.outputs.release_summary }}
       url: ${{ needs.prepare-release.outputs.release_url }}
@@ -461,7 +461,7 @@ jobs:
     with:
       files: firmware/configurations/esp32-s3.homekit.stock.dev.yaml
       name: AzonInc.Doorman
-      esphome_version: dev
+      esphome_version: latest
       directory_name: esp32-s3.homekit.stock
       summary: ${{ needs.prepare-release.outputs.release_summary }}
       url: ${{ needs.prepare-release.outputs.release_url }}
@@ -473,7 +473,7 @@ jobs:
     with:
       files: firmware/configurations/esp32-s3.custom.stock.dev.yaml
       name: AzonInc.Doorman
-      esphome_version: dev
+      esphome_version: latest
       directory_name: esp32-s3.custom.stock
       summary: ${{ needs.prepare-release.outputs.release_summary }}
       url: ${{ needs.prepare-release.outputs.release_url }}
@@ -486,7 +486,7 @@ jobs:
     with:
       files: firmware/configurations/esp32-s3-quad.ha.stock.dev.yaml
       name: AzonInc.Doorman
-      esphome_version: dev
+      esphome_version: latest
       directory_name: esp32-s3-quad.ha.stock
       summary: ${{ needs.prepare-release.outputs.release_summary }}
       url: ${{ needs.prepare-release.outputs.release_url }}
@@ -498,7 +498,7 @@ jobs:
     with:
       files: firmware/configurations/esp32-s3-quad.mqtt.stock.dev.yaml
       name: AzonInc.Doorman
-      esphome_version: dev
+      esphome_version: latest
       directory_name: esp32-s3-quad.mqtt.stock
       summary: ${{ needs.prepare-release.outputs.release_summary }}
       url: ${{ needs.prepare-release.outputs.release_url }}
@@ -510,7 +510,7 @@ jobs:
     with:
       files: firmware/configurations/esp32-s3-quad.homekit.stock.dev.yaml
       name: AzonInc.Doorman
-      esphome_version: dev
+      esphome_version: latest
       directory_name: esp32-s3-quad.homekit.stock
       summary: ${{ needs.prepare-release.outputs.release_summary }}
       url: ${{ needs.prepare-release.outputs.release_url }}
@@ -522,7 +522,7 @@ jobs:
     with:
       files: firmware/configurations/esp32-s3-quad.custom.stock.dev.yaml
       name: AzonInc.Doorman
-      esphome_version: dev
+      esphome_version: latest
       directory_name: esp32-s3-quad.custom.stock
       summary: ${{ needs.prepare-release.outputs.release_summary }}
       url: ${{ needs.prepare-release.outputs.release_url }}
@@ -535,7 +535,7 @@ jobs:
     with:
       files: firmware/configurations/esp32.ha.nuki-bridge.dev.yaml
       name: AzonInc.Doorman-Nuki-Bridge
-      esphome_version: dev
+      esphome_version: latest
       directory_name: esp32.ha.nuki-bridge
       summary: ${{ needs.prepare-release.outputs.release_summary }}
       url: ${{ needs.prepare-release.outputs.release_url }}
@@ -547,7 +547,7 @@ jobs:
   #  with:
   #    files: firmware/configurations/esp32.mqtt.nuki-bridge.dev.yaml
   #    name: AzonInc.Doorman-Nuki-Bridge
-  #    esphome_version: dev
+  #    esphome_version: latest
   #    directory_name: esp32.mqtt.nuki-bridge
   #    summary: ${{ needs.prepare-release.outputs.release_summary }}
   #    url: ${{ needs.prepare-release.outputs.release_url }}
@@ -559,7 +559,7 @@ jobs:
   #  with:
   #    files: firmware/configurations/esp32.homekit.nuki-bridge.dev.yaml
   #    name: AzonInc.Doorman-Nuki-Bridge
-  #    esphome_version: dev
+  #    esphome_version: latest
   #    directory_name: esp32.homekit.nuki-bridge
   #    summary: ${{ needs.prepare-release.outputs.release_summary }}
   #    url: ${{ needs.prepare-release.outputs.release_url }}
@@ -571,7 +571,7 @@ jobs:
     with:
       files: firmware/configurations/esp32.custom.nuki-bridge.dev.yaml
       name: AzonInc.Doorman-Nuki-Bridge
-      esphome_version: dev
+      esphome_version: latest
       directory_name: esp32.custom.nuki-bridge
       summary: ${{ needs.prepare-release.outputs.release_summary }}
       url: ${{ needs.prepare-release.outputs.release_url }}
@@ -584,7 +584,7 @@ jobs:
     with:
       files: firmware/configurations/esp32-s3.ha.nuki-bridge.dev.yaml
       name: AzonInc.Doorman-Nuki-Bridge
-      esphome_version: dev
+      esphome_version: latest
       directory_name: esp32-s3.ha.nuki-bridge
       summary: ${{ needs.prepare-release.outputs.release_summary }}
       url: ${{ needs.prepare-release.outputs.release_url }}
@@ -596,7 +596,7 @@ jobs:
   #  with:
   #    files: firmware/configurations/esp32-s3.mqtt.nuki-bridge.dev.yaml
   #    name: AzonInc.Doorman-Nuki-Bridge
-  #    esphome_version: dev
+  #    esphome_version: latest
   #    directory_name: esp32-s3.mqtt.nuki-bridge
   #    summary: ${{ needs.prepare-release.outputs.release_summary }}
   #    url: ${{ needs.prepare-release.outputs.release_url }}
@@ -608,7 +608,7 @@ jobs:
   #  with:
   #    files: firmware/configurations/esp32-s3.homekit.nuki-bridge.dev.yaml
   #    name: AzonInc.Doorman-Nuki-Bridge
-  #    esphome_version: dev
+  #    esphome_version: latest
   #    directory_name: esp32-s3.homekit.nuki-bridge
   #    summary: ${{ needs.prepare-release.outputs.release_summary }}
   #    url: ${{ needs.prepare-release.outputs.release_url }}
@@ -620,7 +620,7 @@ jobs:
     with:
       files: firmware/configurations/esp32-s3.custom.nuki-bridge.dev.yaml
       name: AzonInc.Doorman-Nuki-Bridge
-      esphome_version: dev
+      esphome_version: latest
       directory_name: esp32-s3.custom.nuki-bridge
       summary: ${{ needs.prepare-release.outputs.release_summary }}
       url: ${{ needs.prepare-release.outputs.release_url }}
@@ -633,7 +633,7 @@ jobs:
     with:
       files: firmware/configurations/esp32-s3-quad.ha.nuki-bridge.dev.yaml
       name: AzonInc.Doorman-Nuki-Bridge
-      esphome_version: dev
+      esphome_version: latest
       directory_name: esp32-s3-quad.ha.nuki-bridge
       summary: ${{ needs.prepare-release.outputs.release_summary }}
       url: ${{ needs.prepare-release.outputs.release_url }}
@@ -645,7 +645,7 @@ jobs:
   #  with:
   #    files: firmware/configurations/esp32-s3-quad.mqtt.nuki-bridge.dev.yaml
   #    name: AzonInc.Doorman-Nuki-Bridge
-  #    esphome_version: dev
+  #    esphome_version: latest
   #    directory_name: esp32-s3-quad.mqtt.nuki-bridge
   #    summary: ${{ needs.prepare-release.outputs.release_summary }}
   #    url: ${{ needs.prepare-release.outputs.release_url }}
@@ -657,7 +657,7 @@ jobs:
   #  with:
   #    files: firmware/configurations/esp32-s3-quad.homekit.nuki-bridge.dev.yaml
   #    name: AzonInc.Doorman-Nuki-Bridge
-  #    esphome_version: dev
+  #    esphome_version: latest
   #    directory_name: esp32-s3-quad.homekit.nuki-bridge
   #    summary: ${{ needs.prepare-release.outputs.release_summary }}
   #    url: ${{ needs.prepare-release.outputs.release_url }}
@@ -669,7 +669,7 @@ jobs:
     with:
       files: firmware/configurations/esp32-s3-quad.custom.nuki-bridge.dev.yaml
       name: AzonInc.Doorman-Nuki-Bridge
-      esphome_version: dev
+      esphome_version: latest
       directory_name: esp32-s3-quad.custom.nuki-bridge
       summary: ${{ needs.prepare-release.outputs.release_summary }}
       url: ${{ needs.prepare-release.outputs.release_url }}
