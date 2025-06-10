@@ -7,6 +7,7 @@
 #include <hap_apple_servs.h>
 #include <hap_apple_chars.h>
 #include "esphome/components/homekit_bridge/const.h"
+#include "esphome/components/homekit_bridge/util.h"
 #include "automation.h"
 
 namespace esphome
@@ -18,11 +19,10 @@ namespace esphome
       static std::unordered_map<hap_acc_t*, EventEntity*> acc_instance_map;
 
     private:
-      static constexpr const char* TAG = "EventEntity";
+      static constexpr const char* TAG = "homekit.event";
+      event::Event* entityPtr;
 
-      event::Event* eventPtr;
-
-      void on_event_update(event::Event* obj, std::string event_type) {
+      void on_entity_update(event::Event* obj, std::string event_type) {
         ESP_LOGD(TAG, "%s value: %s", obj->get_name().c_str(), event_type.c_str());
 
         hap_acc_t* acc = hap_acc_get_by_aid(hap_get_unique_aid(std::to_string(obj->get_object_id_hash()).c_str()));
@@ -70,32 +70,23 @@ namespace esphome
       std::vector<HKIdentifyTrigger *> triggers_identify_;
 
     public:
-      EventEntity(event::Event* eventPtr) : eventPtr(eventPtr) {}
+      EventEntity(event::Event* entityPtr) : entityPtr(entityPtr) {}
 
-      void set_meta(std::map<AInfo, const char*> info) {
-        std::map<AInfo, const char*> merged_info;
-        merged_info.merge(info);
-        merged_info.merge(this->accessory_info);
-        this->accessory_info.swap(merged_info);
+      event::Event* getEntity() {
+        return entityPtr;
       }
-
-      std::map<AInfo, const char*> accessory_info = {
-        {NAME, NULL},
-        {MODEL, "Event"},
-        {SN, NULL},
-        {MANUFACTURER, "ESPHome"},
-        {FW_REV, "0.1"}
-      };
 
       void register_on_identify_trigger(HKIdentifyTrigger* trig) {
           triggers_identify_.push_back(trig);
       }
 
       void setup() {
-        hap_serv_t* service = nullptr;
-        std::string device_class = eventPtr->get_device_class();
+        ESP_LOGCONFIG(TAG, "Setting up event '%s'", entityPtr->get_name().c_str());
 
-        if (std::equal(device_class.begin(), device_class.end(), strdup("doorbell"))) {
+        hap_serv_t* service = nullptr;
+        
+        std::string device_class = entityPtr->get_device_class();
+        if (device_class == "doorbell") {
           service = hap_serv_create("121");
           hap_serv_add_char(service, hap_char_programmable_switch_event_create(0));
         } else {
@@ -107,38 +98,33 @@ namespace esphome
           hap_char_add_valid_vals(hap_serv_get_char_by_uuid(service, HAP_CHAR_UUID_PROGRAMMABLE_SWITCH_EVENT), _validVals, 3);
 
           hap_acc_cfg_t acc_cfg = {
-              .model = strdup(accessory_info[MODEL]),
-              .manufacturer = strdup(accessory_info[MANUFACTURER]),
-              .fw_rev = strdup(accessory_info[FW_REV]),
-              .hw_rev = NULL,
-              .pv = strdup("1.1.0"),
-              .cid = HAP_CID_PROGRAMMABLE_SWITCH,
-              .identify_routine = acc_identify,
+            .name = strdup_psram(entityPtr->get_name().c_str()),
+            .model = (char*)"ESPHome Event",
+            .manufacturer = (char*)"ESPHome",
+            .serial_num = strdup_psram(std::to_string(entityPtr->get_object_id_hash()).c_str()),
+            .fw_rev = (char*)"1.0.0",
+            .hw_rev = NULL,
+            .pv = (char*)"1.1.0",
+            .cid = HAP_CID_PROGRAMMABLE_SWITCH,
+            .identify_routine = acc_identify,
           };
-          
-          std::string accessory_name = eventPtr->get_name();
-          acc_cfg.name = strdup(accessory_info[NAME] ? accessory_info[NAME] : accessory_name.c_str());
-          acc_cfg.serial_num = strdup(accessory_info[SN] ? accessory_info[SN] : std::to_string(eventPtr->get_object_id_hash()).c_str());
 
           hap_acc_t* accessory = hap_acc_create(&acc_cfg);
           acc_instance_map[accessory] = this;
 
-          ESP_LOGD(TAG, "ID HASH: %lu", eventPtr->get_object_id_hash());
+          ESP_LOGD(TAG, "ID HASH: %lu", entityPtr->get_object_id_hash());
 
-          hap_serv_set_priv(service, eventPtr);
+          hap_serv_set_priv(service, entityPtr);
 
           hap_acc_add_serv(accessory, service);
 
           /* Add the Accessory to the HomeKit Database */
-          hap_add_bridged_accessory(accessory, hap_get_unique_aid(std::to_string(eventPtr->get_object_id_hash()).c_str()));
+          hap_add_bridged_accessory(accessory, hap_get_unique_aid(std::to_string(entityPtr->get_object_id_hash()).c_str()));
 
-          if (!eventPtr->is_internal()) {
-            eventPtr->add_on_event_callback([this](std::string event_type) {
-              this->on_event_update(eventPtr, event_type);
-            });
-          }
+          if (!entityPtr->is_internal())
+              entityPtr->add_on_event_callback([this](std::string event_type) { this->on_entity_update(entityPtr, event_type); });
 
-          ESP_LOGI(TAG, "Event '%s' linked to HomeKit", accessory_name.c_str());
+          ESP_LOGI(TAG, "Event '%s' linked to HomeKit", entityPtr->get_name().c_str());
         }
       }
     };

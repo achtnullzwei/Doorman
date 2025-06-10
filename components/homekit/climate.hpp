@@ -7,6 +7,7 @@
 #include <hap_apple_servs.h>
 #include <hap_apple_chars.h>
 #include "esphome/components/homekit_bridge/const.h"
+#include "esphome/components/homekit_bridge/util.h"
 #include "automation.h"
 
 namespace esphome
@@ -18,9 +19,10 @@ namespace esphome
       static std::unordered_map<hap_acc_t*, ClimateEntity*> acc_instance_map;
 
     private:
-      static constexpr const char* TAG = "ClimateEntity";
+      static constexpr const char* TAG = "homekit.climate";
+      climate::Climate* entityPtr;
 
-      void on_climate_update(climate::Climate& obj) {
+      void on_entity_update(climate::Climate& obj) {
         ESP_LOGI(TAG, "%s Mode: %d Action: %d CTemp: %.2f TTemp: %.2f CHum: %.2f THum: %.2f", obj.get_name().c_str(), obj.mode, obj.action, obj.current_temperature, obj.target_temperature, obj.current_humidity, obj.target_humidity);
         hap_acc_t* acc = hap_acc_get_by_aid(hap_get_unique_aid(std::to_string(obj.get_object_id_hash()).c_str()));
         if (acc) {
@@ -143,49 +145,35 @@ namespace esphome
       std::vector<HKIdentifyTrigger *> triggers_identify_;
 
     public:
-      ClimateEntity() {}
+      ClimateEntity(climate::Climate* entityPtr) : entityPtr(entityPtr) {}
 
-      void set_meta(std::map<AInfo, const char*> info) {
-        std::map<AInfo, const char*> merged_info;
-        merged_info.merge(info);
-        merged_info.merge(this->accessory_info);
-        this->accessory_info.swap(merged_info);
+      climate::Climate* getEntity() {
+        return entityPtr;
       }
-
-      std::map<AInfo, const char*> accessory_info = {
-        {NAME, NULL},
-        {MODEL, "Climate"},
-        {SN, NULL},
-        {MANUFACTURER, "ESPHome"},
-        {FW_REV, "0.1"}
-      };
 
       void register_on_identify_trigger(HKIdentifyTrigger* trig) {
           triggers_identify_.push_back(trig);
       }
 
-      void setup(climate::Climate* climatePtr, TemperatureUnits units = CELSIUS) {
+      void setup(climate::Climate* entityPtr, TemperatureUnits units = CELSIUS) {
+        ESP_LOGCONFIG(TAG, "Setting up climate '%s'", entityPtr->get_name().c_str());
+
         hap_acc_cfg_t acc_cfg = {
-          .model = strdup(accessory_info[MODEL]),
-          .manufacturer = strdup(accessory_info[MANUFACTURER]),
-          .fw_rev = strdup(accessory_info[FW_REV]),
+          .name = strdup_psram(entityPtr->get_name().c_str()),
+          .model = (char*)"ESPHome Climate",
+          .manufacturer = (char*)"ESPHome",
+          .serial_num = strdup_psram(std::to_string(entityPtr->get_object_id_hash()).c_str()),
+          .fw_rev = (char*)"1.0.0",
           .hw_rev = NULL,
-          .pv = strdup("1.1.0"),
+          .pv = (char*)"1.1.0",
           .cid = HAP_CID_THERMOSTAT,
           .identify_routine = acc_identify,
         };
 
-        hap_serv_t* service = nullptr;
-        hap_serv_t* service_fan = nullptr;
-        std::string accessory_name = climatePtr->get_name();
-        acc_cfg.name = accessory_name.data();
-        acc_cfg.serial_num = std::to_string(climatePtr->get_object_id_hash()).data();
-        climate::ClimateTraits climateTraits = climatePtr->get_traits();
-        climate::ClimateMode climateMode = climatePtr->mode;
-        climate::ClimateAction climateAction = climatePtr->action;
         uint8_t current_mode = 0;
         uint8_t target_mode = 0;
 
+        climate::ClimateAction climateAction = entityPtr->action;
         switch (climateAction) {
           case climate::ClimateAction::CLIMATE_ACTION_OFF:
             current_mode = 0;
@@ -204,6 +192,7 @@ namespace esphome
             break;
         }
 
+        climate::ClimateMode climateMode = entityPtr->mode;
         switch (climateMode) {
           case climate::ClimateMode::CLIMATE_MODE_OFF:
             target_mode = 0;
@@ -225,18 +214,21 @@ namespace esphome
             break;
         }
 
-        ESP_LOGI(TAG, "CTemp: %.2f TTemp: %.2f CHum: %.2f THum: %.2f", climatePtr->current_temperature, climatePtr->target_temperature, climatePtr->current_humidity, climatePtr->target_humidity);
-        service = hap_serv_thermostat_create(current_mode, target_mode, climatePtr->current_temperature, climatePtr->target_temperature, units);
+        ESP_LOGI(TAG, "CTemp: %.2f TTemp: %.2f CHum: %.2f THum: %.2f", entityPtr->current_temperature, entityPtr->target_temperature, entityPtr->current_humidity, entityPtr->target_humidity);
         
+        hap_serv_t* service = hap_serv_thermostat_create(current_mode, target_mode, entityPtr->current_temperature, entityPtr->target_temperature, units);
+
+        climate::ClimateTraits climateTraits = entityPtr->get_traits();
+
         if (climateTraits.get_supports_current_humidity()) {
-          hap_serv_add_char(service, hap_char_current_relative_humidity_create(climatePtr->current_humidity));
+          hap_serv_add_char(service, hap_char_current_relative_humidity_create(entityPtr->current_humidity));
         }
 
         if (climateTraits.get_supports_target_humidity()) {
-          hap_serv_add_char(service, hap_char_target_relative_humidity_create(climatePtr->target_humidity));
+          hap_serv_add_char(service, hap_char_target_relative_humidity_create(entityPtr->target_humidity));
         }
 
-        // service_fan = hap_serv_fan_v2_create(!climatePtr->fan_mode ? 1 : 0);
+        // hap_serv_t* service_fan = hap_serv_fan_v2_create(!entityPtr->fan_mode ? 1 : 0);
         // hap_char_swing_mode_create();
         // hap_serv_link_serv()
 
@@ -245,8 +237,8 @@ namespace esphome
           hap_acc_t* accessory = hap_acc_create(&acc_cfg);
           acc_instance_map[accessory] = this;
 
-          ESP_LOGI(TAG, "ID HASH: %lu", climatePtr->get_object_id_hash());
-          hap_serv_set_priv(service, strdup(std::to_string(climatePtr->get_object_id_hash()).c_str()));
+          ESP_LOGI(TAG, "ID HASH: %lu", entityPtr->get_object_id_hash());
+          hap_serv_set_priv(service, strdup_psram(std::to_string(entityPtr->get_object_id_hash()).c_str()));
 
           /* Set the write callback for the service */
           hap_serv_set_write_cb(service, climate_write);
@@ -256,7 +248,9 @@ namespace esphome
           hap_acc_add_serv(accessory, service);
 
           /* Add the Accessory to the HomeKit Database */
-          hap_add_bridged_accessory(accessory, hap_get_unique_aid(std::to_string(climatePtr->get_object_id_hash()).c_str()));
+          hap_add_bridged_accessory(accessory, hap_get_unique_aid(std::to_string(entityPtr->get_object_id_hash()).c_str()));
+
+          ESP_LOGI(TAG, "Climate '%s' linked to HomeKit", entityPtr->get_name().c_str());
         }
       }
     };

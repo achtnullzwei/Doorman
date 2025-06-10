@@ -18,7 +18,7 @@ export default defineConfig({
       md.use(groupIconMdPlugin)
     }
   },
-  vue: {
+  /*vue: {
     template: {
       compilerOptions: {
         isCustomElement: tag => [
@@ -28,7 +28,7 @@ export default defineConfig({
         ].includes(tag)
       }
     }
-  },
+  },*/
   vite: {
     plugins: [
       groupIconVitePlugin({

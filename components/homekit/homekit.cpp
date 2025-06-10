@@ -1,4 +1,7 @@
 #include "homekit.h"
+#include "esphome/components/homekit_bridge/const.h"
+#include "esphome/components/homekit_bridge/util.h"
+
 namespace esphome
 {
   namespace homekit
@@ -18,6 +21,8 @@ namespace esphome
         this->mark_failed(not_ready_msg.c_str());
         return;
       }
+
+      this->base_component_->report_heap();
 
       #ifdef USE_LIGHT
       for (const auto v : lights) {
@@ -72,6 +77,8 @@ namespace esphome
         v->setup();
       }
       #endif
+
+      this->base_component_->report_heap();
     }
     void HAPAccessory::dump_config() {
       ESP_LOGCONFIG(TAG, "homekit:");
@@ -79,189 +86,63 @@ namespace esphome
       #ifdef USE_LOCK
       ESP_LOGCONFIG(TAG, "  Locks:");
       for (const auto v : locks) {
-        if (v->accessory_info.count(NAME)) {
-            ESP_LOGCONFIG(TAG, "    '%s'", v->accessory_info[NAME] ? v->accessory_info[NAME] : "Use entity name");
-        }
-        if (v->accessory_info.count(MODEL)) {
-            ESP_LOGCONFIG(TAG, "      Model: %s", v->accessory_info[MODEL]);
-        }
-        if (v->accessory_info.count(SN)) {
-            ESP_LOGCONFIG(TAG, "      Serial Number: %s", v->accessory_info[SN] ? v->accessory_info[SN] : "Use internal object ID");
-        }
-        if (v->accessory_info.count(MANUFACTURER)) {
-            ESP_LOGCONFIG(TAG, "      Manufacturer: %s", v->accessory_info[MANUFACTURER]);
-        }
-        if (v->accessory_info.count(FW_REV)) {
-            ESP_LOGCONFIG(TAG, "      Firmware Revision: %s", v->accessory_info[FW_REV]);
-        }
+        ESP_LOGCONFIG(TAG, "    '%s'", v->getEntity()->get_name().c_str());
       }
       #endif
 
       #ifdef USE_LIGHT
       ESP_LOGCONFIG(TAG, "  Lights:");
       for (const auto v : lights) {
-        if (v->accessory_info.count(NAME)) {
-            ESP_LOGCONFIG(TAG, "    '%s'", v->accessory_info[NAME] ? v->accessory_info[NAME] : "Use entity name");
-        }
-        if (v->accessory_info.count(MODEL)) {
-            ESP_LOGCONFIG(TAG, "      Model: %s", v->accessory_info[MODEL]);
-        }
-        if (v->accessory_info.count(SN)) {
-            ESP_LOGCONFIG(TAG, "      Serial Number: %s", v->accessory_info[SN] ? v->accessory_info[SN] : "Use internal object ID");
-        }
-        if (v->accessory_info.count(MANUFACTURER)) {
-            ESP_LOGCONFIG(TAG, "      Manufacturer: %s", v->accessory_info[MANUFACTURER]);
-        }
-        if (v->accessory_info.count(FW_REV)) {
-            ESP_LOGCONFIG(TAG, "      Firmware Revision: %s", v->accessory_info[FW_REV]);
-        }
+        ESP_LOGCONFIG(TAG, "    '%s'", v->getEntity()->get_name().c_str());
       }
       #endif
 
       #ifdef USE_SENSOR
       ESP_LOGCONFIG(TAG, "  Sensors:");
       for (const auto v : sensors) {
-        if (v->accessory_info.count(NAME)) {
-            ESP_LOGCONFIG(TAG, "    '%s'", v->accessory_info[NAME] ? v->accessory_info[NAME] : "Use entity name");
-        }
-        if (v->accessory_info.count(MODEL)) {
-            ESP_LOGCONFIG(TAG, "      Model: %s", v->accessory_info[MODEL]);
-        }
-        if (v->accessory_info.count(SN)) {
-            ESP_LOGCONFIG(TAG, "      Serial Number: %s", v->accessory_info[SN] ? v->accessory_info[SN] : "Use internal object ID");
-        }
-        if (v->accessory_info.count(MANUFACTURER)) {
-            ESP_LOGCONFIG(TAG, "      Manufacturer: %s", v->accessory_info[MANUFACTURER]);
-        }
-        if (v->accessory_info.count(FW_REV)) {
-            ESP_LOGCONFIG(TAG, "      Firmware Revision: %s", v->accessory_info[FW_REV]);
-        }
+        ESP_LOGCONFIG(TAG, "    '%s'", v->getEntity()->get_name().c_str());
       }
       #endif
 
       #ifdef USE_BINARY_SENSOR
       ESP_LOGCONFIG(TAG, "  Binary Sensors:");
       for (const auto v : binary_sensors) {
-        if (v->accessory_info.count(NAME)) {
-            ESP_LOGCONFIG(TAG, "    '%s'", v->accessory_info[NAME] ? v->accessory_info[NAME] : "Use entity name");
-        }
-        if (v->accessory_info.count(MODEL)) {
-            ESP_LOGCONFIG(TAG, "      Model: %s", v->accessory_info[MODEL]);
-        }
-        if (v->accessory_info.count(SN)) {
-            ESP_LOGCONFIG(TAG, "      Serial Number: %s", v->accessory_info[SN] ? v->accessory_info[SN] : "Use internal object ID");
-        }
-        if (v->accessory_info.count(MANUFACTURER)) {
-            ESP_LOGCONFIG(TAG, "      Manufacturer: %s", v->accessory_info[MANUFACTURER]);
-        }
-        if (v->accessory_info.count(FW_REV)) {
-            ESP_LOGCONFIG(TAG, "      Firmware Revision: %s", v->accessory_info[FW_REV]);
-        }
+        ESP_LOGCONFIG(TAG, "    '%s'", v->getEntity()->get_name().c_str());
       }
       #endif
 
       #ifdef USE_EVENT
       ESP_LOGCONFIG(TAG, "  Events:");
       for (const auto v : events) {
-        if (v->accessory_info.count(NAME)) {
-            ESP_LOGCONFIG(TAG, "    '%s'", v->accessory_info[NAME] ? v->accessory_info[NAME] : "Use entity name");
-        }
-        if (v->accessory_info.count(MODEL)) {
-            ESP_LOGCONFIG(TAG, "      Model: %s", v->accessory_info[MODEL]);
-        }
-        if (v->accessory_info.count(SN)) {
-            ESP_LOGCONFIG(TAG, "      Serial Number: %s", v->accessory_info[SN] ? v->accessory_info[SN] : "Use internal object ID");
-        }
-        if (v->accessory_info.count(MANUFACTURER)) {
-            ESP_LOGCONFIG(TAG, "      Manufacturer: %s", v->accessory_info[MANUFACTURER]);
-        }
-        if (v->accessory_info.count(FW_REV)) {
-            ESP_LOGCONFIG(TAG, "      Firmware Revision: %s", v->accessory_info[FW_REV]);
-        }
+        ESP_LOGCONFIG(TAG, "    '%s'", v->getEntity()->get_name().c_str());
       }
       #endif
 
       #ifdef USE_BUTTON
       ESP_LOGCONFIG(TAG, "  Buttons:");
       for (const auto v : buttons) {
-        if (v->accessory_info.count(NAME)) {
-            ESP_LOGCONFIG(TAG, "    '%s'", v->accessory_info[NAME] ? v->accessory_info[NAME] : "Use entity name");
-        }
-        if (v->accessory_info.count(MODEL)) {
-            ESP_LOGCONFIG(TAG, "      Model: %s", v->accessory_info[MODEL]);
-        }
-        if (v->accessory_info.count(SN)) {
-            ESP_LOGCONFIG(TAG, "      Serial Number: %s", v->accessory_info[SN] ? v->accessory_info[SN] : "Use internal object ID");
-        }
-        if (v->accessory_info.count(MANUFACTURER)) {
-            ESP_LOGCONFIG(TAG, "      Manufacturer: %s", v->accessory_info[MANUFACTURER]);
-        }
-        if (v->accessory_info.count(FW_REV)) {
-            ESP_LOGCONFIG(TAG, "      Firmware Revision: %s", v->accessory_info[FW_REV]);
-        }
+        ESP_LOGCONFIG(TAG, "    '%s'", v->getEntity()->get_name().c_str());
       }
       #endif
 
       #ifdef USE_FAN
       ESP_LOGCONFIG(TAG, "  Fans:");
       for (const auto v : fans) {
-        if (v->accessory_info.count(NAME)) {
-            ESP_LOGCONFIG(TAG, "    '%s'", v->accessory_info[NAME] ? v->accessory_info[NAME] : "Use entity name");
-        }
-        if (v->accessory_info.count(MODEL)) {
-            ESP_LOGCONFIG(TAG, "      Model: %s", v->accessory_info[MODEL]);
-        }
-        if (v->accessory_info.count(SN)) {
-            ESP_LOGCONFIG(TAG, "      Serial Number: %s", v->accessory_info[SN] ? v->accessory_info[SN] : "Use internal object ID");
-        }
-        if (v->accessory_info.count(MANUFACTURER)) {
-            ESP_LOGCONFIG(TAG, "      Manufacturer: %s", v->accessory_info[MANUFACTURER]);
-        }
-        if (v->accessory_info.count(FW_REV)) {
-            ESP_LOGCONFIG(TAG, "      Firmware Revision: %s", v->accessory_info[FW_REV]);
-        }
+        ESP_LOGCONFIG(TAG, "    '%s'", v->getEntity()->get_name().c_str());
       }
       #endif
 
       #ifdef USE_SWITCH
       ESP_LOGCONFIG(TAG, "  Switches:");
       for (const auto v : switches) {
-        if (v->accessory_info.count(NAME)) {
-            ESP_LOGCONFIG(TAG, "    '%s'", v->accessory_info[NAME] ? v->accessory_info[NAME] : "Use entity name");
-        }
-        if (v->accessory_info.count(MODEL)) {
-            ESP_LOGCONFIG(TAG, "      Model: %s", v->accessory_info[MODEL]);
-        }
-        if (v->accessory_info.count(SN)) {
-            ESP_LOGCONFIG(TAG, "      Serial Number: %s", v->accessory_info[SN] ? v->accessory_info[SN] : "Use internal object ID");
-        }
-        if (v->accessory_info.count(MANUFACTURER)) {
-            ESP_LOGCONFIG(TAG, "      Manufacturer: %s", v->accessory_info[MANUFACTURER]);
-        }
-        if (v->accessory_info.count(FW_REV)) {
-            ESP_LOGCONFIG(TAG, "      Firmware Revision: %s", v->accessory_info[FW_REV]);
-        }
+        ESP_LOGCONFIG(TAG, "    '%s'", v->getEntity()->get_name().c_str());
       }
       #endif
 
       #ifdef USE_CLIMATE
       ESP_LOGCONFIG(TAG, "  Climates:");
       for (const auto v : climates) {
-        if (v->accessory_info.count(NAME)) {
-            ESP_LOGCONFIG(TAG, "    '%s'", v->accessory_info[NAME] ? v->accessory_info[NAME] : "Use entity name");
-        }
-        if (v->accessory_info.count(MODEL)) {
-            ESP_LOGCONFIG(TAG, "      Model: %s", v->accessory_info[MODEL]);
-        }
-        if (v->accessory_info.count(SN)) {
-            ESP_LOGCONFIG(TAG, "      Serial Number: %s", v->accessory_info[SN] ? v->accessory_info[SN] : "Use internal object ID");
-        }
-        if (v->accessory_info.count(MANUFACTURER)) {
-            ESP_LOGCONFIG(TAG, "      Manufacturer: %s", v->accessory_info[MANUFACTURER]);
-        }
-        if (v->accessory_info.count(FW_REV)) {
-            ESP_LOGCONFIG(TAG, "      Firmware Revision: %s", v->accessory_info[FW_REV]);
-        }
+        ESP_LOGCONFIG(TAG, "    '%s'", v->getEntity()->get_name().c_str());
       }
       #endif
     }

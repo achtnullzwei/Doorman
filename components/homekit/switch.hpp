@@ -7,6 +7,8 @@
 #include <hap_apple_chars.h>
 #include <map>
 #include <unordered_map>
+#include "esphome/components/homekit_bridge/const.h"
+#include "esphome/components/homekit_bridge/util.h"
 #include "automation.h"
 
 namespace esphome
@@ -18,20 +20,20 @@ namespace esphome
       static std::unordered_map<hap_acc_t*, SwitchEntity*> acc_instance_map;
 
     private:
-      static constexpr const char* TAG = "SwitchEntity";
-      switch_::Switch* switchPtr;
+      static constexpr const char* TAG = "homekit.switch";
+      switch_::Switch* entityPtr;
 
       static int switch_write(hap_write_data_t write_data[], int count, void* serv_priv, void* write_priv) {
-        switch_::Switch* switchPtr = (switch_::Switch*)serv_priv;
-        ESP_LOGD(TAG, "Write called for Accessory %s (%s)", std::to_string(switchPtr->get_object_id_hash()).c_str(), switchPtr->get_name().c_str());
+        switch_::Switch* entityPtr = (switch_::Switch*)serv_priv;
+        ESP_LOGD(TAG, "Write called for Accessory %s (%s)", std::to_string(entityPtr->get_object_id_hash()).c_str(), entityPtr->get_name().c_str());
         int i, ret = HAP_SUCCESS;
         hap_write_data_t* write;
         for (i = 0; i < count; i++) {
           write = &write_data[i];
           if (!strcmp(hap_char_get_type_uuid(write->hc), HAP_CHAR_UUID_ON)) {
-            ESP_LOGD(TAG, "Received Write for switch '%s' -> %s", switchPtr->get_name().c_str(), write->val.b ? "On" : "Off");
-            ESP_LOGD(TAG, "[STATE] CURRENT STATE: %d", switchPtr->state);
-            write->val.b ? switchPtr->turn_on() : switchPtr->turn_off();
+            ESP_LOGD(TAG, "Received Write for switch '%s' -> %s", entityPtr->get_name().c_str(), write->val.b ? "On" : "Off");
+            ESP_LOGD(TAG, "[STATE] CURRENT STATE: %d", entityPtr->state);
+            write->val.b ? entityPtr->turn_on() : entityPtr->turn_off();
             hap_char_update_val(write->hc, &(write->val));
             *(write->status) = HAP_STATUS_SUCCESS;
           }
@@ -42,7 +44,7 @@ namespace esphome
         return ret;
       }
 
-      void on_switch_update(switch_::Switch* obj, bool v) {
+      void on_entity_update(switch_::Switch* obj, bool v) {
         ESP_LOGD(TAG, "%s state: %d", obj->get_name().c_str(), v);
         
         hap_acc_t* acc = hap_acc_get_by_aid(hap_get_unique_aid(std::to_string(obj->get_object_id_hash()).c_str()));
@@ -77,51 +79,40 @@ namespace esphome
       std::vector<HKIdentifyTrigger *> triggers_identify_;
 
     public:
-      SwitchEntity(switch_::Switch* switchPtr) : switchPtr(switchPtr) {}
-
-      void set_meta(std::map<AInfo, const char*> info) {
-        std::map<AInfo, const char*> merged_info;
-        merged_info.merge(info);
-        merged_info.merge(this->accessory_info);
-        this->accessory_info.swap(merged_info);
-      }
-
-      std::map<AInfo, const char*> accessory_info = {
-        {NAME, NULL},
-        {MODEL, "Switch"},
-        {SN, NULL},
-        {MANUFACTURER, "ESPHome"},
-        {FW_REV, "0.1"}
-      };
+      SwitchEntity(switch_::Switch* entityPtr) : entityPtr(entityPtr) {}
 
       void register_on_identify_trigger(HKIdentifyTrigger* trig) {
           triggers_identify_.push_back(trig);
       }
 
-      void setup() {
-        hap_acc_cfg_t acc_cfg = {
-            .model = strdup(accessory_info[MODEL]),
-            .manufacturer = strdup(accessory_info[MANUFACTURER]),
-            .fw_rev = strdup(accessory_info[FW_REV]),
-            .hw_rev = NULL,
-            .pv = strdup("1.1.0"),
-            .cid = HAP_CID_SWITCH,
-            .identify_routine = acc_identify,
-        };
+      switch_::Switch* getEntity() {
+        return entityPtr;
+      }
 
-        std::string accessory_name = switchPtr->get_name();
-        acc_cfg.name = strdup(accessory_info[NAME] ? accessory_info[NAME] : accessory_name.c_str());
-        acc_cfg.serial_num = strdup(accessory_info[SN] ? accessory_info[SN] : std::to_string(switchPtr->get_object_id_hash()).c_str());
+      void setup() {
+        ESP_LOGCONFIG(TAG, "Setting up switch '%s'", entityPtr->get_name().c_str());
+
+        hap_acc_cfg_t acc_cfg = {
+          .name = strdup_psram(entityPtr->get_name().c_str()),
+          .model = (char*)"ESPHome Switch",
+          .manufacturer = (char*)"ESPHome",
+          .serial_num = strdup_psram(std::to_string(entityPtr->get_object_id_hash()).c_str()),
+          .fw_rev = (char*)"1.0.0",
+          .hw_rev = NULL,
+          .pv = (char*)"1.1.0",
+          .cid = HAP_CID_SWITCH,
+          .identify_routine = acc_identify,
+        };
 
         /* Create accessory object */
         hap_acc_t* accessory = hap_acc_create(&acc_cfg);
         acc_instance_map[accessory] = this;
         
         /* Create the switch Service. */
-        hap_serv_t* service = hap_serv_switch_create(switchPtr->state);
+        hap_serv_t* service = hap_serv_switch_create(entityPtr->state);
 
-        ESP_LOGD(TAG, "ID HASH: %lu", switchPtr->get_object_id_hash());
-        hap_serv_set_priv(service, switchPtr);
+        ESP_LOGD(TAG, "ID HASH: %lu", entityPtr->get_object_id_hash());
+        hap_serv_set_priv(service, entityPtr);
 
         /* Set the write callback for the service */
         hap_serv_set_write_cb(service, switch_write);
@@ -130,12 +121,12 @@ namespace esphome
         hap_acc_add_serv(accessory, service);
 
         /* Add the Accessory to the HomeKit Database */
-        hap_add_bridged_accessory(accessory, hap_get_unique_aid(std::to_string(switchPtr->get_object_id_hash()).c_str()));
+        hap_add_bridged_accessory(accessory, hap_get_unique_aid(std::to_string(entityPtr->get_object_id_hash()).c_str()));
 
-        if (!switchPtr->is_internal())
-          switchPtr->add_on_state_callback([this](bool v) { this->on_switch_update(switchPtr, v); });
+        if (!entityPtr->is_internal())
+          entityPtr->add_on_state_callback([this](bool v) { this->on_entity_update(entityPtr, v); });
 
-        ESP_LOGI(TAG, "Switch '%s' linked to HomeKit", accessory_name.c_str());
+        ESP_LOGI(TAG, "Switch '%s' linked to HomeKit", entityPtr->get_name().c_str());
       }
     };
 

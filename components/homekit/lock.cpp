@@ -9,8 +9,8 @@ void LockEntity::register_on_identify_trigger(HKIdentifyTrigger* trig) {
     triggers_identify_.push_back(trig);
 }
 
-void LockEntity::on_lock_update(lock::Lock* obj) {
-    ESP_LOGD("on_lock_update", "%s state: %s", obj->get_name().c_str(), lock_state_to_string(obj->state));
+void LockEntity::on_entity_update(lock::Lock* obj) {
+    ESP_LOGD("on_entity_update", "%s state: %s", obj->get_name().c_str(), lock_state_to_string(obj->state));
     hap_acc_t* acc = hap_acc_get_by_aid(hap_get_unique_aid(std::to_string(obj->get_object_id_hash()).c_str()));
     hap_serv_t* hs = hap_acc_get_serv_by_uuid(acc, HAP_SERV_UUID_LOCK_MECHANISM);
     hap_char_t* current_state = hap_serv_get_char_by_uuid(hs, HAP_CHAR_UUID_LOCK_CURRENT_STATE);
@@ -35,9 +35,9 @@ void LockEntity::on_lock_update(lock::Lock* obj) {
 }
 
 int LockEntity::lock_write(hap_write_data_t write_data[], int count, void* serv_priv, void* write_priv) {
-    lock::Lock* lockPtr = (lock::Lock*)serv_priv;
-    ESP_LOGD("lock_write", "Write called for Accessory '%s'(%s)", lockPtr->get_name().c_str(), 
-             std::to_string(lockPtr->get_object_id_hash()).c_str());
+    lock::Lock* entityPtr = (lock::Lock*)serv_priv;
+    ESP_LOGD("lock_write", "Write called for Accessory '%s'(%s)", entityPtr->get_name().c_str(), 
+             std::to_string(entityPtr->get_object_id_hash()).c_str());
     
     int i, ret = HAP_SUCCESS;
     hap_write_data_t* write;
@@ -51,7 +51,7 @@ int LockEntity::lock_write(hap_write_data_t write_data[], int count, void* serv_
                            HAP_CHAR_UUID_LOCK_CURRENT_STATE);
             ESP_LOGD("lock_write", "Current State: %d", hap_char_get_val(c)->i);
             hap_char_update_val(c, &(write->val));
-            write->val.i ? lockPtr->lock() : lockPtr->unlock();
+            write->val.i ? entityPtr->lock() : entityPtr->unlock();
             *(write->status) = HAP_STATUS_SUCCESS;
         } else {
             *(write->status) = HAP_STATUS_RES_ABSENT;
@@ -61,30 +61,38 @@ int LockEntity::lock_write(hap_write_data_t write_data[], int count, void* serv_
 }
 
 int LockEntity::acc_identify(hap_acc_t* ha) {
-    ESP_LOGI("homekit", "Accessory identified");
+    auto it = acc_instance_map.find(ha);
+    if (it != acc_instance_map.end()) {
+        it->second->on_identify();
+    }
     return HAP_SUCCESS;
 }
 
-LockEntity::LockEntity(lock::Lock* lockPtr) : ptrToLock(lockPtr) {}
+void LockEntity::on_identify() {
+    ESP_LOGD(TAG, "Accessory identified");
+    for (auto* trig : triggers_identify_) {
+      if (trig) trig->trigger();
+    }
+}
 
-void LockEntity::set_meta(std::map<AInfo, const char*> info) {
-    std::map<AInfo, const char*> merged_info;
-    merged_info.merge(info);
-    merged_info.merge(this->accessory_info);
-    this->accessory_info.swap(merged_info);
+LockEntity::LockEntity(lock::Lock* entityPtr) : entityPtr(entityPtr) {}
+
+lock::Lock* LockEntity::getEntity() {
+    return entityPtr;
 }
 
 void LockEntity::setup() {
+    ESP_LOGCONFIG(TAG, "Setting up lock '%s'", entityPtr->get_name().c_str());
+
     hap_acc_cfg_t acc_cfg = {
-        .name = strdup(accessory_info[AInfo::NAME] ? accessory_info[AInfo::NAME] : ptrToLock->get_name().c_str()),
-        .model = strdup(accessory_info[AInfo::MODEL]),
-        .manufacturer = strdup(accessory_info[AInfo::MANUFACTURER]),
-        .serial_num = strdup(accessory_info[AInfo::SN] ? accessory_info[AInfo::SN] : 
-                            std::to_string(ptrToLock->get_object_id_hash()).c_str()),
-        .fw_rev = strdup(accessory_info[AInfo::FW_REV]),
+        .name = strdup_psram(entityPtr->get_name().c_str()),
+        .model = (char*)"ESPHome Lock",
+        .manufacturer = (char*)"ESPHome",
+        .serial_num = strdup_psram(std::to_string(entityPtr->get_object_id_hash()).c_str()),
+        .fw_rev = (char*)"1.0.0",
         .hw_rev = NULL,
         .hw_finish = NULL,
-        .pv = strdup("1.1.0"),
+        .pv = (char*)"1.1.0",
         .cid = HAP_CID_LOCK,
         .identify_routine = acc_identify,
     };
@@ -92,20 +100,20 @@ void LockEntity::setup() {
     hap_acc_t* accessory = hap_acc_create(&acc_cfg);
     acc_instance_map[accessory] = this;
 
-    hap_serv_t* lockMechanism = hap_serv_lock_mechanism_create(ptrToLock->state, ptrToLock->state);
+    hap_serv_t* lockMechanism = hap_serv_lock_mechanism_create(entityPtr->state, entityPtr->state);
 
-    ESP_LOGD("homekit", "ID HASH: %lu", ptrToLock->get_object_id_hash());
-    hap_serv_set_priv(lockMechanism, ptrToLock);
+    ESP_LOGD("homekit", "ID HASH: %lu", entityPtr->get_object_id_hash());
+    hap_serv_set_priv(lockMechanism, entityPtr);
     hap_serv_set_write_cb(lockMechanism, lock_write);
     hap_acc_add_serv(accessory, lockMechanism);
 
     hap_add_bridged_accessory(accessory, 
-                             hap_get_unique_aid(std::to_string(ptrToLock->get_object_id_hash()).c_str()));
+                             hap_get_unique_aid(std::to_string(entityPtr->get_object_id_hash()).c_str()));
     
-    if (!ptrToLock->is_internal())
-        ptrToLock->add_on_state_callback([this]() { this->on_lock_update(ptrToLock); });
+    if (!entityPtr->is_internal())
+        entityPtr->add_on_state_callback([this]() { this->on_entity_update(entityPtr); });
 
-    ESP_LOGI("homekit", "Lock '%s' linked to HomeKit", ptrToLock->get_name().c_str());
+    ESP_LOGI("homekit", "Lock '%s' linked to HomeKit", entityPtr->get_name().c_str());
 }
 
 } // namespace homekit

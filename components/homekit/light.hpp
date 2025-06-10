@@ -6,6 +6,8 @@
 #include <hap_apple_servs.h>
 #include <hap_apple_chars.h>
 #include <map>
+#include "esphome/components/homekit_bridge/const.h"
+#include "esphome/components/homekit_bridge/util.h"
 #include "automation.h"
 
 namespace esphome
@@ -17,38 +19,37 @@ namespace esphome
       static std::unordered_map<hap_acc_t*, LightEntity*> acc_instance_map;
 
     private:
-      static constexpr const char* TAG = "LightEntity";
-
-      light::LightState* lightPtr;
+      static constexpr const char* TAG = "homekit.light";
+      light::LightState* entityPtr;
 
       static int light_write(hap_write_data_t write_data[], int count, void* serv_priv, void* write_priv) {
-        light::LightState* lightPtr = (light::LightState*)serv_priv;
-        ESP_LOGD(TAG, "Write called for Accessory %s (%s)", std::to_string(lightPtr->get_object_id_hash()).c_str(), lightPtr->get_name().c_str());
+        light::LightState* entityPtr = (light::LightState*)serv_priv;
+        ESP_LOGD(TAG, "Write called for Accessory %s (%s)", std::to_string(entityPtr->get_object_id_hash()).c_str(), entityPtr->get_name().c_str());
         int i, ret = HAP_SUCCESS;
         hap_write_data_t* write;
         for (i = 0; i < count; i++) {
           write = &write_data[i];
           if (!strcmp(hap_char_get_type_uuid(write->hc), HAP_CHAR_UUID_ON)) {
-            ESP_LOGD(TAG, "Received Write for Light '%s' state: %s", lightPtr->get_name().c_str(), write->val.b ? "On" : "Off");
-            ESP_LOGD(TAG, "[STATE] CURRENT STATE: %d", (int)(lightPtr->current_values.get_state() * 100));
-            write->val.b ? lightPtr->turn_on().set_save(true).perform() : lightPtr->turn_off().set_save(true).perform();
+            ESP_LOGD(TAG, "Received Write for Light '%s' state: %s", entityPtr->get_name().c_str(), write->val.b ? "On" : "Off");
+            ESP_LOGD(TAG, "[STATE] CURRENT STATE: %d", (int)(entityPtr->current_values.get_state() * 100));
+            write->val.b ? entityPtr->turn_on().set_save(true).perform() : entityPtr->turn_off().set_save(true).perform();
             hap_char_update_val(write->hc, &(write->val));
             *(write->status) = HAP_STATUS_SUCCESS;
           }
           if (!strcmp(hap_char_get_type_uuid(write->hc), HAP_CHAR_UUID_BRIGHTNESS)) {
-            ESP_LOGD(TAG, "Received Write for Light '%s' Level: %d", lightPtr->get_name().c_str(), write->val.i);
-            ESP_LOGD(TAG, "[LEVEL] CURRENT BRIGHTNESS: %d", (int)(lightPtr->current_values.get_brightness() * 100));
+            ESP_LOGD(TAG, "Received Write for Light '%s' Level: %d", entityPtr->get_name().c_str(), write->val.i);
+            ESP_LOGD(TAG, "[LEVEL] CURRENT BRIGHTNESS: %d", (int)(entityPtr->current_values.get_brightness() * 100));
             ESP_LOGD(TAG, "TARGET BRIGHTNESS: %d", (int)write->val.i);
-            lightPtr->make_call().set_save(true).set_brightness((float)(write->val.i) / 100).perform();
+            entityPtr->make_call().set_save(true).set_brightness((float)(write->val.i) / 100).perform();
             hap_char_update_val(write->hc, &(write->val));
             *(write->status) = HAP_STATUS_SUCCESS;
           }
           if (!strcmp(hap_char_get_type_uuid(write->hc), HAP_CHAR_UUID_HUE)) {
-            ESP_LOGD(TAG, "Received Write for Light '%s' Hue: %.2f", lightPtr->get_name().c_str(), write->val.f);
+            ESP_LOGD(TAG, "Received Write for Light '%s' Hue: %.2f", entityPtr->get_name().c_str(), write->val.f);
             int hue = 0;
             float saturation = 0;
             float colorValue = 0;
-            rgb_to_hsv(lightPtr->remote_values.get_red(), lightPtr->remote_values.get_green(), lightPtr->remote_values.get_blue(), hue, saturation, colorValue);
+            rgb_to_hsv(entityPtr->remote_values.get_red(), entityPtr->remote_values.get_green(), entityPtr->remote_values.get_blue(), hue, saturation, colorValue);
             ESP_LOGD(TAG, "[HUE] CURRENT Hue: %d, Saturation: %.2f, Value: %.2f", hue, saturation, colorValue);
             ESP_LOGD(TAG, "TARGET HUE: %.2f", write->val.f);
             float tR = 0;
@@ -56,16 +57,16 @@ namespace esphome
             float tB = 0;
             hsv_to_rgb(write->val.f, saturation, colorValue, tR, tG, tB);
             ESP_LOGD(TAG, "TARGET RGB: %.2f %.2f %.2f", tR, tG, tB);
-            lightPtr->make_call().set_rgb(tR, tG, tB).set_save(true).perform();
+            entityPtr->make_call().set_rgb(tR, tG, tB).set_save(true).perform();
             hap_char_update_val(write->hc, &(write->val));
             *(write->status) = HAP_STATUS_SUCCESS;
           }
           if (!strcmp(hap_char_get_type_uuid(write->hc), HAP_CHAR_UUID_SATURATION)) {
-            ESP_LOGD(TAG, "Received Write for Light '%s' Saturation: %.2f", lightPtr->get_name().c_str(), write->val.f);
+            ESP_LOGD(TAG, "Received Write for Light '%s' Saturation: %.2f", entityPtr->get_name().c_str(), write->val.f);
             int hue = 0;
             float saturation = 0;
             float colorValue = 0;
-            rgb_to_hsv(lightPtr->remote_values.get_red(), lightPtr->remote_values.get_green(), lightPtr->remote_values.get_blue(), hue, saturation, colorValue);
+            rgb_to_hsv(entityPtr->remote_values.get_red(), entityPtr->remote_values.get_green(), entityPtr->remote_values.get_blue(), hue, saturation, colorValue);
             ESP_LOGD(TAG, "[SATURATION] CURRENT Hue: %d, Saturation: %.2f, Value: %.2f", hue, saturation, colorValue);
             ESP_LOGD(TAG, "TARGET SATURATION: %.2f", write->val.f);
             float tR = 0;
@@ -73,15 +74,15 @@ namespace esphome
             float tB = 0;
             hsv_to_rgb(hue, write->val.f / 100, colorValue, tR, tG, tB);
             ESP_LOGD(TAG, "TARGET RGB: %.2f %.2f %.2f", tR, tG, tB);
-            lightPtr->make_call().set_rgb(tR, tG, tB).set_save(true).perform();
+            entityPtr->make_call().set_rgb(tR, tG, tB).set_save(true).perform();
             hap_char_update_val(write->hc, &(write->val));
             *(write->status) = HAP_STATUS_SUCCESS;
           }
           if (!strcmp(hap_char_get_type_uuid(write->hc), HAP_CHAR_UUID_COLOR_TEMPERATURE)) {
-            ESP_LOGD(TAG, "Received Write for Light '%s' Level: %d", lightPtr->get_name().c_str(), write->val.i);
-            ESP_LOGD(TAG, "[LEVEL] CURRENT COLOR TEMPERATURE(mired): %.2f", lightPtr->current_values.get_color_temperature());
+            ESP_LOGD(TAG, "Received Write for Light '%s' Level: %d", entityPtr->get_name().c_str(), write->val.i);
+            ESP_LOGD(TAG, "[LEVEL] CURRENT COLOR TEMPERATURE(mired): %.2f", entityPtr->current_values.get_color_temperature());
             ESP_LOGD(TAG, "TARGET COLOR TEMPERATURE(mired): %lu", write->val.u);
-            lightPtr->make_call().set_color_temperature(write->val.u).set_save(true).perform();
+            entityPtr->make_call().set_color_temperature(write->val.u).set_save(true).perform();
             hap_char_update_val(write->hc, &(write->val));
             *(write->status) = HAP_STATUS_SUCCESS;
           }
@@ -92,7 +93,7 @@ namespace esphome
         return ret;
       }
 
-      void on_light_update(light::LightState* obj) {
+      void on_entity_update(light::LightState* obj) {
         bool rgb = obj->current_values.get_color_mode() & light::ColorCapability::RGB;
         bool level = obj->get_traits().supports_color_capability(light::ColorCapability::BRIGHTNESS);
         bool temperature = obj->current_values.get_color_mode() & (light::ColorCapability::COLOR_TEMPERATURE | light::ColorCapability::COLD_WARM_WHITE);
@@ -154,41 +155,30 @@ namespace esphome
       std::vector<HKIdentifyTrigger *> triggers_identify_;
 
     public:
-      LightEntity(light::LightState* lightPtr) : lightPtr(lightPtr) {}
+      LightEntity(light::LightState* entityPtr) : entityPtr(entityPtr) {}
 
-      void set_meta(std::map<AInfo, const char*> info) {
-        std::map<AInfo, const char*> merged_info;
-        merged_info.merge(info);
-        merged_info.merge(this->accessory_info);
-        this->accessory_info.swap(merged_info);
+      light::LightState* getEntity() {
+        return entityPtr;
       }
-
-      std::map<AInfo, const char*> accessory_info = {
-        {NAME, NULL},
-        {MODEL, "Light"},
-        {SN, NULL},
-        {MANUFACTURER, "ESPHome"},
-        {FW_REV, "0.1"}
-      };
 
       void register_on_identify_trigger(HKIdentifyTrigger* trig) {
           triggers_identify_.push_back(trig);
       }
 
       void setup() {
-        hap_acc_cfg_t acc_cfg = {
-            .model = strdup(accessory_info[MODEL]),
-            .manufacturer = strdup(accessory_info[MANUFACTURER]),
-            .fw_rev = strdup(accessory_info[FW_REV]),
-            .hw_rev = NULL,
-            .pv = strdup("1.1.0"),
-            .cid = HAP_CID_LIGHTING,
-            .identify_routine = acc_identify,
-        };
+        ESP_LOGCONFIG(TAG, "Setting up light '%s'", entityPtr->get_name().c_str());
 
-        std::string accessory_name = lightPtr->get_name();
-        acc_cfg.name = strdup(accessory_info[NAME] ? accessory_info[NAME] : accessory_name.c_str());
-        acc_cfg.serial_num = strdup(accessory_info[SN] ? accessory_info[SN] : std::to_string(lightPtr->get_object_id_hash()).c_str());
+        hap_acc_cfg_t acc_cfg = {
+          .name = strdup_psram(entityPtr->get_name().c_str()),
+          .model = (char*)"ESPHome Light",
+          .manufacturer = (char*)"ESPHome",
+          .serial_num = strdup_psram(std::to_string(entityPtr->get_object_id_hash()).c_str()),
+          .fw_rev = (char*)"1.0.0",
+          .hw_rev = NULL,
+          .pv = (char*)"1.1.0",
+          .cid = HAP_CID_LIGHTING,
+          .identify_routine = acc_identify,
+        };
 
         hap_acc_t* accessory = hap_acc_create(&acc_cfg);
         acc_instance_map[accessory] = this;
@@ -197,28 +187,26 @@ namespace esphome
         float saturation = 0;
         float colorValue = 0;
 
-        rgb_to_hsv(lightPtr->current_values.get_red(), lightPtr->current_values.get_green(), lightPtr->current_values.get_blue(), hue, saturation, colorValue);
+        rgb_to_hsv(entityPtr->current_values.get_red(), entityPtr->current_values.get_green(), entityPtr->current_values.get_blue(), hue, saturation, colorValue);
         
-        hap_serv_t* service = hap_serv_lightbulb_create(lightPtr->current_values.get_state());
+        hap_serv_t* service = hap_serv_lightbulb_create(entityPtr->current_values.get_state());
 
-        hap_serv_add_char(service, hap_char_name_create(accessory_name.data()));
-        
-        if (lightPtr->get_traits().supports_color_capability(light::ColorCapability::BRIGHTNESS)) {
-          hap_serv_add_char(service, hap_char_brightness_create(lightPtr->current_values.get_brightness() * 100));
+        if (entityPtr->get_traits().supports_color_capability(light::ColorCapability::BRIGHTNESS)) {
+          hap_serv_add_char(service, hap_char_brightness_create(entityPtr->current_values.get_brightness() * 100));
         }
 
-        if (lightPtr->get_traits().supports_color_capability(light::ColorCapability::RGB)) {
+        if (entityPtr->get_traits().supports_color_capability(light::ColorCapability::RGB)) {
           hap_serv_add_char(service, hap_char_hue_create(hue));
           hap_serv_add_char(service, hap_char_saturation_create(saturation * 100));
         }
 
-        if (lightPtr->get_traits().supports_color_capability(light::ColorCapability::COLOR_TEMPERATURE) ||
-            lightPtr->get_traits().supports_color_capability(light::ColorCapability::COLD_WARM_WHITE)) {
-          hap_serv_add_char(service, hap_char_color_temperature_create(lightPtr->current_values.get_color_temperature()));
+        if (entityPtr->get_traits().supports_color_capability(light::ColorCapability::COLOR_TEMPERATURE) ||
+            entityPtr->get_traits().supports_color_capability(light::ColorCapability::COLD_WARM_WHITE)) {
+          hap_serv_add_char(service, hap_char_color_temperature_create(entityPtr->current_values.get_color_temperature()));
         }
 
-        ESP_LOGD(TAG, "ID HASH: %lu", lightPtr->get_object_id_hash());
-        hap_serv_set_priv(service, lightPtr);
+        ESP_LOGD(TAG, "ID HASH: %lu", entityPtr->get_object_id_hash());
+        hap_serv_set_priv(service, entityPtr);
 
         /* Set the write callback for the service */
         hap_serv_set_write_cb(service, light_write);
@@ -227,12 +215,12 @@ namespace esphome
         hap_acc_add_serv(accessory, service);
 
         /* Add the Accessory to the HomeKit Database */
-        hap_add_bridged_accessory(accessory, hap_get_unique_aid(std::to_string(lightPtr->get_object_id_hash()).c_str()));
+        hap_add_bridged_accessory(accessory, hap_get_unique_aid(std::to_string(entityPtr->get_object_id_hash()).c_str()));
 
-        if (!lightPtr->is_internal())
-          lightPtr->add_new_target_state_reached_callback([this]() { this->on_light_update(lightPtr); });
+        if (!entityPtr->is_internal())
+          entityPtr->add_new_target_state_reached_callback([this]() { this->on_entity_update(entityPtr); });
 
-        ESP_LOGI(TAG, "Light '%s' linked to HomeKit", accessory_name.c_str());
+        ESP_LOGI(TAG, "Light '%s' linked to HomeKit", entityPtr->get_name().c_str());
       }
     };
 

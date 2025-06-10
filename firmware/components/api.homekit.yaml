@@ -12,9 +12,8 @@ esphome:
       - wait_until:
           condition:
             wifi.connected:
-
+      - delay: 2s
       - script.execute: homekit_connect
-
 
 script:
   - id: homekit_connect
@@ -80,12 +79,9 @@ web_server:
       sorting_weight: -2
 
 homekit_bridge:
-  meta:
-    name: "Doorman"
-    manufacturer: "AzonInc"
-    model: "Doorman-S3"
-    fw_rev: "2025.5.1"
-    serial_number: "DMS3-291-21-998"
+  name: "Doorman"
+  manufacturer: "AzonInc"
+  model: "Doorman-S3"
   setup_code: '291-21-998'
   setup_id: DMS3
   task_stack_size: 3072
@@ -124,27 +120,9 @@ button:
 homekit:
   lock:
     - id: entrance_door
-      meta:
-        name: "Entrance Door"
-        model: "Door Opener"
-
     - id: second_entrance_door
-      meta:
-        name: "Second Entrance Door"
-        model: "Door Opener"
 
   event:
     - id: entrance_doorbell_pattern
-      meta:
-        name: "Entrance Doorbell"
-        model: "Doorbell Event"
-
     - id: second_entrance_doorbell_pattern
-      meta:
-        name: "Second Entrance Doorbell"
-        model: "Doorbell Event"
-
     - id: apartment_doorbell_pattern
-      meta:
-        name: "Apartment Doorbell"
-        model: "Doorbell Event"

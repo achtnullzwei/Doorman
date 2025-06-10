@@ -8,7 +8,7 @@
 #include <hap_apple_servs.h>
 #include <hap_apple_chars.h>
 #include "esphome/components/homekit_bridge/const.h"
-
+#include "esphome/components/homekit_bridge/util.h"
 #include "automation.h"
 
 namespace esphome {
@@ -18,28 +18,22 @@ class LockEntity {
     static std::unordered_map<hap_acc_t*, LockEntity*> acc_instance_map;
 
 private:
-    lock::Lock* ptrToLock;
+    static constexpr const char* TAG = "homekit.lock";
     std::vector<HKIdentifyTrigger *> triggers_identify_;
+    lock::Lock* entityPtr;
 
 public:
-    LockEntity(lock::Lock* lockPtr);
+    LockEntity(lock::Lock* entityPtr);
+    lock::Lock* getEntity();
     void setup();
-    void set_meta(std::map<AInfo, const char*> info);
-
-    std::map<AInfo, const char*> accessory_info = {
-        {NAME, NULL},
-        {MODEL, "Lock"},
-        {SN, NULL},
-        {MANUFACTURER, "ESPHome"},
-        {FW_REV, "0.1"}
-    };
 
     void register_on_identify_trigger(HKIdentifyTrigger* trig);
 
 protected:
     static int acc_identify(hap_acc_t* ha);
+    void on_identify();
     static int lock_write(hap_write_data_t write_data[], int count, void* serv_priv, void* write_priv);
-    void on_lock_update(lock::Lock* obj);
+    void on_entity_update(lock::Lock* obj);
 };
 
 inline std::unordered_map<hap_acc_t*, LockEntity*> LockEntity::acc_instance_map;

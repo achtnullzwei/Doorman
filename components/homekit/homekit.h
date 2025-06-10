@@ -5,6 +5,7 @@
 #include <esphome/core/component.h>
 #include "esphome/components/homekit_bridge/homekit_bridge.h"
 #include "esphome/components/homekit_bridge/const.h"
+#include "esphome/components/homekit_bridge/util.h"
 
 #ifdef USE_LIGHT
 #include "light.hpp"
@@ -51,7 +52,7 @@ namespace esphome
     public:
       const char* TAG = "homekit";
 
-      float get_setup_priority() const override { return setup_priority::AFTER_WIFI - 50; }
+      float get_setup_priority() const override { return setup_priority::AFTER_CONNECTION; }
       void setup() override;
       void dump_config() override;
 

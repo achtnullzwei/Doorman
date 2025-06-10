@@ -27,9 +27,11 @@ ConnectedCondition = homekit_ns.class_("ConnectedCondition", Condition)
 
 CONF_HAP_ID = "hap_id"
 CONF_TASK_STACK_SIZE = "task_stack_size"
-CONF_META = "meta"
 CONF_SETUP_CODE = "setup_code"
 CONF_SETUP_ID = "setup_id"
+CONF_NAME = "name"
+CONF_MODEL = "model"
+CONF_MANUFACTURER = "manufacturer"
 
 CONF_ON_PAIRING_STARTED = "on_pairing_started"
 CONF_ON_PAIRING_ABORTED = "on_pairing_aborted"
@@ -50,26 +52,16 @@ def hk_setup_code(value):
         'Setup code must match the format XXX-XX-XXX'
     )
 
-ACC_INFO = {
-    "name": AInfo.NAME,
-    "model": AInfo.MODEL,
-    "manufacturer": AInfo.MANUFACTURER,
-    "serial_number": AInfo.SN,
-    "fw_rev": AInfo.FW_REV,
-}
-
-ACCESSORY_INFORMATION = {
-    cv.Optional(i): cv.string for i in ACC_INFO
-}
-
 CONFIG_SCHEMA = cv.All(
     cv.Schema({
         cv.GenerateID(): cv.declare_id(HomeKitBridgeComponent),
         cv.Optional(CONF_PORT, default=32042): cv.port,
-        cv.Optional(CONF_META) : ACCESSORY_INFORMATION,
-        cv.Optional(CONF_SETUP_CODE, default="159-35-728"): hk_setup_code,
-        cv.Optional(CONF_TASK_STACK_SIZE, default="4096"): cv.uint32_t,
-        cv.Optional(CONF_SETUP_ID, default="ES32"): cv.All(
+        cv.Optional(CONF_SETUP_CODE): hk_setup_code,
+        cv.Optional(CONF_NAME): cv.string_strict,
+        cv.Optional(CONF_MODEL): cv.string_strict,
+        cv.Optional(CONF_MANUFACTURER): cv.string_strict,
+        cv.Optional(CONF_TASK_STACK_SIZE): cv.uint32_t,
+        cv.Optional(CONF_SETUP_ID): cv.All(
             cv.string_strict,
             cv.Upper,
             cv.Length(
@@ -149,12 +141,15 @@ async def to_code(config):
     
     if CONF_SETUP_ID in config:
         cg.add(var.set_setup_id(config[CONF_SETUP_ID]))
-    
-    if CONF_META in config:
-        info_temp = []
-        for m in config[CONF_META]:
-            info_temp.append([ACC_INFO[m], config[CONF_META][m]])
-        cg.add(var.set_meta(info_temp))
+
+    if CONF_NAME in config:
+        cg.add(var.set_name(config[CONF_NAME]))
+
+    if CONF_MODEL in config:
+        cg.add(var.set_model(config[CONF_MODEL]))
+
+    if CONF_MANUFACTURER in config:
+        cg.add(var.set_manufacturer(config[CONF_MANUFACTURER]))
 
     await cg.register_component(var, config)
 

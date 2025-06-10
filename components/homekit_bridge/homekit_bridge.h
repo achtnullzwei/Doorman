@@ -12,6 +12,7 @@
 #include <algorithm>
 #include <map>
 #include "const.h"
+#include "util.h"
 
 #ifdef USE_BUTTON
 #include "esphome/components/button/button.h"
@@ -39,13 +40,10 @@ namespace homekit {
     void set_task_stack_size(uint32_t task_stack_size){ this->task_stack_size_ = task_stack_size; }
     void set_setup_code(const char *setup_code) { this->setup_code_ = setup_code; }
     void set_setup_id(const char *setup_id) { this->setup_id_ = setup_id; }
+    void set_name(const char *name) { this->name_ = name; }
+    void set_model(const char *model) { this->model_ = model; }
+    void set_manufacturer(const char *manufacturer) { this->manufacturer_ = manufacturer; }
     void set_task_stack_size(const char *setup_id) { this->setup_id_ = setup_id; }
-    void set_meta(std::map<AInfo, const char*> info) {
-      std::map<AInfo, const char*> merged_info;
-      merged_info.merge(info);
-      merged_info.merge(this->accessory_info_);
-      this->accessory_info_.swap(merged_info);
-    }
 
     void report_heap();
     void factory_reset();
@@ -95,9 +93,12 @@ namespace homekit {
     bool is_ready_ = false;
     uint8_t connection_count_ = 0;
     uint32_t task_stack_size_ = 4096;
+
     const char *setup_code_ = "159-35-728";
     const char *setup_id_ = "DMS3";
-    std::map<AInfo, const char*> accessory_info_ = {{NAME, "ESPH Bridge"}, {MODEL, "HAP-BRIDGE"}, {SN, "16161616"}, {MANUFACTURER, "rednblkx"}, {FW_REV, "0.1"}};
+    const char *name_ = "HomeKit Bridge";
+    const char *model_ = "ESP32 HAP";
+    const char *manufacturer_ = "ESPHome";
 
     CallbackManager<void()> pairing_started_callback_{};
     CallbackManager<void()> pairing_aborted_callback_{};

@@ -1,4 +1,5 @@
 #include "homekit_bridge.h"
+#include "util.h"
 #include <esp_event.h>
 
 namespace esphome
@@ -91,13 +92,13 @@ namespace esphome
             hap_set_config(&hap_cfg);
 
             hap_acc_cfg_t cfg = {
-                .name = strdup(this->accessory_info_[NAME]),
-                .model = strdup(this->accessory_info_[MODEL]),
-                .manufacturer = strdup(this->accessory_info_[MANUFACTURER]),
-                .serial_num = strdup(this->accessory_info_[SN]),
-                .fw_rev = strdup(this->accessory_info_[FW_REV]),
-                .hw_rev = strdup("1.0"),
-                .pv = strdup("1.1.0"),
+                .name = (char*)this->name_,
+                .model = (char*)this->model_,
+                .manufacturer = (char*)this->manufacturer_,
+                .serial_num = (char*)get_mac_address().c_str(),
+                .fw_rev = (char*)"1.0.0",
+                .hw_rev = (char*)"1.0.0",
+                .pv = (char*)"1.1.0",
                 .cid = HAP_CID_BRIDGE,
                 .identify_routine = static_identify_handler,
             };
@@ -164,23 +165,9 @@ namespace esphome
             ESP_LOGCONFIG(TAG, "  Task Stack Size: %i", this->task_stack_size_);
             ESP_LOGCONFIG(TAG, "  Setup Code: %s", this->setup_code_);
             ESP_LOGCONFIG(TAG, "  Setup ID: %s", this->setup_id_);
-
-            ESP_LOGCONFIG(TAG, "  Meta:");
-            if (this->accessory_info_.count(NAME)) {
-                ESP_LOGCONFIG(TAG, "    Name: %s", this->accessory_info_[NAME]);
-            }
-            if (this->accessory_info_.count(MODEL)) {
-                ESP_LOGCONFIG(TAG, "    Model: %s", this->accessory_info_[MODEL]);
-            }
-            if (this->accessory_info_.count(SN)) {
-                ESP_LOGCONFIG(TAG, "    Serial Number: %s", this->accessory_info_[SN]);
-            }
-            if (this->accessory_info_.count(MANUFACTURER)) {
-                ESP_LOGCONFIG(TAG, "    Manufacturer: %s", this->accessory_info_[MANUFACTURER]);
-            }
-            if (this->accessory_info_.count(FW_REV)) {
-                ESP_LOGCONFIG(TAG, "    Firmware Revision: %s", this->accessory_info_[FW_REV]);
-            }
+            ESP_LOGCONFIG(TAG, "  Name: %s", this->name_);
+            ESP_LOGCONFIG(TAG, "  Model: %s", this->model_);
+            ESP_LOGCONFIG(TAG, "  Manufacturer: %s", this->manufacturer_);
 
 #ifdef USE_BUTTON
             ESP_LOGCONFIG(TAG, "  Buttons:");
