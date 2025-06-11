@@ -118,11 +118,13 @@ button:
         sorting_weight: 4
 
 homekit:
-  lock:
-    - id: entrance_door
-    - id: second_entrance_door
-
-  event:
+  doorbell:
     - id: entrance_doorbell_pattern
+      lock_id: entrance_door
+      light_id: hallway_light
+
     - id: second_entrance_doorbell_pattern
+      lock_id: second_entrance_door
+      light_id: hallway_light
+
     - id: apartment_doorbell_pattern

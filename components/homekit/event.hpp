@@ -105,7 +105,7 @@ namespace esphome
             .fw_rev = (char*)"1.0.0",
             .hw_rev = NULL,
             .pv = (char*)"1.1.0",
-            .cid = HAP_CID_PROGRAMMABLE_SWITCH,
+            .cid = HAP_CID_BRIDGE,
             .identify_routine = acc_identify,
           };
 
@@ -113,11 +113,9 @@ namespace esphome
           acc_instance_map[accessory] = this;
 
           ESP_LOGD(TAG, "ID HASH: %lu", entityPtr->get_object_id_hash());
-
           hap_serv_set_priv(service, entityPtr);
-
           hap_acc_add_serv(accessory, service);
-
+          
           /* Add the Accessory to the HomeKit Database */
           hap_add_bridged_accessory(accessory, hap_get_unique_aid(std::to_string(entityPtr->get_object_id_hash()).c_str()));
 

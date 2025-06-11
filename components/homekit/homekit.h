@@ -12,7 +12,7 @@
 #endif
 
 #ifdef USE_LOCK
-#include "lock.h"
+#include "lock.hpp"
 #endif
 
 #ifdef USE_FAN
@@ -33,6 +33,7 @@
 
 #ifdef USE_EVENT
 #include "event.hpp"
+#include "doorbell.hpp"
 #endif
 
 #ifdef USE_BUTTON
@@ -91,6 +92,9 @@ namespace esphome
       #ifdef USE_EVENT
       std::vector<EventEntity*> events;
       EventEntity* add_event(event::Event* eventPtr);
+
+      std::vector<DoorbellEntity*> doorbells;
+      DoorbellEntity* add_doorbell(event::Event* eventPtr, lock::Lock* lockPtr = nullptr, light::LightState* lightPtr = nullptr);
       #endif
 
       #ifdef USE_BUTTON

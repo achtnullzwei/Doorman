@@ -176,7 +176,7 @@ namespace esphome
           .fw_rev = (char*)"1.0.0",
           .hw_rev = NULL,
           .pv = (char*)"1.1.0",
-          .cid = HAP_CID_LIGHTING,
+          .cid = HAP_CID_BRIDGE,
           .identify_routine = acc_identify,
         };
 
@@ -225,6 +225,6 @@ namespace esphome
     };
 
     inline std::unordered_map<hap_acc_t*, LightEntity*> LightEntity::acc_instance_map;
-  }
-}
+  } // namespace homekit
+} // namespace esphome
 #endif

@@ -121,7 +121,7 @@ async def to_code(config):
 
     add_idf_component(
         name="esp-homekit-sdk",
-        repo="https://github.com/AzonInc/esp-homekit-sdk",
+        repo="https://github.com/rednblkx/esp-homekit-sdk",
         ref="master",
         components=["esp_hap_core", "esp_hap_apple_profiles", "esp_hap_extras", "esp_hap_platform", "hkdf-sha", "mu_srp"],
     )

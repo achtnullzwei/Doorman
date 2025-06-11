@@ -26,6 +26,7 @@ SwitchEntity = homekit_ns.class_('SwitchEntity')
 ClimateEntity = homekit_ns.class_('ClimateEntity')
 LockEntity = homekit_ns.class_('LockEntity')
 FanEntity = homekit_ns.class_('FanEntity')
+DoorbellEntity = homekit_ns.class_('DoorbellEntity')
 
 OnHKIdentifyTrigger = homekit_ns.class_(
     "HKIdentifyTrigger", automation.Trigger.template()
@@ -38,6 +39,9 @@ CONF_HK_FAIL = "on_hk_fail"
 CONF_LOCK = "lock"
 CONF_FAN = "fan"
 CONF_SWITCH = "switch"
+CONF_DOORBELL = "doorbell"
+CONF_LOCK_ID = "lock_id"
+CONF_LIGHT_ID = "light_id"
 CONF_CLIMATE = "climate"
 CONF_TEMP_UNITS = "temp_units"
 
@@ -46,13 +50,6 @@ CONF_HOMEKIT_BRIDGE = "homekit_bridge_id"
 TEMP_UNITS = {
     "CELSIUS": TemperatureUnits.CELSIUS,
     "FAHRENHEIT": TemperatureUnits.FAHRENHEIT
-}
-
-HK_HW_FINISH = {
-    "TAN": HKFinish.TAN,
-    "GOLD": HKFinish.GOLD,
-    "SILVER": HKFinish.SILVER,
-    "BLACK": HKFinish.BLACK
 }
 
 CONFIG_SCHEMA = cv.All(cv.Schema({
@@ -68,6 +65,14 @@ CONFIG_SCHEMA = cv.All(cv.Schema({
     }),
     cv.Optional(CONF_LOCK): cv.ensure_list({
         cv.Required(CONF_ID): cv.use_id(lock.Lock),
+        cv.Optional(CONF_IDENTIFY): automation.validate_automation({
+            cv.GenerateID(CONF_TRIGGER_ID): cv.declare_id(OnHKIdentifyTrigger),
+        }),
+    }),
+    cv.Optional(CONF_DOORBELL): cv.ensure_list({
+        cv.Required(CONF_ID): cv.use_id(event.Event),
+        cv.Optional(CONF_LOCK_ID): cv.use_id(lock.Lock),
+        cv.Optional(CONF_LIGHT_ID): cv.use_id(light.LightState),
         cv.Optional(CONF_IDENTIFY): automation.validate_automation({
             cv.GenerateID(CONF_TRIGGER_ID): cv.declare_id(OnHKIdentifyTrigger),
         }),
@@ -178,6 +183,22 @@ async def to_code(config):
             for conf in l.get(CONF_IDENTIFY, []):
                 trigger = cg.new_Pvariable(conf[CONF_TRIGGER_ID])
                 cg.add(lock_entity.register_on_identify_trigger(trigger))
+                await automation.build_automation(trigger, [], conf)
+
+    if 'doorbell' in config:
+        for l in config["doorbell"]:
+            event_ptr = await cg.get_variable(l['id'])
+            lock_ptr = await cg.get_variable(l[CONF_LOCK_ID]) if CONF_LOCK_ID in l else cg.nullptr
+            light_ptr = await cg.get_variable(l[CONF_LIGHT_ID]) if CONF_LIGHT_ID in l else cg.nullptr
+
+            doorbell_entity = cg.Pvariable(
+                ID(f"{l['id'].id}_hk_doorbell_entity", type=DoorbellEntity),
+                var.add_doorbell(event_ptr, lock_ptr, light_ptr)
+            )
+
+            for conf in l.get(CONF_IDENTIFY, []):
+                trigger = cg.new_Pvariable(conf[CONF_TRIGGER_ID])
+                cg.add(doorbell_entity.register_on_identify_trigger(trigger))
                 await automation.build_automation(trigger, [], conf)
 
     if "fan" in config:

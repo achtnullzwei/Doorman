@@ -166,7 +166,7 @@ namespace esphome
           .fw_rev = (char*)"1.0.0",
           .hw_rev = NULL,
           .pv = (char*)"1.1.0",
-          .cid = HAP_CID_THERMOSTAT,
+          .cid = HAP_CID_BRIDGE,
           .identify_routine = acc_identify,
         };
 
