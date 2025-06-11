@@ -31,7 +31,7 @@ namespace esphome
         hap_acc_t* acc = accessory_;
         if (!acc) return;
 
-        hap_serv_t* hs = hap_acc_get_serv_by_uuid(acc, "121"); // doorbell
+        hap_serv_t* hs = hap_acc_get_serv_by_uuid(acc, HAP_SERV_UUID_DOORBELL);
         if (!hs) return;
 
         hap_char_t* event_char = hap_serv_get_char_by_uuid(hs, HAP_CHAR_UUID_PROGRAMMABLE_SWITCH_EVENT);
@@ -200,7 +200,7 @@ namespace esphome
         }
 
         // Doorbell Service
-        hap_serv_t* doorbellService = hap_serv_create("121");
+        hap_serv_t* doorbellService = hap_serv_create(HAP_SERV_UUID_DOORBELL);
 
         if (doorbellService) {
           hap_acc_cfg_t acc_cfg = {
