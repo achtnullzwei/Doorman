@@ -122,9 +122,18 @@ homekit:
     - id: entrance_doorbell_pattern
       lock_id: entrance_door
       light_id: hallway_light
+      on_identify:
+        - tc_bus.send:
+            type: floor_call
 
     - id: second_entrance_doorbell_pattern
       lock_id: second_entrance_door
       light_id: hallway_light
+      on_identify:
+        - tc_bus.send:
+            type: floor_call
 
     - id: apartment_doorbell_pattern
+      on_identify:
+        - tc_bus.send:
+            type: floor_call
