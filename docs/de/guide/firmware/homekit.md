@@ -12,8 +12,25 @@ Die HomeKit-Integration unterstützt derzeit nur die wichtigsten und grundlegend
 - **Schloss:** Entrance Door
 - **Schloss:** Second Entrance Door
 - **Schalter:** Ring To Open
-- **Schalter:** Ring To Open: Entrance Door
-- **Schalter:** Ring To Open: Second Entrance Door
+- **Licht:** Hallway Light
+
+### Ereignis-Zuordnung
+HomeKit unterstützt nur drei Ereignistypen, daher sind wir auf folgende Zuordnungen beschränkt:
+
+- **single** → `SINGLE_PRESS`
+- **double** → `SINGLE_PRESS`
+- **long** → `LONG_PRESS`
+
+Alle weiteren Ereignisse werden aufgrund dieser Einschränkung ebenfalls auf `LONG_PRESS` abgebildet:
+
+- **triple** → `LONG_PRESS`
+- **quadruple** → `LONG_PRESS`
+
+## Accessory-Bundles
+Zur Verbesserung der Benutzerfreundlichkeit und zur Optimierung des internen Speicherverbrauchs bieten wir folgende vordefinierte Accessory-Bundles an:
+
+- **Entrance Doorbell** → *Entrance Door*, *Hallway Light*
+- **Second Entrance Doorbell** → *Second Entrance Door*, *Hallway Light*
 
 ## Koppeln
 <!--@include: ./instructions/homekit.md-->

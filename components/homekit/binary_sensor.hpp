@@ -110,6 +110,9 @@ namespace esphome
         else if (device_class == "occupancy") {
           service = hap_serv_occupancy_sensor_create(entityPtr->state);
         }
+        else if (device_class == "moisture") {
+          service = hap_serv_leak_sensor_create(entityPtr->state);
+        }
         else if (device_class == "carbon_monoxide") {
           service = hap_serv_carbon_dioxide_sensor_create(entityPtr->state);
         }
