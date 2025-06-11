@@ -28,10 +28,10 @@ namespace esphome
         hap_acc_t* acc = hap_acc_get_by_aid(hap_get_unique_aid(std::to_string(obj->get_object_id_hash()).c_str()));
         if (!acc) return;
 
-        hap_serv_t* hs = hap_serv_get_next(hap_acc_get_first_serv(acc));
+        hap_serv_t* hs = hap_acc_get_serv_by_uuid(acc, HAP_SERV_UUID_STATLESS_PROGRAMMABLE_SWITCH);
         if (!hs) return;
           
-        hap_char_t* event_char = hap_serv_get_first_char(hs);
+        hap_char_t* event_char = hap_serv_get_char_by_uuid(hs, HAP_CHAR_UUID_PROGRAMMABLE_SWITCH_EVENT);
         if (!event_char) return;
 
         hap_val_t val = {.u = 0};

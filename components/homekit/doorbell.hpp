@@ -265,10 +265,10 @@ namespace esphome
           ESP_LOGI(TAG, "Doorbell Event '%s' linked to HomeKit", eventPtr->get_name().c_str());
           
           if(lockPtr != nullptr)
-            ESP_LOGI(TAG, "Lock '%s' linked to HomeKit Doorbell '%s'", lockPtr->get_name().c_str(), eventPtr->get_name().c_str());
+            ESP_LOGI(TAG, "  Lock '%s' linked to Doorbell '%s'", lockPtr->get_name().c_str(), eventPtr->get_name().c_str());
 
           if(lightPtr != nullptr)
-            ESP_LOGI(TAG, "Light '%s' linked to HomeKit Doorbell '%s'", lightPtr->get_name().c_str(), eventPtr->get_name().c_str());
+            ESP_LOGI(TAG, "  Light '%s' linked to Doorbell '%s'", lightPtr->get_name().c_str(), eventPtr->get_name().c_str());
           
         }
       }
