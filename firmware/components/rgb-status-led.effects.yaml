@@ -13,7 +13,7 @@ light:
 
             auto call = id(doorman_rgb_status_led).turn_on();
 
-            float out = on_ ? (id(doorman_rgb_status_led_brightness).state / 100.0) : 0.05;
+            float out = on_ ? (id(doorman_rgb_status_led_brightness).state / 100.0) : 0;
             call.set_brightness_if_supported(out);
 
             call.set_transition_length_if_supported(on_ ? transition_on_length_ : transition_off_length_);
@@ -34,7 +34,7 @@ light:
 
             auto call = id(doorman_rgb_status_led).turn_on();
 
-            float out = on_ ? (id(doorman_rgb_status_led_brightness).state / 100.0) : 0.05;
+            float out = on_ ? (id(doorman_rgb_status_led_brightness).state / 100.0) : 0;
             call.set_brightness_if_supported(out);
 
             call.set_transition_length_if_supported(on_ ? transition_on_length_ : transition_off_length_);
@@ -55,7 +55,7 @@ light:
 
             auto call = id(doorman_rgb_status_led).turn_on();
 
-            float out = on_ ? (id(doorman_rgb_status_led_brightness).state / 100.0) : 0.05;
+            float out = on_ ? (id(doorman_rgb_status_led_brightness).state / 100.0) : 0;
             call.set_brightness_if_supported(out);
 
             call.set_transition_length_if_supported(on_ ? transition_on_length_ : transition_off_length_);
