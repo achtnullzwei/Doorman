@@ -28,8 +28,8 @@ light:
           name: slow_pulse
           update_interval: 2s
           lambda: |-
-            static uint32_t transition_on_length_ = 1000;
-            static uint32_t transition_off_length_ = 1000;
+            static uint32_t transition_on_length_ = 2000;
+            static uint32_t transition_off_length_ = 2000;
             static bool on_ = false;
 
             auto call = id(doorman_rgb_status_led).turn_on();
