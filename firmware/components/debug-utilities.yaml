@@ -204,7 +204,7 @@ button:
           red: 100%
           green: 45%
           blue: 83%
-          effect: none
+          #effect: none
           transition_length: 1s
           color_brightness: !lambda return id(doorman_rgb_status_led_brightness).state / 100.0;
       - delay: 3s
