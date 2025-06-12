@@ -99,8 +99,7 @@ light:
               call.set_rgb(0, 0.22, 1.0);
             }
 
-            float out = on_ ? (id(doorman_rgb_status_led_brightness).state / 100.0) : 0;
-            call.set_brightness_if_supported(out);
+            call.set_brightness_if_supported(id(doorman_rgb_status_led_brightness).state / 100.0);
 
             call.perform();
 
