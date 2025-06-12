@@ -119,7 +119,6 @@ button:
           green: 45%
           blue: 83%
           effect: pulse
-          color_brightness: !lambda return id(doorman_rgb_status_led_brightness).state / 100.0;
       # Search Outdoor Stations
       - logger.log: Search outdoor stations...
       - tc_bus.send:

@@ -107,4 +107,3 @@ script:
                 green: 100%
                 blue: 10%
                 effect: pulse
-                color_brightness: !lambda return id(doorman_rgb_status_led_brightness).state / 100.0;
