@@ -33,6 +33,10 @@ Just received your Doorman? Jump to the [Quickstart](getting-started) guide.
 
 ## Interested in Buying One?
 
-Feel free to contact me on [Discord](https://discord.gg/t2d34dvmBf) or via [E-Mail](mailto:flo@azon.ai?subject=Doorman).
+If you're interested in a Doorman-S3 unit, simply use the button below to send an inquiry.  
 
-I offer fully assembled and tested Doorman-S3 units with the [Doorman Firmware](firmware/installation) pre-installed, ready for direct integration and adoption into Home Assistant.
+You can also reach out on [Discord](https://discord.gg/t2d34dvmBf) or via [E-Mail](mailto:flo@azon.ai?subject=Doorman) if you have any questions and prefer direct contact first.
+
+<div class="custom-layout">
+    <a class="btn" href="../order">Send Inquiry</a>
+</div>

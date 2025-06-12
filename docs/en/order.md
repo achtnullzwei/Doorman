@@ -7,10 +7,6 @@ import IconNotoPackage from '~icons/noto/package'
 import IconTwemojiFlagGermany from '~icons/twemoji/flag-germany'
 import IconTwemojiFlagSwitzerland from '~icons/twemoji/flag-switzerland';
 import IconTwemojiFlagEuropeanUnion from '~icons/twemoji/flag-european-union'
-
-const props = defineProps<{
-  formEndpoint: string
-}>()
 </script>
 
 <script lang="ts">
@@ -54,6 +50,7 @@ export default {
     const trackedTrackingDetails = 'Recommended for reliable delivery and shipment visibility. Lost packages may be eligible for investigation or claim.';
 
     return {
+      formEndpoint: 'https://order.doorman.azon.ai',
       form: {
         name: '',
         email: '',
@@ -93,12 +90,14 @@ export default {
                 {
                     key: 'standard',
                     name: 'Standard Shipping',
+                    icon: '',
                     details: standardTrackingDetails,
                     price: 1.80
                 },
                 {
                     key: 'tracking',
                     name: 'Tracked Shipping',
+                    icon: '',
                     details: trackedTrackingDetails,
                     price: 6.19
                 }
@@ -117,12 +116,14 @@ export default {
                 {
                     key: 'standard',
                     name: 'Standard Shipping',
+                    icon: '',
                     details: standardTrackingDetails,
                     price: 8.99
                 },
                 {
                     key: 'tracking',
                     name: 'Tracked Shipping',
+                    icon: '',
                     details: trackedTrackingDetails,
                     price: 26.99
                 }
@@ -141,12 +142,14 @@ export default {
                 {
                     key: 'standard',
                     name: 'Standard Shipping',
+                    icon: '',
                     details: standardTrackingDetails,
                     price: 6.49
                 },
                 {
                     key: 'tracking',
                     name: 'Tracked Shipping',
+                    icon: '',
                     details: trackedTrackingDetails,
                     price: 14.49
                 }
@@ -291,7 +294,7 @@ Once I receive your inquiry, I'll get back to you as soon as possible.
         <label class="firmware_option" v-for="product in products" :key="product.key">
             <input type="radio" class="reset_default" v-model="form.product" :value="product.key">
             <span class="checkmark">
-                <div class="icon"><component :is="product.icon" /></div>
+                <div class="icon" v-if="product.icon"><component :is="product.icon" /></div>
                 <div class="title">{{ product.name }} <Badge type="tip">{{ product.price.toFixed(2) }}€</Badge></div>
                 <div class="details" v-html="product.details"></div>
             </span>
@@ -302,7 +305,7 @@ Once I receive your inquiry, I'll get back to you as soon as possible.
         <label class="firmware_option" v-for="destination in shipping_destinations" :key="destination.key">
             <input type="radio" class="reset_default" v-model="form.shipping_destination" :value="destination.key">
             <span class="checkmark">
-                <div class="icon"><component :is="destination.icon" /></div>
+                <div class="icon" v-if="destination.icon"><component :is="destination.icon" /></div>
                 <div class="title">{{ destination.name }}</div>
                 <div class="details" v-html="destination.details"></div>
             </span>
@@ -313,6 +316,7 @@ Once I receive your inquiry, I'll get back to you as soon as possible.
         <label class="firmware_option" v-for="option in available_shipping_options" :key="option.key">
             <input type="radio" class="reset_default" v-model="form.shipping_method" :value="option.key">
             <span class="checkmark">
+                <div class="icon" v-if="option.icon"><component :is="option.icon" /></div>
                 <div class="title">{{ option.name }} <Badge type="tip">{{ option.price.toFixed(2) }}€</Badge></div>
                 <div class="details" v-html="option.details"></div>
             </span>
