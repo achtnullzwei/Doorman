@@ -101,6 +101,9 @@ light:
 
             call.set_brightness_if_supported(id(doorman_rgb_status_led_brightness).state / 100.0);
 
+            // don't tell HA every change
+            call.set_publish(false);
+            call.set_save(false);
             call.perform();
 
             state = !state;
