@@ -160,7 +160,7 @@ number:
     initial_value: '100'
     max_value: 100
     min_value: 10
-    step: 10
+    step: 1
     optimistic: true
     disabled_by_default: true
     entity_category: CONFIG
