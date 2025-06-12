@@ -111,8 +111,15 @@
     max-width: calc(33.333% - 13.34px);
 }
 
+.firmware_option_row.half .firmware_option
+{
+    flex: 1 1 calc(50% - 13.34px); /* 3 pro Zeile mit gap von 20px */
+    min-width: 210px;
+    max-width: calc(50% - 13.34px);
+}
+
 @media (max-width: 900px) {
-    .firmware_option_row .firmware_option {
+    .firmware_option_row .firmware_option, .firmware_option_row.half .firmware_option {
         flex: 1 1 calc(50% - 10px);
         max-width: calc(50% - 10px);
     }
