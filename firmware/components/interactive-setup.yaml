@@ -86,9 +86,9 @@ script:
           red: 0%
           green: 100%
           blue: 10%
-          #effect: none
-          transition_length: 1s
-          color_brightness: !lambda return id(doorman_rgb_status_led_brightness).state / 100.0;
+          effect: none
+          #transition_length: 1s
+          brightness: !lambda return id(doorman_rgb_status_led_brightness).state / 100.0;
 
       - delay: 3s
       

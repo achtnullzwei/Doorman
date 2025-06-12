@@ -14,11 +14,11 @@ esphome:
             wifi.connected:
       - light.turn_on:
           id: doorman_rgb_status_led
-          #effect: none
+          effect: none
           red: 100%
           green: 65%
           blue: 0%
-          transition_length: 1s
-          color_brightness: !lambda return id(doorman_rgb_status_led_brightness).state / 100.0;
+          #transition_length: 1s
+          brightness: !lambda return id(doorman_rgb_status_led_brightness).state / 100.0;
       - delay: 3s
       - script.execute: update_led
