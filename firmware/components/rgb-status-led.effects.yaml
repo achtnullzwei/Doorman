@@ -11,7 +11,7 @@ light:
             static uint32_t transition_off_length_ = 250;
             static bool on_ = false;
 
-            auto call = id(doorman_rgb_status_led).make_call();
+            auto call = id(doorman_rgb_status_led).turn_on();
 
             float out = on_ ? (id(doorman_rgb_status_led_brightness).state / 100.0) : 0;
             call.set_brightness_if_supported(out);
@@ -32,7 +32,7 @@ light:
             static uint32_t transition_off_length_ = 2500;
             static bool on_ = false;
 
-            auto call = id(doorman_rgb_status_led).make_call();
+            auto call = id(doorman_rgb_status_led).turn_on();
 
             float out = on_ ? (id(doorman_rgb_status_led_brightness).state / 100.0) : 0;
             call.set_brightness_if_supported(out);
@@ -53,7 +53,7 @@ light:
             static uint32_t transition_off_length_ = 4000;
             static bool on_ = false;
 
-            auto call = id(doorman_rgb_status_led).make_call();
+            auto call = id(doorman_rgb_status_led).turn_on();
 
             float out = on_ ? (id(doorman_rgb_status_led_brightness).state / 100.0) : 0;
             call.set_brightness_if_supported(out);
