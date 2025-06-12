@@ -151,6 +151,23 @@ tc_bus:
           - script.execute: blink_status_led
   
 number:
+  - platform: template
+    id: doorman_rgb_status_led_brightness
+    name: "Status LED: Brightness"
+    mode : slider
+    icon: "mdi:brightness-7"
+    restore_value: true
+    initial_value: '100'
+    max_value: 100
+    min_value: 10
+    step: 10
+    optimistic: true
+    disabled_by_default: true
+    entity_category: CONFIG
+    web_server:
+      sorting_group_id: sorting_group_settings_advanced
+      sorting_weight: -39
+
   - platform: tc_bus
     serial_number:
       id: serial_number

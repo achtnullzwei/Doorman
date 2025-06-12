@@ -115,10 +115,11 @@ button:
           id(is1_list).clear();
       - light.turn_on:
           id: doorman_rgb_status_led
-          red: 0%
-          green: 100%
-          blue: 10%
+          red: 100%
+          green: 45%
+          blue: 83%
           effect: pulse
+          color_brightness: !lambda return id(doorman_rgb_status_led_brightness).state / 100.0;
       # Search Outdoor Stations
       - logger.log: Search outdoor stations...
       - tc_bus.send:
@@ -201,10 +202,11 @@ button:
           }
       - light.turn_on:
           id: doorman_rgb_status_led
-          red: 0%
-          green: 100%
-          blue: 10%
+          red: 100%
+          green: 45%
+          blue: 83%
           effect: none
+          color_brightness: !lambda return id(doorman_rgb_status_led_brightness).state / 100.0;
       - delay: 3s
       - script.execute: update_led
     web_server:

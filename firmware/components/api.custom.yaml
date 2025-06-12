@@ -9,6 +9,7 @@ esphome:
           red: 100%
           green: 65%
           blue: 0%
+          color_brightness: !lambda return id(doorman_rgb_status_led_brightness).state / 100.0;
       - wait_until:
           condition:
             wifi.connected:
@@ -18,5 +19,6 @@ esphome:
           red: 100%
           green: 65%
           blue: 0%
+          color_brightness: !lambda return id(doorman_rgb_status_led_brightness).state / 100.0;
       - delay: 3s
       - script.execute: update_led

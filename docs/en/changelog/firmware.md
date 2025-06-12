@@ -19,7 +19,7 @@ This release **will probably impact your current setup** and **could require** y
   This change simplifies dashboard integration and delivers a more consistent, intuitive experience.
 
 - **Use Light Entity instead of Button for Hallway Light**  
-  The `Turn on the light` button have been replaced by the `Hallway Light` light entity.  
+  The `Turn on the light` button has been replaced by the `Hallway Light` light entity.  
   You can now use the `light.turn_on` action in Home Assistant to turn on the hallway light. This change simplifies dashboard integration and delivers a more consistent, intuitive experience.
 
 - **Extended Ring to Open to Apartment Doorbells**  

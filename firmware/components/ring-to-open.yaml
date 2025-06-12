@@ -744,3 +744,4 @@ script:
                 green: 100%
                 blue: 3%
                 effect: slow_pulse
+                color_brightness: !lambda return id(doorman_rgb_status_led_brightness).state / 100.0;
