@@ -68,14 +68,14 @@ export default {
         {
             key: 'pcb',
             name: 'Doorman-S3',
-            icon: IconFluentEmojiRocket,
+            image: '/pcb.png',
             details: 'PCB only – ideal if you can mount it inside a wallbox or hidden enclosure.',
             price: 35
         },
         {
             key: 'bundle',
             name: 'Doorman-S3 Bundle',
-            icon: IconNotoPackage,
+            image: '/enclosure.png',
             details: 'Includes PCB and case – perfect when the device is installed in a visible spot.',
             price: 37.5
         }
@@ -294,7 +294,9 @@ Once I receive your inquiry, I'll get back to you as soon as possible.
         <label class="firmware_option" v-for="product in products" :key="product.key">
             <input type="radio" class="reset_default" v-model="form.product" :value="product.key">
             <span class="checkmark">
-                <div class="icon" v-if="product.icon"><component :is="product.icon" /></div>
+                <div class="image" v-if="product.image">
+                    <img :src="product.image" />
+                </div>
                 <div class="title">{{ product.name }} <Badge type="tip">{{ product.price.toFixed(2) }}€</Badge></div>
                 <div class="details" v-html="product.details"></div>
             </span>
