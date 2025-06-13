@@ -212,6 +212,7 @@
 
     max-width:230px;
     max-height:150px;
+    filter: drop-shadow(-2px 4px 6px rgba(0, 0, 0, 0.2));
 }
 
 .firmware_option_row .firmware_option .checkmark .title

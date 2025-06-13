@@ -7,6 +7,8 @@ import IconNotoPackage from '~icons/noto/package'
 import IconTwemojiFlagGermany from '~icons/twemoji/flag-germany'
 import IconTwemojiFlagSwitzerland from '~icons/twemoji/flag-switzerland';
 import IconTwemojiFlagEuropeanUnion from '~icons/twemoji/flag-european-union'
+import IconLogosPaypal from '~icons/logos/paypal';
+import IconSimpleIconsSepa from '~icons/simple-icons/sepa';
 </script>
 
 <script lang="ts">
@@ -62,8 +64,23 @@ export default {
         product: 'pcb',
         shipping_destination: 'de',
         shipping_method: 'standard',
+        payment_option: 'paypal',
         message: '',
       },
+      payment_options: [
+        {
+            key: 'paypal',
+            name: 'PayPal',
+            icon: IconLogosPaypal,
+            details: 'Please select <code>Family & Friends</code> to avoid additional fees. If you choose another option, you\'ll need to cover the fees.',
+        },
+        {
+            key: 'sepa',
+            name: 'SEPA Bank Transfer',
+            icon: IconSimpleIconsSepa,
+            details: 'If PayPal isn\'t suitable due to fees or other reasons, SEPA bank transfer is also available.',
+        },
+      ],
       products: [
         {
             key: 'pcb',
@@ -272,12 +289,14 @@ textarea {
 }
 </style>
 
-# Order your Doorman
+# Get your own Doorman
 
-Looking for a plug-and-play solution? I offer fully assembled and tested Doorman-S3 units with the [Doorman Firmware](guide/firmware/installation) pre-installed – ready to integrate directly into your Home Assistant setup.
+Interested in a ready-to-use solution? I offer fully assembled and tested Doorman-S3 units with the [Doorman Firmware](guide/firmware/installation) pre-installed — ready for seamless integration with Home Assistant.
 
-Just fill out the form below to place a preorder. **It's not a binding purchase** – it simply helps me organize and manage requests efficiently.
-Once I receive your inquiry, I'll get back to you as soon as possible.
+To request one, simply fill out the form below.
+**This is not a purchase or checkout** — it's just a non-binding inquiry to help me gauge interest and manage requests privately.
+
+Once I receive your message, I'll get back to you as soon as possible.
 
 <ContactModal :show="modalOpen" @close="modalOpen = false">
     <template #header>
@@ -299,6 +318,17 @@ Once I receive your inquiry, I'll get back to you as soon as possible.
                 </div>
                 <div class="title">{{ product.name }} <Badge type="tip">{{ product.price.toFixed(2) }}€</Badge></div>
                 <div class="details" v-html="product.details"></div>
+            </span>
+        </label>
+    </div>
+    <h5 class="firmware_title_row">Which payment method do you prefer?</h5>
+    <div class="firmware_option_row" :class="{ half: payment_options.length <= 2 }">
+        <label class="firmware_option" v-for="option in payment_options" :key="option.key">
+            <input type="radio" class="reset_default" v-model="form.payment_option" :value="option.key">
+            <span class="checkmark">
+                <div class="icon" v-if="option.icon"><component :is="option.icon" /></div>
+                <div class="title">{{ option.name }}</div>
+                <div class="details" v-html="option.details"></div>
             </span>
         </label>
     </div>
