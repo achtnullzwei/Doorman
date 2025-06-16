@@ -778,7 +778,7 @@ namespace esphome
         void TCBusComponent::send_command(uint32_t command, bool is_long, uint32_t wait_duration)
         {
             ESP_LOGV(TAG, "Called send_command(uint32_t command, bool is_long, uint32_t wait_duration)");
-            ESP_LOGV(TAG, "Command: 0x%X | Length: %i | Wait Duration: %i", command, (cmd_data.is_long ? 32 : 16), wait_duration);
+            ESP_LOGV(TAG, "Command: 0x%X | Length: %i | Wait Duration: %i", command, (is_long ? 32 : 16), wait_duration);
 
             CommandData cmd_data = parseCommand(command, is_long);
             send_command(cmd_data, wait_duration);
