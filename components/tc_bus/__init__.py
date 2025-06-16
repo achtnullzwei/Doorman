@@ -156,15 +156,18 @@ CONF_IS_MODELS = [
     "TCS IVW9011 / Koch VTP10",
     "TCS IVW9110",
     "TCS IVW9030 / Scantron SLIM50T",
-    "TCS IVE70"
-]
+    "TCS IVE70",
 
-CONF_CONTROLLER_MODELS = [
     "TCS BVS20",
     "TCS BVS30",
     "TCS NBV3210",
     "TCS VBVS30",
     "TCS NBV2600",
+
+    "DEBUG AS",
+    "DEBUG IS0",
+    "DEBUG IS1",
+    "DEBUG CONTROLLER",
 ]
 
 CONF_RINGTONES = [

@@ -691,6 +691,11 @@ namespace esphome
             if (str == "TCS VBVS30") return CONTROLLER_MODEL_VBVS30;
             if (str == "TCS NBV2600") return CONTROLLER_MODEL_NBV2600;
 
+            if (str == "DEBUG IS0") return MODEL_DEBUG_IS0;
+            if (str == "DEBUG IS1") return MODEL_DEBUG_IS1;
+            if (str == "DEBUG AS") return MODEL_DEBUG_AS;
+            if (str == "DEBUG CONTROLLER") return MODEL_DEBUG_CONTROLLER;
+
             return MODEL_NONE;
         }
 
@@ -895,6 +900,11 @@ namespace esphome
                 case CONTROLLER_MODEL_NBV3210: return "TCS NBV3210";
                 case CONTROLLER_MODEL_VBVS30: return "TCS VBVS30";
                 case CONTROLLER_MODEL_NBV2600: return "TCS NBV2600";
+
+                case MODEL_DEBUG_IS0: return "DEBUG IS0";
+                case MODEL_DEBUG_IS1: return "DEBUG IS1";
+                case MODEL_DEBUG_AS: return "DEBUG AS";
+                case MODEL_DEBUG_CONTROLLER: return "DEBUG CONTROLLER";
 
                 default: return "None";
             }
@@ -1313,6 +1323,27 @@ namespace esphome
                 case CONTROLLER_MODEL_NBV2600:
                     modelData.category = 0;
                     modelData.memory_size = 0;
+                    break;
+
+                // Debug Models
+                case MODEL_DEBUG_CONTROLLER:
+                    modelData.category = 4;
+                    modelData.memory_size = 128;
+                    break;
+
+                case MODEL_DEBUG_AS:
+                    modelData.category = 2;
+                    modelData.memory_size = 128;
+                    break;
+
+                case MODEL_DEBUG_IS0:
+                    modelData.category = 0;
+                    modelData.memory_size = 128;
+                    break;
+
+                case MODEL_DEBUG_IS1:
+                    modelData.category = 1;
+                    modelData.memory_size = 128;
                     break;
 
                 default:
