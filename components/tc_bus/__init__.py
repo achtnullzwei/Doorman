@@ -90,7 +90,7 @@ COMMAND_TYPES = {
     "request_version": COMMAND_TYPE.COMMAND_TYPE_REQUEST_VERSION
 }
 
-CONF_MODELS = [
+CONF_IS_MODELS = [
     "None",
     "TCS ISW3030 / Koch TC50 / Scantron Stilux",
     "TCS ISW3130 / Koch TC50P",
@@ -157,6 +157,13 @@ CONF_MODELS = [
     "TCS IVW9110",
     "TCS IVW9030 / Scantron SLIM50T",
     "TCS IVE70"
+]
+
+CONF_CONTROLLER_MODELS = [
+    "TCS BVS30",
+    "TCS NBV3210",
+    "TCS VBVS30",
+    "TCS NBV2600",
 ]
 
 CONF_RINGTONES = [

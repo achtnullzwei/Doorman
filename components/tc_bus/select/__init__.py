@@ -4,7 +4,7 @@ import esphome.config_validation as cv
 from esphome.const import (
     ENTITY_CATEGORY_CONFIG,
 )
-from .. import CONF_TC_ID, CONF_MODELS, CONF_RINGTONES, TCBusComponent, tc_bus_ns
+from .. import CONF_TC_ID, CONF_IS_MODELS, CONF_RINGTONES, TCBusComponent, tc_bus_ns
 
 ModelSelect = tc_bus_ns.class_("ModelSelect", select.Select, cg.Component)
 RingtoneEntranceDoorCallSelect = tc_bus_ns.class_("RingtoneEntranceDoorCallSelect", select.Select, cg.Component)
@@ -56,7 +56,7 @@ async def to_code(config):
     if model := config.get(CONF_MODEL):
         sel = await select.new_select(
             model,
-            options=[CONF_MODELS],
+            options=[CONF_IS_MODELS],
         )
         await cg.register_parented(sel, config[CONF_TC_ID])
         cg.add(tc_bus_component.set_model_select(sel))

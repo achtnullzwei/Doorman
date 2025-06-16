@@ -685,6 +685,11 @@ namespace esphome
             if (str == "TCS IVW9030 / Scantron SLIM50T") return MODEL_IVW9030;
             if (str == "TCS IVE70") return MODEL_IVE70;
 
+            if (str == "TCS BVS30") return CONTROLLER_MODEL_BVS30;
+            if (str == "TCS NBV3210") return CONTROLLER_MODEL_NBV3210;
+            if (str == "TCS VBVS30") return CONTROLLER_MODEL_VBVS30;
+            if (str == "TCS NBV2600") return CONTROLLER_MODEL_NBV2600;
+
             return MODEL_NONE;
         }
 
@@ -799,6 +804,13 @@ namespace esphome
                 else if (model_key == "1B3" || model_key == "1B4" || model_key == "1B5")
                     return MODEL_IVE70;
             }
+            else if(device_group == 4)
+            {
+                if (model_key == "008") return MODEL_BVS30;
+                else if (model_key == "010") return MODEL_NBV3210;
+                else if (model_key == "009") return MODEL_VBVS30;
+                else if (model_key == "D2D") return MODEL_NBV2600;
+            }
             else
             {
                 // Other device groups
@@ -876,6 +888,12 @@ namespace esphome
                 case MODEL_IVW9110: return "TCS IVW9110";
                 case MODEL_IVW9030: return "TCS IVW9030 / Scantron SLIM50T";
                 case MODEL_IVE70: return "TCS IVE70";
+
+                case CONTROLLER_MODEL_BVS30: return "TCS BVS30";
+                case CONTROLLER_MODEL_NBV3210: return "TCS NBV3210";
+                case CONTROLLER_MODEL_VBVS30: return "TCS VBVS30";
+                case CONTROLLER_MODEL_NBV2600: return "TCS NBV2600";
+
                 default: return "None";
             }
         }
@@ -1282,6 +1300,14 @@ namespace esphome
                 case MODEL_IVW9110:
                 case MODEL_IVW9030:
                 case MODEL_IVE70:
+                    modelData.category = 0;
+                    modelData.memory_size = 0;
+                    break;
+
+                case CONTROLLER_MODEL_BVS30:
+                case CONTROLLER_MODEL_NBV3210:
+                case CONTROLLER_MODEL_VBVS30:
+                case CONTROLLER_MODEL_NBV2600:
                     modelData.category = 0;
                     modelData.memory_size = 0;
                     break;

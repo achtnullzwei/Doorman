@@ -74,7 +74,11 @@ namespace esphome
             MODEL_IVW9011,
             MODEL_IVW9110,
             MODEL_IVW9030,
-            MODEL_IVE70
+            MODEL_IVE70,
+            CONTROLLER_MODEL_BVS30,
+            CONTROLLER_MODEL_NBV3210,
+            CONTROLLER_MODEL_VBVS30,
+            CONTROLLER_MODEL_NBV2600
         };
 
         enum SettingType {
