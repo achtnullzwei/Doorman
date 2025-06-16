@@ -287,6 +287,18 @@ textarea {
     justify-content: center;
     display: flex
 }
+
+.estimate-list {
+    list-style: none;
+    padding: 0;
+    margin: 1rem 0 1.5rem 0;
+}
+.estimate-list li {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: .5rem;
+}
 </style>
 
 # Get your own Doorman
@@ -318,17 +330,6 @@ Once I receive your message, I'll get back to you as soon as possible.
                 </div>
                 <div class="title">{{ product.name }} <Badge type="tip">{{ product.price.toFixed(2) }}€</Badge></div>
                 <div class="details" v-html="product.details"></div>
-            </span>
-        </label>
-    </div>
-    <h5 class="firmware_title_row">Which payment method do you prefer?</h5>
-    <div class="firmware_option_row" :class="{ half: payment_options.length <= 2 }">
-        <label class="firmware_option" v-for="option in payment_options" :key="option.key">
-            <input type="radio" class="reset_default" v-model="form.payment_option" :value="option.key">
-            <span class="checkmark">
-                <div class="icon" v-if="option.icon"><component :is="option.icon" /></div>
-                <div class="title">{{ option.name }}</div>
-                <div class="details" v-html="option.details"></div>
             </span>
         </label>
     </div>
@@ -385,15 +386,62 @@ Once I receive your message, I'll get back to you as soon as possible.
             <option v-for="country in countryOptions" :key="country.value" :value="country.value" :label="country.label">{{ country.label }}</option>
         </select>
     </div>
+    <h5 class="firmware_title_row">Which payment method do you prefer?</h5>
+    <div class="firmware_option_row" :class="{ half: payment_options.length <= 2 }">
+        <label class="firmware_option" v-for="option in payment_options" :key="option.key">
+            <input type="radio" class="reset_default" v-model="form.payment_option" :value="option.key">
+            <span class="checkmark">
+                <div class="icon" v-if="option.icon"><component :is="option.icon" /></div>
+                <div class="title">{{ option.name }}</div>
+                <div class="details" v-html="option.details"></div>
+            </span>
+        </label>
+    </div>
     <h5 class="firmware_title_row">Any other questions?</h5>
     <div class="form-element">
         <textarea id="message" name="message" v-model="form.message" placeholder="Any special requirements or something else you want to ask?"></textarea>
     </div>
-    <h5 class="firmware_title_row">Estimated total: <Badge type="warning">{{ total_price.toFixed(2) }}€</Badge></h5>
+    <h5 class="firmware_title_row">Estimated total:</h5>
+    <ul class="estimate-list">
+        <li>
+            <span>Product: </span>
+            <span>
+                {{
+                    (products.find(p => p.key === form.product)?.name || '—')
+                }}
+                <Badge type="tip">
+                    {{
+                        products.find(p => p.key === form.product)?.price?.toFixed(2)
+                    }}€
+                </Badge>
+            </span>
+        </li>
+        <li>
+            <span>Shipping: </span>
+            <span>
+                {{
+                    (available_shipping_options.find(o => o.key === form.shipping_method)?.name || '—')
+                }} ({{
+                    (shipping_destinations.find(o => o.key === form.shipping_destination)?.name || '—')
+                }})
+                <Badge type="tip">
+                    {{
+                        available_shipping_options.find(o => o.key === form.shipping_method)?.price?.toFixed(2)
+                    }}€
+                </Badge>
+            </span>
+        </li>
+        <li>
+            <span><strong>Total: </strong></span>
+            <span>
+                <Badge type="warning">{{ total_price.toFixed(2) }}€</Badge>
+            </span>
+        </li>
+    </ul>
     <div class="warning custom-block" style="padding-top: 8px">
         This is a non-binding estimate including your selected product and shipping. You will receive a confirmation and payment instructions by email after submitting your request.
     </div>
-    <div class="form-element submit">
+    <div class="submit">
         <VPButton text="Submit Inquiry" />
     </div>
 </form>

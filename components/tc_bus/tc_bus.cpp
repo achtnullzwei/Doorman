@@ -764,6 +764,8 @@ namespace esphome
 
         void TCBusComponent::send_command(uint32_t command, uint32_t wait_duration)
         {
+            ESP_LOGV(TAG, "Called send_command(uint32_t command, uint32_t wait_duration)");
+
             // Determine length of command
             // Not reliable as its based on the 32 bit integer itself
             bool is_long = (command > 0xFFFF);
@@ -774,18 +776,24 @@ namespace esphome
 
         void TCBusComponent::send_command(uint32_t command, bool is_long, uint32_t wait_duration)
         {
+            ESP_LOGV(TAG, "Called send_command(uint32_t command, bool is_long, uint32_t wait_duration)");
+
             CommandData cmd_data = parseCommand(command, is_long);
             send_command(cmd_data, wait_duration);
         }
 
         void TCBusComponent::send_command(CommandType type, uint8_t address, uint32_t payload, uint32_t serial_number, uint32_t wait_duration)
         {
+            ESP_LOGV(TAG, "Called send_command(CommandType type, uint8_t address, uint32_t payload, uint32_t serial_number, uint32_t wait_duration)");
+
             CommandData cmd_data = buildCommand(type, address, payload, serial_number);
             send_command(cmd_data, wait_duration);
         }
 
         void TCBusComponent::send_command(CommandData cmd_data, uint32_t wait_duration)
         {
+            ESP_LOGV(TAG, "Called send_command(CommandData cmd_data, uint32_t wait_duration)");
+
             if (cmd_data.serial_number == 0 && this->serial_number_ != 0)
             {
                 cmd_data.serial_number = this->serial_number_;
@@ -800,8 +808,11 @@ namespace esphome
             // Forced modifications
             if(this->force_long_door_opener_ && cmd_data.type == COMMAND_TYPE_OPEN_DOOR)
             {
+                ESP_LOGV(TAG, "Override door opener command: use long door opener");
                 cmd_data = buildCommand(COMMAND_TYPE_OPEN_DOOR_LONG, cmd_data.address, cmd_data.payload, cmd_data.serial_number);
             }
+
+
 
             this->command_queue_.push({cmd_data, wait_duration});
         }

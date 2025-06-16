@@ -108,7 +108,7 @@ namespace esphome
                         data.command |= (1 << 28);  // 1
                         data.command |= ((data.serial_number & 0xFFFFF) << 8); // C30BA
                         data.command |= (1 << 7);  // 8
-                        data.command |= (data.address & 0x3F); // 0 
+                        data.command |= (data.address & 0x3F); // 0
                     }
                     break;
 
