@@ -479,6 +479,7 @@ Here are the available setting types you can use to update the settings of your 
 In general, **all listed models** are supported.
 However, some support configuration directly via Doorman, while others still require verification.
 
+### Indoor Stations
 Below is a list of available settings for specific indoor station models:
 
 | Model                        | Available settings                                                                                         |
@@ -551,3 +552,13 @@ Below is a list of available settings for specific indoor station models:
 | TCS IVW9110 | None |
 | TCS IVW9030 / Scantron SLIM50T | None |
 | TCS IVE70   | None |
+
+### Controller
+Below is a list of available settings for specific controller models:
+
+| Model                        | Available settings                                                                                         |
+|------------------------------|------------------------------------------------------------------------------------------------------------|
+| TCS BVS30                    | None |
+| TCS VBVS30                   | None |
+| TCS NBV3210                  | None |
+| TCS NBV2600                  | None |

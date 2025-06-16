@@ -33,6 +33,10 @@ globals:
   - id: extra_list
     type: std::vector<int>
     initial_value: ''
+
+  - id: controller_list
+    type: std::vector<int>
+    initial_value: ''
     
 binary_sensor:
   - platform: template
@@ -169,15 +173,28 @@ button:
       - delay: 350ms
       - tc_bus.send:
           type: search_devices
-      # Wait until every indoor station sent response
+      # Wait until every extra sent response
+      - delay: 10s
+      # Search Controllers
+      - logger.log: Search controllers (4)...
+      - globals.set:
+          id: search_mode
+          value: "5"
+      - tc_bus.send:
+          type: select_device_group
+          payload: 4
+      - delay: 350ms
+      - tc_bus.send:
+          type: search_devices
+      # Wait until every controller sent response
       - delay: 10s
       # Complete
       - globals.set:
           id: search_mode
           value: "0"
       - logger.log:
-          format: "Search complete! Found %i outdoor station(s), %i type 0 indoor station(s), %i type 1 indoor station(s) and , %i extra(s)."
-          args: [ 'id(as_list).size()', 'id(is0_list).size()', 'id(is1_list).size()', 'id(extra_list).size()']
+          format: "Search complete! Found %i outdoor station(s), %i type 0 indoor station(s), %i type 1 indoor station(s), %i extra(s) and %i controller(s)."
+          args: [ 'id(as_list).size()', 'id(is0_list).size()', 'id(is1_list).size()', 'id(extra_list).size()', 'id(controller_list).size()']
           level: info
       - lambda: |-
           for (const auto& value : id(as_list))
@@ -198,6 +215,11 @@ button:
           for (const auto& value : id(extra_list))
           {
             ESP_LOGI("DEBUG", "EXTRA (6): %d", value);
+          }
+
+          for (const auto& value : id(controller_list))
+          {
+            ESP_LOGI("DEBUG", "CONTROLLER (4): %d", value);
           }
       - light.turn_on:
           id: doorman_rgb_status_led
@@ -232,6 +254,8 @@ tc_bus:
                   list_ptr = &id(is1_list);
               } else if (mode == 4) {
                   list_ptr = &id(extra_list);
+              } else if (mode == 5) {
+                  list_ptr = &id(controller_list);
               } else {
                   list_ptr = &id(extra_list);
               }
