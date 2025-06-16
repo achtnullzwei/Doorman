@@ -435,6 +435,11 @@ namespace esphome
                 bool door_readiness_state = cmd_data.payload == 1;
                 ESP_LOGD(TAG, "Door readiness: %s", YESNO(door_readiness_state));
             }
+            else if (cmd_data.type == COMMAND_TYPE_START_TALKING)
+            {
+                bool talk_mode = cmd_data.payload == 1;
+                ESP_LOGD(TAG, "Talk mode: %s", talk_mode ? "Full duplex / handsfree" : "half duplex");
+            }
             else if (cmd_data.type == COMMAND_TYPE_END_OF_DOOR_READINESS)
             {
                 ESP_LOGD(TAG, "Door readiness: %s", YESNO(false));

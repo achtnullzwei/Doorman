@@ -28,22 +28,23 @@ namespace esphome
                     break;
 
                 case COMMAND_TYPE_DOOR_CALL:
-                    data.serial_number = serial_number;
-                    data.address = address;
-
-                    data.command |= (0 << 28);  // 0
-                    data.command |= ((serial_number & 0xFFFFF) << 8); // C30BA
-                    data.command |= (1 << 7);  // 8
-                    data.command |= (address & 0x3F); // 0
-                    break;
-
                 case COMMAND_TYPE_INTERNAL_CALL:
                     data.serial_number = serial_number;
                     data.address = address;
 
                     data.command |= (0 << 28);  // 0
                     data.command |= ((serial_number & 0xFFFFF) << 8); // C30BA
-                    data.command &= ~(1 << 7);  // 0
+
+                    // Call type
+                    if (type == COMMAND_TYPE_INTERNAL_CALL) {
+                        data.command |= (1 << 6); // 8
+                    } else {
+                        data.command &= ~(1 << 6); // 0
+                    }
+
+                    // Flags
+                    //data.command |= (1 << 7);
+
                     data.command |= (address & 0x3F); // 0
                     break;
 
@@ -59,14 +60,30 @@ namespace esphome
                 case COMMAND_TYPE_START_TALKING:
                     data.serial_number = serial_number;
                     data.address = address;
+                    data.payload = payload;
 
                     data.command |= (3 << 28); // 3
                     data.command |= ((serial_number & 0xFFFFF) << 8); // C30BA
 
+                    // Call type
                     if (type == COMMAND_TYPE_START_TALKING_DOOR_CALL) {
-                        data.command |= (1 << 7); // 8
+                        data.command &= ~(1 << 6); // AS
+
+                        // Flags: Door readiness
+                        if(payload > 0) {
+                            data.command |= (1 << 7); // door readiness active
+                        } else {
+                            data.command &= ~(1 << 7); // door readiness inactive
+                        }
                     } else {
-                        data.command &= ~(1 << 7); // 0
+                        data.command |= (1 << 6); // IA
+
+                        // Flags: Talk Mode
+                        if(payload > 0) {
+                            data.command |= (1 << 7); // full duplex
+                        } else {
+                            data.command &= ~(1 << 7); // half duplex
+                        }
                     }
 
                     data.command |= (address & 0x3F); // 0
@@ -79,22 +96,34 @@ namespace esphome
 
                     data.command |= (3 << 12); // 3
 
-                    if (type == COMMAND_TYPE_STOP_TALKING_DOOR_CALL) {
-                        data.command |= (1 << 7);  // 08
+                    // Flags
+                    if (type == COMMAND_TYPE_STOP_TALKING) {
+                        data.command |= (1 << 6);  // IA
                     } else {
-                        data.command &= ~(1 << 7); // 00
+                        data.command &= ~(1 << 6); // AS
                     }
+                    //data.payload |= (1 << 7);
 
                     data.command |= (address & 0x3F); // 0
                     break;
 
                 case COMMAND_TYPE_OPEN_DOOR:
                     data.address = address;
+                    data.payload = payload;
                     data.is_long = false;
 
                     data.command |= (1 << 12); // 1
                     data.command |= (1 << 8); // 1
-                    data.command |= (address & 0x3F); // 00
+
+                    // Flags
+                    if(payload > 0) {
+                        data.command |= (1 << 7); // door readiness active
+                    } else {
+                        data.command &= ~(1 << 7); // door readiness inactive
+                    }
+                    //data.command |= (1 << 6);
+
+                    data.command |= (address & 0x3F); // 0
                     break;
 
                 case COMMAND_TYPE_OPEN_DOOR_LONG:
@@ -102,18 +131,38 @@ namespace esphome
                         // Convert to short door opener command
                         data.type = COMMAND_TYPE_OPEN_DOOR;
                         data.address = address;
+                        data.payload = payload;
                         data.is_long = false;
 
                         data.command |= (1 << 12); // 1
                         data.command |= (1 << 8); // 1
-                        data.command |= (address & 0x3F); // 00
+
+                        // Flags
+                        if(payload > 0) {
+                            data.command |= (1 << 7); // door readiness active
+                        } else {
+                            data.command &= ~(1 << 7); // door readiness inactive
+                        }
+                        //data.command |= (1 << 6);
+
+                        data.command |= (address & 0x3F); // 0
                     } else {
                         data.serial_number = serial_number;
                         data.address = address;
+                        data.payload = payload;
 
                         data.command |= (1 << 28);  // 1
                         data.command |= ((serial_number & 0xFFFFF) << 8); // C30BA
-                        data.command |= (1 << 7);  // 8
+                        
+                        data.command |= (1 << 7);
+
+                        // Flags
+                        if(payload > 0) {
+                            data.command |= (1 << 6); // door readiness active
+                        } else {
+                            data.command &= ~(1 << 6); // door readiness inactive
+                        }
+
                         data.command |= (address & 0x3F); // 0
                     }
                     break;
@@ -265,8 +314,10 @@ namespace esphome
 
                 switch ((command >> 28) & 0xF) {
                     case 0:
-                        data.type = (command & (1 << 7)) ? COMMAND_TYPE_DOOR_CALL : COMMAND_TYPE_INTERNAL_CALL;
+                        data.type = (command & (1 << 6)) ? COMMAND_TYPE_DOOR_CALL : COMMAND_TYPE_INTERNAL_CALL;
                         data.address = command & 0x3F;
+
+                        // data.payload = command & (1 << 7);
                         break;
 
                     case 1:
@@ -275,16 +326,21 @@ namespace esphome
                         } else if (command & (1 << 7)) {
                             data.type = COMMAND_TYPE_OPEN_DOOR;
                             data.address = command & 0x3F;
+
+                            // Door readiness
+                            data.payload = (command & (1 << 6)) != 0;
                         }
                         break;
 
                     case 3:
-                        data.type = (command & (1 << 7)) ? COMMAND_TYPE_START_TALKING_DOOR_CALL : COMMAND_TYPE_START_TALKING;
+                        data.type = (command & (1 << 6)) ? COMMAND_TYPE_START_TALKING_DOOR_CALL : COMMAND_TYPE_START_TALKING;
                         data.address = command & 0x3F;
 
-                        // Door Readiness
+                        // Flags
                         if(data.type == COMMAND_TYPE_START_TALKING_DOOR_CALL) {
-                            data.payload = (command & (1 << 8)) != 0;
+                            data.payload = (command & (1 << 7)) != 0; // Door Readiness
+                        } else if(data.type == COMMAND_TYPE_START_TALKING) {
+                            data.payload = (command & (1 << 7)) != 0; // half duplex / full duplex
                         }
                         break;
 
@@ -363,6 +419,10 @@ namespace esphome
                     if (second == 1) {
                         data.type = COMMAND_TYPE_OPEN_DOOR;
                         data.address = command & 0x3F;
+
+                        // Door readiness
+                        data.payload = (command & (1 << 6)) != 0;
+
                     } else if (second == 2) {
                         data.type = COMMAND_TYPE_LIGHT;
                         data.address = 0;
@@ -385,7 +445,7 @@ namespace esphome
 
                     data.address = command & 0x3F;
                 } else if (first == 3) {
-                    data.type = (command & (1 << 7)) ? COMMAND_TYPE_STOP_TALKING_DOOR_CALL : COMMAND_TYPE_STOP_TALKING;
+                    data.type = (command & (1 << 6)) ? COMMAND_TYPE_STOP_TALKING : COMMAND_TYPE_STOP_TALKING_DOOR_CALL;
                     data.address = command & 0x3F;
                 } else if (first == 5) {
                     switch(second) {
