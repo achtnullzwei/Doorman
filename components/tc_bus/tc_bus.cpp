@@ -315,10 +315,11 @@ namespace esphome
                     }
                     else
                     {
+                        ESP_LOGE(TAG, "Unable to identify Hardware! Unknown model. Data received: %s", cmd_data.command_hex.c_str());
+                        
                         // Indoor stations only
                         if(device_group == 0 || device_group == 1)
                         {
-                            ESP_LOGE(TAG, "Unable to identify Hardware! Unknown model. Data received: %s", cmd_data.command_hex.c_str());
                             this->identify_unknown_callback_.call();
                         }
                     }
