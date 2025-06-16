@@ -56,40 +56,35 @@ namespace esphome
                     break;
 
                 case COMMAND_TYPE_START_TALKING_DOOR_CALL:
-                    data.serial_number = serial_number;
-                    data.address = address;
-
-                    data.command |= (3 << 28); // 3
-                    data.command |= ((serial_number & 0xFFFFF) << 8); // C30BA
-                    data.command |= (1 << 7);  // 8
-                    data.command |= (address & 0x3F); // 0
-                    break;
-
                 case COMMAND_TYPE_START_TALKING:
                     data.serial_number = serial_number;
                     data.address = address;
 
                     data.command |= (3 << 28); // 3
                     data.command |= ((serial_number & 0xFFFFF) << 8); // C30BA
-                    data.command &= ~(1 << 7); // 0
+
+                    if (type == COMMAND_TYPE_START_TALKING_DOOR_CALL) {
+                        data.command |= (1 << 7); // 8
+                    } else {
+                        data.command &= ~(1 << 7); // 0
+                    }
+
                     data.command |= (address & 0x3F); // 0
                     break;
 
                 case COMMAND_TYPE_STOP_TALKING_DOOR_CALL:
-                    data.address = address;
-                    data.is_long = false;
-
-                    data.command |= (3 << 12); // 3
-                    data.command |= (1 << 7);  // 08
-                    data.command |= (address & 0x3F); // 0
-                    break;
-
                 case COMMAND_TYPE_STOP_TALKING:
                     data.address = address;
                     data.is_long = false;
 
                     data.command |= (3 << 12); // 3
-                    data.command &= ~(1 << 7); // 00
+
+                    if (type == COMMAND_TYPE_STOP_TALKING_DOOR_CALL) {
+                        data.command |= (1 << 7);  // 08
+                    } else {
+                        data.command &= ~(1 << 7); // 00
+                    }
+
                     data.command |= (address & 0x3F); // 0
                     break;
 
@@ -224,7 +219,7 @@ namespace esphome
                 case COMMAND_TYPE_SELECT_MEMORY_PAGE:
                     data.serial_number = serial_number;
                     data.address = address;
-                    
+
                     data.command |= (8 << 28); // 8
                     data.command |= (1 << 24); // 1
                     data.command |= (address & 0xF) << 20; // page

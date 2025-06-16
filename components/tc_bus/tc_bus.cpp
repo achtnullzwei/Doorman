@@ -796,10 +796,13 @@ namespace esphome
             ESP_LOGV(TAG, "Called send_command(CommandData cmd_data: object, uint32_t wait_duration: %i)", wait_duration);
             ESP_LOGV(TAG, "CommandData Object: Type: %s | Address: %i | Payload: 0x%X | Serial-Number: %i | Length: %i | Wait Duration: %i", command_type_to_string(cmd_data.type), cmd_data.address, cmd_data.payload, cmd_data.serial_number, (cmd_data.is_long ? 32 : 16), wait_duration);
 
+            bool modified = false;
+
             if (cmd_data.serial_number == 0 && this->serial_number_ != 0)
             {
                 cmd_data.serial_number = this->serial_number_;
                 ESP_LOGV(TAG, "Serial number is not specified. Using saved serial number: %i", cmd_data.serial_number);
+                modified = true;
             }
 
             if (cmd_data.command == 0)
@@ -807,11 +810,18 @@ namespace esphome
                 ESP_LOGW(TAG, "Sending commands of type %s is not yet supported.", command_type_to_string(cmd_data.type));
             }
 
-            // Forced modifications
+            // Use 32-bit protocol
             if(this->force_long_door_opener_ && cmd_data.type == COMMAND_TYPE_OPEN_DOOR)
             {
                 ESP_LOGV(TAG, "Override door opener command: use long door opener");
-                cmd_data = buildCommand(COMMAND_TYPE_OPEN_DOOR_LONG, cmd_data.address, cmd_data.payload, cmd_data.serial_number);
+                cmd_data.type = COMMAND_TYPE_OPEN_DOOR_LONG;
+                modified = true;
+            }
+
+            // Rebuild command data
+            if(modified)
+            {
+                cmd_data = buildCommand(cmd_data.type, cmd_data.address, cmd_data.payload, cmd_data.serial_number);
             }
 
             this->command_queue_.push({cmd_data, wait_duration});
