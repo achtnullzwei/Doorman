@@ -798,6 +798,13 @@ namespace esphome
                 ESP_LOGV(TAG, "Serial number is not specified. Using saved serial number: %i", serial_number);
             }
 
+            // Use 32-bit protocol
+            if(type == COMMAND_TYPE_OPEN_DOOR && this->force_long_door_opener_)
+            {
+                ESP_LOGV(TAG, "Detected 32-bit door protocol override, change command type to OPEN_DOOR_LONG.");
+                type = COMMAND_TYPE_OPEN_DOOR_LONG;
+            }
+
             CommandData cmd_data = buildCommand(type, address, payload, serial_number);
             send_command(cmd_data, wait_duration);
         }
@@ -811,15 +818,6 @@ namespace esphome
             {
                 ESP_LOGW(TAG, "Sending commands of type %s is not yet supported.", command_type_to_string(cmd_data.type));
                 return;
-            }
-
-            // Use 32-bit protocol
-            if(cmd_data.type == COMMAND_TYPE_OPEN_DOOR && this->force_long_door_opener_)
-            {
-                ESP_LOGV(TAG, "Detected 32-bit door protocol override, rebuilding command using open_door_long command type.");
-
-                // Rebuild command data
-                cmd_data = buildCommand(COMMAND_TYPE_OPEN_DOOR_LONG, cmd_data.address, cmd_data.payload, cmd_data.serial_number);
             }
 
             this->command_queue_.push({cmd_data, wait_duration});
