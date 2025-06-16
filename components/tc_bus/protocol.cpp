@@ -806,10 +806,10 @@ namespace esphome
             }
             else if(device_group == 4)
             {
-                if (model_key == "008") return MODEL_BVS30;
-                else if (model_key == "010") return MODEL_NBV3210;
-                else if (model_key == "009") return MODEL_VBVS30;
-                else if (model_key == "D2D") return MODEL_NBV2600;
+                if (model_key == "008") return CONTROLLER_MODEL_BVS30;
+                else if (model_key == "010") return CONTROLLER_MODEL_NBV3210;
+                else if (model_key == "009") return CONTROLLER_MODEL_VBVS30;
+                else if (model_key == "D2D") return CONTROLLER_MODEL_NBV2600;
             }
             else
             {
