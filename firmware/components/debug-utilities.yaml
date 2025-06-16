@@ -112,17 +112,23 @@ button:
     icon: "mdi:home-search"
     disabled_by_default: true
     on_press: 
+      - logger.log: Start system discovery...
+
       # Clear Lists
       - lambda: |-
           id(as_list).clear();
           id(is0_list).clear();
           id(is1_list).clear();
+          id(extra_list).clear();
+          id(controller_list).clear();
+
       - light.turn_on:
           id: doorman_rgb_status_led
           red: 100%
           green: 45%
           blue: 83%
           effect: pulse
+
       # Search Outdoor Stations
       - logger.log: Search outdoor stations...
       - tc_bus.send:
@@ -136,6 +142,7 @@ button:
           type: search_devices
       # Wait until every outdoor station sent response
       - delay: 5s
+
       # Search Indoor Stations 0
       - logger.log: Search indoor stations (0)...
       - globals.set:
@@ -149,6 +156,7 @@ button:
           type: search_devices
       # Wait until every indoor station sent response
       - delay: 10s
+
       # Search Indoor Stations 1
       - logger.log: Search indoor stations (1)...
       - globals.set:
@@ -162,6 +170,7 @@ button:
           type: search_devices
       # Wait until every indoor station sent response
       - delay: 10s
+
       # Search Extras
       - logger.log: Search extras (6)...
       - globals.set:
@@ -175,6 +184,7 @@ button:
           type: search_devices
       # Wait until every extra sent response
       - delay: 10s
+
       # Search Controllers
       - logger.log: Search controllers (4)...
       - globals.set:
@@ -188,39 +198,68 @@ button:
           type: search_devices
       # Wait until every controller sent response
       - delay: 10s
+
       # Complete
       - globals.set:
           id: search_mode
           value: "0"
-      - logger.log:
-          format: "Search complete! Found %i outdoor station(s), %i type 0 indoor station(s), %i type 1 indoor station(s), %i extra(s) and %i controller(s)."
-          args: [ 'id(as_list).size()', 'id(is0_list).size()', 'id(is1_list).size()', 'id(extra_list).size()', 'id(controller_list).size()']
-          level: info
+
+      - logger.log: "Search complete!"
+
       - lambda: |-
-          for (const auto& value : id(as_list))
-          {
-            ESP_LOGI("DEBUG", "AS (2): %d", value);
+          ESP_LOGI("DEBUG", "Controllers (Group 4): %d", id(controller_list).size());
+          if(id(controller_list).size() > 0) {
+            for (const auto& value : id(controller_list)) {
+              ESP_LOGI("DEBUG", "%d", value);
+            }
+          } else {
+            ESP_LOGI("DEBUG", "No results!");
+          }
+          ESP_LOGI("DEBUG", "    ");
+
+      - lambda: |-
+          ESP_LOGI("DEBUG", "Outdoor Stations (Group 2): %d", id(as_list).size());
+          if(id(as_list).size() > 0) {
+            for (const auto& value : id(as_list)) {
+              ESP_LOGI("DEBUG", "%d", value);
+            }
+          } else {
+            ESP_LOGI("DEBUG", "No results!");
+          }
+          ESP_LOGI("DEBUG", "    ");
+
+      - lambda: |-
+          ESP_LOGI("DEBUG", "Indoor Stations (Group 0): %d", id(is0_list).size());
+          if(id(is0_list).size() > 0) {
+            for (const auto& value : id(is0_list)) {
+              ESP_LOGI("DEBUG", "%d", value);
+            }
+          } else {
+            ESP_LOGI("DEBUG", "No results!");
+          }
+          ESP_LOGI("DEBUG", "    ");
+
+      - lambda: |-
+          ESP_LOGI("DEBUG", "Indoor Stations (Group 1): %d", id(is1_list).size());
+          if(id(is1_list).size() > 0) {
+            for (const auto& value : id(is1_list)) {
+              ESP_LOGI("DEBUG", "%d", value);
+            }
+          } else {
+            ESP_LOGI("DEBUG", "No results!");
+          }
+          ESP_LOGI("DEBUG", "    ");
+
+      - lambda: |-
+          ESP_LOGI("DEBUG", "Extras (Group 6): %d", id(extra_list).size());
+          if(id(extra_list).size() > 0) {
+            for (const auto& value : id(extra_list)) {
+              ESP_LOGI("DEBUG", "%d", value);
+            }
+          } else {
+            ESP_LOGI("DEBUG", "No results!");
           }
 
-          for (const auto& value : id(is0_list))
-          {
-            ESP_LOGI("DEBUG", "IS (0): %d", value);
-          }
-
-          for (const auto& value : id(is1_list))
-          {
-            ESP_LOGI("DEBUG", "IS (1): %d", value);
-          }
-
-          for (const auto& value : id(extra_list))
-          {
-            ESP_LOGI("DEBUG", "EXTRA (6): %d", value);
-          }
-
-          for (const auto& value : id(controller_list))
-          {
-            ESP_LOGI("DEBUG", "CONTROLLER (4): %d", value);
-          }
       - light.turn_on:
           id: doorman_rgb_status_led
           red: 100%
@@ -229,6 +268,7 @@ button:
           effect: none
           #transition_length: 1s
           brightness: !lambda return id(doorman_rgb_status_led_brightness).state / 100.0;
+
       - delay: 3s
       - script.execute: update_led
     web_server:
@@ -243,32 +283,27 @@ tc_bus:
               return x.type == COMMAND_TYPE_FOUND_DEVICE && id(search_mode) != 0;
         then:
           - lambda: |-
-              std::vector<int>* list_ptr = nullptr;
-
               int mode = id(search_mode);
+              int serial = x.serial_number;
+
               if (mode == 1) {
-                  list_ptr = &id(as_list);
-              } else if (mode == 2) {
-                  list_ptr = &id(is0_list);
-              } else if (mode == 3) {
-                  list_ptr = &id(is1_list);
-              } else if (mode == 4) {
-                  list_ptr = &id(extra_list);
-              } else if (mode == 5) {
-                  list_ptr = &id(controller_list);
-              } else {
-                  list_ptr = &id(extra_list);
-              }
-
-              std::vector<int>& list = *list_ptr;
-
-              bool found = false;
-              for (const auto& s : list) {
-                if (s == x.serial_number) {
-                  found = true;
-                  break;
+                if (std::find(id(as_list).begin(), id(as_list).end(), serial) == id(as_list).end()) {
+                  id(as_list).push_back(serial);
                 }
-              }
-              if (!found) {
-                list.push_back(x.serial_number);
+              } else if (mode == 2) {
+                if (std::find(id(is0_list).begin(), id(is0_list).end(), serial) == id(is0_list).end()) {
+                  id(is0_list).push_back(serial);
+                }
+              } else if (mode == 3) {
+                if (std::find(id(is1_list).begin(), id(is1_list).end(), serial) == id(is1_list).end()) {
+                  id(is1_list).push_back(serial);
+                }
+              } else if (mode == 4) {
+                if (std::find(id(extra_list).begin(), id(extra_list).end(), serial) == id(extra_list).end()) {
+                  id(extra_list).push_back(serial);
+                }
+              } else if (mode == 5) {
+                if (std::find(id(controller_list).begin(), id(controller_list).end(), serial) == id(controller_list).end()) {
+                  id(controller_list).push_back(serial);
+                }
               }
