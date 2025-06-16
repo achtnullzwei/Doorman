@@ -231,17 +231,13 @@ namespace esphome
                     ModelData device;
                     device.category = 0;
                     device.memory_size = 0;
-
-                    // 59E5 D 2C0
-
-                    ESP_LOGD(TAG, "Received %s 0x%08X", cmd_data.command_hex, cmd_data.command);
-
+                    
                     if (cmd_data.command_hex.substr(4, 1) == "D")
                     {
                         // New models
 
                         // FW Version
-                        device.firmware_version = std::stoi(cmd_data.command_hex.substr(5, 3));
+                        device.firmware_version = std::stoi(cmd_data.command_hex.substr(5, 3), nullptr, 16);
                         device.firmware_major = std::stoi(cmd_data.command_hex.substr(5, 1), nullptr, 16);
                         device.firmware_minor = std::stoi(cmd_data.command_hex.substr(6, 1), nullptr, 16);
                         device.firmware_patch = std::stoi(cmd_data.command_hex.substr(7, 1), nullptr, 16);
