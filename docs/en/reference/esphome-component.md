@@ -164,16 +164,28 @@ on_...:
       serial_number: 123456
 ```
 
-### Identify Indoor Station
-The `tc_bus.identify` action allows you to identify the model of any indoor station using the serial number.
+### Identify devices on the Bus
+The `tc_bus.identify` action allows you to automatically detect the model of a device on the bus using its serial number.
+
 ::: tip Note
-Not all models support this feature. For older indoor stations, you may need to select the model manually.
+Automatic identification is not supported by all devices. Currently, only indoor stations are fully supported in the identification process. However, you will still receive a response with the device's identification data, even for unsupported models.
 :::
+
+By default, if `device_group` is not specified, the action will attempt to identify a device in group 0 first, then group 1 if no match is found.
 
 ```yaml
 on_...:
   - tc_bus.identify:
       serial_number: 123456
+```
+
+To target a specific type of device, you can explicitly set the `device_group`:
+
+```yaml
+on_...:
+  - tc_bus.identify:
+      serial_number: 123456
+      device_group: 3
 ```
 
 ### Set Programming Mode
