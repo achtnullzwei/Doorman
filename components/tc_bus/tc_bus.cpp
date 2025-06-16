@@ -777,8 +777,7 @@ namespace esphome
 
         void TCBusComponent::send_command(uint32_t command, bool is_long, uint32_t wait_duration)
         {
-            ESP_LOGV(TAG, "Called send_command(uint32_t command, bool is_long, uint32_t wait_duration)");
-            ESP_LOGV(TAG, "Command: 0x%X | Length: %i | Wait Duration: %i", command, (is_long ? 32 : 16), wait_duration);
+            ESP_LOGV(TAG, "Called send_command(uint32_t command: 0x%X, bool is_long: %s, uint32_t wait_duration: %i", command, (is_long ? "true" : "false"), wait_duration);
 
             CommandData cmd_data = parseCommand(command, is_long);
             send_command(cmd_data, wait_duration);
@@ -786,8 +785,7 @@ namespace esphome
 
         void TCBusComponent::send_command(CommandType type, uint8_t address, uint32_t payload, uint32_t serial_number, uint32_t wait_duration)
         {
-            ESP_LOGV(TAG, "Called send_command(CommandType type, uint8_t address, uint32_t payload, uint32_t serial_number, uint32_t wait_duration)");
-            ESP_LOGV(TAG, "Type: %s | Address: %i | Payload: 0x%X | Serial-Number: %i | Wait Duration: %i", command_type_to_string(type), address, payload, serial_number, wait_duration);
+            ESP_LOGV(TAG, "Called send_command(CommandType type: %s, uint8_t address: %i, uint32_t payload: 0x%X, uint32_t serial_number: %i, uint32_t wait_duration: %i)", command_type_to_string(type), address, payload, serial_number, wait_duration);
 
             CommandData cmd_data = buildCommand(type, address, payload, serial_number);
             send_command(cmd_data, wait_duration);
@@ -795,8 +793,8 @@ namespace esphome
 
         void TCBusComponent::send_command(CommandData cmd_data, uint32_t wait_duration)
         {
-            ESP_LOGV(TAG, "Called send_command(CommandData cmd_data, uint32_t wait_duration)");
-            ESP_LOGV(TAG, "Type: %s | Address: %i | Payload: 0x%X | Serial-Number: %i | Length: %i | Wait Duration: %i", command_type_to_string(cmd_data.type), cmd_data.address, cmd_data.payload, cmd_data.serial_number, (cmd_data.is_long ? 32 : 16), wait_duration);
+            ESP_LOGV(TAG, "Called send_command(CommandData cmd_data: object, uint32_t wait_duration: %i)", wait_duration);
+            ESP_LOGV(TAG, "CommandData Object: Type: %s | Address: %i | Payload: 0x%X | Serial-Number: %i | Length: %i | Wait Duration: %i", command_type_to_string(cmd_data.type), cmd_data.address, cmd_data.payload, cmd_data.serial_number, (cmd_data.is_long ? 32 : 16), wait_duration);
 
             if (cmd_data.serial_number == 0 && this->serial_number_ != 0)
             {
