@@ -367,7 +367,7 @@ Legt den Auslöser zum umschalten für die [Ring To Open](../guide/features/ring
 - **Function Button**
 - **External Button**
 
-### Intercom Model <Badge type="tip" text="intercom_model" /> <Badge type="info" text="Deaktiviert" />
+### Indoor Station Model <Badge type="tip" text="intercom_model" /> <Badge type="info" text="Deaktiviert" />
 Legt das Modell deiner Innenstation fest. Finde mehr über die [unterstützten Modelle und Einstellungen](esphome-component#model-setting-availability) heraus.
 
 ### Ringtone: Entrance Door Call <Badge type="tip" text="intercom_ringtone_entrance_door_call" /> <Badge type="info" text="Deaktiviert" />

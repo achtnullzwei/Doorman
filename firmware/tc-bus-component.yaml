@@ -70,7 +70,7 @@ number:
 select:
   - platform: tc_bus
     model:
-      name: "Intercom Model"
+      name: "Indoor Station Model"
     ringtone_entrance_door_call:
       name: "Ringtone: Entrance Door Call"
     ringtone_second_entrance_door_call:
@@ -84,7 +84,7 @@ switch:
   - platform: tc_bus
     force_long_door_opener:
       name: "Enforce long Door Opener Command"
-      
+
 button:
   - platform: template
     id: open_entrance_door

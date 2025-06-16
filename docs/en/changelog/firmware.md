@@ -4,7 +4,7 @@ Welcome to the latest updates! Here's a breakdown of all the **new features**, *
 ## 2025.6.0
 ### 🚨 IMPORTANT
 Please carefully review the breaking changes listed below before updating!  
-This release **will probably impact your current setup** and **could require** you to go through the **setup process again**.
+This release **will impact your current setup** and **requires** you to go through the **setup process again**.
 
 ### 🚀 What's New?
 - **Expanded Support for Model-Specific Settings**  
@@ -88,6 +88,9 @@ This release **will probably impact your current setup** and **could require** y
 
 - **Renamed Ring to Open Entities**  
   The [Ring To Open](https://doorman.azon.ai/guide/features/ring-to-open) entities are now labeled as `RTO: Door Name – Setting` to reflect the updated configuration structure, improving clarity and consistency.
+
+- **Renamed Intercom Model Entity**  
+  The `Intercom Model` setting has been renamed to `Indoor Station Model` for more consistency with the documentation and to better reflect its purpose.
 
 - **Renamed Nuki Lock**  
   The `Nuki Lock` entity has been renamed to `Apartment Door` for better alignment with the naming convention used for other doors.
