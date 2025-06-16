@@ -881,15 +881,18 @@ namespace esphome
 
         void TCBusComponent::request_version(uint32_t serial_number, uint8_t device_group)
         {
-            if (serial_number == 0 && this->serial_number_ != 0)
+            if (serial_number == 0)
             {
-                serial_number = this->serial_number_;
-                ESP_LOGV(TAG, "Serial number is not specified. Using saved serial number: %i", serial_number);
-            }
-            else
-            {
-                ESP_LOGE(TAG, "Device model cannot be identified without a serial number!");
-                return;
+                if(this->serial_number_ != 0)
+                {
+                    serial_number = this->serial_number_;
+                    ESP_LOGV(TAG, "Serial number is not specified. Using saved serial number: %i", serial_number);
+                }
+                else
+                {
+                    ESP_LOGE(TAG, "Device model cannot be identified without a serial number!");
+                    return;
+                }
             }
 
             this->cancel_timeout("wait_for_identification_category_0");
@@ -939,26 +942,32 @@ namespace esphome
 
         void TCBusComponent::read_memory(uint32_t serial_number, Model model)
         {
-            if (serial_number == 0 && this->serial_number_ != 0)
+            if (serial_number == 0)
             {
-                serial_number = this->serial_number_;
-                ESP_LOGV(TAG, "Serial number is not specified. Using saved serial number: %i", serial_number);
-            }
-            else
-            {
-                ESP_LOGE(TAG, "Unable to read device memory without a serial number!");
-                return;
+                if (this->serial_number_ != 0)
+                {
+                    serial_number = this->serial_number_;
+                    ESP_LOGV(TAG, "Serial number is not specified. Using saved serial number: %i", serial_number);
+                }
+                else
+                {
+                    ESP_LOGE(TAG, "Unable to read device memory without a serial number!");
+                    return;
+                }
             }
 
-            if (model == MODEL_NONE && this->model_ != MODEL_NONE)
+            if (model == MODEL_NONE)
             {
-                model = this->model_;
-                ESP_LOGV(TAG, "Model is not specified (NONE). Using saved model: %s.", model_to_string(model));
-            }
-            else
-            {
-                ESP_LOGE(TAG, "Unable to read device memory without a model!");
-                return;
+                if (this->model_ != MODEL_NONE)
+                {
+                    model = this->model_;
+                    ESP_LOGV(TAG, "Model is not specified (NONE). Using saved model: %s.", model_to_string(model));
+                }
+                else
+                {
+                    ESP_LOGE(TAG, "Unable to read device memory without a model!");
+                    return;
+                }
             }
 
             ModelData model_data = getModelData(model);
@@ -1015,14 +1024,17 @@ namespace esphome
                 return false;
             }
 
-            if (model == MODEL_NONE && this->model_ != MODEL_NONE)
+            if (model == MODEL_NONE)
             {
-                model = this->model_;
-                ESP_LOGV(TAG, "Model is not specified (NONE). Using saved model: %s.", model_to_string(model));
-            }
-            else
-            {
-                return false;
+                if (this->model_ != MODEL_NONE)
+                {
+                    model = this->model_;
+                    ESP_LOGV(TAG, "Model is not specified (NONE). Using saved model: %s.", model_to_string(model));
+                }
+                else
+                {
+                    return false;
+                }
             }
 
             // Get Setting Cell Data by Model
@@ -1045,15 +1057,18 @@ namespace esphome
                 return 0;
             }
 
-            if (model == MODEL_NONE && this->model_ != MODEL_NONE)
+            if (model == MODEL_NONE)
             {
-                model = this->model_;
-                ESP_LOGV(TAG, "Model is not specified (NONE). Using saved model: %s.", model_to_string(model));
-            }
-            else
-            {
-                ESP_LOGV(TAG, "Model is not specified (NONE). Returning 0.");
-                return 0;
+                if (this->model_ != MODEL_NONE)
+                {
+                    model = this->model_;
+                    ESP_LOGV(TAG, "Model is not specified (NONE). Using saved model: %s.", model_to_string(model));
+                }
+                else
+                {
+                    ESP_LOGV(TAG, "Model is not specified (NONE). Returning 0.");
+                    return 0;
+                }
             }
 
             // Get Setting Cell Data by Model
@@ -1078,26 +1093,32 @@ namespace esphome
                 return false;
             }
 
-            if (serial_number == 0 && this->serial_number_ != 0)
+            if (serial_number == 0)
             {
-                serial_number = this->serial_number_;
-                ESP_LOGV(TAG, "Serial number is not specified. Using saved serial number: %i", serial_number);
-            }
-            else
-            {
-                ESP_LOGE(TAG, "Unable to update device setting without a serial number!");
-                return false;
+                if (this->serial_number_ != 0)
+                {
+                    serial_number = this->serial_number_;
+                    ESP_LOGV(TAG, "Serial number is not specified. Using saved serial number: %i", serial_number);
+                }
+                else
+                {
+                    ESP_LOGE(TAG, "Unable to update device setting without a serial number!");
+                    return false;
+                }
             }
 
-            if (model == MODEL_NONE && this->model_ != MODEL_NONE)
+            if (model == MODEL_NONE)
             {
-                model = this->model_;
-                ESP_LOGV(TAG, "Model is not specified (NONE). Using saved model: %s.", model_to_string(model));
-            }
-            else
-            {
-                ESP_LOGE(TAG, "Unable to update device setting without a model!");
-                return false;
+                if (this->model_ != MODEL_NONE)
+                {
+                    model = this->model_;
+                    ESP_LOGV(TAG, "Model is not specified (NONE). Using saved model: %s.", model_to_string(model));
+                }
+                else
+                {
+                    ESP_LOGE(TAG, "Unable to update device setting without a model!");
+                    return false;
+                }
             }
 
             // Get Setting Cell Data by Model
@@ -1139,26 +1160,32 @@ namespace esphome
                 return false;
             }
 
-            if (serial_number == 0 && this->serial_number_ != 0)
+            if (serial_number == 0)
             {
-                serial_number = this->serial_number_;
-                ESP_LOGV(TAG, "Serial number is not specified. Using saved serial number: %i", serial_number);
-            }
-            else
-            {
-                ESP_LOGE(TAG, "Unable to write memory without a serial number!");
-                return false;
+                if (this->serial_number_ != 0)
+                {
+                    serial_number = this->serial_number_;
+                    ESP_LOGV(TAG, "Serial number is not specified. Using saved serial number: %i", serial_number);
+                }
+                else
+                {
+                    ESP_LOGE(TAG, "Unable to write memory without a serial number!");
+                    return false;
+                }
             }
 
-            if (model == MODEL_NONE && this->model_ != MODEL_NONE)
+            if (model == MODEL_NONE)
             {
-                model = this->model_;
-                ESP_LOGV(TAG, "Model is not specified (NONE). Using saved model: %s.", model_to_string(model));
-            }
-            else
-            {
-                ESP_LOGE(TAG, "Unable to write memory without a model!");
-                return false;
+                if (this->model_ != MODEL_NONE)
+                {
+                    model = this->model_;
+                    ESP_LOGV(TAG, "Model is not specified (NONE). Using saved model: %s.", model_to_string(model));
+                }
+                else
+                {
+                    ESP_LOGE(TAG, "Unable to write memory without a model!");
+                    return false;
+                }
             }
 
             ESP_LOGD(TAG, "Write memory buffer to EEPROM of %s (%i)...", model_to_string(model), serial_number);
