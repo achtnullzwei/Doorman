@@ -248,20 +248,26 @@ namespace esphome
                     else
                     {
                         // Old models
-                        if (cmd_data.command == 0x08000040)
+                        switch(cmd_data.command)
                         {
                             // TTC-XX
-                            device.model = MODEL_TTCXX;
-                        }
-                        if (cmd_data.command == 0x02010040)
-                        {
+                            case 0x08000040:
+                                device.model = MODEL_TTCXX;
+                                break;
+
                             // TTS-XX
-                            device.model = MODEL_TTSXX;
-                        }
-                        else if (cmd_data.command == 0x08000048)
-                        {
-                            // ISH1030
-                            device.model = MODEL_ISH1030;
+                            case 0x02010040:
+                                device.model = MODEL_TTSXX;
+                                break;
+
+                            // ISH 1030
+                            case 0x08000048:
+                            case 0x08080048:
+                                device.model = MODEL_ISH1030;
+                                break;
+
+                            default:
+                                break;
                         }
                     }
 
