@@ -685,6 +685,7 @@ namespace esphome
             if (str == "TCS IVW9030 / Scantron SLIM50T") return MODEL_IVW9030;
             if (str == "TCS IVE70") return MODEL_IVE70;
 
+            if (str == "TCS BVS20") return CONTROLLER_MODEL_BVS20;
             if (str == "TCS BVS30") return CONTROLLER_MODEL_BVS30;
             if (str == "TCS NBV3210") return CONTROLLER_MODEL_NBV3210;
             if (str == "TCS VBVS30") return CONTROLLER_MODEL_VBVS30;
@@ -889,6 +890,7 @@ namespace esphome
                 case MODEL_IVW9030: return "TCS IVW9030 / Scantron SLIM50T";
                 case MODEL_IVE70: return "TCS IVE70";
 
+                case CONTROLLER_MODEL_BVS20: return "TCS BVS20";
                 case CONTROLLER_MODEL_BVS30: return "TCS BVS30";
                 case CONTROLLER_MODEL_NBV3210: return "TCS NBV3210";
                 case CONTROLLER_MODEL_VBVS30: return "TCS VBVS30";
@@ -1304,6 +1306,7 @@ namespace esphome
                     modelData.memory_size = 0;
                     break;
 
+                case CONTROLLER_MODEL_BVS20:
                 case CONTROLLER_MODEL_BVS30:
                 case CONTROLLER_MODEL_NBV3210:
                 case CONTROLLER_MODEL_VBVS30:

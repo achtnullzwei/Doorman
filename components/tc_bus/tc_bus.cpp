@@ -276,6 +276,19 @@ namespace esphome
                                     break;
                             }
                         }
+                        else if(device_group == 4)
+                        {
+                            // Old controller models
+                            switch(cmd_data.command)
+                            {
+                                case 0x877F5804:
+                                    device.model = CONTROLLER_MODEL_BVS20;
+                                    break;
+
+                                default:
+                                    break;
+                            }
+                        }
                         else
                         {
                             // Old models of other groups

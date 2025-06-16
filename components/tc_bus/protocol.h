@@ -75,6 +75,7 @@ namespace esphome
             MODEL_IVW9110,
             MODEL_IVW9030,
             MODEL_IVE70,
+            CONTROLLER_MODEL_BVS20,
             CONTROLLER_MODEL_BVS30,
             CONTROLLER_MODEL_NBV3210,
             CONTROLLER_MODEL_VBVS30,

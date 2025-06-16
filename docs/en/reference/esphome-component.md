@@ -558,6 +558,7 @@ Below is a list of available settings for specific controller models:
 
 | Model                        | Available settings                                                                                         |
 |------------------------------|------------------------------------------------------------------------------------------------------------|
+| TCS BVS20                    | None |
 | TCS BVS30                    | None |
 | TCS VBVS30                   | None |
 | TCS NBV3210                  | None |
