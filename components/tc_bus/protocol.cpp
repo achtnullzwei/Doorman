@@ -314,7 +314,7 @@ namespace esphome
 
                 switch ((command >> 28) & 0xF) {
                     case 0:
-                        data.type = (command & (1 << 6)) ? COMMAND_TYPE_DOOR_CALL : COMMAND_TYPE_INTERNAL_CALL;
+                        data.type = (command & (1 << 6)) != 0 ? COMMAND_TYPE_INTERNAL_CALL : COMMAND_TYPE_DOOR_CALL;
                         data.address = command & 0x3F;
 
                         // data.payload = command & (1 << 7);
@@ -333,7 +333,7 @@ namespace esphome
                         break;
 
                     case 3:
-                        data.type = (command & (1 << 6)) ? COMMAND_TYPE_START_TALKING_DOOR_CALL : COMMAND_TYPE_START_TALKING;
+                        data.type = (command & (1 << 6)) != 0 ? COMMAND_TYPE_START_TALKING : COMMAND_TYPE_START_TALKING_DOOR_CALL;
                         data.address = command & 0x3F;
 
                         // Flags
