@@ -183,6 +183,7 @@ CONF_RECEIVER_ID = "receiver_id"
 CONF_EVENT = "event"
 
 CONF_SERIAL_NUMBER = "serial_number"
+CONF_DEVICE_GROUP = "device_group"
 CONF_COMMAND = "command"
 CONF_IS_LONG = "is_long"
 CONF_ADDRESS = "address"
@@ -427,7 +428,8 @@ async def tc_bus_read_memory_to_code(config, action_id, template_args, args):
     automation.maybe_simple_id(
         {
             cv.GenerateID(): cv.use_id(TCBusComponent),
-            cv.Optional(CONF_SERIAL_NUMBER, default=0): cv.templatable(cv.hex_uint32_t)
+            cv.Optional(CONF_SERIAL_NUMBER, default=0): cv.templatable(cv.hex_uint32_t),
+            cv.Optional(CONF_DEVICE_GROUP, default=0): cv.templatable(cv.uint8_t)
         }
     ),
 )
@@ -437,5 +439,8 @@ async def tc_bus_request_version_to_code(config, action_id, template_args, args)
 
     serial_number_template_ = await cg.templatable(config[CONF_SERIAL_NUMBER], args, cg.uint32)
     cg.add(var.set_serial_number(serial_number_template_))
+
+    device_group_template_ = await cg.templatable(config[CONF_DEVICE_GROUP], args, cg.uint8)
+    cg.add(var.set_device_group(device_group_template_))
     
     return var

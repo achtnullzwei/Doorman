@@ -226,6 +226,7 @@ namespace esphome
                     identify_model_ = false;
                     this->cancel_timeout("wait_for_identification_category_0");
                     this->cancel_timeout("wait_for_identification_category_1");
+                    this->cancel_timeout("wait_for_identification_other");
 
                     ModelData device;
                     device.category = 0;
@@ -878,7 +879,7 @@ namespace esphome
             send_command(COMMAND_TYPE_PROGRAMMING_MODE, 0, enabled ? 1 : 0);
         }
 
-        void TCBusComponent::request_version(uint32_t serial_number)
+        void TCBusComponent::request_version(uint32_t serial_number, uint8_t device_group)
         {
             if (serial_number == 0 && this->serial_number_ != 0)
             {
@@ -893,29 +894,47 @@ namespace esphome
 
             this->cancel_timeout("wait_for_identification_category_0");
             this->cancel_timeout("wait_for_identification_category_1");
+            this->cancel_timeout("wait_for_identification_other");
+
             this->identify_model_ = true;
 
-            // First try with category 0
-            ESP_LOGD(TAG, "Identifying device model (Category %i) using serial number: %i...", 0, serial_number);
-            send_command(COMMAND_TYPE_SELECT_DEVICE_GROUP, 0, 0, 0, 400); // class 0
-            send_command(COMMAND_TYPE_REQUEST_VERSION, 0, 0, serial_number, 400);
-
-            this->set_timeout("wait_for_identification_category_0", 1000, [this, serial_number]()
+            if(device_group != 0 && device_group != 1)
             {
-                // Didn't receive identify result of category 0
-                // Second try with category 1
-                ESP_LOGD(TAG, "Identifying device model (Category %i) using serial number: %i...", 1, serial_number);
-                send_command(COMMAND_TYPE_SELECT_DEVICE_GROUP, 0, 1, 0, 400); // class 1
+                ESP_LOGD(TAG, "Identifying device model (Category %i) using serial number: %i...", device_group, serial_number);
+                send_command(COMMAND_TYPE_SELECT_DEVICE_GROUP, 0, device_group, 0, 400);
                 send_command(COMMAND_TYPE_REQUEST_VERSION, 0, 0, serial_number, 400);
 
-                this->set_timeout("wait_for_identification_category_1", 1000, [this]() {
-                    // Didn't receive identify result of category 1
+                this->set_timeout("wait_for_identification_other", 1000, [this]() {
                     // Failed
                     this->identify_model_ = false;
                     this->identify_timeout_callback_.call();
                     ESP_LOGE(TAG, "Identification response not received in time. The device model may not support identification.");
                 });
-            });
+            }
+            else
+            {
+                // First try with category 0
+                ESP_LOGD(TAG, "Identifying device model (Category %i) using serial number: %i...", 0, serial_number);
+                send_command(COMMAND_TYPE_SELECT_DEVICE_GROUP, 0, 0, 0, 400); // class 0
+                send_command(COMMAND_TYPE_REQUEST_VERSION, 0, 0, serial_number, 400);
+
+                this->set_timeout("wait_for_identification_category_0", 1000, [this, serial_number]()
+                {
+                    // Didn't receive identify result of category 0
+                    // Second try with category 1
+                    ESP_LOGD(TAG, "Identifying device model (Category %i) using serial number: %i...", 1, serial_number);
+                    send_command(COMMAND_TYPE_SELECT_DEVICE_GROUP, 0, 1, 0, 400); // class 1
+                    send_command(COMMAND_TYPE_REQUEST_VERSION, 0, 0, serial_number, 400);
+
+                    this->set_timeout("wait_for_identification_category_1", 1000, [this]() {
+                        // Didn't receive identify result of category 1
+                        // Failed
+                        this->identify_model_ = false;
+                        this->identify_timeout_callback_.call();
+                        ESP_LOGE(TAG, "Identification response not received in time. The device model may not support identification.");
+                    });
+                });
+            }
         }
 
         void TCBusComponent::read_memory(uint32_t serial_number, Model model)

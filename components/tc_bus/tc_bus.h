@@ -41,7 +41,7 @@ namespace esphome
     {
         static const char *const TAG = "tc_bus";
         static uint32_t global_tc_bus_id = 1911044085ULL;
-        
+
         struct TCBusCommandQueueItem
         {
             CommandData command_data;
@@ -207,7 +207,7 @@ namespace esphome
 
             // Misc
             void set_programming_mode(bool enabled);
-            void request_version(uint32_t serial_number);
+            void request_version(uint32_t serial_number, uint8_t device_group);
 
             ESPPreferenceObject &get_pref()
             {

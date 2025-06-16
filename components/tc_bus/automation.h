@@ -89,8 +89,9 @@ namespace esphome
             public:
                 TCBusIdentifyAction(TCBusComponent *parent) : parent_(parent) {}
                 TEMPLATABLE_VALUE(uint32_t, serial_number)
+                TEMPLATABLE_VALUE(uint8_t, device_group)
 
-                void play(Ts... x) { this->parent_->request_version(this->serial_number_.value(x...)); }
+                void play(Ts... x) { this->parent_->request_version(this->serial_number_.value(x...), this->device_group_.value(x...)); }
 
             protected:
                 TCBusComponent *parent_;
