@@ -35,6 +35,10 @@ This release **will impact your current setup** and **requires** you to go throu
 - **Pre-Open Commands**  
    In some setups, it’s necessary to send one or more preparatory commands to select the correct door. This feature allows you to define and send a sequence of commands before the `open_door` command is executed.
 
+- **Door Opener Mode**  
+   It is now possible to activate the integrated relay instead of sending a BUS command to open the entrance door.  
+   This can be configured using the `Door Opener Mode` setting and is especially useful for older analog systems.
+
 - **Show Bus Activity via Status LED**  
    Added a new switch that, when enabled, makes the status LED blink briefly to indicate bus activity. Helpful for debugging and verifying communication with the door system. Disabled by default.
 

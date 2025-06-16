@@ -23,6 +23,13 @@ esphome:
           id: second_entrance_door
           state: LOCKED
 
+      # Always turn off relay on boot if used as door opener
+      - if:
+          condition:
+            - lambda: return id(door_opener_mode).state == "Internal Relay";
+          then:
+            - switch.turn_off: doorman_relay
+
       # Temporary Workaround for ESPHome >= 2025.3.0
       # Prevents WebServer Crash
       - event.trigger:
@@ -591,13 +598,28 @@ lock:
       - lock.template.publish:
           id: entrance_door
           state: UNLOCKED
-      - script.execute:
-          id: send_command_chain
-          command_list: !lambda "return id(entrance_door_before_open_cmds).state;"
-      - tc_bus.send:
-          type: open_door
-          address: !lambda "return id(entrance_door_station_id).state;"
+
+      - if:
+          condition:
+            - lambda: return id(door_opener_mode).state == "Bus Command";
+          then:
+            - script.execute:
+                id: send_command_chain
+                command_list: !lambda "return id(entrance_door_before_open_cmds).state;"
+            - tc_bus.send:
+                type: open_door
+                address: !lambda "return id(entrance_door_station_id).state;"
+          else:
+            - switch.turn_on: doorman_relay
+
       - delay: 5s
+
+      - if:
+          condition:
+            - lambda: return id(door_opener_mode).state == "Internal Relay";
+          then:
+            - switch.turn_off: doorman_relay
+
       - lock.template.publish:
           id: entrance_door
           state: LOCKED
@@ -618,13 +640,26 @@ lock:
       - lock.template.publish:
           id: second_entrance_door
           state: UNLOCKED
-      - script.execute:
-          id: send_command_chain
-          command_list: !lambda "return id(second_entrance_door_before_open_cmds).state;"
-      - tc_bus.send:
-          type: open_door
-          address: !lambda "return id(second_entrance_door_station_id).state;"
+
+      - if:
+          condition:
+            - lambda: return id(door_opener_mode).state == "Bus Command";
+          then:
+            - script.execute:
+                id: send_command_chain
+                command_list: !lambda "return id(second_entrance_door_before_open_cmds).state;"
+            - tc_bus.send:
+                type: open_door
+                address: !lambda "return id(second_entrance_door_station_id).state;"
+
       - delay: 5s
+
+      - if:
+          condition:
+            - lambda: return id(door_opener_mode).state == "Internal Relay";
+          then:
+            - switch.turn_off: doorman_relay
+
       - lock.template.publish:
           id: second_entrance_door
           state: LOCKED
@@ -632,6 +667,21 @@ lock:
       sorting_group_id: sorting_group_controls
       sorting_weight: 2
 
+select:
+  - platform: template
+    id: door_opener_mode
+    name: "Door Opener Mode"
+    icon: "mdi:door"
+    optimistic: true
+    options:
+      - "Bus Command"
+      - "Internal Relay"
+    initial_option: "Bus Command"
+    restore_value: true
+    entity_category: CONFIG
+    web_server:
+      sorting_group_id: sorting_group_settings_advanced
+      sorting_weight: -75
 
 event:
   - platform: template

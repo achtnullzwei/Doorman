@@ -271,6 +271,13 @@ Gib eine Liste von Befehlen an (durch Semikolons getrennt), die auf den Bus gese
 
 ## Dropdowns
 
+### Door Opener Mode <Badge type="tip" text="door_opener_mode" /> <Badge type="info" text="Deaktiviert" />
+Konfiguriere, wie deine Eingangstür geöffnet werden soll — entweder durch das Senden eines BUS-Befehls oder durch das Schalten des internen Doorman-Relais.
+
+##### Modi:
+- **Bus Command**
+- **Internal Relay**
+
 ### RTO: Central Toggle - Door Selection <Badge type="tip" text="rto_central_doors" />
 Legt die Türen fest, bei denen der zentrale `Ring To Open`-Schalter die [Ring To Open](../guide/features/ring-to-open) Automation umschaltet.
 

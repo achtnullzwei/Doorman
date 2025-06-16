@@ -270,6 +270,13 @@ Specify a list of hex-commands (separated by semicolons) to be sent on the bus b
 
 ## Selects
 
+### Door Opener Mode <Badge type="tip" text="door_opener_mode" /> <Badge type="info" text="Disabled by default" />
+Configure how the entrance door should be opened — either by sending a Bus command or by activating the internal Doorman relay.
+
+##### Modes:
+- **Bus Command**
+- **Internal Relay**
+
 ### RTO: Central Toggle - Door Selection <Badge type="tip" text="rto_central_doors" />
 Defines the doors for which the central `Ring To Open` switch will toggle the [Ring To Open](../guide/features/ring-to-open) automation.
 
