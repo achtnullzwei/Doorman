@@ -117,7 +117,7 @@ You can find all the necessary files for manufacturing the **Doorman-S3** [here]
   </ul>
 </div>
 
-Contributions to the **Doorman** project are always welcome! Whether it's code improvements, bug fixes, or documentation updates, your help is greatly appreciated. Please feel free to open a **Pull Request**.
+To get started, check out our [Contributing Guidelines](CONTRIBUTING.md).
 
 ---
 
