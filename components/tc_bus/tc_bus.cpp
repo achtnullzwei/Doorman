@@ -765,6 +765,7 @@ namespace esphome
         void TCBusComponent::send_command(uint32_t command, uint32_t wait_duration)
         {
             ESP_LOGV(TAG, "Called send_command(uint32_t command, uint32_t wait_duration)");
+            ESP_LOGV(TAG, "Command: 0x%X | Wait Duration: %i", command, wait_duration);
 
             // Determine length of command
             // Not reliable as its based on the 32 bit integer itself
@@ -777,6 +778,7 @@ namespace esphome
         void TCBusComponent::send_command(uint32_t command, bool is_long, uint32_t wait_duration)
         {
             ESP_LOGV(TAG, "Called send_command(uint32_t command, bool is_long, uint32_t wait_duration)");
+            ESP_LOGV(TAG, "Command: 0x%X | Length: %i | Wait Duration: %i", command, (cmd_data.is_long ? 32 : 16), wait_duration);
 
             CommandData cmd_data = parseCommand(command, is_long);
             send_command(cmd_data, wait_duration);
@@ -785,6 +787,7 @@ namespace esphome
         void TCBusComponent::send_command(CommandType type, uint8_t address, uint32_t payload, uint32_t serial_number, uint32_t wait_duration)
         {
             ESP_LOGV(TAG, "Called send_command(CommandType type, uint8_t address, uint32_t payload, uint32_t serial_number, uint32_t wait_duration)");
+            ESP_LOGV(TAG, "Type: %s | Address: %i | Payload: 0x%X | Serial-Number: %i | Wait Duration: %i", command_type_to_string(type), address, payload, serial_number, wait_duration);
 
             CommandData cmd_data = buildCommand(type, address, payload, serial_number);
             send_command(cmd_data, wait_duration);
@@ -793,6 +796,7 @@ namespace esphome
         void TCBusComponent::send_command(CommandData cmd_data, uint32_t wait_duration)
         {
             ESP_LOGV(TAG, "Called send_command(CommandData cmd_data, uint32_t wait_duration)");
+            ESP_LOGV(TAG, "Type: %s | Address: %i | Payload: 0x%X | Serial-Number: %i | Length: %i | Wait Duration: %i", command_type_to_string(cmd_data.type), cmd_data.address, cmd_data.payload, cmd_data.serial_number, (cmd_data.is_long ? 32 : 16), wait_duration);
 
             if (cmd_data.serial_number == 0 && this->serial_number_ != 0)
             {
@@ -811,8 +815,6 @@ namespace esphome
                 ESP_LOGV(TAG, "Override door opener command: use long door opener");
                 cmd_data = buildCommand(COMMAND_TYPE_OPEN_DOOR_LONG, cmd_data.address, cmd_data.payload, cmd_data.serial_number);
             }
-
-
 
             this->command_queue_.push({cmd_data, wait_duration});
         }
