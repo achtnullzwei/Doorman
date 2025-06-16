@@ -221,15 +221,18 @@ namespace esphome
                     // Do not proceed
                     return;
                 }
-                else if (identify_model_)
+                else if (identify_model_device_group_ != -1)
                 {
-                    identify_model_ = false;
+                    int8_t device_group = identify_model_device_group_;
+
+                    // Reset
+                    identify_model_device_group_ = -1;
                     this->cancel_timeout("wait_for_identification_category_0");
                     this->cancel_timeout("wait_for_identification_category_1");
                     this->cancel_timeout("wait_for_identification_other");
 
                     ModelData device;
-                    device.category = 0;
+                    device.category = (uint8_t)device_group;
                     device.memory_size = 0;
                     
                     if (cmd_data.command_hex.substr(4, 1) == "D")
@@ -244,62 +247,80 @@ namespace esphome
 
                         // HW Version
                         device.hardware_version = std::stoi(cmd_data.command_hex.substr(0, 1));
-                        device.model = identifier_string_to_model(cmd_data.command_hex.substr(1, 3), device.hardware_version, device.firmware_version);
+                        device.model = identifier_string_to_model((uint8_t)device_group, cmd_data.command_hex.substr(1, 3), device.hardware_version, device.firmware_version);
                     }
                     else
                     {
-                        // Old models
-                        switch(cmd_data.command)
+                        if(device_group == 0 || device_group == 1)
                         {
-                            // TTC-XX
-                            case 0x08000040:
-                                device.model = MODEL_TTCXX;
-                                break;
+                            // Old indoor station models
+                            switch(cmd_data.command)
+                            {
+                                // TTC-XX
+                                case 0x08000040:
+                                    device.model = MODEL_TTCXX;
+                                    break;
 
-                            // TTS-XX
-                            case 0x02010040:
-                                device.model = MODEL_TTSXX;
-                                break;
+                                // TTS-XX
+                                case 0x02010040:
+                                    device.model = MODEL_TTSXX;
+                                    break;
 
-                            // ISH 1030
-                            case 0x08000048:
-                            case 0x08080048:
-                                device.model = MODEL_ISH1030;
-                                break;
+                                // ISH 1030
+                                case 0x08000048:
+                                case 0x08080048:
+                                    device.model = MODEL_ISH1030;
+                                    break;
 
-                            default:
-                                break;
+                                default:
+                                    break;
+                            }
+                        }
+                        else
+                        {
+                            // Old models of other groups
+                            // Not implemented
                         }
                     }
 
                     if (device.model != MODEL_NONE)
                     {
+                        // Add missing information
+                        device.memory_size = getModelData(device.model).memory_size;
+
                         ESP_LOGD(TAG, "Identified Hardware: %s (v%i) | Firmware: %i.%i.%i",
-                                 model_to_string(device.model),
-                                 device.hardware_version,
-                                 device.firmware_major,
-                                 device.firmware_minor,
-                                 device.firmware_patch);
+                                model_to_string(device.model),
+                                device.hardware_version,
+                                device.firmware_major,
+                                device.firmware_minor,
+                                device.firmware_patch);
 
-                        // Update Model
-                        if (device.model != this->model_)
+                        // Indoor stations only
+                        if(device_group == 0 || device_group == 1)
                         {
-                            this->model_ = device.model;
-#ifdef USE_SELECT
-                            if (this->model_select_ != nullptr)
+                            // Update Model
+                            if (device.model != this->model_)
                             {
-                                this->model_select_->publish_state(model_to_string(device.model));
-                            }
+                                this->model_ = device.model;
+#ifdef USE_SELECT
+                                if (this->model_select_ != nullptr)
+                                {
+                                    this->model_select_->publish_state(model_to_string(device.model));
+                                }
 #endif
-                            this->save_settings();
+                                this->save_settings();
+                            }
+                            this->identify_complete_callback_.call(device);
                         }
-
-                        this->identify_complete_callback_.call(device);
                     }
                     else
                     {
-                        ESP_LOGE(TAG, "Unable to identify Hardware! Unknown model. Data received: %s", cmd_data.command_hex.c_str());
-                        this->identify_unknown_callback_.call();
+                        // Indoor stations only
+                        if(device_group == 0 || device_group == 1)
+                        {
+                            ESP_LOGE(TAG, "Unable to identify Hardware! Unknown model. Data received: %s", cmd_data.command_hex.c_str());
+                            this->identify_unknown_callback_.call();
+                        }
                     }
 
                     // Do not proceed
@@ -528,7 +549,7 @@ namespace esphome
                     // Check for ACK
                     if (ack_pos == 6)
                     {
-                        if (ack_crc == ack_cal_crc && !reading_memory_ && !identify_model_)
+                        if (ack_crc == ack_cal_crc && !reading_memory_ && identify_model_device_group_ == -1)
                         {
                             CommandData cmd_data = parseCommand(ack_command, false);
                             received_command(cmd_data);
@@ -572,7 +593,7 @@ namespace esphome
                 {
                     if (ack_pos == 6)
                     {
-                        if (ack_crc == ack_cal_crc && !reading_memory_ && !identify_model_)
+                        if (ack_crc == ack_cal_crc && !reading_memory_ && identify_model_device_group_ == -1)
                         {
                             CommandData cmd_data = parseCommand(ack_command, false);
                             received_command(cmd_data);
@@ -899,7 +920,7 @@ namespace esphome
             this->cancel_timeout("wait_for_identification_category_1");
             this->cancel_timeout("wait_for_identification_other");
 
-            this->identify_model_ = true;
+            this->identify_model_device_group_ = device_group;
 
             if(device_group > 1)
             {
@@ -910,8 +931,7 @@ namespace esphome
 
                 this->set_timeout("wait_for_identification_other", 1000, [this]() {
                     // Failed
-                    this->identify_model_ = false;
-                    this->identify_timeout_callback_.call();
+                    this->identify_model_device_group_ = -1;
                     ESP_LOGE(TAG, "Identification response not received in time. The device model may not support identification.");
                 });
             }
@@ -933,7 +953,7 @@ namespace esphome
                     this->set_timeout("wait_for_identification_category_1", 1000, [this]() {
                         // Didn't receive identify result of category 1
                         // Failed
-                        this->identify_model_ = false;
+                        this->identify_model_device_group_ = -1;
                         this->identify_timeout_callback_.call();
                         ESP_LOGE(TAG, "Identification response not received in time. The device model may not support identification.");
                     });

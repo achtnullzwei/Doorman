@@ -688,114 +688,122 @@ namespace esphome
             return MODEL_NONE;
         }
 
-        Model identifier_string_to_model(const std::string& model_key, const uint8_t& hw_version, const uint32_t& fw_version)
+        Model identifier_string_to_model(const uint8_t& device_group, const std::string& model_key, const uint8_t& hw_version, const uint32_t& fw_version)
         {
-            if (model_key == "000") return MODEL_ISH3030;
-            else if (model_key == "010") return MODEL_ISW3030;
-            else if (model_key == "001") return MODEL_ISH3230;
-            else if (model_key == "011") return MODEL_ISW3230;
-            else if (model_key == "003") return MODEL_ISH3130;
-            else if (model_key == "013") return MODEL_ISW3130;
-            else if (model_key == "015") return MODEL_ISW3330;
-            else if (model_key == "002") return MODEL_ISH3022;
-            else if (model_key == "017") return MODEL_ISW3340;
-            else if (model_key == "800") return MODEL_IVH3222;
-            else if (model_key == "900") return MODEL_IVH4222;
-            else if (model_key == "B00") return MODEL_IMM1000;
-            else if (model_key == "200") return MODEL_ISW4100;
-            else if (model_key == "201") return MODEL_IMM2100;
-            else if (model_key == "020" || model_key == "021" || model_key == "022" || model_key == "023" ||
-                    model_key == "024" || model_key == "025" || model_key == "026" || model_key == "027")
-                return MODEL_ISW5010;
+            if(device_group == 0 || device_group == 1)
+            {
+                if (model_key == "000") return MODEL_ISH3030;
+                else if (model_key == "010") return MODEL_ISW3030;
+                else if (model_key == "001") return MODEL_ISH3230;
+                else if (model_key == "011") return MODEL_ISW3230;
+                else if (model_key == "003") return MODEL_ISH3130;
+                else if (model_key == "013") return MODEL_ISW3130;
+                else if (model_key == "015") return MODEL_ISW3330;
+                else if (model_key == "002") return MODEL_ISH3022;
+                else if (model_key == "017") return MODEL_ISW3340;
+                else if (model_key == "800") return MODEL_IVH3222;
+                else if (model_key == "900") return MODEL_IVH4222;
+                else if (model_key == "B00") return MODEL_IMM1000;
+                else if (model_key == "200") return MODEL_ISW4100;
+                else if (model_key == "201") return MODEL_IMM2100;
+                else if (model_key == "020" || model_key == "021" || model_key == "022" || model_key == "023" ||
+                        model_key == "024" || model_key == "025" || model_key == "026" || model_key == "027")
+                    return MODEL_ISW5010;
 
-            else if (model_key == "030" || model_key == "031" || model_key == "032")
-                return MODEL_IVW511X;
+                else if (model_key == "030" || model_key == "031" || model_key == "032")
+                    return MODEL_IVW511X;
 
-            else if (model_key == "03A" || model_key == "03B" || model_key == "03C" || model_key == "03D" || model_key == "03F")
-                return MODEL_IVW521X;
+                else if (model_key == "03A" || model_key == "03B" || model_key == "03C" || model_key == "03D" || model_key == "03F")
+                    return MODEL_IVW521X;
 
-            else if (model_key == "028" || model_key == "02B" || model_key == "02F")
-                return MODEL_ISW5020;
+                else if (model_key == "028" || model_key == "02B" || model_key == "02F")
+                    return MODEL_ISW5020;
 
-            else if (model_key == "068" || model_key == "06F")
-                return MODEL_ISW5030;
+                else if (model_key == "068" || model_key == "06F")
+                    return MODEL_ISW5030;
 
-            else if (model_key == "068" || model_key == "06F")
-                return MODEL_ISW5031;
+                else if (model_key == "068" || model_key == "06F")
+                    return MODEL_ISW5031;
 
-            else if (model_key == "060") return MODEL_ISW5033;
+                else if (model_key == "060") return MODEL_ISW5033;
 
-            else if (model_key == "070" || model_key == "071" || model_key == "072" || model_key == "073" ||
-                    model_key == "074" || model_key == "075" || model_key == "076" || model_key == "077")
-                return MODEL_ISW6031;
+                else if (model_key == "070" || model_key == "071" || model_key == "072" || model_key == "073" ||
+                        model_key == "074" || model_key == "075" || model_key == "076" || model_key == "077")
+                    return MODEL_ISW6031;
 
-            else if (model_key == "080" || model_key == "081" || model_key == "082" || model_key == "083" ||
-                    model_key == "084" || model_key == "085" || model_key == "086" || model_key == "087")
-                return MODEL_ISW7030;
+                else if (model_key == "080" || model_key == "081" || model_key == "082" || model_key == "083" ||
+                        model_key == "084" || model_key == "085" || model_key == "086" || model_key == "087")
+                    return MODEL_ISW7030;
 
-            else if (model_key == "088" || model_key == "089" || model_key == "08A" || model_key == "08B" ||
-                    model_key == "08C" || model_key == "08D" || model_key == "08E" || model_key == "08F")
-                return MODEL_IVW7510;
+                else if (model_key == "088" || model_key == "089" || model_key == "08A" || model_key == "08B" ||
+                        model_key == "08C" || model_key == "08D" || model_key == "08E" || model_key == "08F")
+                    return MODEL_IVW7510;
 
-            else if (model_key == "180" || model_key == "181" || model_key == "182" || model_key == "183" ||
-                    model_key == "184" || model_key == "185" || model_key == "186" || model_key == "187")
-                return MODEL_ISH7030;
+                else if (model_key == "180" || model_key == "181" || model_key == "182" || model_key == "183" ||
+                        model_key == "184" || model_key == "185" || model_key == "186" || model_key == "187")
+                    return MODEL_ISH7030;
 
-            else if (model_key == "188" || model_key == "189" || model_key == "18A" || model_key == "18B" ||
-                    model_key == "18C" || model_key == "18D" || model_key == "18E" || model_key == "18F")
-                return MODEL_IVH7510;
+                else if (model_key == "188" || model_key == "189" || model_key == "18A" || model_key == "18B" ||
+                        model_key == "18C" || model_key == "18D" || model_key == "18E" || model_key == "18F")
+                    return MODEL_IVH7510;
 
-            else if (model_key == "078" || model_key == "079" || model_key == "07A" || model_key == "07B" ||
-                    model_key == "07C" || model_key == "07D" || model_key == "07E" || model_key == "07F")
-                return MODEL_ISW6010;
+                else if (model_key == "078" || model_key == "079" || model_key == "07A" || model_key == "07B" ||
+                        model_key == "07C" || model_key == "07D" || model_key == "07E" || model_key == "07F")
+                    return MODEL_ISW6010;
 
-            else if (model_key == "058" || model_key == "059" || model_key == "05A" || model_key == "05B" ||
-                    model_key == "05C" || model_key == "05D" || model_key == "05E" || model_key == "05F")
-                return MODEL_IVW6511;
+                else if (model_key == "058" || model_key == "059" || model_key == "05A" || model_key == "05B" ||
+                        model_key == "05C" || model_key == "05D" || model_key == "05E" || model_key == "05F")
+                    return MODEL_IVW6511;
 
-            else if (model_key == "C70" || model_key == "C71" || model_key == "C72" || model_key == "C73" ||
-                    model_key == "C74" || model_key == "C75" || model_key == "C76" || model_key == "C77")
-                return MODEL_ISW7030;
+                else if (model_key == "C70" || model_key == "C71" || model_key == "C72" || model_key == "C73" ||
+                        model_key == "C74" || model_key == "C75" || model_key == "C76" || model_key == "C77")
+                    return MODEL_ISW7030;
 
-            else if (model_key == "C90" || model_key == "C91" || model_key == "C92" || model_key == "C93" ||
-                    model_key == "C94" || model_key == "C95" || model_key == "C96" || model_key == "C97")
-                return MODEL_ISWM7000;
+                else if (model_key == "C90" || model_key == "C91" || model_key == "C92" || model_key == "C93" ||
+                        model_key == "C94" || model_key == "C95" || model_key == "C96" || model_key == "C97")
+                    return MODEL_ISWM7000;
 
-            else if (model_key == "C80" || model_key == "C81" || model_key == "C82" || model_key == "C83" ||
-                    model_key == "C84" || model_key == "C85" || model_key == "C86" || model_key == "C87")
-                return MODEL_IVWM7000;
+                else if (model_key == "C80" || model_key == "C81" || model_key == "C82" || model_key == "C83" ||
+                        model_key == "C84" || model_key == "C85" || model_key == "C86" || model_key == "C87")
+                    return MODEL_IVWM7000;
 
-            else if (model_key == "800" || model_key == "805") return MODEL_IVW2210;
-            else if (model_key == "807") return MODEL_IVW2211;
-            else if (model_key == "80C") return MODEL_IVW2212;
-            else if (model_key == "810") return MODEL_IVW2220;
-            else if (model_key == "815") return MODEL_IVW2221;
-            else if (model_key == "820") return MODEL_IVW3011;
-            else if (model_key == "830") return MODEL_IVW3012;
+                else if (model_key == "800" || model_key == "805") return MODEL_IVW2210;
+                else if (model_key == "807") return MODEL_IVW2211;
+                else if (model_key == "80C") return MODEL_IVW2212;
+                else if (model_key == "810") return MODEL_IVW2220;
+                else if (model_key == "815") return MODEL_IVW2221;
+                else if (model_key == "820") return MODEL_IVW3011;
+                else if (model_key == "830") return MODEL_IVW3012;
 
-            else if (model_key == "C01") return MODEL_VMH;
-            else if (model_key == "C00") return MODEL_VML;
-            else if (model_key == "C02") return MODEL_VMF;
-            else if (model_key == "400") return MODEL_ISW42X0;
-            else if (model_key == "410") return MODEL_TKIS;
-            else if (model_key == "420") return MODEL_TKISV;
-            else if (model_key == "208") return MODEL_CAIXXXX;
-            else if (model_key == "809") return MODEL_CAI2000;
-            else if (model_key == "280") {
-                if(fw_version >= 512) return MODEL_VTC42V2;
-                else return MODEL_VTC40;
+                else if (model_key == "C01") return MODEL_VMH;
+                else if (model_key == "C00") return MODEL_VML;
+                else if (model_key == "C02") return MODEL_VMF;
+                else if (model_key == "400") return MODEL_ISW42X0;
+                else if (model_key == "410") return MODEL_TKIS;
+                else if (model_key == "420") return MODEL_TKISV;
+                else if (model_key == "208") return MODEL_CAIXXXX;
+                else if (model_key == "809") return MODEL_CAI2000;
+                else if (model_key == "280") {
+                    if(fw_version >= 512) return MODEL_VTC42V2;
+                    else return MODEL_VTC40;
+                }
+                else if (model_key == "281") {
+                    if(fw_version >= 512) return MODEL_TC40V2;
+                    else return MODEL_TC40;
+                }
+            
+                else if (model_key == "194") return MODEL_IVW9030;
+                else if (model_key == "1E8") return MODEL_IVW9010;
+                else if (model_key == "1EA") return MODEL_IVW9110;
+                else if (model_key == "1E9") return MODEL_IVW9011;
+                else if (model_key == "1B3" || model_key == "1B4" || model_key == "1B5")
+                    return MODEL_IVE70;
             }
-            else if (model_key == "281") {
-                if(fw_version >= 512) return MODEL_TC40V2;
-                else return MODEL_TC40;
+            else
+            {
+                // Other device groups
+                // Not implemented
             }
-        
-            else if (model_key == "194") return MODEL_IVW9030;
-            else if (model_key == "1E8") return MODEL_IVW9010;
-            else if (model_key == "1EA") return MODEL_IVW9110;
-            else if (model_key == "1E9") return MODEL_IVW9011;
-            else if (model_key == "1B3" || model_key == "1B4" || model_key == "1B5")
-                return MODEL_IVE70;
 
             return MODEL_NONE;
         }

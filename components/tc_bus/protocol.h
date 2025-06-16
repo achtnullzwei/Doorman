@@ -173,7 +173,7 @@ namespace esphome
 
         const char* model_to_string(Model model = MODEL_NONE);
         Model string_to_model(const std::string& str);
-        Model identifier_string_to_model(const std::string& model_key, const uint8_t& hw_version = 0, const uint32_t& fw_version = 0);
+        Model identifier_string_to_model(const uint8_t& device_group, const std::string& model_key, const uint8_t& hw_version = 0, const uint32_t& fw_version = 0);
 
         uint8_t ringtone_to_int(const std::string& str);
         std::string int_to_ringtone(uint8_t ringtone);
