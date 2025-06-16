@@ -232,6 +232,10 @@ namespace esphome
                     device.category = 0;
                     device.memory_size = 0;
 
+                    // 59E5 D 2C0
+
+                    ESP_LOGD(TAG, "Received %s 0x%08X", cmd_data.command_hex, cmd_data.command);
+
                     if (cmd_data.command_hex.substr(4, 1) == "D")
                     {
                         // New models
@@ -901,8 +905,9 @@ namespace esphome
 
             this->identify_model_ = true;
 
-            if(device_group != 0 && device_group != 1)
+            if(device_group > 1)
             {
+                // Use device group if not 0 and 1
                 ESP_LOGD(TAG, "Identifying device model (Category %i) using serial number: %i...", device_group, serial_number);
                 send_command(COMMAND_TYPE_SELECT_DEVICE_GROUP, 0, device_group, 0, 400);
                 send_command(COMMAND_TYPE_REQUEST_VERSION, 0, 0, serial_number, 400);
