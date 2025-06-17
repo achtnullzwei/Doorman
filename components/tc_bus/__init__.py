@@ -32,7 +32,7 @@ TCBusIdentifyAction = tc_bus_ns.class_(
     "TCBusIdentifyAction", automation.Action
 )
 
-CommandData = tc_bus_ns.struct(f"CommandData")
+TelegramData = tc_bus_ns.struct(f"TelegramData")
 SettingData = tc_bus_ns.struct(f"SettingData")
 ModelData = tc_bus_ns.struct(f"ModelData")
 
@@ -42,7 +42,7 @@ IdentifyTimeoutTrigger = tc_bus_ns.class_("IdentifyTimeoutTrigger", automation.T
 ReadMemoryCompleteTrigger = tc_bus_ns.class_("ReadMemoryCompleteTrigger", automation.Trigger.template())
 ReadMemoryTimeoutTrigger = tc_bus_ns.class_("ReadMemoryTimeoutTrigger", automation.Trigger.template())
 
-ReceivedCommandTrigger = tc_bus_ns.class_("ReceivedCommandTrigger", automation.Trigger.template())
+ReceivedTelegramTrigger = tc_bus_ns.class_("ReceivedTelegramTrigger", automation.Trigger.template())
 
 SETTING_TYPE = tc_bus_ns.enum("SettingType")
 SETTING_TYPES = {
@@ -55,39 +55,39 @@ SETTING_TYPES = {
     "volume_handset_internal": SETTING_TYPE.SETTING_VOLUME_HANDSET_INTERNAL
 }
 
-COMMAND_TYPE = tc_bus_ns.enum("CommandType")
-COMMAND_TYPES = {
-    "unknown": COMMAND_TYPE.COMMAND_TYPE_UNKNOWN,
-    "ack": COMMAND_TYPE.COMMAND_TYPE_ACK,
-    "search_doorman_devices": COMMAND_TYPE.COMMAND_TYPE_SEARCH_DOORMAN_DEVICES,
-    "found_doorman_device": COMMAND_TYPE.COMMAND_TYPE_FOUND_DOORMAN_DEVICE,
-    "door_call": COMMAND_TYPE.COMMAND_TYPE_DOOR_CALL,
-    "floor_call": COMMAND_TYPE.COMMAND_TYPE_FLOOR_CALL,
-    "internal_call": COMMAND_TYPE.COMMAND_TYPE_INTERNAL_CALL,
-    "control_function": COMMAND_TYPE.COMMAND_TYPE_CONTROL_FUNCTION,
-    "start_talking_door_call": COMMAND_TYPE.COMMAND_TYPE_START_TALKING_DOOR_CALL,
-    "start_talking": COMMAND_TYPE.COMMAND_TYPE_START_TALKING,
-    "stop_talking_door_call": COMMAND_TYPE.COMMAND_TYPE_STOP_TALKING_DOOR_CALL,
-    "stop_talking": COMMAND_TYPE.COMMAND_TYPE_STOP_TALKING,
-    "open_door": COMMAND_TYPE.COMMAND_TYPE_OPEN_DOOR,
-    "open_door_long": COMMAND_TYPE.COMMAND_TYPE_OPEN_DOOR_LONG,
-    "light": COMMAND_TYPE.COMMAND_TYPE_LIGHT,
-    "door_opened": COMMAND_TYPE.COMMAND_TYPE_DOOR_OPENED,
-    "door_closed": COMMAND_TYPE.COMMAND_TYPE_DOOR_CLOSED,
-    "end_of_ringtone": COMMAND_TYPE.COMMAND_TYPE_END_OF_RINGTONE,
-    "end_of_door_readiness": COMMAND_TYPE.COMMAND_TYPE_END_OF_DOOR_READINESS,
-    "initialize_door_station": COMMAND_TYPE.COMMAND_TYPE_INITIALIZE_DOOR_STATION,
-    "reset": COMMAND_TYPE.COMMAND_TYPE_RESET,
-    "select_device_group": COMMAND_TYPE.COMMAND_TYPE_SELECT_DEVICE_GROUP,
-    "select_device_group_reset": COMMAND_TYPE.COMMAND_TYPE_SELECT_DEVICE_GROUP_RESET,
-    "search_devices": COMMAND_TYPE.COMMAND_TYPE_SEARCH_DEVICES,
-    "found_device": COMMAND_TYPE.COMMAND_TYPE_FOUND_DEVICE,
-    "found_device_subsystem": COMMAND_TYPE.COMMAND_TYPE_FOUND_DEVICE_SUBSYSTEM,
-    "programming_mode": COMMAND_TYPE.COMMAND_TYPE_PROGRAMMING_MODE,
-    "read_memory_block": COMMAND_TYPE.COMMAND_TYPE_READ_MEMORY_BLOCK,
-    "select_memory_page": COMMAND_TYPE.COMMAND_TYPE_SELECT_MEMORY_PAGE,
-    "write_memory": COMMAND_TYPE.COMMAND_TYPE_WRITE_MEMORY,
-    "request_version": COMMAND_TYPE.COMMAND_TYPE_REQUEST_VERSION
+TELEGRAM_TYPE = tc_bus_ns.enum("TelegramType")
+TELEGRAM_TYPES = {
+    "unknown": TELEGRAM_TYPE.TELEGRAM_TYPE_UNKNOWN,
+    "ack": TELEGRAM_TYPE.TELEGRAM_TYPE_ACK,
+    "search_doorman_devices": TELEGRAM_TYPE.TELEGRAM_TYPE_SEARCH_DOORMAN_DEVICES,
+    "found_doorman_device": TELEGRAM_TYPE.TELEGRAM_TYPE_FOUND_DOORMAN_DEVICE,
+    "door_call": TELEGRAM_TYPE.TELEGRAM_TYPE_DOOR_CALL,
+    "floor_call": TELEGRAM_TYPE.TELEGRAM_TYPE_FLOOR_CALL,
+    "internal_call": TELEGRAM_TYPE.TELEGRAM_TYPE_INTERNAL_CALL,
+    "control_function": TELEGRAM_TYPE.TELEGRAM_TYPE_CONTROL_FUNCTION,
+    "start_talking_door_call": TELEGRAM_TYPE.TELEGRAM_TYPE_START_TALKING_DOOR_CALL,
+    "start_talking": TELEGRAM_TYPE.TELEGRAM_TYPE_START_TALKING,
+    "stop_talking_door_call": TELEGRAM_TYPE.TELEGRAM_TYPE_STOP_TALKING_DOOR_CALL,
+    "stop_talking": TELEGRAM_TYPE.TELEGRAM_TYPE_STOP_TALKING,
+    "open_door": TELEGRAM_TYPE.TELEGRAM_TYPE_OPEN_DOOR,
+    "open_door_long": TELEGRAM_TYPE.TELEGRAM_TYPE_OPEN_DOOR_LONG,
+    "light": TELEGRAM_TYPE.TELEGRAM_TYPE_LIGHT,
+    "door_opened": TELEGRAM_TYPE.TELEGRAM_TYPE_DOOR_OPENED,
+    "door_closed": TELEGRAM_TYPE.TELEGRAM_TYPE_DOOR_CLOSED,
+    "end_of_ringtone": TELEGRAM_TYPE.TELEGRAM_TYPE_END_OF_RINGTONE,
+    "end_of_door_readiness": TELEGRAM_TYPE.TELEGRAM_TYPE_END_OF_DOOR_READINESS,
+    "initialize_door_station": TELEGRAM_TYPE.TELEGRAM_TYPE_INITIALIZE_DOOR_STATION,
+    "reset": TELEGRAM_TYPE.TELEGRAM_TYPE_RESET,
+    "select_device_group": TELEGRAM_TYPE.TELEGRAM_TYPE_SELECT_DEVICE_GROUP,
+    "select_device_group_reset": TELEGRAM_TYPE.TELEGRAM_TYPE_SELECT_DEVICE_GROUP_RESET,
+    "search_devices": TELEGRAM_TYPE.TELEGRAM_TYPE_SEARCH_DEVICES,
+    "found_device": TELEGRAM_TYPE.TELEGRAM_TYPE_FOUND_DEVICE,
+    "found_device_subsystem": TELEGRAM_TYPE.TELEGRAM_TYPE_FOUND_DEVICE_SUBSYSTEM,
+    "programming_mode": TELEGRAM_TYPE.TELEGRAM_TYPE_PROGRAMMING_MODE,
+    "read_memory_block": TELEGRAM_TYPE.TELEGRAM_TYPE_READ_MEMORY_BLOCK,
+    "select_memory_page": TELEGRAM_TYPE.TELEGRAM_TYPE_SELECT_MEMORY_PAGE,
+    "write_memory": TELEGRAM_TYPE.TELEGRAM_TYPE_WRITE_MEMORY,
+    "request_version": TELEGRAM_TYPE.TELEGRAM_TYPE_REQUEST_VERSION
 }
 
 CONF_IS_MODELS = [
@@ -195,14 +195,14 @@ CONF_EVENT = "event"
 
 CONF_SERIAL_NUMBER = "serial_number"
 CONF_DEVICE_GROUP = "device_group"
-CONF_COMMAND = "command"
+CONF_TELEGRAM = "telegram"
 CONF_IS_LONG = "is_long"
 CONF_ADDRESS = "address"
 CONF_ADDRESS_LAMBDA = "address_lambda"
 CONF_PAYLOAD = "payload"
 CONF_PAYLOAD_LAMBDA = "payload_lambda"
 
-CONF_ON_COMMAND = "on_command"
+CONF_ON_TELEGRAM = "on_telegram"
 CONF_ON_READ_MEMORY_COMPLETE = "on_read_memory_complete"
 CONF_ON_READ_MEMORY_TIMEOUT = "on_read_memory_timeout"
 CONF_ON_IDENTIFY_COMPLETE = "on_identify_complete"
@@ -224,9 +224,9 @@ CONFIG_SCHEMA = cv.Schema(
             remote_receiver.RemoteReceiverComponent
         ),
         cv.Optional(CONF_EVENT, default="tc"): cv.string,
-        cv.Optional(CONF_ON_COMMAND): automation.validate_automation(
+        cv.Optional(CONF_ON_TELEGRAM): automation.validate_automation(
             {
-                cv.GenerateID(CONF_TRIGGER_ID): cv.declare_id(ReceivedCommandTrigger),
+                cv.GenerateID(CONF_TRIGGER_ID): cv.declare_id(ReceivedTelegramTrigger),
             }
         ),
         cv.Optional(CONF_ON_READ_MEMORY_COMPLETE): automation.validate_automation(
@@ -275,9 +275,9 @@ async def to_code(config):
 
     cg.add(var.set_event("esphome." + config[CONF_EVENT]))
 
-    for conf in config.get(CONF_ON_COMMAND, []):
+    for conf in config.get(CONF_ON_TELEGRAM, []):
         trigger = cg.new_Pvariable(conf[CONF_TRIGGER_ID], var)
-        await automation.build_automation(trigger, [(CommandData, "x")], conf)
+        await automation.build_automation(trigger, [(TelegramData, "x")], conf)
 
     for conf in config.get(CONF_ON_READ_MEMORY_COMPLETE, []):
         trigger = cg.new_Pvariable(conf[CONF_TRIGGER_ID], var)
@@ -304,8 +304,8 @@ async def to_code(config):
 def validate(config):
     config = config.copy()
 
-    if CONF_COMMAND in config and CONF_TYPE in config:
-        raise cv.Invalid("You can either set COMMAND or TYPE, ADDRESS and SERIAL_NUMBER.")
+    if CONF_TELEGRAM in config and CONF_TYPE in config:
+        raise cv.Invalid("You can either set TELEGRAM or TYPE, ADDRESS and SERIAL_NUMBER.")
 
     return config
 
@@ -313,9 +313,9 @@ TC_BUS_SEND_SCHEMA = cv.All(
     cv.Schema(
     {
         cv.GenerateID(): cv.use_id(TCBusComponent),
-        cv.Optional(CONF_COMMAND): cv.templatable(cv.hex_uint32_t),
+        cv.Optional(CONF_TELEGRAM): cv.templatable(cv.hex_uint32_t),
         cv.Optional(CONF_IS_LONG): cv.templatable(cv.boolean),
-        cv.Optional(CONF_TYPE): cv.templatable(cv.enum(COMMAND_TYPES, upper=False)),
+        cv.Optional(CONF_TYPE): cv.templatable(cv.enum(TELEGRAM_TYPES, upper=False)),
         cv.Optional(CONF_ADDRESS, default="0"): cv.templatable(cv.hex_uint8_t),
         cv.Optional(CONF_PAYLOAD, default="0"): cv.templatable(cv.hex_uint32_t),
         cv.Optional(CONF_SERIAL_NUMBER, default="0"): cv.templatable(cv.hex_uint32_t),
@@ -332,16 +332,16 @@ async def tc_bus_send_to_code(config, action_id, template_args, args):
     parent = await cg.get_variable(config[CONF_ID])
     var = cg.new_Pvariable(action_id, template_args, parent)
 
-    if CONF_COMMAND in config:
-        command_template_ = await cg.templatable(config[CONF_COMMAND], args, cg.uint32)
-        cg.add(var.set_command(command_template_))
+    if CONF_TELEGRAM in config:
+        telegram_template_ = await cg.templatable(config[CONF_TELEGRAM], args, cg.uint32)
+        cg.add(var.set_telegram(telegram_template_))
 
     if CONF_IS_LONG in config:
         is_long_template_ = await cg.templatable(config[CONF_IS_LONG], args, cg.bool_)
         cg.add(var.set_is_long(is_long_template_))
 
     if CONF_TYPE in config:
-        type_template_ = await cg.templatable(config[CONF_TYPE], args, COMMAND_TYPE)
+        type_template_ = await cg.templatable(config[CONF_TYPE], args, TELEGRAM_TYPE)
         cg.add(var.set_type(type_template_))
 
     if CONF_ADDRESS in config:

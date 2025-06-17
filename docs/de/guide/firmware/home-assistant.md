@@ -5,27 +5,27 @@ Entdecke praktische Beispiele zur Integration und Automatisierung von Doorman mi
 ## Zu Home Assistant hinzufügen
 <!--@include: ./instructions/home-assistant.md-->
 
-## Bus Commands senden
-Mit Home Assistant kannst du Aktionen nutzen, um Commands über den Bus zu senden.
-Benutze entweder `command` für hexadezimale Befehle oder `type`, `address`, `payload` und `serial_number` um Befehle über den Command Builder zu senden.
+## Bus Telegrams senden
+Mit Home Assistant kannst du Aktionen nutzen, um Telegrams über den Bus zu senden.
+Benutze entweder `telegram` für hexadezimale Befehle oder `type`, `address`, `payload` und `serial_number` um Befehle über den Telegram Builder zu senden.
 
 ::: tip
-Denk an das führende `0x` beim Senden eines Befehls mit der `command` Eigenschaft. Wenn du es weglässt, musst du den HEX-Befehl zuerst in eine Dezimalzahl umwandeln.
+Denk an das führende `0x` beim Senden eines Befehls mit der `telegram` Eigenschaft. Wenn du es weglässt, musst du den HEX-Befehl zuerst in eine Dezimalzahl umwandeln.
 :::
 
 ::: code-group
-```yaml [Command Builder]
-service: esphome.doorman_s3_send_tc_command
+```yaml [Telegram Builder]
+service: esphome.doorman_s3_send_tc_telegram
 data:
   type: open_door
   address: 0
   payload: 0
   serial_number: 0
 ```
-```yaml [HEX Commands]
-service: esphome.doorman_s3_send_tc_command_raw
+```yaml [HEX Telegrams]
+service: esphome.doorman_s3_send_tc_telegram_raw
 data:
-  command: 0x3a001100
+  telegram: 0x3a001100
 ```
 :::
 
@@ -37,7 +37,7 @@ Jedes Ereignis sieht so aus:
 event_type: esphome.doorman
 data:
   device_id: 373c62d6788cf81d322763235513310e
-  command: "00001100"
+  telegram: "00001100"
   type: "open_door"
   address: "0"
   payload: "0"
@@ -52,7 +52,7 @@ context:
 
 Beispiel für eine Automation:
 ::: code-group
-```yaml [Command Builder]
+```yaml [Telegram Builder]
 alias: Bei Doorman TC Türöffnungsbefehl auslösen
 description: ""
 trigger:
@@ -64,14 +64,14 @@ condition: []
 action: []
 mode: single
 ```
-```yaml [HEX Commands]
+```yaml [HEX Telegrams]
 alias: Bei Doorman TC Türöffnungsbefehl auslösen
 description: ""
 trigger:
   - platform: event
     event_type: esphome.doorman
     event_data:
-      command: "00001100"
+      telegram: "00001100"
 condition: []
 action: []
 mode: single

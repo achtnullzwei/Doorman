@@ -2,28 +2,28 @@
 
 Entdecke verschiedene Beispiele, um die Doorman-Firmware anzupassen und zu erweitern. Vom Hinzufügen benutzerdefinierter Sensoren bis hin zum Anpassen von Automatisierungseinstellungen helfen dir diese Beispiele, das Gerät nach deinen individuellen Bedürfnissen zu gestalten. Folge den Anleitungen um das Beste aus deiner Konfiguration herauszuholen.
 
-## Erstelle einen einfachen TC Command Binary Sensor
+## Erstelle einen einfachen TC Telegram Binary Sensor
 Du kannst problemlos benutzerdefinierte Binärsensoren für jeden TC-Befehl hinzufügen, zusätzlich zu den bereits vorkonfigurierten. Damit kannst du auf jeden anderen Busbefehl hören und darauf reagieren, um die Funktionalität deines Systems zu erweitern.
 
 ::: code-group
-```yaml [Command Builder]
+```yaml [Telegram Builder]
 <!--@include: minimal.example.yaml-->
 
 binary_sensor: # [!code ++] [!code focus]
   - platform: tc_bus # [!code ++] [!code focus]
-    name: "Custom Command" # [!code ++] [!code focus]
+    name: "Custom Telegram" # [!code ++] [!code focus]
     type: open_door # [!code ++] [!code focus]
     address: 0 # [!code ++] [!code focus]
     web_server: # [!code ++] [!code focus]
       sorting_group_id: sorting_group_listeners # [!code ++] [!code focus]
 ```
-```yaml [32-Bit Commands]
+```yaml [32-Bit Telegrams]
 <!--@include: minimal.example.yaml-->
 
 binary_sensor: # [!code ++] [!code focus]
   - platform: tc_bus # [!code ++] [!code focus]
-    name: "Custom Command" # [!code ++] [!code focus]
-    command: 0x00001100 # [!code ++] [!code focus]
+    name: "Custom Telegram" # [!code ++] [!code focus]
+    telegram: 0x00001100 # [!code ++] [!code focus]
     web_server: # [!code ++] [!code focus]
       sorting_group_id: sorting_group_listeners # [!code ++] [!code focus]
 ```

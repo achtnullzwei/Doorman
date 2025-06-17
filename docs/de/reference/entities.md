@@ -75,7 +75,7 @@ Keine Beschreibung vorhanden.
 
 ## Text Sensoren
 
-### Last Bus Command <Badge type="tip" text="last_bus_command" />
+### Last Bus Telegram <Badge type="tip" text="last_bus_telegram" />
 Meldet jeden veröffentlichten Befehl auf dem Bus.
 
 ### Nuki Door Sensor State <Badge type="tip" text="nuki_door_sensor_state" /> <Badge type="info" text="Nuki Bridge" /> <Badge type="info" text="Deaktiviert" />
@@ -224,7 +224,7 @@ Wenn du WiFi über das Captive Portal, Improv Serial oder Improv BLE konfigurier
 ## Eingabe für Zahlenwert
 
 ### Serial Number <Badge type="tip" text="serial_number" /> <Badge type="info" text="Deaktiviert" />
-Legt die Seriennummer der Innenstation für den Commandbuilder/parser fest.
+Legt die Seriennummer der Innenstation für den Telegrambuilder/parser fest.
 
 ### Entrance Door Station ID <Badge type="tip" text="entrance_door_station_id" /> <Badge type="info" text="Deaktiviert" />
 Legt die ID der Außenstelle am Eingang fest.
@@ -262,10 +262,10 @@ Sets the MQTT Broker Username.
 ### MQTT Broker Password <Badge type="tip" text="mqtt_broker_password" /> <Badge type="info" text="MQTT Integration" /> <Badge type="info" text="Deaktiviert" />
 Sets the MQTT Broker Password.
 
-### Entrance Door Pre-Open-Commands <Badge type="tip" text="entrance_door_before_open_cmds" /> <Badge type="info" text="Deaktiviert" />
+### Entrance Door Pre-Open-Telegrams <Badge type="tip" text="entrance_door_before_open_cmds" /> <Badge type="info" text="Deaktiviert" />
 Gib eine Liste von Befehlen an (durch Semikolons getrennt), die auf den Bus gesendet werden, bevor der Befehl `open_door` ausgeführt wird.
 
-### Second Entrance Door Pre-Open-Commands <Badge type="tip" text="second_entrance_door_before_open_cmds" /> <Badge type="info" text="Deaktiviert" />
+### Second Entrance Door Pre-Open-Telegrams <Badge type="tip" text="second_entrance_door_before_open_cmds" /> <Badge type="info" text="Deaktiviert" />
 Gib eine Liste von Befehlen an (durch Semikolons getrennt), die auf den Bus gesendet werden, bevor der Befehl `open_door` ausgeführt wird.
 
 
@@ -275,7 +275,7 @@ Gib eine Liste von Befehlen an (durch Semikolons getrennt), die auf den Bus gese
 Konfiguriere, wie deine Eingangstür geöffnet werden soll — entweder durch das Senden eines BUS-Befehls oder durch das Schalten des internen Doorman-Relais.
 
 ##### Modi:
-- **Bus Command**
+- **Bus Telegram**
 - **Internal Relay**
 
 ### RTO: Central Toggle - Door Selection <Badge type="tip" text="rto_central_doors" />

@@ -64,8 +64,8 @@ The pre-compiled firmware binaries that are used for OTA updates do not have an 
 If you manage updates with an ESPHome YAML, you must make sure that the encryption key you specify in the api: section of your configuration matches the encryption key that Home Assistant uses. Try re-adding the integration to Home Assistant, and make sure to specify the encryption key when prompted. You may also try removing the encryption key from your configuration to see if this remedies the issue. If it does, this may indicate an issue with Home Assistant or ESPHome itself.
 :::
 
-::: details Receiving commands does not work
-If your Doorman is unable to receive commands there could be several reasons.
+::: details Receiving telegrams does not work
+If your Doorman is unable to receive telegrams there could be several reasons.
 
 #### Check the wiring
 Please make sure you wired everything correctly.\
@@ -75,7 +75,7 @@ You can find the guide [here](../getting-started#connect-the-wires).
 There are cases where the bus voltage is inusfficient and causing the reading to fail.\
 This can happen when other devices are drawing too much current.
 
-You can check the a+b Bus voltage when receiving commands using an oscillosope.
+You can check the a+b Bus voltage when receiving telegrams using an oscillosope.
 If the bus voltage constantly goes up and down there's an issue with the power draw of other bus participants.
 
 #### External Power supply issue

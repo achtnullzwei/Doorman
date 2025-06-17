@@ -98,8 +98,8 @@ sensor:
 
 text:
   - platform: template
-    id: debug_send_command
-    name: "Send Command"
+    id: debug_send_telegram
+    name: "Send Telegram"
     icon: "mdi:send"
     mode: text
     disabled_by_default: true
@@ -114,7 +114,7 @@ text:
             if(std::string(x.c_str()) != "") {
               number = std::stoul(x.c_str(), nullptr, 16);
             }
-            id(tc_bus_intercom)->send_command(number);
+            id(tc_bus_intercom)->send_telegram(number);
     web_server:
       sorting_group_id: sorting_group_debug_tools
 
@@ -300,11 +300,11 @@ button:
 
 # Extend TC:BUS Component
 tc_bus:
-  on_command:
+  on_telegram:
     - if:
         condition:
           - lambda: |-
-              return x.type == COMMAND_TYPE_FOUND_DEVICE && id(search_mode) != 0;
+              return x.type == TELEGRAM_TYPE_FOUND_DEVICE && id(search_mode) != 0;
         then:
           - lambda: |-
               int mode = id(search_mode);

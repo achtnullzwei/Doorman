@@ -150,7 +150,7 @@ remote_transmitter:
 tc_bus:
   id: tc_bus_intercom
   event: "doorman"
-  on_command:
+  on_telegram:
     - if:
         condition:
           - switch.is_on: doorman_status_led_bus_activity
@@ -222,7 +222,7 @@ number:
 text:
   - platform: template
     id: entrance_door_before_open_cmds
-    name: "Entrance Door Pre-Open-Commands"
+    name: "Entrance Door Pre-Open-Telegrams"
     icon: "mdi:link-lock"
     optimistic: true
     min_length: 0
@@ -238,7 +238,7 @@ text:
 
   - platform: template
     id: second_entrance_door_before_open_cmds
-    name: "Second Entrance Door Pre-Open-Commands"
+    name: "Second Entrance Door Pre-Open-Telegrams"
     icon: "mdi:link-lock"
     optimistic: true
     min_length: 0
@@ -264,9 +264,9 @@ text_sensor:
       web_server:
         sorting_group_id: sorting_group_information
         sorting_weight: -20
-    bus_command:
-      id: last_bus_command
-      name: "Last Bus Command"
+    bus_telegram:
+      id: last_bus_telegram
+      name: "Last Bus Telegram"
       web_server:
         sorting_group_id: sorting_group_listeners
         sorting_weight: -99
@@ -601,11 +601,11 @@ lock:
 
       - if:
           condition:
-            - lambda: return id(door_opener_mode).state == "Bus Command";
+            - lambda: return id(door_opener_mode).state == "Bus Telegram";
           then:
             - script.execute:
-                id: send_command_chain
-                command_list: !lambda "return id(entrance_door_before_open_cmds).state;"
+                id: send_telegram_chain
+                telegram_list: !lambda "return id(entrance_door_before_open_cmds).state;"
             - tc_bus.send:
                 type: open_door
                 address: !lambda "return id(entrance_door_station_id).state;"
@@ -643,11 +643,11 @@ lock:
 
       - if:
           condition:
-            - lambda: return id(door_opener_mode).state == "Bus Command";
+            - lambda: return id(door_opener_mode).state == "Bus Telegram";
           then:
             - script.execute:
-                id: send_command_chain
-                command_list: !lambda "return id(second_entrance_door_before_open_cmds).state;"
+                id: send_telegram_chain
+                telegram_list: !lambda "return id(second_entrance_door_before_open_cmds).state;"
             - tc_bus.send:
                 type: open_door
                 address: !lambda "return id(second_entrance_door_station_id).state;"
@@ -674,9 +674,9 @@ select:
     icon: "mdi:door"
     optimistic: true
     options:
-      - "Bus Command"
+      - "Bus Telegram"
       - "Internal Relay"
-    initial_option: "Bus Command"
+    initial_option: "Bus Telegram"
     restore_value: true
     entity_category: CONFIG
     web_server:
@@ -736,16 +736,16 @@ script:
       - delay: 100ms
       - light.turn_off: doorman_status_led
 
-  - id: send_command_chain
+  - id: send_telegram_chain
     parameters:
-      command_list: string
+      telegram_list: string
     then:
       - lambda: |-
           size_t start = 0;
           size_t end;
 
-          while ((end = command_list.find(';', start)) != std::string::npos) {
-              std::string token = command_list.substr(start, end - start);
+          while ((end = telegram_list.find(';', start)) != std::string::npos) {
+              std::string token = telegram_list.substr(start, end - start);
 
               // Remove non-hex characters
               token.erase(std::remove_if(token.begin(), token.end(), [](char c) {
@@ -761,9 +761,9 @@ script:
                   // Check if entire string was converted and no errors occurred
                   if (endptr == str + token.size() && errno == 0) {
                       if (token.length() == 8) {
-                          id(tc_bus_intercom)->send_command(number, true);
+                          id(tc_bus_intercom)->send_telegram(number, true);
                       } else {
-                          id(tc_bus_intercom)->send_command(number);
+                          id(tc_bus_intercom)->send_telegram(number);
                       }
                   }
               }
@@ -771,7 +771,7 @@ script:
           }
 
           // Handle last token
-          std::string token = command_list.substr(start);
+          std::string token = telegram_list.substr(start);
           token.erase(std::remove_if(token.begin(), token.end(), [](char c) {
               return !std::isxdigit(static_cast<unsigned char>(c));
           }), token.end());
@@ -783,9 +783,9 @@ script:
               unsigned long number = std::strtoul(str, &endptr, 16);
               if (endptr == str + token.size() && errno == 0) {
                   if (token.length() == 8) {
-                      id(tc_bus_intercom)->send_command(number, true);
+                      id(tc_bus_intercom)->send_telegram(number, true);
                   } else {
-                      id(tc_bus_intercom)->send_command(number);
+                      id(tc_bus_intercom)->send_telegram(number);
                   }
               }
           }

@@ -124,28 +124,28 @@ mqtt:
   discovery: false
   discover_ip: false
   on_json_message:
-    - topic: doorman-s3/send_tc_command_raw
+    - topic: doorman-s3/send_tc_telegram_raw
       then:
         - tc_bus.send:
-            command: !lambda |-
-              int command = 0;
-              if (x.containsKey("command"))
-                command = x["command"];
-              return command;
+            telegram: !lambda |-
+              int telegram = 0;
+              if (x.containsKey("telegram"))
+                telegram = x["telegram"];
+              return telegram;
             is_long: !lambda |-
               bool is_long = false;
               if (x.containsKey("is_long"))
                 is_long = x["is_long"];
               return is_long;
               
-    - topic: doorman-s3/send_tc_command
+    - topic: doorman-s3/send_tc_telegram
       then:
         - tc_bus.send:
             type: !lambda |-
-              CommandType commandType = COMMAND_TYPE_UNKNOWN;
+              TelegramType telegramType = TELEGRAM_TYPE_UNKNOWN;
               if (x.containsKey("type"))
-                commandType = string_to_command_type(x["type"]);
-              return commandType;
+                telegramType = string_to_telegram_type(x["type"]);
+              return telegramType;
             address: !lambda |-
               int address = 0;
               if (x.containsKey("address"))

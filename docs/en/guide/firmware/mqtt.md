@@ -14,10 +14,10 @@ Each entity publishes its state to a topic in the following format:
 <TOPIC_PREFIX>/<COMPONENT_TYPE>/<COMPONENT_NAME>/state
 ```
 
-You can control certain entities by publishing a command to this topic format:
+You can control certain entities by publishing a telegram to this topic format:
 ::: code-group
 ``` [Topic]
-<TOPIC_PREFIX>/<COMPONENT_TYPE>/<COMPONENT_NAME>/command 
+<TOPIC_PREFIX>/<COMPONENT_TYPE>/<COMPONENT_NAME>/telegram 
 ```
 ``` [Payload]
 ON or OFF or whatever is supported
@@ -28,7 +28,7 @@ ON or OFF or whatever is supported
 To enable or disable the [Ring-To-Open](../features/ring-to-open.md) automation, send `ON` or `OFF` as the payload to the topic:
 ::: code-group
 ``` [Topic]
-doorman-s3/switch/rto__entrance_door/command
+doorman-s3/switch/rto__entrance_door/telegram
 ```
 ``` [Payload]
 ON
@@ -36,32 +36,32 @@ ON
 :::
 
 ## Special Topics
-Certain special topics allow for advanced commands.
+Certain special topics allow for advanced telegrams.
 
-### Send a Command (Hexadecimal)
-Here's an example of how to send a hexadecimal command (uint32) to the bus:
+### Send a Telegram (Hexadecimal)
+Here's an example of how to send a hexadecimal telegram (uint32) to the bus:
 ::: code-group
 ``` [Topic]
-doorman-s3/send_raw_command
+doorman-s3/send_raw_telegram
 ```
 ```json [Payload]
 {
-    "command": 0x1C30BA80
+    "telegram": 0x1C30BA80
 }
 ```
 ```json [Advanced Payload]
 {
-    "command": 0x00000680,
+    "telegram": 0x00000680,
     "is_long": true
 }
 ```
 :::
 
-### Send a Command (Command Builder)
-Here's an example of how to use the command builder to send a command to the bus:
+### Send a Telegram (Telegram Builder)
+Here's an example of how to use the telegram builder to send a telegram to the bus:
 ::: code-group
 ``` [Topic]
-doorman-s3/send_command
+doorman-s3/send_telegram
 ```
 ```json [Payload]
 {

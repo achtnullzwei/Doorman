@@ -33,8 +33,8 @@ remote_transmitter:
 tc_bus:
   id: tc_bus_intercom
   event: "doorman"
-  on_command:
-    - logger.log: "Command received"
+  on_telegram:
+    - logger.log: "Telegram received"
   on_read_memory_complete:
     - logger.log: "Completed memory reading!"
     - lambda: |-
@@ -53,8 +53,8 @@ text_sensor:
   - platform: tc_bus
     hardware_version:
       name: "Hardware"
-    bus_command:
-      name: "Last Bus Command"
+    bus_telegram:
+      name: "Last Bus Telegram"
 
 number:
   - platform: tc_bus
@@ -83,7 +83,7 @@ select:
 switch:
   - platform: tc_bus
     force_long_door_opener:
-      name: "Enforce long Door Opener Command"
+      name: "Enforce long Door Opener Telegram"
 
 button:
   - platform: template

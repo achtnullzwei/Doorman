@@ -25,31 +25,31 @@ Reports the bluetooth strength of the paired Nuki smart lock.
 ## Binary Sensors
 
 ### Entrance Doorbell <Badge type="tip" text="entrance_doorbell" /> <Badge type="info" text="Disabled by default" />
-Activates whenever the `door_call` command type is received.
+Activates whenever the `door_call` telegram type is received.
 
 ### Second Entrance Doorbell <Badge type="tip" text="second_entrance_doorbell" /> <Badge type="info" text="Disabled by default" />
-Activates whenever the `door_call` command type with the second entrance door station `address` is received.
+Activates whenever the `door_call` telegram type with the second entrance door station `address` is received.
 
 ### Apartment Doorbell <Badge type="tip" text="apartment_doorbell" /> <Badge type="info" text="Disabled by default" />
-Activates whenever the `floor_call` command type is received.
+Activates whenever the `floor_call` telegram type is received.
 
 ### Pick up phone <Badge type="tip" text="pick_up_phone" /> <Badge type="info" text="Disabled by default" />
-Activates whenever the `start_talking` command type is received.
+Activates whenever the `start_talking` telegram type is received.
 
 ### Pick up phone (door call) <Badge type="tip" text="pick_up_phone_door_call" /> <Badge type="info" text="Disabled by default" />
-Activates whenever the `start_talking_door_call` command type is received.
+Activates whenever the `start_talking_door_call` telegram type is received.
 
 ### Hang up phone <Badge type="tip" text="hang_up_phone" /> <Badge type="info" text="Disabled by default" />
-Activates whenever the `stop_talking` command type is received.
+Activates whenever the `stop_talking` telegram type is received.
 
 ### Hang up phone (door call) <Badge type="tip" text="hang_up_phone_door_call" /> <Badge type="info" text="Disabled by default" />
-Activates whenever the `stop_talking_door_call` command type is received.
+Activates whenever the `stop_talking_door_call` telegram type is received.
 
 ### Function Button <Badge type="tip" text="function_button" /> <Badge type="info" text="Disabled by default" />
-Activates whenever the `control_function` command type is received.
+Activates whenever the `control_function` telegram type is received.
 
 ### Light Button <Badge type="tip" text="light_button" /> <Badge type="info" text="Disabled by default" />
-Activates whenever the `light` command type is received.
+Activates whenever the `light` telegram type is received.
 
 ### Door readiness <Badge type="tip" text="door_readiness" /> <Badge type="info" text="Disabled by default" />
 Activates whenever the door readiness is active.
@@ -75,8 +75,8 @@ No description yet.
 
 ## Text Sensors
 
-### Last Bus Command <Badge type="tip" text="last_bus_command" />
-Reports every published command on the bus.
+### Last Bus Telegram <Badge type="tip" text="last_bus_telegram" />
+Reports every published telegram on the bus.
 
 ### Nuki Door Sensor State <Badge type="tip" text="nuki_door_sensor_state" /> <Badge type="info" text="Nuki Bridge only" /> <Badge type="info" text="Disabled by default" />
 Reports the door sensor state of the paired Nuki smart lock.
@@ -131,7 +131,7 @@ Controls the Status LED for the [Ring To Open](../guide/features/ring-to-open) a
 Controls the built-in relay.
 
 ### Use 32-Bit Door Protocol <Badge type="tip" text="use_32_open_door_protocol" /> <Badge type="info" text="Disabled by default" />
-This guarantees the long door opener command is used and adds a serial number to the short door opener command.
+This guarantees the long door opener telegram is used and adds a serial number to the short door opener telegram.
 
 ### Status LED: Show Bus Activity <Badge type="tip" text="doorman_status_led_bus_activity" /> <Badge type="info" text="Disabled by default" />
 When enabled, the status LED will briefly blink to indicate activity on the bus — useful for debugging or just keeping an eye on communication.
@@ -182,7 +182,7 @@ Controls the Nuki Smart Lock Single Lock setting.
 ## Buttons
 
 ### Hallway Light <Badge type="tip" text="hallway_light" /> <Badge type="info" text="Disabled by default" />
-Turns on the light by sending a `light` command on the bus.
+Turns on the light by sending a `light` telegram on the bus.
 
 ### Identify Indoor Station <Badge type="tip" text="identify_indoor_station" /> <Badge type="info" text="Disabled by default" />
 Quickly identifies your indoor station model and saves it.
@@ -223,7 +223,7 @@ If you configured WiFi using the captive portal, Improv Serial, or Improv BLE, t
 ## Numbers
 
 ### Serial Number <Badge type="tip" text="serial_number" /> <Badge type="info" text="Disabled by default" />
-Sets the indoor station serial number for the command builder/parser.
+Sets the indoor station serial number for the telegram builder/parser.
 
 ### Entrance Door Station ID <Badge type="tip" text="entrance_door_station_id" /> <Badge type="info" text="Disabled by default" />
 Sets the ID of the entrance outdoor station.
@@ -261,20 +261,20 @@ Sets the MQTT Broker Username.
 ### MQTT Broker Password <Badge type="tip" text="mqtt_broker_password" /> <Badge type="info" text="MQTT integration only" /> <Badge type="info" text="Disabled by default" />
 Sets the MQTT Broker Password.
 
-### Entrance Door Pre-Open-Commands <Badge type="tip" text="entrance_door_before_open_cmds" /> <Badge type="info" text="Disabled by default" />
-Specify a list of hex-commands (separated by semicolons) to be sent on the bus before the `open_door` command is issued.
+### Entrance Door Pre-Open-Telegrams <Badge type="tip" text="entrance_door_before_open_cmds" /> <Badge type="info" text="Disabled by default" />
+Specify a list of hex-telegrams (separated by semicolons) to be sent on the bus before the `open_door` telegram is issued.
 
-### Second Entrance Door Pre-Open-Commands <Badge type="tip" text="second_entrance_door_before_open_cmds" /> <Badge type="info" text="Disabled by default" />
-Specify a list of hex-commands (separated by semicolons) to be sent on the bus before the `open_door` command is issued.
+### Second Entrance Door Pre-Open-Telegrams <Badge type="tip" text="second_entrance_door_before_open_cmds" /> <Badge type="info" text="Disabled by default" />
+Specify a list of hex-telegrams (separated by semicolons) to be sent on the bus before the `open_door` telegram is issued.
 
 
 ## Selects
 
 ### Door Opener Mode <Badge type="tip" text="door_opener_mode" /> <Badge type="info" text="Disabled by default" />
-Configure how the entrance door should be opened — either by sending a Bus command or by activating the internal Doorman relay.
+Configure how the entrance door should be opened — either by sending a Bus telegram or by activating the internal Doorman relay.
 
 ##### Modes:
-- **Bus Command**
+- **Bus Telegram**
 - **Internal Relay**
 
 ### RTO: Central Toggle - Door Selection <Badge type="tip" text="rto_central_doors" />

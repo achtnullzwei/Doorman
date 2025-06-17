@@ -109,10 +109,10 @@ namespace esphome
             this->rx_->register_listener(this);
         }
 
-        void TCBusComponent::call_remote_listeners_(CommandData cmd_data) {
+        void TCBusComponent::call_remote_listeners_(TelegramData telegram_data) {
             for (auto *listener : this->remote_listeners_)
             {
-                listener->on_receive(cmd_data);
+                listener->on_receive(telegram_data);
             }
         }
 
@@ -147,7 +147,7 @@ namespace esphome
 
 #ifdef USE_TEXT_SENSOR
             ESP_LOGCONFIG(TAG, "Text Sensors:");
-            LOG_TEXT_SENSOR("  ", "Last Bus Command", this->bus_command_text_sensor_);
+            LOG_TEXT_SENSOR("  ", "Last Bus Telegram", this->bus_telegram_text_sensor_);
             LOG_TEXT_SENSOR("  ", "Hardware Version", this->hardware_version_text_sensor_);
 #endif
         }
@@ -166,46 +166,46 @@ namespace esphome
             }
 #endif
 
-            // Process command queue
-            this->process_command_queue();
+            // Process telegram queue
+            this->process_telegram_queue();
         }
 
-        void TCBusComponent::process_command_queue()
+        void TCBusComponent::process_telegram_queue()
         {
             uint32_t currentTime = millis();
 
-            if (!this->command_queue_.empty())
+            if (!this->telegram_queue_.empty())
             {
-                TCBusCommandQueueItem queue_item = this->command_queue_.front();
+                TCBusTelegramQueueItem queue_item = this->telegram_queue_.front();
 
-                if (currentTime - this->last_command_time_ >= queue_item.wait_duration)
+                if (currentTime - this->last_telegram_time_ >= queue_item.wait_duration)
                 {
-                    // Send command
-                    this->transmit_command(queue_item.command_data);
+                    // Send telegram
+                    this->transmit_telegram(queue_item.telegram_data);
 
-                    // Remove command from the queue
-                    this->command_queue_.pop();
+                    // Remove telegram from the queue
+                    this->telegram_queue_.pop();
 
-                    // Update the time of the last command
-                    this->last_command_time_ = currentTime;
+                    // Update the time of the last telegram
+                    this->last_telegram_time_ = currentTime;
                 }
             }
         }
 
-        void TCBusComponent::received_command(CommandData cmd_data, bool received)
+        void TCBusComponent::received_telegram(TelegramData telegram_data, bool received)
         {
             if (received)
             {
                 // From receiver
                 if (reading_memory_)
                 {
-                    ESP_LOGD(TAG, "Received 4 memory blocks from %i to %i | Data: 0x%08X", (reading_memory_count_ * 4), (reading_memory_count_ * 4) + 4, cmd_data.command);
+                    ESP_LOGD(TAG, "Received 4 memory blocks from %i to %i | Data: 0x%08X", (reading_memory_count_ * 4), (reading_memory_count_ * 4) + 4, telegram_data.telegram);
 
                     // Save Data to memory Store
-                    memory_buffer_.push_back((cmd_data.command >> 24) & 0xFF);
-                    memory_buffer_.push_back((cmd_data.command >> 16) & 0xFF);
-                    memory_buffer_.push_back((cmd_data.command >> 8) & 0xFF);
-                    memory_buffer_.push_back(cmd_data.command & 0xFF);
+                    memory_buffer_.push_back((telegram_data.telegram >> 24) & 0xFF);
+                    memory_buffer_.push_back((telegram_data.telegram >> 16) & 0xFF);
+                    memory_buffer_.push_back((telegram_data.telegram >> 8) & 0xFF);
+                    memory_buffer_.push_back(telegram_data.telegram & 0xFF);
 
                     // Next 4 Data Blocks
                     reading_memory_count_++;
@@ -242,26 +242,26 @@ namespace esphome
                     device.category = (uint8_t)device_group;
                     device.memory_size = 0;
                     
-                    if (cmd_data.command_hex.substr(4, 1) == "D")
+                    if (telegram_data.hex.substr(4, 1) == "D")
                     {
                         // New models
 
                         // FW Version
-                        device.firmware_version = std::stoi(cmd_data.command_hex.substr(5, 3), nullptr, 16);
-                        device.firmware_major = std::stoi(cmd_data.command_hex.substr(5, 1), nullptr, 16);
-                        device.firmware_minor = std::stoi(cmd_data.command_hex.substr(6, 1), nullptr, 16);
-                        device.firmware_patch = std::stoi(cmd_data.command_hex.substr(7, 1), nullptr, 16);
+                        device.firmware_version = std::stoi(telegram_data.hex.substr(5, 3), nullptr, 16);
+                        device.firmware_major = std::stoi(telegram_data.hex.substr(5, 1), nullptr, 16);
+                        device.firmware_minor = std::stoi(telegram_data.hex.substr(6, 1), nullptr, 16);
+                        device.firmware_patch = std::stoi(telegram_data.hex.substr(7, 1), nullptr, 16);
 
                         // HW Version
-                        device.hardware_version = std::stoi(cmd_data.command_hex.substr(0, 1));
-                        device.model = identifier_string_to_model((uint8_t)device_group, cmd_data.command_hex.substr(1, 3), device.hardware_version, device.firmware_version);
+                        device.hardware_version = std::stoi(telegram_data.hex.substr(0, 1));
+                        device.model = identifier_string_to_model((uint8_t)device_group, telegram_data.hex.substr(1, 3), device.hardware_version, device.firmware_version);
                     }
                     else
                     {
                         if(device_group == 0 || device_group == 1)
                         {
                             // Old indoor station models
-                            switch(cmd_data.command)
+                            switch(telegram_data.telegram)
                             {
                                 // TTC-XX
                                 case 0x08000040:
@@ -286,7 +286,7 @@ namespace esphome
                         else if(device_group == 4)
                         {
                             // Old controller models
-                            switch(cmd_data.command)
+                            switch(telegram_data.telegram)
                             {
                                 case 0x877F5804:
                                     device.model = CONTROLLER_MODEL_BVS20;
@@ -335,7 +335,7 @@ namespace esphome
                     }
                     else
                     {
-                        ESP_LOGE(TAG, "Unable to identify Hardware! Unknown model. Data received: %s", cmd_data.command_hex.c_str());
+                        ESP_LOGE(TAG, "Unable to identify Hardware! Unknown model. Data received: %s", telegram_data.hex.c_str());
                         
                         // Indoor stations only
                         if(device_group == 0 || device_group == 1)
@@ -349,30 +349,30 @@ namespace esphome
                 }
                 else
                 {
-                    if (cmd_data.type == COMMAND_TYPE_ACK)
+                    if (telegram_data.type == TELEGRAM_TYPE_ACK)
                     {
-                        ESP_LOGD(TAG, "Received Acknowledge - Type: %01X", cmd_data.payload);
+                        ESP_LOGD(TAG, "Received Acknowledge - Type: %01X", telegram_data.payload);
                     }
                     else
                     {
-                        ESP_LOGD(TAG, "Received Command - Type: %s | Address: %i | Payload: 0x%X | Serial-Number: %i | Length: %i-bit | Raw Data: 0x%08X", command_type_to_string(cmd_data.type), cmd_data.address, cmd_data.payload, cmd_data.serial_number, (cmd_data.is_long ? 32 : 16), cmd_data.command);
+                        ESP_LOGD(TAG, "Received Telegram - Type: %s | Address: %i | Payload: 0x%X | Serial-Number: %i | Length: %i-bit | Raw Data: 0x%08X", telegram_type_to_string(telegram_data.type), telegram_data.address, telegram_data.payload, telegram_data.serial_number, (telegram_data.is_long ? 32 : 16), telegram_data.telegram);
                     }
 
                     // Fire Callback
-                    this->received_command_callback_.call(cmd_data);
+                    this->received_telegram_callback_.call(telegram_data);
 
 #ifdef USE_BINARY_SENSOR
                     // Fire Binary Sensors
                     for (auto &listener : listeners_)
                     {
-                        // Listener Command lambda or command property when not available
-                        uint32_t listener_command = listener->command_.has_value() ? listener->command_.value() : 0;
-                        if (listener->command_lambda_.has_value())
+                        // Listener Telegram lambda or telegram property when not available
+                        uint32_t listener_telegram = listener->telegram_.has_value() ? listener->telegram_.value() : 0;
+                        if (listener->telegram_lambda_.has_value())
                         {
-                            auto optional_value = (*listener->command_lambda_)();
+                            auto optional_value = (*listener->telegram_lambda_)();
                             if (optional_value.has_value())
                             {
-                                listener_command = optional_value.value();
+                                listener_telegram = optional_value.value();
                             }
                         }
 
@@ -401,24 +401,24 @@ namespace esphome
                             }
                         }
 
-                        // Listener Command Type
-                        CommandType listener_type = listener->type_.has_value() ? listener->type_.value() : COMMAND_TYPE_UNKNOWN;
+                        // Listener Telegram Type
+                        TelegramType listener_type = listener->type_.has_value() ? listener->type_.value() : TELEGRAM_TYPE_UNKNOWN;
 
                         bool allow_publish = false;
 
-                        // Check if listener matches the command
-                        if (listener_command != 0)
+                        // Check if listener matches the telegram
+                        if (listener_telegram != 0)
                         {
-                            if (cmd_data.command == listener_command)
+                            if (telegram_data.telegram == listener_telegram)
                             {
                                 allow_publish = true;
                             }
                         }
-                        else if (cmd_data.type == listener_type && (cmd_data.address == listener_address || listener_address == 255) && (cmd_data.payload == listener_payload || listener_payload == 255))
+                        else if (telegram_data.type == listener_type && (telegram_data.address == listener_address || listener_address == 255) && (telegram_data.payload == listener_payload || listener_payload == 255))
                         {
                             if (listener_serial_number != 0)
                             {
-                                if (cmd_data.serial_number == listener_serial_number || listener_serial_number == 255)
+                                if (telegram_data.serial_number == listener_serial_number || listener_serial_number == 255)
                                 {
                                     allow_publish = true;
                                 }
@@ -439,19 +439,19 @@ namespace esphome
 
 #ifdef USE_API
                     // Fire Home Assistant Event if event name is specified
-                    if (strcmp(event_, "esphome.none") != 0 && cmd_data.type != COMMAND_TYPE_ACK)
+                    if (strcmp(event_, "esphome.none") != 0 && telegram_data.type != TELEGRAM_TYPE_ACK)
                     {
                         ESP_LOGV(TAG, "Send event to Home Assistant on %s", event_);
 
                         // Convert type to lowercase
-                        std::string type_str = command_type_to_string(cmd_data.type);
+                        std::string type_str = telegram_type_to_string(telegram_data.type);
                         std::transform(type_str.begin(), type_str.end(), type_str.begin(), ::tolower);
 
-                        this->fire_homeassistant_event(event_, {{"command", cmd_data.command_hex},
+                        this->fire_homeassistant_event(event_, {{"telegram", telegram_data.hex},
                                                                 {"type", type_str},
-                                                                {"address", std::to_string(cmd_data.address)},
-                                                                {"payload", std::to_string(cmd_data.payload)},
-                                                                {"serial_number", std::to_string(cmd_data.serial_number)}});
+                                                                {"address", std::to_string(telegram_data.address)},
+                                                                {"payload", std::to_string(telegram_data.payload)},
+                                                                {"serial_number", std::to_string(telegram_data.serial_number)}});
                     }
 #endif
                 }
@@ -459,13 +459,13 @@ namespace esphome
             else
             {
                 // From transmitter
-                if (cmd_data.type == COMMAND_TYPE_ACK)
+                if (telegram_data.type == TELEGRAM_TYPE_ACK)
                 {
-                    ESP_LOGD(TAG, "Sending Acknowledge - Type: %01X", cmd_data.payload);
+                    ESP_LOGD(TAG, "Sending Acknowledge - Type: %01X", telegram_data.payload);
                 }
                 else
                 {
-                    ESP_LOGD(TAG, "Sending Command - Type: %s | Address: %i | Payload: 0x%X | Serial-Number: %i | Length: %i-bit | Raw Data: 0x%08X", command_type_to_string(cmd_data.type), cmd_data.address, cmd_data.payload, cmd_data.serial_number, (cmd_data.is_long ? 32 : 16), cmd_data.command);
+                    ESP_LOGD(TAG, "Sending Telegram - Type: %s | Address: %i | Payload: 0x%X | Serial-Number: %i | Length: %i-bit | Raw Data: 0x%08X", telegram_type_to_string(telegram_data.type), telegram_data.address, telegram_data.payload, telegram_data.serial_number, (telegram_data.is_long ? 32 : 16), telegram_data.telegram);
                 }
             }
             
@@ -473,26 +473,26 @@ namespace esphome
             // Sent or received - no response to identification and read memory process
             
             // Update Door Readiness Status
-            if (cmd_data.type == COMMAND_TYPE_START_TALKING_DOOR_CALL)
+            if (telegram_data.type == TELEGRAM_TYPE_START_TALKING_DOOR_CALL)
             {
-                bool door_readiness_state = cmd_data.payload == 1;
+                bool door_readiness_state = telegram_data.payload == 1;
                 ESP_LOGD(TAG, "Door readiness: %s", YESNO(door_readiness_state));
             }
-            else if (cmd_data.type == COMMAND_TYPE_START_TALKING)
+            else if (telegram_data.type == TELEGRAM_TYPE_START_TALKING)
             {
-                bool talk_mode = cmd_data.payload == 1;
+                bool talk_mode = telegram_data.payload == 1;
                 ESP_LOGD(TAG, "Talk mode: %s", talk_mode ? "Full duplex / handsfree" : "half duplex");
             }
-            else if (cmd_data.type == COMMAND_TYPE_END_OF_DOOR_READINESS)
+            else if (telegram_data.type == TELEGRAM_TYPE_END_OF_DOOR_READINESS)
             {
                 ESP_LOGD(TAG, "Door readiness: %s", YESNO(false));
             }
-            else if (cmd_data.type == COMMAND_TYPE_PROGRAMMING_MODE)
+            else if (telegram_data.type == TELEGRAM_TYPE_PROGRAMMING_MODE)
             {
-                ESP_LOGD(TAG, "Programming Mode: %s", YESNO(cmd_data.payload == 1));
-                this->programming_mode_ = cmd_data.payload == 1;
+                ESP_LOGD(TAG, "Programming Mode: %s", YESNO(telegram_data.payload == 1));
+                this->programming_mode_ = telegram_data.payload == 1;
             }
-            else if (cmd_data.type == COMMAND_TYPE_SEARCH_DOORMAN_DEVICES)
+            else if (telegram_data.type == TELEGRAM_TYPE_SEARCH_DOORMAN_DEVICES)
             {
                 ESP_LOGD(TAG, "Responding to Doorman search request.");
 
@@ -500,26 +500,26 @@ namespace esphome
                 get_mac_address_raw(mac);
                 uint32_t mac_addr = (mac[3] << 16) | (mac[4] << 8) | mac[5];
 
-                send_command(COMMAND_TYPE_FOUND_DOORMAN_DEVICE, 0, mac_addr, 0);
+                send_telegram(TELEGRAM_TYPE_FOUND_DOORMAN_DEVICE, 0, mac_addr, 0);
             }
-            else if (cmd_data.type == COMMAND_TYPE_FOUND_DOORMAN_DEVICE)
+            else if (telegram_data.type == TELEGRAM_TYPE_FOUND_DOORMAN_DEVICE)
             {
                 uint8_t mac[3];
-                mac[0] = (cmd_data.payload >> 16) & 0xFF;
-                mac[1] = (cmd_data.payload >> 8) & 0xFF;
-                mac[2] = cmd_data.payload & 0xFF;
+                mac[0] = (telegram_data.payload >> 16) & 0xFF;
+                mac[1] = (telegram_data.payload >> 8) & 0xFF;
+                mac[2] = telegram_data.payload & 0xFF;
 
                 ESP_LOGD(TAG, "Discovered Doorman with MAC: %02X:%02X:%02X",
                             mac[0], mac[1], mac[2]);
             }
 
 #ifdef USE_TEXT_SENSOR
-            if (cmd_data.type != COMMAND_TYPE_ACK)
+            if (telegram_data.type != TELEGRAM_TYPE_ACK)
             {
-                // Publish Command to Last Bus Command Sensor
-                if (this->bus_command_text_sensor_ != nullptr)
+                // Publish Telegram to Last Bus Telegram Sensor
+                if (this->bus_telegram_text_sensor_ != nullptr)
                 {
-                    this->bus_command_text_sensor_->publish_state(cmd_data.command_hex);
+                    this->bus_telegram_text_sensor_->publish_state(telegram_data.hex);
                 }
             }
 #endif
@@ -530,14 +530,16 @@ namespace esphome
             ESP_LOGV(TAG, "Received raw data (Length: %" PRIi32 ")", data.size());
 
             bool is_long = false;
-            bool command_ready = false;
+            bool telegram_ready = false;
 
-            uint32_t command = 0;
+            bool is_response = false;
+
+            uint32_t telegram = 0;
             uint8_t cmd_pos = 0;
             uint8_t cmd_crc = 0;
             uint8_t cmd_cal_crc = 1;
 
-            uint8_t ack_command = 0;
+            uint8_t ack_telegram = 0;
             uint8_t ack_pos = 0;
             uint8_t ack_crc = 0;
             uint8_t ack_cal_crc = 1;
@@ -552,17 +554,23 @@ namespace esphome
                 if (pulse_duration >= BIT_0_MIN && pulse_duration <= BIT_0_MAX)
                 {
                     pulse_type = 0;
-                    ESP_LOGV(TAG, "Command Bit (%i), %i", 0, cmd_pos);
+                    ESP_LOGV(TAG, "Telegram Bit (%i), %i", 0, cmd_pos);
                 }
                 else if (pulse_duration >= BIT_1_MIN && pulse_duration <= BIT_1_MAX)
                 {
                     pulse_type = 1;
-                    ESP_LOGV(TAG, "Command Bit (%i), %i", 1, cmd_pos);
+                    ESP_LOGV(TAG, "Telegram Bit (%i), %i", 1, cmd_pos);
                 }
-                else if (pulse_duration >= START_MIN && pulse_duration <= START_MAX)
+                else if (pulse_duration >= START_RSP && pulse_duration <= START_MAX)
                 {
                     pulse_type = 2;
-                    ESP_LOGV(TAG, "Begin (%i)", pulse_duration, cmd_pos);
+                    is_response = true;
+                    ESP_LOGV(TAG, "Begin Response Telegram (%i)", pulse_duration, cmd_pos);
+                }
+                else if (pulse_duration >= START_CMD && pulse_duration <= START_MAX)
+                {
+                    pulse_type = 2;
+                    ESP_LOGV(TAG, "Begin Telegram Telegram (%i)", pulse_duration, cmd_pos);
                 }
                 else
                 {
@@ -570,15 +578,15 @@ namespace esphome
                     // Check for ACK
                     if (ack_pos == 6)
                     {
-                        CommandData cmd_data = parseCommand(ack_command, false);
+                        TelegramData telegram_data = parseTelegram(ack_telegram, false, true);
                         if (ack_crc == ack_cal_crc && !reading_memory_ && identify_model_device_group_ == -1)
                         {
-                            received_command(cmd_data);
+                            received_telegram(telegram_data);
                         }
-                        call_remote_listeners_(cmd_data);
+                        call_remote_listeners_(telegram_data);
 
                         ack_pos = 0;
-                        ack_command = 0;
+                        ack_telegram = 0;
                         ack_crc = 0;
                         ack_cal_crc = 1;
                     }
@@ -600,7 +608,7 @@ namespace esphome
                     {
                         if (pulse_type)
                         {
-                            ack_command |= (1 << (4 - ack_pos));
+                            ack_telegram |= (1 << (4 - ack_pos));
                         }
                         ack_cal_crc ^= pulse_type;
                         ack_pos++;
@@ -615,27 +623,27 @@ namespace esphome
                 {
                     if (ack_pos == 6)
                     {
-                        CommandData cmd_data = parseCommand(ack_command, false);
+                        TelegramData telegram_data = parseTelegram(ack_telegram, false, true);
                         if (ack_crc == ack_cal_crc && !reading_memory_ && identify_model_device_group_ == -1)
                         {
-                            received_command(cmd_data);
+                            received_telegram(telegram_data);
                         }
-                        call_remote_listeners_(cmd_data);
+                        call_remote_listeners_(telegram_data);
                     }
 
                     ack_pos = 0;
-                    ack_command = 0;
+                    ack_telegram = 0;
                     ack_crc = 0;
                     ack_cal_crc = 1;
                 }
 
-                // Process command bits
+                // Process telegram bits
                 if (cmd_pos == 0)
                 {
                     if (pulse_type == 2)
                     {
                         cmd_pos++;
-                        command = 0;
+                        telegram = 0;
                         cmd_crc = 0;
                         cmd_cal_crc = 1;
                         is_long = false;
@@ -652,7 +660,7 @@ namespace esphome
                     {
                         if (pulse_type)
                         {
-                            command |= (1 << ((is_long ? 33 : 17) - cmd_pos));
+                            telegram |= (1 << ((is_long ? 33 : 17) - cmd_pos));
                         }
                         cmd_cal_crc ^= pulse_type;
                         cmd_pos++;
@@ -663,7 +671,7 @@ namespace esphome
                         {
                             if (pulse_type)
                             {
-                                command |= (1 << (33 - cmd_pos));
+                                telegram |= (1 << (33 - cmd_pos));
                             }
                             cmd_cal_crc ^= pulse_type;
                             cmd_pos++;
@@ -671,14 +679,14 @@ namespace esphome
                         else
                         {
                             cmd_crc = pulse_type;
-                            command_ready = true;
+                            telegram_ready = true;
                         }
                     }
                     else if (cmd_pos >= 19 && cmd_pos <= 33)
                     {
                         if (pulse_type)
                         {
-                            command |= (1 << (33 - cmd_pos));
+                            telegram |= (1 << (33 - cmd_pos));
                         }
                         cmd_cal_crc ^= pulse_type;
                         cmd_pos++;
@@ -686,16 +694,16 @@ namespace esphome
                     else if (cmd_pos == 34)
                     {
                         cmd_crc = pulse_type;
-                        command_ready = true;
+                        telegram_ready = true;
                     }
                 }
                 else if (pulse_type == 2)
                 { // Another START signal
-                    // Only reset if we're not in the middle of a valid command
-                    if (!command_ready)
+                    // Only reset if we're not in the middle of a valid telegram
+                    if (!telegram_ready)
                     {
-                        cmd_pos = 1; // Set to 1 since we're starting a new command
-                        command = 0;
+                        cmd_pos = 1; // Set to 1 since we're starting a new telegram
+                        telegram = 0;
                         cmd_crc = 0;
                         cmd_cal_crc = 1;
                         is_long = false;
@@ -704,44 +712,44 @@ namespace esphome
                 else
                 {
                     cmd_pos = 0;
-                    command = 0;
+                    telegram = 0;
                     cmd_crc = 0;
                     cmd_cal_crc = 1;
                     is_long = false;
 
                     ack_pos = 0;
-                    ack_command = 0;
+                    ack_telegram = 0;
                     ack_crc = 0;
                     ack_cal_crc = 1;
                 }
 
-                // If the command is ready, process it
-                if (command_ready)
+                // If the telegram is ready, process it
+                if (telegram_ready)
                 {
-                    command_ready = false;
+                    telegram_ready = false;
 
                     if (cmd_crc == cmd_cal_crc)
                     {
-                        if (this->last_sent_command_ == -1)
+                        if (this->last_sent_telegram_ == -1)
                         {
-                            ESP_LOGV(TAG, "Received data %X, previously sent: NOTHING", command);
+                            ESP_LOGV(TAG, "Received data %X, previously sent: NOTHING", telegram);
                         }
                         else
                         {
-                            ESP_LOGV(TAG, "Received data %X, previously sent: %08X", command, this->last_sent_command_);
+                            ESP_LOGV(TAG, "Received data %X, previously sent: %08X", telegram, this->last_sent_telegram_);
                         }
 
-                        if (this->last_sent_command_ == -1 || (this->last_sent_command_ != -1 && static_cast<int32_t>(command) != this->last_sent_command_))
+                        if (this->last_sent_telegram_ == -1 || (this->last_sent_telegram_ != -1 && static_cast<int32_t>(telegram) != this->last_sent_telegram_))
                         {
-                            CommandData cmd_data = parseCommand(command, is_long);
-                            received_command(cmd_data);
-                            call_remote_listeners_(cmd_data);
+                            TelegramData telegram_data = parseTelegram(telegram, is_long, is_response);
+                            received_telegram(telegram_data);
+                            call_remote_listeners_(telegram_data);
                         }
                         else
                         {
-                            ESP_LOGD(TAG, "Received command 0x%08X, but ignoring it as it matches the last sent command.", command);
+                            ESP_LOGD(TAG, "Received telegram 0x%08X, but ignoring it as it matches the last sent telegram.", telegram);
                         }
-                        this->last_sent_command_ = -1;
+                        this->last_sent_telegram_ = -1;
                     }
                     else
                     {
@@ -749,10 +757,10 @@ namespace esphome
                     }
 
                     ack_pos = 0;
-                    ack_command = 0;
+                    ack_telegram = 0;
                     ack_crc = 0;
                     ack_cal_crc = 1;
-                    command = 0;
+                    telegram = 0;
                     cmd_pos = 0;
                 }
             }
@@ -813,30 +821,30 @@ namespace esphome
         }
 #endif
 
-        void TCBusComponent::send_command(uint32_t command, uint32_t wait_duration)
+        void TCBusComponent::send_telegram(uint32_t telegram, uint32_t wait_duration)
         {
-            ESP_LOGV(TAG, "Called send_command(uint32_t command, uint32_t wait_duration)");
-            ESP_LOGV(TAG, "Command: 0x%X | Wait Duration: %i", command, wait_duration);
+            ESP_LOGV(TAG, "Called send_telegram(uint32_t telegram, uint32_t wait_duration)");
+            ESP_LOGV(TAG, "Telegram: 0x%X | Wait Duration: %i", telegram, wait_duration);
 
-            // Determine length of command
+            // Determine length of telegram
             // Not reliable as its based on the 32 bit integer itself
-            bool is_long = (command > 0xFFFF);
+            bool is_long = (telegram > 0xFFFF);
 
-            CommandData cmd_data = parseCommand(command, is_long);
-            send_command(cmd_data, wait_duration);
+            TelegramData telegram_data = parseTelegram(telegram, is_long);
+            send_telegram(telegram_data, wait_duration);
         }
 
-        void TCBusComponent::send_command(uint32_t command, bool is_long, uint32_t wait_duration)
+        void TCBusComponent::send_telegram(uint32_t telegram, bool is_long, uint32_t wait_duration)
         {
-            ESP_LOGV(TAG, "Called send_command(uint32_t command: 0x%X, bool is_long: %s, uint32_t wait_duration: %i", command, (is_long ? "true" : "false"), wait_duration);
+            ESP_LOGV(TAG, "Called send_telegram(uint32_t telegram: 0x%X, bool is_long: %s, uint32_t wait_duration: %i", telegram, (is_long ? "true" : "false"), wait_duration);
 
-            CommandData cmd_data = parseCommand(command, is_long);
-            send_command(cmd_data, wait_duration);
+            TelegramData telegram_data = parseTelegram(telegram, is_long);
+            send_telegram(telegram_data, wait_duration);
         }
 
-        void TCBusComponent::send_command(CommandType type, uint8_t address, uint32_t payload, uint32_t serial_number, uint32_t wait_duration)
+        void TCBusComponent::send_telegram(TelegramType type, uint8_t address, uint32_t payload, uint32_t serial_number, uint32_t wait_duration)
         {
-            ESP_LOGV(TAG, "Called send_command(CommandType type: %s, uint8_t address: %i, uint32_t payload: 0x%X, uint32_t serial_number: %i, uint32_t wait_duration: %i)", command_type_to_string(type), address, payload, serial_number, wait_duration);
+            ESP_LOGV(TAG, "Called send_telegram(TelegramType type: %s, uint8_t address: %i, uint32_t payload: 0x%X, uint32_t serial_number: %i, uint32_t wait_duration: %i)", telegram_type_to_string(type), address, payload, serial_number, wait_duration);
 
             if (serial_number == 0 && this->serial_number_ != 0)
             {
@@ -845,47 +853,48 @@ namespace esphome
             }
 
             // Use 32-bit protocol
-            if(type == COMMAND_TYPE_OPEN_DOOR && this->force_long_door_opener_)
+            if(type == TELEGRAM_TYPE_OPEN_DOOR && this->force_long_door_opener_)
             {
-                ESP_LOGV(TAG, "Detected 32-bit door protocol override, change command type to OPEN_DOOR_LONG.");
-                type = COMMAND_TYPE_OPEN_DOOR_LONG;
+                ESP_LOGV(TAG, "Detected 32-bit door protocol override, change telegram telegram to OPEN_DOOR_LONG.");
+                type = TELEGRAM_TYPE_OPEN_DOOR_LONG;
             }
 
-            CommandData cmd_data = buildCommand(type, address, payload, serial_number);
-            send_command(cmd_data, wait_duration);
+            TelegramData telegram_data = buildTelegram(type, address, payload, serial_number);
+            send_telegram(telegram_data, wait_duration);
         }
 
-        void TCBusComponent::send_command(CommandData cmd_data, uint32_t wait_duration)
+        void TCBusComponent::send_telegram(TelegramData telegram_data, uint32_t wait_duration)
         {
-            ESP_LOGV(TAG, "Called send_command(CommandData cmd_data: object, uint32_t wait_duration: %i)", wait_duration);
-            ESP_LOGV(TAG, "CommandData Object: Type: %s | Address: %i | Payload: 0x%X | Serial-Number: %i | Length: %i | Wait Duration: %i", command_type_to_string(cmd_data.type), cmd_data.address, cmd_data.payload, cmd_data.serial_number, (cmd_data.is_long ? 32 : 16), wait_duration);
+            ESP_LOGV(TAG, "Called send_telegram(TelegramData telegram_data: object, uint32_t wait_duration: %i)", wait_duration);
+            ESP_LOGV(TAG, "TelegramData Object: Type: %s | Address: %i | Payload: 0x%X | Serial-Number: %i | Length: %i | Wait Duration: %i", telegram_type_to_string(telegram_data.type), telegram_data.address, telegram_data.payload, telegram_data.serial_number, (telegram_data.is_long ? 32 : 16), wait_duration);
             
-            if (cmd_data.command == 0)
+            if (telegram_data.telegram == 0)
             {
-                ESP_LOGW(TAG, "Sending commands of type %s is not yet supported.", command_type_to_string(cmd_data.type));
+                ESP_LOGW(TAG, "Sending telegram telegrams of type %s is not yet supported.", telegram_type_to_string(telegram_data.type));
                 return;
             }
 
-            this->command_queue_.push({cmd_data, wait_duration});
+            this->telegram_queue_.push({telegram_data, wait_duration});
         }
 
-        void TCBusComponent::transmit_command(CommandData cmd_data)
+        void TCBusComponent::transmit_telegram(TelegramData telegram_data)
         {
-            this->received_command(cmd_data, false);
+            this->received_telegram(telegram_data, false);
 
-            this->last_sent_command_ = cmd_data.command;
+            this->last_sent_telegram_ = telegram_data.telegram;
 
             auto call = id(this->tx_).transmit();
             remote_base::RemoteTransmitData *dst = call.get_data();
 
             // Start transmission with initial mark and space
-            dst->mark(cmd_data.type == COMMAND_TYPE_ACK ? BUS_ACK_START_MS : BUS_CMD_START_MS);
+            dst->mark(telegram_data.type == TELEGRAM_TYPE_ACK ? BUS_ACK_START_MS : BUS_CMD_START_MS);
             ESP_LOGV(TAG, "mark start %i", BUS_CMD_START_MS);
-            dst->space(cmd_data.is_long ? BUS_ONE_BIT_MS : BUS_ZERO_BIT_MS);
-            ESP_LOGV(TAG, "space lngth %i", cmd_data.is_long ? BUS_ONE_BIT_MS : BUS_ZERO_BIT_MS);
+            dst->space(telegram_data.is_long ? BUS_ONE_BIT_MS : BUS_ZERO_BIT_MS);
+            ESP_LOGV(TAG, "space lngth %i", telegram_data.is_long ? BUS_ONE_BIT_MS : BUS_ZERO_BIT_MS);
 
-            // Calculate length based on command type
-            uint8_t length = cmd_data.type == COMMAND_TYPE_ACK ? 4 : (cmd_data.is_long ? 32 : 16);
+            // Calculate length based on telegram type
+            // Acknowledge telegrams only have 4 bits if short
+            uint8_t length = (telegram_data.is_long ? 32 : (telegram_data.type == TELEGRAM_TYPE_ACK ? 4 : 16));
 
             // Track checksum
             uint8_t checksm = 1;
@@ -894,7 +903,7 @@ namespace esphome
             for (int i = length - 1; i >= 0; i--)
             {
                 // Extract single bit
-                bool bit = (cmd_data.command & (1UL << i)) != 0;
+                bool bit = (telegram_data.telegram & (1UL << i)) != 0;
 
                 // Update checksum
                 checksm ^= bit;
@@ -921,7 +930,7 @@ namespace esphome
 
         void TCBusComponent::set_programming_mode(bool enabled)
         {
-            send_command(COMMAND_TYPE_PROGRAMMING_MODE, 0, enabled ? 1 : 0);
+            send_telegram(TELEGRAM_TYPE_PROGRAMMING_MODE, 0, enabled ? 1 : 0);
         }
 
         void TCBusComponent::request_version(uint32_t serial_number, uint8_t device_group)
@@ -950,8 +959,8 @@ namespace esphome
             {
                 // Use device group if not 0 and 1
                 ESP_LOGD(TAG, "Identifying device model (Category %i) using serial number: %i...", device_group, serial_number);
-                send_command(COMMAND_TYPE_SELECT_DEVICE_GROUP, 0, device_group, 0, 400);
-                send_command(COMMAND_TYPE_REQUEST_VERSION, 0, 0, serial_number, 400);
+                send_telegram(TELEGRAM_TYPE_SELECT_DEVICE_GROUP, 0, device_group, 0, 400);
+                send_telegram(TELEGRAM_TYPE_REQUEST_VERSION, 0, 0, serial_number, 400);
 
                 this->set_timeout("wait_for_identification_other", 1000, [this]() {
                     // Failed
@@ -963,16 +972,16 @@ namespace esphome
             {
                 // First try with category 0
                 ESP_LOGD(TAG, "Identifying device model (Category %i) using serial number: %i...", 0, serial_number);
-                send_command(COMMAND_TYPE_SELECT_DEVICE_GROUP, 0, 0, 0, 400); // class 0
-                send_command(COMMAND_TYPE_REQUEST_VERSION, 0, 0, serial_number, 400);
+                send_telegram(TELEGRAM_TYPE_SELECT_DEVICE_GROUP, 0, 0, 0, 400); // class 0
+                send_telegram(TELEGRAM_TYPE_REQUEST_VERSION, 0, 0, serial_number, 400);
 
                 this->set_timeout("wait_for_identification_category_0", 1000, [this, serial_number]()
                 {
                     // Didn't receive identify result of category 0
                     // Second try with category 1
                     ESP_LOGD(TAG, "Identifying device model (Category %i) using serial number: %i...", 1, serial_number);
-                    send_command(COMMAND_TYPE_SELECT_DEVICE_GROUP, 0, 1, 0, 400); // class 1
-                    send_command(COMMAND_TYPE_REQUEST_VERSION, 0, 0, serial_number, 400);
+                    send_telegram(TELEGRAM_TYPE_SELECT_DEVICE_GROUP, 0, 1, 0, 400); // class 1
+                    send_telegram(TELEGRAM_TYPE_REQUEST_VERSION, 0, 0, serial_number, 400);
 
                     this->set_timeout("wait_for_identification_category_1", 1000, [this]() {
                         // Didn't receive identify result of category 1
@@ -1032,8 +1041,8 @@ namespace esphome
             this->cancel_timeout("wait_for_memory_reading");
             reading_memory_ = false;
 
-            send_command(COMMAND_TYPE_SELECT_DEVICE_GROUP, 0, model_data.category);
-            send_command(COMMAND_TYPE_SELECT_MEMORY_PAGE, 0, 0, serial_number);
+            send_telegram(TELEGRAM_TYPE_SELECT_DEVICE_GROUP, 0, model_data.category);
+            send_telegram(TELEGRAM_TYPE_SELECT_MEMORY_PAGE, 0, 0, serial_number);
 
             memory_buffer_.clear();
             reading_memory_ = true;
@@ -1059,7 +1068,7 @@ namespace esphome
         void TCBusComponent::read_memory_block()
         {
             ESP_LOGD(TAG, "Read 4 memory blocks, from %i to %i.", (reading_memory_count_ * 4), (reading_memory_count_ * 4) + 4);
-            send_command(COMMAND_TYPE_READ_MEMORY_BLOCK, reading_memory_count_, 0, 0, 300);
+            send_telegram(TELEGRAM_TYPE_READ_MEMORY_BLOCK, reading_memory_count_, 0, 0, 300);
         }
 
         bool TCBusComponent::supports_setting(SettingType type, Model model)
@@ -1182,17 +1191,17 @@ namespace esphome
             // Prepare Transmission
             // Select device category
             ModelData model_data = getModelData(model);
-            send_command(COMMAND_TYPE_SELECT_DEVICE_GROUP, 0, model_data.category);
+            send_telegram(TELEGRAM_TYPE_SELECT_DEVICE_GROUP, 0, model_data.category);
 
             // Select memory page %i of serial number %i
-            send_command(COMMAND_TYPE_SELECT_MEMORY_PAGE, 0, 0, serial_number);
+            send_telegram(TELEGRAM_TYPE_SELECT_MEMORY_PAGE, 0, 0, serial_number);
 
             // Transfer new settings value to memory
             uint16_t new_values = (memory_buffer_[cellData.index] << 8) | memory_buffer_[cellData.index + 1];
-            send_command(COMMAND_TYPE_WRITE_MEMORY, cellData.index, new_values);
+            send_telegram(TELEGRAM_TYPE_WRITE_MEMORY, cellData.index, new_values);
 
             // Reset
-            send_command(COMMAND_TYPE_RESET);
+            send_telegram(TELEGRAM_TYPE_RESET);
 
             return true;
         }
@@ -1238,20 +1247,20 @@ namespace esphome
             // Prepare Transmission
             // ESP_LOGD(TAG, "Select device category");
             ModelData model_data = getModelData(model);
-            send_command(COMMAND_TYPE_SELECT_DEVICE_GROUP, 0, model_data.category);
+            send_telegram(TELEGRAM_TYPE_SELECT_DEVICE_GROUP, 0, model_data.category);
 
             // ESP_LOGD(TAG, "Select memory page %i of serial number %i", 0, serial_number);
-            send_command(COMMAND_TYPE_SELECT_MEMORY_PAGE, 0, 0, serial_number);
+            send_telegram(TELEGRAM_TYPE_SELECT_MEMORY_PAGE, 0, 0, serial_number);
 
             // Transmit Memory
             for (size_t address = 0; address < memory_buffer_.size(); address += 2)
             {
                 uint16_t new_value = (memory_buffer_[address] << 8) | memory_buffer_[address + 1];
-                send_command(COMMAND_TYPE_WRITE_MEMORY, address, new_value);
+                send_telegram(TELEGRAM_TYPE_WRITE_MEMORY, address, new_value);
             }
 
             // Reset
-            send_command(COMMAND_TYPE_RESET);
+            send_telegram(TELEGRAM_TYPE_RESET);
 
             return true;
         }

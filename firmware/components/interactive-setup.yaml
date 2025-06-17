@@ -43,12 +43,12 @@ tc_bus:
         then:
           - script.execute: complete_setup
 
-  on_command:
+  on_telegram:
     # Setup mode: Wait for Floor or Door Call
     - if:
         condition:
           - switch.is_on: doorman_setup_mode
-          - lambda: "return x.type == COMMAND_TYPE_FLOOR_CALL || x.type == COMMAND_TYPE_DOOR_CALL;"
+          - lambda: "return x.type == TELEGRAM_TYPE_FLOOR_CALL || x.type == TELEGRAM_TYPE_DOOR_CALL;"
         then:
           # Save Serial Number
           - number.set:
@@ -70,7 +70,7 @@ tc_bus:
     # If no second door station id is set, wait for one
     - if:
         condition:
-          - lambda: return id(second_entrance_door_station_id).state == 63 && (x.type == COMMAND_TYPE_DOOR_CALL || x.type == COMMAND_TYPE_OPEN_DOOR) && x.address != id(entrance_door_station_id).state;
+          - lambda: return id(second_entrance_door_station_id).state == 63 && (x.type == TELEGRAM_TYPE_DOOR_CALL || x.type == TELEGRAM_TYPE_OPEN_DOOR) && x.address != id(entrance_door_station_id).state;
         then:
           - number.set:
               id: second_entrance_door_station_id

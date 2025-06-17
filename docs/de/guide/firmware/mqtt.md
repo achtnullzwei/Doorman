@@ -17,7 +17,7 @@ Jede Entität veröffentlicht ihren Status auf einem Topic im folgenden Format:
 Du kannst bestimmte Entitäten steuern, indem du einen Befehl an ein Topic mit folgendem Format sendest:
 ::: code-group
 ``` [Topic]
-<TOPIC_PREFIX>/<COMPONENT_TYPE>/<COMPONENT_NAME>/command 
+<TOPIC_PREFIX>/<COMPONENT_TYPE>/<COMPONENT_NAME>/telegram 
 ```
 ``` [Payload]
 ON oder OFF oder was sonst unterstützt wird
@@ -28,7 +28,7 @@ ON oder OFF oder was sonst unterstützt wird
 Um die [Ring-To-Open](../features/ring-to-open.md) Automatisierung zu aktivieren oder zu deaktivieren, sende ON oder OFF als Payload an dieses Topic:
 ::: code-group
 ``` [Topic]
-doorman-s3/switch/rto__entrance_door/command
+doorman-s3/switch/rto__entrance_door/telegram
 ```
 ``` [Payload]
 ON
@@ -38,30 +38,30 @@ ON
 ## Spezielle Topics
 Es gibt spezielle Topics, die erweiterte Befehle ermöglichen.
 
-### Senden eines Commands (Hexadezimal)
-Hier ist ein Beispiel um hexadezimale Commands (uint32) an den Bus zu senden:
+### Senden eines Telegrams (Hexadezimal)
+Hier ist ein Beispiel um hexadezimale Telegrams (uint32) an den Bus zu senden:
 ::: code-group
 ``` [Topic]
-doorman-s3/send_raw_command
+doorman-s3/send_raw_telegram
 ```
 ```json [Payload]
 {
-    "command": 0x1C30BA80
+    "telegram": 0x1C30BA80
 }
 ```
 ```json [Advanced Payload]
 {
-    "command": 0x00000680,
+    "telegram": 0x00000680,
     "is_long": true
 }
 ```
 :::
 
-### Senden eines Commands (Command Builder)
-Hier ist ein Beispiel um Commands via Command Builder an den Bus zu senden:
+### Senden eines Telegrams (Telegram Builder)
+Hier ist ein Beispiel um Telegrams via Telegram Builder an den Bus zu senden:
 ::: code-group
 ``` [Topic]
-doorman-s3/send_command
+doorman-s3/send_telegram
 ```
 ```json [Payload]
 {

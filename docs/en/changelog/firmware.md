@@ -32,11 +32,11 @@ This release **will impact your current setup** and **requires** you to go throu
 - **HomeKit Integration**  
   To enable native control through Apple's Home app and Siri, you can now choose the [HomeKit integration](https://doorman.azon.ai/guide/firmware/homekit) in the configuration assistant.
 
-- **Pre-Open Commands**  
-   In some setups, it’s necessary to send one or more preparatory commands to select the correct door. This feature allows you to define and send a sequence of commands before the `open_door` command is executed.
+- **Pre-Open Telegrams**  
+   In some setups, it’s necessary to send one or more preparatory telegrams to select the correct door. This feature allows you to define and send a sequence of telegrams before the `open_door` telegram is executed.
 
 - **Door Opener Mode**  
-   It is now possible to activate the integrated relay instead of sending a BUS command to open the entrance door.  
+   It is now possible to activate the integrated relay instead of sending a BUS telegram to open the entrance door.  
    This can be configured using the `Door Opener Mode` setting and is especially useful for older analog systems.
 
 - **Show Bus Activity via Status LED**  
@@ -60,8 +60,8 @@ This release **will impact your current setup** and **requires** you to go throu
 - **Enhanced Reliability with Remote Peripheral**  
    Data reading is now based on RMT, providing more reliability compared to the previous interrupt-based method.
 
-- **Command Queue**  
-   Outgoing commands are now queued to prevent data loss.
+- **Telegram Queue**  
+   Outgoing telegrams are now queued to prevent data loss.
 
 - **Install Update Button**  
    A new button lets you install the latest available Doorman firmware version directly from the web interface.
@@ -73,7 +73,7 @@ This release **will impact your current setup** and **requires** you to go throu
 - **Firmware Configuration Assistant**  
    The new assistant makes flashing the firmware easier than ever — not much technical experience required.
 
-- **Command Binary Sensors Disabled by Default**  
+- **Telegram Binary Sensors Disabled by Default**  
    Since event entities offer the most convenient way to work with the doorbell, binary sensors are now disabled by default when adding Doorman to Home Assistant. You can still enable them manually at any time if needed.
 
 - **Enhanced Captive Portal UX**  
@@ -148,8 +148,8 @@ This release **will impact your current setup** and **requires** you to go throu
    Implemented settings compatibility for TCS TASTA (Koch TC60) IVW5xxx and ISW5xxx models.
 
 ### ✨ Improvements
-- **Fix Parser Command Length**  
-   Previously, the command length was not properly parsed, which occasionally led to 32-bit commands being misinterpreted. This issue has now been resolved.
+- **Fix Parser Telegram Length**  
+   Previously, the telegram length was not properly parsed, which occasionally led to 32-bit telegrams being misinterpreted. This issue has now been resolved.
    
 - **Configure Entrance Outdoor Station ID**  
    It is now feasible to replace the entrance outdoor station in the exceptional instances where non-default addresses are utilized. The setup mode will also set the entrance outdoor station address.
@@ -176,8 +176,8 @@ This release **will impact your current setup** and **requires** you to go throu
    
    For assistance, please contact me via [Discord](https://discord.gg/t2d34dvmBf) or open an issue on [GitHub](https://github.com/azoninc/doorman/issues).
 
-- **Hexadecimal Command-String Length changed**  
-   With the command parser now fixed, the hexadecimal string representation has been updated to correctly display the [Last Bus Command](https://doorman.azon.ai/reference/entities#last-bus-command) sensor.
+- **Hexadecimal Telegram-String Length changed**  
+   With the telegram parser now fixed, the hexadecimal string representation has been updated to correctly display the [Last Bus Telegram](https://doorman.azon.ai/reference/entities#last-bus-telegram) sensor.
 
 - **Separate Event entities**  
    [Skaronator](https://github.com/azoninc/doorman/pull/37) introduced separate event entities for each physical doorbell button.  
@@ -199,8 +199,8 @@ This release **will impact your current setup** and **requires** you to go throu
 
 ## 2024.11.2
 ### ✨ Improvements
-- **Fixed open door command**  
-   Use the short open door command instead of the long one (with serial number) as this seems to cause issues on some setups.
+- **Fixed open door telegram**  
+   Use the short open door telegram instead of the long one (with serial number) as this seems to cause issues on some setups.
 
 ## 2024.11.1
 ### ✨ Improvements
@@ -215,9 +215,9 @@ This release **will impact your current setup** and **requires** you to go throu
 ### 🚀 What's New?
 - **TC:BUS Protocol Support**  
    Unleash more power with the **new protocol support**!
-   You can now use intuitive command types with parameters like `address`, `payload`, and `serial_number`.  
+   You can now use intuitive telegram types with parameters like `address`, `payload`, and `serial_number`.  
 
-   👉 **Explore the [Supported Commands](https://doorman.azon.ai/reference/esphome-component#command-types)**
+   👉 **Explore the [Supported Telegrams](https://doorman.azon.ai/reference/esphome-component#telegram-types)**
 
 - **Interactive Setup Enhancements**  
    The system now **remembers** your indoor station's serial number and automatically detects any additional outdoor stations during setup.
@@ -252,7 +252,7 @@ This release **will impact your current setup** and **requires** you to go throu
 
 ### 🚨 Breaking Changes
 - **Re-setup Required!**  
-   The new protocol means you’ll need to **reconfigure** your system. Old stored commands won't work anymore. Simply **press the apartment or entrance doorbell** to start the setup again.  
+   The new protocol means you’ll need to **reconfigure** your system. Old stored telegrams won't work anymore. Simply **press the apartment or entrance doorbell** to start the setup again.  
 
    👉 **Check the [setup guide](https://doorman.azon.ai/guide/getting-started#interactive-setup) for details!**
 
@@ -260,32 +260,32 @@ This release **will impact your current setup** and **requires** you to go throu
    We’ve made changes to the Home Assistant service names to make them easier to understand and use:
    - **Old Format**:
      ```yaml
-     service: esphome.doorman_s3_send_tcs_command
+     service: esphome.doorman_s3_send_tcs_telegram
      data:
-       command: 0x1C30BA41
+       telegram: 0x1C30BA41
      ```
    - **New Format**:
      ```yaml
-     service: esphome.doorman_s3_send_tc_command_raw
+     service: esphome.doorman_s3_send_tc_telegram_raw
      data:
-       command: 0x1C30BA41
+       telegram: 0x1C30BA41
      ```
    - **New User-Friendly Option**:
      ```yaml
-     service: esphome.doorman_s3_send_tc_command
+     service: esphome.doorman_s3_send_tc_telegram
      data:
-       type: floor_call  # Command type (e.g., 'floor_call', 'door_open')
+       type: floor_call  # Telegram type (e.g., 'floor_call', 'door_open')
        address: 0        # Address, for example the Outdoor Station
        payload: 0        # Data payload
        serial_number: 0  # Indoor Station serial number
      ```
-     **Why it’s awesome**: It’s now **more readable** and lets you **easily specify** command types!
+     **Why it’s awesome**: It’s now **more readable** and lets you **easily specify** telegram types!
 
 
 ## 2024.8.5
 ### 🚀 What's New?
 - **Enhanced Interactive Setup**  
-   Setup is even easier! **Automatically capture and store bus commands** during first-time setup if no previous commands are detected.
+   Setup is even easier! **Automatically capture and store bus telegrams** during first-time setup if no previous telegrams are detected.
 
 ### ✨ Improvements
 - **Dashboard Import Fix**  
@@ -305,7 +305,7 @@ This release **will impact your current setup** and **requires** you to go throu
    Initial setup is now a breeze with options like **Access Point**, **Improv Serial**, or **Improv BLE**.
 
 - **Runtime Configuration**  
-   Easily configure **bus commands** and settings on the fly!
+   Easily configure **bus telegrams** and settings on the fly!
 
 - **New Event Entities**  
    New entities for doorbell and handset patterns (like **entrance or apartment doorbell**, and **lift handset**).
@@ -334,8 +334,8 @@ This release **will impact your current setup** and **requires** you to go throu
    The webserver feature is now enabled for quicker access.
 
 ### 🚨 Breaking Changes
-- **Command Reset**  
-   Due to the simplified setup process and configurable commands, the substituations are not used anymore. Thus you’ll need to **reconfigure** them using the new input entities.
+- **Telegram Reset**  
+   Due to the simplified setup process and configurable telegrams, the substituations are not used anymore. Thus you’ll need to **reconfigure** them using the new input entities.
    
 - **Minimum ESPHome Version Set**  
    We’ve bumped the minimum required version to **2024.8.0**.
