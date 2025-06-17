@@ -109,6 +109,13 @@ namespace esphome
             this->rx_->register_listener(this);
         }
 
+        void TCBusComponent::call_remote_listeners_(CommandData cmd_data) {
+            for (auto *listener : this->remote_listeners_)
+            {
+                listener->on_receive(cmd_data);
+            }
+        }
+
         void TCBusComponent::save_settings()
         {
             TCBusSettings settings{
@@ -563,11 +570,12 @@ namespace esphome
                     // Check for ACK
                     if (ack_pos == 6)
                     {
+                        CommandData cmd_data = parseCommand(ack_command, false);
                         if (ack_crc == ack_cal_crc && !reading_memory_ && identify_model_device_group_ == -1)
                         {
-                            CommandData cmd_data = parseCommand(ack_command, false);
                             received_command(cmd_data);
                         }
+                        call_remote_listeners_(cmd_data);
 
                         ack_pos = 0;
                         ack_command = 0;
@@ -607,11 +615,12 @@ namespace esphome
                 {
                     if (ack_pos == 6)
                     {
+                        CommandData cmd_data = parseCommand(ack_command, false);
                         if (ack_crc == ack_cal_crc && !reading_memory_ && identify_model_device_group_ == -1)
                         {
-                            CommandData cmd_data = parseCommand(ack_command, false);
                             received_command(cmd_data);
                         }
+                        call_remote_listeners_(cmd_data);
                     }
 
                     ack_pos = 0;
@@ -726,6 +735,7 @@ namespace esphome
                         {
                             CommandData cmd_data = parseCommand(command, is_long);
                             received_command(cmd_data);
+                            call_remote_listeners_(cmd_data);
                         }
                         else
                         {

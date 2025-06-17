@@ -87,6 +87,11 @@ namespace esphome
         };
 #endif
 
+        class TCBusRemoteListener {
+            public:
+                virtual bool on_receive(CommandData data) = 0;
+        };
+
         struct TCBusSettings
         {
             Model model;
@@ -135,6 +140,8 @@ namespace esphome
             void dump_config() override;
             void loop() override;
             bool on_receive(remote_base::RemoteReceiveData data) override;
+
+            void register_remote_listener(TCBusRemoteListener*listener) { this->remote_listeners_.push_back(listener); }
 
 #ifdef USE_BINARY_SENSOR
             void register_listener(TCBusListener *listener);
@@ -222,6 +229,9 @@ namespace esphome
             std::queue<TCBusCommandQueueItem> command_queue_;
             uint32_t last_command_time_ = 0;
             int32_t last_sent_command_ = -1;
+
+            std::vector<TCBusRemoteListener *> remote_listeners_;
+            void call_remote_listeners_(CommandData cmd_data);
 
 #ifdef USE_BINARY_SENSOR
             std::vector<TCBusListener *> listeners_{};
