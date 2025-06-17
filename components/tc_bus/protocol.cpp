@@ -11,7 +11,7 @@ namespace esphome
         TelegramData buildTelegram(TelegramType type, uint8_t address, uint32_t payload, uint32_t serial_number)
         {
             TelegramData data{};
-            data.telegram = 0;
+            data.raw = 0;
             data.type = type;
             data.is_long = true;
             data.is_long = false;
@@ -25,7 +25,7 @@ namespace esphome
                     data.payload = payload;
 
                     data.is_long = false;
-                    data.telegram |= (payload & 0xF); // 1
+                    data.raw |= (payload & 0xF); // 1
                     break;
 
                 case TELEGRAM_TYPE_DOOR_CALL:
@@ -33,28 +33,28 @@ namespace esphome
                     data.serial_number = serial_number;
                     data.address = address;
 
-                    data.telegram |= (0 << 28);  // 0
-                    data.telegram |= ((serial_number & 0xFFFFF) << 8); // C30BA
+                    data.raw |= (0 << 28);  // 0
+                    data.raw |= ((serial_number & 0xFFFFF) << 8); // C30BA
 
                     // Call type
                     if (type == TELEGRAM_TYPE_INTERNAL_CALL) {
-                        data.telegram |= (1 << 6); // 8
+                        data.raw |= (1 << 6); // 8
                     } else {
-                        data.telegram &= ~(1 << 6); // 0
+                        data.raw &= ~(1 << 6); // 0
                     }
 
                     // Flags
-                    //data.telegram |= (1 << 7);
+                    //data.raw |= (1 << 7);
 
-                    data.telegram |= (address & 0x3F); // 0
+                    data.raw |= (address & 0x3F); // 0
                     break;
 
                 case TELEGRAM_TYPE_FLOOR_CALL:
                     data.serial_number = serial_number;
 
-                    data.telegram |= (1 << 28);  // 1
-                    data.telegram |= ((serial_number & 0xFFFFF) << 8); // C30BA
-                    data.telegram |= 0x41; // 41
+                    data.raw |= (1 << 28);  // 1
+                    data.raw |= ((serial_number & 0xFFFFF) << 8); // C30BA
+                    data.raw |= 0x41; // 41
                     break;
 
                 case TELEGRAM_TYPE_START_TALKING_DOOR_CALL:
@@ -63,31 +63,31 @@ namespace esphome
                     data.address = address;
                     data.payload = payload;
 
-                    data.telegram |= (3 << 28); // 3
-                    data.telegram |= ((serial_number & 0xFFFFF) << 8); // C30BA
+                    data.raw |= (3 << 28); // 3
+                    data.raw |= ((serial_number & 0xFFFFF) << 8); // C30BA
 
                     // Call type
                     if (type == TELEGRAM_TYPE_START_TALKING_DOOR_CALL) {
-                        data.telegram &= ~(1 << 6); // AS
+                        data.raw &= ~(1 << 6); // AS
 
                         // Flags: Door readiness
                         if(payload > 0) {
-                            data.telegram |= (1 << 7); // door readiness active
+                            data.raw |= (1 << 7); // door readiness active
                         } else {
-                            data.telegram &= ~(1 << 7); // door readiness inactive
+                            data.raw &= ~(1 << 7); // door readiness inactive
                         }
                     } else {
-                        data.telegram |= (1 << 6); // IA
+                        data.raw |= (1 << 6); // IA
 
                         // Flags: Talk Mode
                         if(payload > 0) {
-                            data.telegram |= (1 << 7); // full duplex
+                            data.raw |= (1 << 7); // full duplex
                         } else {
-                            data.telegram &= ~(1 << 7); // half duplex
+                            data.raw &= ~(1 << 7); // half duplex
                         }
                     }
 
-                    data.telegram |= (address & 0x3F); // 0
+                    data.raw |= (address & 0x3F); // 0
                     break;
 
                 case TELEGRAM_TYPE_STOP_TALKING_DOOR_CALL:
@@ -95,17 +95,17 @@ namespace esphome
                     data.address = address;
                     data.is_long = false;
 
-                    data.telegram |= (3 << 12); // 3
+                    data.raw |= (3 << 12); // 3
 
                     // Flags
                     if (type == TELEGRAM_TYPE_STOP_TALKING) {
-                        data.telegram |= (1 << 6);  // IA
+                        data.raw |= (1 << 6);  // IA
                     } else {
-                        data.telegram &= ~(1 << 6); // AS
+                        data.raw &= ~(1 << 6); // AS
                     }
                     //data.payload |= (1 << 7);
 
-                    data.telegram |= (address & 0x3F); // 0
+                    data.raw |= (address & 0x3F); // 0
                     break;
 
                 case TELEGRAM_TYPE_OPEN_DOOR:
@@ -113,18 +113,18 @@ namespace esphome
                     data.payload = payload;
                     data.is_long = false;
 
-                    data.telegram |= (1 << 12); // 1
-                    data.telegram |= (1 << 8); // 1
+                    data.raw |= (1 << 12); // 1
+                    data.raw |= (1 << 8); // 1
 
                     // Flags
                     if(payload > 0) {
-                        data.telegram |= (1 << 7); // door readiness active
+                        data.raw |= (1 << 7); // door readiness active
                     } else {
-                        data.telegram &= ~(1 << 7); // door readiness inactive
+                        data.raw &= ~(1 << 7); // door readiness inactive
                     }
-                    //data.telegram |= (1 << 6);
+                    //data.raw |= (1 << 6);
 
-                    data.telegram |= (address & 0x3F); // 0
+                    data.raw |= (address & 0x3F); // 0
                     break;
 
                 case TELEGRAM_TYPE_OPEN_DOOR_LONG:
@@ -135,145 +135,145 @@ namespace esphome
                         data.payload = payload;
                         data.is_long = false;
 
-                        data.telegram |= (1 << 12); // 1
-                        data.telegram |= (1 << 8); // 1
+                        data.raw |= (1 << 12); // 1
+                        data.raw |= (1 << 8); // 1
 
                         // Flags
                         if(payload > 0) {
-                            data.telegram |= (1 << 7); // door readiness active
+                            data.raw |= (1 << 7); // door readiness active
                         } else {
-                            data.telegram &= ~(1 << 7); // door readiness inactive
+                            data.raw &= ~(1 << 7); // door readiness inactive
                         }
-                        //data.telegram |= (1 << 6);
+                        //data.raw |= (1 << 6);
 
-                        data.telegram |= (address & 0x3F); // 0
+                        data.raw |= (address & 0x3F); // 0
                     } else {
                         data.serial_number = serial_number;
                         data.address = address;
                         data.payload = payload;
 
-                        data.telegram |= (1 << 28);  // 1
-                        data.telegram |= ((serial_number & 0xFFFFF) << 8); // C30BA
+                        data.raw |= (1 << 28);  // 1
+                        data.raw |= ((serial_number & 0xFFFFF) << 8); // C30BA
                         
-                        data.telegram |= (1 << 7);
+                        data.raw |= (1 << 7);
 
                         // Flags
                         if(payload > 0) {
-                            data.telegram |= (1 << 6); // door readiness active
+                            data.raw |= (1 << 6); // door readiness active
                         } else {
-                            data.telegram &= ~(1 << 6); // door readiness inactive
+                            data.raw &= ~(1 << 6); // door readiness inactive
                         }
 
-                        data.telegram |= (address & 0x3F); // 0
+                        data.raw |= (address & 0x3F); // 0
                     }
                     break;
 
                 case TELEGRAM_TYPE_LIGHT:
                     data.is_long = false;
 
-                    data.telegram |= (1 << 12); // 1
-                    data.telegram |= (2 << 8);  // 2
+                    data.raw |= (1 << 12); // 1
+                    data.raw |= (2 << 8);  // 2
                     break;
 
                 case TELEGRAM_TYPE_CONTROL_FUNCTION:
                     data.serial_number = serial_number;
                     data.payload = payload;
 
-                    data.telegram |= (6 << 28); // 6
-                    data.telegram |= ((serial_number & 0xFFFFF) << 8); // C30BA
-                    data.telegram |= (payload & 0xFF); // 08
+                    data.raw |= (6 << 28); // 6
+                    data.raw |= ((serial_number & 0xFFFFF) << 8); // C30BA
+                    data.raw |= (payload & 0xFF); // 08
                     break;
 
                 case TELEGRAM_TYPE_REQUEST_VERSION:
                     data.serial_number = serial_number;
 
-                    data.telegram |= (5 << 28); // 5
-                    data.telegram |= ((serial_number & 0xFFFFF) << 8); // C30BA
-                    data.telegram |= (0xC0 & 0xFF); // C0
+                    data.raw |= (5 << 28); // 5
+                    data.raw |= ((serial_number & 0xFFFFF) << 8); // C30BA
+                    data.raw |= (0xC0 & 0xFF); // C0
                     break;
 
                 case TELEGRAM_TYPE_RESET:
                     data.is_long = false;
 
-                    data.telegram |= (5 << 12); // 5
-                    data.telegram |= (1 << 8);  // 100
+                    data.raw |= (5 << 12); // 5
+                    data.raw |= (1 << 8);  // 100
                     break;
 
                 case TELEGRAM_TYPE_SEARCH_DOORMAN_DEVICES:
                     data.is_long = false;  
 
-                    data.telegram = 0x7FFF;
+                    data.raw = 0x7FFF;
                     break;
 
                 case TELEGRAM_TYPE_FOUND_DOORMAN_DEVICE:
                     data.payload = payload;
 
-                    data.telegram |= (0x7F << 24); // 7F
-                    data.telegram |= payload & 0xFFFFFF; // MAC address
+                    data.raw |= (0x7F << 24); // 7F
+                    data.raw |= payload & 0xFFFFFF; // MAC address
                     break;
 
                 case TELEGRAM_TYPE_SELECT_DEVICE_GROUP:
                     data.payload = payload;
                     data.is_long = false;
 
-                    data.telegram |= (5 << 12); // 5
-                    data.telegram |= (8 << 8);  // 80
-                    data.telegram |= (payload & 0xFF); // 0
+                    data.raw |= (5 << 12); // 5
+                    data.raw |= (8 << 8);  // 80
+                    data.raw |= (payload & 0xFF); // 0
                     break;
 
                 case TELEGRAM_TYPE_SELECT_DEVICE_GROUP_RESET:
                     data.payload = payload;
                     data.is_long = false;
 
-                    data.telegram |= (5 << 12); // 5
-                    data.telegram |= (9 << 8);  // 90
-                    data.telegram |= (payload & 0xFF); // 0
+                    data.raw |= (5 << 12); // 5
+                    data.raw |= (9 << 8);  // 90
+                    data.raw |= (payload & 0xFF); // 0
                     break;
 
                 case TELEGRAM_TYPE_SEARCH_DEVICES:
                     data.is_long = false;
 
-                    data.telegram |= (5 << 12); // 5
-                    data.telegram |= (2 << 8);  // 20
+                    data.raw |= (5 << 12); // 5
+                    data.raw |= (2 << 8);  // 20
                     break;
 
                 case TELEGRAM_TYPE_PROGRAMMING_MODE:
                     data.payload = payload;
                     data.is_long = false;
 
-                    data.telegram |= (5 << 12); // 5
-                    data.telegram |= (0 << 8);  // 0
-                    data.telegram |= (4 << 4);  // 4
-                    data.telegram |= (payload & 0xF); // 0 / 1
+                    data.raw |= (5 << 12); // 5
+                    data.raw |= (0 << 8);  // 0
+                    data.raw |= (4 << 4);  // 4
+                    data.raw |= (payload & 0xF); // 0 / 1
                     break;
 
                 case TELEGRAM_TYPE_READ_MEMORY_BLOCK:
                     data.address = address;
                     data.is_long = false;
 
-                    data.telegram |= (8 << 12); // 8
-                    data.telegram |= (4 << 8);  // 4
-                    data.telegram |= ((address * 4) & 0xFF); // 00
+                    data.raw |= (8 << 12); // 8
+                    data.raw |= (4 << 8);  // 4
+                    data.raw |= ((address * 4) & 0xFF); // 00
                     break;
 
                 case TELEGRAM_TYPE_WRITE_MEMORY:
                     data.address = address;
                     data.payload = payload;
 
-                    data.telegram |= (8 << 28); // 8
-                    data.telegram |= (2 << 24); // 2
-                    data.telegram |= (address & 0xFF) << 16; // start address
-                    data.telegram |= payload & 0xFFFF; // ABCD payload
+                    data.raw |= (8 << 28); // 8
+                    data.raw |= (2 << 24); // 2
+                    data.raw |= (address & 0xFF) << 16; // start address
+                    data.raw |= payload & 0xFFFF; // ABCD payload
                     break;
 
                 case TELEGRAM_TYPE_SELECT_MEMORY_PAGE:
                     data.serial_number = serial_number;
                     data.address = address;
 
-                    data.telegram |= (8 << 28); // 8
-                    data.telegram |= (1 << 24); // 1
-                    data.telegram |= (address & 0xF) << 20; // page
-                    data.telegram |= serial_number & 0xFFFFF;
+                    data.raw |= (8 << 28); // 8
+                    data.raw |= (1 << 24); // 1
+                    data.raw |= (address & 0xF) << 20; // page
+                    data.raw |= serial_number & 0xFFFFF;
                     break;
 
                 default:
@@ -281,7 +281,7 @@ namespace esphome
             }
 
             // Generate telegram HEX
-            data.hex = str_upper_case(format_hex(data.telegram));
+            data.hex = str_upper_case(format_hex(data.raw));
             if(!data.is_long) {
                 if (data.type == TELEGRAM_TYPE_ACK) {
                     data.hex = data.hex.substr(7);
@@ -293,70 +293,70 @@ namespace esphome
             return data;
         }
 
-        TelegramData parseTelegram(uint32_t telegram, bool is_long, bool is_response)
+        TelegramData parseTelegram(uint32_t raw, bool is_long, bool is_response)
         {
             TelegramData data{};
-            data.telegram = telegram;
+            data.raw = raw;
             data.type = TELEGRAM_TYPE_UNKNOWN;
             data.address = 0;
             data.payload = 0;
             data.is_long = is_long;
             data.is_response = is_response;
 
-            if (telegram <= 0xF) {
+            if (raw <= 0xF) {
                 // Handle 4-bit acknowledge telegrams
 
                 data.type = TELEGRAM_TYPE_ACK;
-                data.payload = telegram & 0xF;
+                data.payload = raw & 0xF;
 
             } else if (is_long) {
                 // Handle 32-bit telegrams
 
-                data.serial_number = (telegram >> 8) & 0xFFFFF; // Serial (from bits 8 to 23)
+                data.serial_number = (raw >> 8) & 0xFFFFF; // Serial (from bits 8 to 23)
 
-                switch ((telegram >> 28) & 0xF) {
+                switch ((raw >> 28) & 0xF) {
                     case 0:
-                        data.type = (telegram & (1 << 6)) != 0 ? TELEGRAM_TYPE_INTERNAL_CALL : TELEGRAM_TYPE_DOOR_CALL;
-                        data.address = telegram & 0x3F;
+                        data.type = (raw & (1 << 6)) != 0 ? TELEGRAM_TYPE_INTERNAL_CALL : TELEGRAM_TYPE_DOOR_CALL;
+                        data.address = raw & 0x3F;
 
-                        // data.payload = telegram & (1 << 7);
+                        // data.payload = raw & (1 << 7);
                         break;
 
                     case 1:
-                        if ((telegram & 0xFF) == 0x41) {
+                        if ((raw & 0xFF) == 0x41) {
                             data.type = TELEGRAM_TYPE_FLOOR_CALL;
-                        } else if (telegram & (1 << 7)) {
+                        } else if (raw & (1 << 7)) {
                             data.type = TELEGRAM_TYPE_OPEN_DOOR;
-                            data.address = telegram & 0x3F;
+                            data.address = raw & 0x3F;
 
                             // Door readiness
-                            data.payload = (telegram & (1 << 6)) != 0;
+                            data.payload = (raw & (1 << 6)) != 0;
                         }
                         break;
 
                     case 3:
-                        data.type = (telegram & (1 << 6)) != 0 ? TELEGRAM_TYPE_START_TALKING : TELEGRAM_TYPE_START_TALKING_DOOR_CALL;
-                        data.address = telegram & 0x3F;
+                        data.type = (raw & (1 << 6)) != 0 ? TELEGRAM_TYPE_START_TALKING : TELEGRAM_TYPE_START_TALKING_DOOR_CALL;
+                        data.address = raw & 0x3F;
 
                         // Flags
                         if(data.type == TELEGRAM_TYPE_START_TALKING_DOOR_CALL) {
-                            data.payload = (telegram & (1 << 7)) != 0; // Door Readiness
+                            data.payload = (raw & (1 << 7)) != 0; // Door Readiness
                         } else if(data.type == TELEGRAM_TYPE_START_TALKING) {
-                            data.payload = (telegram & (1 << 7)) != 0; // half duplex / full duplex
+                            data.payload = (raw & (1 << 7)) != 0; // half duplex / full duplex
                         }
                         break;
 
                     case 5:
-                        switch ((telegram >> 4) & 0xF)
+                        switch ((raw >> 4) & 0xF)
                         {
                             case 1:
                                 data.type = TELEGRAM_TYPE_FOUND_DEVICE;
-                                data.address = telegram & 0xF;
+                                data.address = raw & 0xF;
                                 break;
                             
                             case 4:
                                 data.type = TELEGRAM_TYPE_FOUND_DEVICE_SUBSYSTEM;
-                                data.address = telegram & 0xF;
+                                data.address = raw & 0xF;
                                 break;
 
                             case 8:
@@ -381,30 +381,30 @@ namespace esphome
 
                     case 6:
                         data.type = TELEGRAM_TYPE_CONTROL_FUNCTION;
-                        data.payload = (telegram & 0xFF); // Function number
+                        data.payload = (raw & 0xFF); // Function number
                         break;
 
                     case 7:
-                        if(((telegram >> 24) & 0xFF) == 0x7F) {
+                        if(((raw >> 24) & 0xFF) == 0x7F) {
                             data.type = TELEGRAM_TYPE_FOUND_DOORMAN_DEVICE;
-                            data.payload = telegram & 0xFFFFFF; // MAC Address
+                            data.payload = raw & 0xFFFFFF; // MAC Address
                             data.serial_number = 0;
                         }
                         break;
 
                     case 8:
-                        switch ((telegram >> 24) & 0xF) {
+                        switch ((raw >> 24) & 0xF) {
                             case 1:
                             case 9:
                                 data.type = TELEGRAM_TYPE_SELECT_MEMORY_PAGE;
-                                data.address = (telegram >> 20) & 0xF;
-                                data.serial_number = telegram & 0xFFFFF;
+                                data.address = (raw >> 20) & 0xF;
+                                data.serial_number = raw & 0xFFFFF;
                                 break;
 
                             case 2:
                                 data.type = TELEGRAM_TYPE_WRITE_MEMORY;
-                                data.address = (telegram >> 16) & 0xFF;
-                                data.payload = telegram & 0xFFFF;
+                                data.address = (raw >> 16) & 0xFF;
+                                data.payload = raw & 0xFFFF;
                                 data.serial_number = 0;
                                 break;
                         }
@@ -414,16 +414,16 @@ namespace esphome
                 // Handle 16 bit telegrams
 
                 // For 16-bit telegrams, work on the lower 16 bits
-                uint8_t first = (telegram >> 12) & 0xF;
-                uint8_t second = (telegram >> 8) & 0xF;
+                uint8_t first = (raw >> 12) & 0xF;
+                uint8_t second = (raw >> 8) & 0xF;
 
                 if (first == 1) {
                     if (second == 1) {
                         data.type = TELEGRAM_TYPE_OPEN_DOOR;
-                        data.address = telegram & 0x3F;
+                        data.address = raw & 0x3F;
 
                         // Door readiness
-                        data.payload = (telegram & (1 << 6)) != 0;
+                        data.payload = (raw & (1 << 6)) != 0;
 
                     } else if (second == 2) {
                         data.type = TELEGRAM_TYPE_LIGHT;
@@ -432,7 +432,7 @@ namespace esphome
                 } else if (first == 2) {
                     switch (second) {
                         case 1:
-                            data.type = (telegram & (1 << 7)) ? TELEGRAM_TYPE_DOOR_CLOSED : TELEGRAM_TYPE_DOOR_OPENED;
+                            data.type = (raw & (1 << 7)) ? TELEGRAM_TYPE_DOOR_CLOSED : TELEGRAM_TYPE_DOOR_OPENED;
                             break;
                         case 2:
                             data.type = TELEGRAM_TYPE_END_OF_RINGTONE;
@@ -445,62 +445,62 @@ namespace esphome
                             break;
                     }
 
-                    data.address = telegram & 0x3F;
+                    data.address = raw & 0x3F;
                 } else if (first == 3) {
-                    data.type = (telegram & (1 << 6)) ? TELEGRAM_TYPE_STOP_TALKING : TELEGRAM_TYPE_STOP_TALKING_DOOR_CALL;
-                    data.address = telegram & 0x3F;
+                    data.type = (raw & (1 << 6)) ? TELEGRAM_TYPE_STOP_TALKING : TELEGRAM_TYPE_STOP_TALKING_DOOR_CALL;
+                    data.address = raw & 0x3F;
                 } else if (first == 5) {
                     switch(second) {
                         case 0:
-                            switch((telegram >> 4) & 0xF) {
+                            switch((raw >> 4) & 0xF) {
                                 case 4:
                                     data.type = TELEGRAM_TYPE_PROGRAMMING_MODE;
-                                    data.payload = telegram & 0xF;
+                                    data.payload = raw & 0xF;
                                     break;
                             }
                             break;
 
                         case 1:
                             data.type = TELEGRAM_TYPE_RESET;
-                            data.address = telegram & 0xF;
+                            data.address = raw & 0xF;
                             break;
 
                         case 2:
                             data.type = TELEGRAM_TYPE_SEARCH_DEVICES;
-                            data.payload = telegram & 0xF;
+                            data.payload = raw & 0xF;
                             break;
 
                         case 8:
                             data.type = TELEGRAM_TYPE_SELECT_DEVICE_GROUP;
-                            data.payload = telegram & 0xF;
+                            data.payload = raw & 0xF;
                             break;
 
                         case 9:
                             data.type = TELEGRAM_TYPE_SELECT_DEVICE_GROUP_RESET;
-                            data.payload = telegram & 0xF;
+                            data.payload = raw & 0xF;
                             break;
                     }
                 } else if (first == 7) {
-                    if(telegram == 0x7FFF) {
+                    if(raw == 0x7FFF) {
                         data.type = TELEGRAM_TYPE_SEARCH_DOORMAN_DEVICES;
                     }
                 } else if (first == 8) {
                     switch(second) {
                         case 1:
                             data.type = TELEGRAM_TYPE_SELECT_MEMORY_PAGE;
-                            data.address = (telegram & 0xFF);
+                            data.address = (raw & 0xFF);
                             break;
 
                         case 4:
                             data.type = TELEGRAM_TYPE_READ_MEMORY_BLOCK;
-                            data.address = (telegram & 0xFF) / 4;
+                            data.address = (raw & 0xFF) / 4;
                             break;
                     }
                 }
             }
 
             // Generate telegram HEX
-            data.hex = str_upper_case(format_hex(data.telegram));
+            data.hex = str_upper_case(format_hex(data.raw));
             if(!data.is_long) {
                 if (data.type == TELEGRAM_TYPE_ACK) {
                     data.hex = data.hex.substr(7);

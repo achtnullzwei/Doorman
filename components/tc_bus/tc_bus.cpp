@@ -199,13 +199,13 @@ namespace esphome
                 // From receiver
                 if (reading_memory_)
                 {
-                    ESP_LOGD(TAG, "Received 4 memory blocks from %i to %i | Data: 0x%08X", (reading_memory_count_ * 4), (reading_memory_count_ * 4) + 4, telegram_data.telegram);
+                    ESP_LOGD(TAG, "Received 4 memory blocks from %i to %i | Data: 0x%08X", (reading_memory_count_ * 4), (reading_memory_count_ * 4) + 4, telegram_data.raw);
 
                     // Save Data to memory Store
-                    memory_buffer_.push_back((telegram_data.telegram >> 24) & 0xFF);
-                    memory_buffer_.push_back((telegram_data.telegram >> 16) & 0xFF);
-                    memory_buffer_.push_back((telegram_data.telegram >> 8) & 0xFF);
-                    memory_buffer_.push_back(telegram_data.telegram & 0xFF);
+                    memory_buffer_.push_back((telegram_data.raw >> 24) & 0xFF);
+                    memory_buffer_.push_back((telegram_data.raw >> 16) & 0xFF);
+                    memory_buffer_.push_back((telegram_data.raw >> 8) & 0xFF);
+                    memory_buffer_.push_back(telegram_data.raw & 0xFF);
 
                     // Next 4 Data Blocks
                     reading_memory_count_++;
@@ -261,7 +261,7 @@ namespace esphome
                         if(device_group == 0 || device_group == 1)
                         {
                             // Old indoor station models
-                            switch(telegram_data.telegram)
+                            switch(telegram_data.raw)
                             {
                                 // TTC-XX
                                 case 0x08000040:
@@ -286,7 +286,7 @@ namespace esphome
                         else if(device_group == 4)
                         {
                             // Old controller models
-                            switch(telegram_data.telegram)
+                            switch(telegram_data.raw)
                             {
                                 case 0x877F5804:
                                     device.model = CONTROLLER_MODEL_BVS20;
@@ -355,7 +355,7 @@ namespace esphome
                     }
                     else
                     {
-                        ESP_LOGD(TAG, "Received Telegram - Type: %s | Address: %i | Payload: 0x%X | Serial-Number: %i | Length: %i-bit | Raw Data: 0x%08X", telegram_type_to_string(telegram_data.type), telegram_data.address, telegram_data.payload, telegram_data.serial_number, (telegram_data.is_long ? 32 : 16), telegram_data.telegram);
+                        ESP_LOGD(TAG, "Received Telegram - Type: %s | Address: %i | Payload: 0x%X | Serial-Number: %i | Length: %i-bit | Raw Data: 0x%08X", telegram_type_to_string(telegram_data.type), telegram_data.address, telegram_data.payload, telegram_data.serial_number, (telegram_data.is_long ? 32 : 16), telegram_data.raw);
                     }
 
                     // Fire Callback
@@ -409,7 +409,7 @@ namespace esphome
                         // Check if listener matches the telegram
                         if (listener_telegram != 0)
                         {
-                            if (telegram_data.telegram == listener_telegram)
+                            if (telegram_data.raw == listener_telegram)
                             {
                                 allow_publish = true;
                             }
@@ -465,7 +465,7 @@ namespace esphome
                 }
                 else
                 {
-                    ESP_LOGD(TAG, "Sending Telegram - Type: %s | Address: %i | Payload: 0x%X | Serial-Number: %i | Length: %i-bit | Raw Data: 0x%08X", telegram_type_to_string(telegram_data.type), telegram_data.address, telegram_data.payload, telegram_data.serial_number, (telegram_data.is_long ? 32 : 16), telegram_data.telegram);
+                    ESP_LOGD(TAG, "Sending Telegram - Type: %s | Address: %i | Payload: 0x%X | Serial-Number: %i | Length: %i-bit | Raw Data: 0x%08X", telegram_type_to_string(telegram_data.type), telegram_data.address, telegram_data.payload, telegram_data.serial_number, (telegram_data.is_long ? 32 : 16), telegram_data.raw);
                 }
             }
             
@@ -868,7 +868,7 @@ namespace esphome
             ESP_LOGV(TAG, "Called send_telegram(TelegramData telegram_data: object, uint32_t wait_duration: %i)", wait_duration);
             ESP_LOGV(TAG, "TelegramData Object: Type: %s | Address: %i | Payload: 0x%X | Serial-Number: %i | Length: %i | Wait Duration: %i", telegram_type_to_string(telegram_data.type), telegram_data.address, telegram_data.payload, telegram_data.serial_number, (telegram_data.is_long ? 32 : 16), wait_duration);
             
-            if (telegram_data.telegram == 0)
+            if (telegram_data.raw == 0)
             {
                 ESP_LOGW(TAG, "Sending telegram telegrams of type %s is not yet supported.", telegram_type_to_string(telegram_data.type));
                 return;
@@ -881,7 +881,7 @@ namespace esphome
         {
             this->received_telegram(telegram_data, false);
 
-            this->last_sent_telegram_ = telegram_data.telegram;
+            this->last_sent_telegram_ = telegram_data.raw;
 
             auto call = id(this->tx_).transmit();
             remote_base::RemoteTransmitData *dst = call.get_data();
@@ -903,7 +903,7 @@ namespace esphome
             for (int i = length - 1; i >= 0; i--)
             {
                 // Extract single bit
-                bool bit = (telegram_data.telegram & (1UL << i)) != 0;
+                bool bit = (telegram_data.raw & (1UL << i)) != 0;
 
                 // Update checksum
                 checksm ^= bit;
