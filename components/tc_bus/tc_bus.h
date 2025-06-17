@@ -148,7 +148,7 @@ namespace esphome
 #endif
 
             // Telegram handling
-            static constexpr uint32_t BUS_CMD_START_MS = 6000;
+            static constexpr uint32_t BUS_CMD_START_MS = 5985;
             static constexpr uint32_t BUS_ACK_START_MS = 6200;
 
             static constexpr uint32_t BUS_ONE_BIT_MS = 4000;
@@ -156,11 +156,12 @@ namespace esphome
 
             static constexpr uint32_t BIT_0_MIN = 1000;
             static constexpr uint32_t BIT_0_MAX = 2999;
+
             static constexpr uint32_t BIT_1_MIN = 3000;
             static constexpr uint32_t BIT_1_MAX = 4999;
 
             static constexpr uint32_t START_CMD = 5800;
-            static constexpr uint32_t START_RSP = 6100;
+            static constexpr uint32_t START_RSP = 6090;
 
             static constexpr uint32_t START_MAX = 6900;
 

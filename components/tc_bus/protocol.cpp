@@ -14,7 +14,7 @@ namespace esphome
             data.raw = 0;
             data.type = type;
             data.is_long = true;
-            data.is_long = false;
+            data.is_response = false;
 
             switch (type)
             {
@@ -25,6 +25,7 @@ namespace esphome
                     data.payload = payload;
 
                     data.is_long = false;
+                    data.is_response = true;
                     data.raw |= (payload & 0xF); // 1
                     break;
 
