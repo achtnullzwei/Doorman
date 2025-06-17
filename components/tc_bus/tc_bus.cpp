@@ -565,11 +565,14 @@ namespace esphome
                     if (ack_pos == 6)
                     {
                         TelegramData telegram_data = parseTelegram(ack_telegram, false, true);
-                        if (ack_crc == ack_cal_crc && !reading_memory_ && identify_model_device_group_ == -1)
+                        if (ack_crc == ack_cal_crc)
                         {
-                            received_telegram(telegram_data);
+                            if(!reading_memory_ && identify_model_device_group_ == -1)
+                            {
+                                this->received_telegram(telegram_data);
+                            }
+                            this->call_remote_listeners_(telegram_data);
                         }
-                        call_remote_listeners_(telegram_data);
 
                         ack_pos = 0;
                         ack_telegram = 0;
@@ -610,11 +613,14 @@ namespace esphome
                     if (ack_pos == 6)
                     {
                         TelegramData telegram_data = parseTelegram(ack_telegram, false, true);
-                        if (ack_crc == ack_cal_crc && !reading_memory_ && identify_model_device_group_ == -1)
+                        if (ack_crc == ack_cal_crc)
                         {
-                            received_telegram(telegram_data);
+                            if(!reading_memory_ && identify_model_device_group_ == -1)
+                            {
+                                this->received_telegram(telegram_data);
+                            }
+                            this->call_remote_listeners_(telegram_data);
                         }
-                        call_remote_listeners_(telegram_data);
                     }
 
                     ack_pos = 0;
@@ -728,8 +734,8 @@ namespace esphome
                         if (this->last_sent_telegram_ == -1 || (this->last_sent_telegram_ != -1 && static_cast<int32_t>(telegram) != this->last_sent_telegram_))
                         {
                             TelegramData telegram_data = parseTelegram(telegram, is_long, is_response);
-                            received_telegram(telegram_data);
-                            call_remote_listeners_(telegram_data);
+                            this->received_telegram(telegram_data);
+                            this->call_remote_listeners_(telegram_data);
                         }
                         else
                         {
@@ -864,8 +870,9 @@ namespace esphome
         }
 
         void TCBusComponent::transmit_telegram(TelegramData telegram_data)
-        {
+        {   
             this->received_telegram(telegram_data, false);
+            this->call_remote_listeners_(telegram_data);
 
             this->last_sent_telegram_ = telegram_data.raw;
 
