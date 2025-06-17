@@ -49,9 +49,9 @@ esphome:
 # Enable logging
 # Prevent component warning spam
 logger:
+  id: esphome_logger
   level: ${log_level}
   #logs:
-  #  component: ERROR # avoids component warning spam
   #  sensor: WARN  # avoids logging debug sensor updates
 
 web_server:

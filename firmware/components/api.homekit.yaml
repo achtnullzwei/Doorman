@@ -79,6 +79,9 @@ web_server:
       name: "HomeKit Configuration"
       sorting_weight: -2
 
+# Maybe this is the reason for some issues with ESPHome > 2025.5.0
+# https://github.com/esphome/esphome/pull/8946
+
 homekit_bridge:
   name: "Doorman"
   manufacturer: "AzonInc"

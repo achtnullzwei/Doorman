@@ -1,13 +1,10 @@
 # Debug Utilities Addon
 
 substitutions:
-  log_level: "DEBUG"
+  log_level: "VERBOSE"
 
 logger:
-  logs:
-    tc_bus: DEBUG
-  #  component: ERROR # avoids component warning spam
-    sensor: DEBUG
+  initial_level: DEBUG
 
 remote_receiver:
   dump: raw
@@ -37,7 +34,34 @@ globals:
   - id: controller_list
     type: std::vector<int>
     initial_value: ''
-    
+
+
+select:
+  - platform: template
+    id: esphome_logger_level_tc_bus
+    name: "TC:BUS Log Level"
+    icon: "mdi:math-log"
+    optimistic: true
+    options:
+      - "Disabled"
+      - "Error"
+      - "Warning"
+      - "Info"
+      - "Configuration"
+      - "Debug"
+      - "Verbose"
+    initial_option: "Debug"
+    restore_value: true
+    entity_category: CONFIG
+    on_value:
+      then:
+        - lambda: |-
+            id(esphome_logger).set_log_level("tc_bus", i);
+    web_server:
+      sorting_group_id: sorting_group_debug_tools
+      sorting_weight: -5
+
+
 binary_sensor:
   - platform: template
     id: debug_bus_connected
