@@ -89,7 +89,7 @@ namespace esphome
 
         class TCBusRemoteListener {
             public:
-                virtual bool on_receive(TelegramData data) = 0;
+                virtual bool on_receive(TelegramData data, bool received) = 0;
         };
 
         struct TCBusSettings
@@ -236,7 +236,7 @@ namespace esphome
             int32_t last_sent_telegram_ = -1;
 
             std::vector<TCBusRemoteListener *> remote_listeners_;
-            void call_remote_listeners_(TelegramData telegram_data);
+            void call_remote_listeners_(TelegramData telegram_data, bool received = true);
 
 #ifdef USE_BINARY_SENSOR
             std::vector<TCBusListener *> listeners_{};

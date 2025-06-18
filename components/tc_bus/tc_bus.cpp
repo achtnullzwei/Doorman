@@ -109,10 +109,10 @@ namespace esphome
             this->rx_->register_listener(this);
         }
 
-        void TCBusComponent::call_remote_listeners_(TelegramData telegram_data) {
+        void TCBusComponent::call_remote_listeners_(TelegramData telegram_data, bool received) {
             for (auto *listener : this->remote_listeners_)
             {
-                listener->on_receive(telegram_data);
+                listener->on_receive(telegram_data, received);
             }
         }
 
@@ -886,7 +886,7 @@ namespace esphome
         void TCBusComponent::transmit_telegram(TelegramData telegram_data)
         {   
             this->received_telegram(telegram_data, false);
-            this->call_remote_listeners_(telegram_data);
+            this->call_remote_listeners_(telegram_data, false);
 
             this->last_sent_telegram_ = telegram_data.raw;
 
