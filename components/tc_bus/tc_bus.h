@@ -267,7 +267,8 @@ namespace esphome
             std::string hardware_version_str_ = "Generic";
 
             bool programming_mode_ = false;
-            bool identify_model_ = false;
+            bool wait_for_identification_telegram_ = false;
+            bool identify_model_flow_ = false;
 
             uint8_t selected_device_group_ = 2;
 
