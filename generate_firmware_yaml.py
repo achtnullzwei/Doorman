@@ -27,6 +27,9 @@ def get_packages(host, api_variant, firmware, branch):
     packages_config = [
         ('host', f'!include ../hosts/{host}.yaml', True),
         
+        ('external_components', '!include ../components/external-components.yaml', branch != 'local'),
+        ('external_components_local', '!include ../components/external-components.local.yaml', branch == 'local'),
+
         ('rgb_status_led', '!include ../components/rgb-status-led.yaml', True),
         ('rgb_status_led_effects', '!include ../components/rgb-status-led.effects.yaml', True),
 
@@ -34,10 +37,10 @@ def get_packages(host, api_variant, firmware, branch):
         ('bluedroid_ble', '!include ../components/bluedroid-ble.yaml', is_esp32 and firmware != 'nuki-bridge'),
         
         ('ota_update_esphome', '!include ../components/ota-update.esphome.yaml', True),
-        ('ota_update_http', '!include ../components/ota-update.http.yaml', True),
+        ('ota_update_http', '!include ../components/ota-update.http.yaml', branch != 'local'),
         ('ota_update_http_dev', '!include ../components/ota-update.http.dev.yaml', branch == 'dev'),
 
-        ('dashboard_import', '!include ../components/dashboard-import.yaml', api_variant == 'ha'),
+        ('dashboard_import', '!include ../components/dashboard-import.yaml', api_variant == 'ha' and branch != 'local'),
         
         ('api', '!include ../components/api.homeassistant.yaml', api_variant == 'ha'),
         ('api', '!include ../components/api.mqtt.yaml', api_variant == 'mqtt'),
@@ -79,7 +82,10 @@ def generate_yaml_content(host, api_variant, firmware, branch):
 
 def generate_example_yaml(host, api_variant, firmware, branch):
 
-    filename = f'github://azoninc/doorman/firmware/configurations/{host}.{api_variant}.{firmware}.{branch}.yaml@{branch}'
+    if branch == "local":
+        filename = f'!include ../configurations/{host}.{api_variant}.{firmware}.{branch}.yaml'
+    else:
+        filename = f'github://azoninc/doorman/firmware/configurations/{host}.{api_variant}.{firmware}.{branch}.yaml@{branch}'
     
     if api_variant == "ha":
         api_variant_desc = "Home Assistant"
@@ -132,7 +138,7 @@ HOST_ARCHITECTURES = get_host_architectures()
 
 API_VARIANTS = ['ha', 'mqtt', 'homekit', 'custom']
 FIRMWARES = ['stock', 'nuki-bridge']
-BRANCHES = ['master', 'dev']
+BRANCHES = ['master', 'dev', 'local']
 
 
 def main():

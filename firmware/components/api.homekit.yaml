@@ -67,11 +67,6 @@ esp32:
     sdkconfig_options:
       CONFIG_MBEDTLS_HKDF_C: "y"
       CONFIG_LWIP_MAX_SOCKETS: "16"
-      
-external_components:
-  - source: github://azoninc/doorman@${branch}
-    components: [ homekit_bridge, homekit ]
-    refresh: 60s
 
 web_server:
   sorting_groups:
