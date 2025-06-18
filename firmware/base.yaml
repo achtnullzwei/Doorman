@@ -121,9 +121,12 @@ improv_serial:
 
 # Import TC:BUS Component
 external_components:
-  - source: github://azoninc/doorman@${branch}
-    components: [ tc_bus, captive_portal ]
-    refresh: 60s
+  #- source: github://azoninc/doorman@${branch}
+  #  components: [ tc_bus, captive_portal ]
+  #  refresh: 60s
+  - source: 
+      type: local
+      path: ../components/
 
 # Setup RMT components
 remote_receiver:
