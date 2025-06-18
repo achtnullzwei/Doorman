@@ -230,7 +230,11 @@ namespace esphome
                 }
                 else if (identify_model_flow_)
                 {
+                    ESP_LOGD(TAG, "Identify model flow received a telegram");
+
                     // Reset
+                    ESP_LOGD(TAG, "Reset wait_for_identification_telegram_");
+                    ESP_LOGD(TAG, "Reset identify_model_flow_");
                     wait_for_identification_telegram_ = false;
                     identify_model_flow_ = false;
 
@@ -499,6 +503,7 @@ namespace esphome
             else if (telegram_data.type == TELEGRAM_TYPE_REQUEST_VERSION)
             {
                 this->wait_for_identification_telegram_ = true;
+                ESP_LOGD(TAG, "Set wait_for_identification_telegram_");
             }
             else if (telegram_data.type == TELEGRAM_TYPE_SEARCH_DOORMAN_DEVICES)
             {
@@ -968,10 +973,17 @@ namespace esphome
             this->cancel_timeout("wait_for_identification_category_1");
             this->cancel_timeout("wait_for_identification_other");
 
+            ESP_LOGD(TAG, "Set identify_model_flow_");
+            this->identify_model_flow_ = true;
+
             if(device_group > 1)
             {
                 // Use device group if not 0 and 1
-                wait_for_identification_telegram_ = false;
+                if(wait_for_identification_telegram_)
+                {
+                    ESP_LOGD(TAG, "Reset wait_for_identification_telegram_");
+                    wait_for_identification_telegram_ = false;
+                }
                 ESP_LOGD(TAG, "Identifying device model (Category %i) using serial number: %i...", device_group, serial_number);
                 send_telegram(TELEGRAM_TYPE_SELECT_DEVICE_GROUP, 0, device_group, 0, 400);
                 send_telegram(TELEGRAM_TYPE_REQUEST_VERSION, 0, 0, serial_number, 400);
@@ -986,7 +998,11 @@ namespace esphome
             else
             {
                 // First try with category 0
-                wait_for_identification_telegram_ = false;
+                if(wait_for_identification_telegram_)
+                {
+                    ESP_LOGD(TAG, "Reset wait_for_identification_telegram_");
+                    wait_for_identification_telegram_ = false;
+                }
                 ESP_LOGD(TAG, "Identifying device model (Category %i) using serial number: %i...", 0, serial_number);
                 send_telegram(TELEGRAM_TYPE_SELECT_DEVICE_GROUP, 0, 0, 0, 400); // class 0
                 send_telegram(TELEGRAM_TYPE_REQUEST_VERSION, 0, 0, serial_number, 400);
@@ -995,7 +1011,11 @@ namespace esphome
                 {
                     // Didn't receive identify result of category 0
                     // Second try with category 1
-                    wait_for_identification_telegram_ = false;
+                    if(wait_for_identification_telegram_)
+                    {
+                        ESP_LOGD(TAG, "Reset wait_for_identification_telegram_");
+                        wait_for_identification_telegram_ = false;
+                    }
                     ESP_LOGD(TAG, "Identifying device model (Category %i) using serial number: %i...", 1, serial_number);
                     send_telegram(TELEGRAM_TYPE_SELECT_DEVICE_GROUP, 0, 1, 0, 400); // class 1
                     send_telegram(TELEGRAM_TYPE_REQUEST_VERSION, 0, 0, serial_number, 400);
@@ -1005,6 +1025,9 @@ namespace esphome
                         // Failed
                         this->wait_for_identification_telegram_ = false;
                         this->identify_model_flow_ = false;
+                        ESP_LOGD(TAG, "Reset wait_for_identification_telegram_");
+                        ESP_LOGD(TAG, "Reset identify_model_flow_");
+
                         this->identify_timeout_callback_.call();
                         ESP_LOGE(TAG, "Identification response not received in time. The device model may not support identification.");
                     });
