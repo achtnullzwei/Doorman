@@ -18,8 +18,19 @@ namespace esphome
 
             switch (type)
             {
+                case TELEGRAM_TYPE_DATA:
+                    data.is_long = true;
+                    data.is_response = true;
+                    data.is_data = true;
+                    data.raw = payload;
+                    data.payload = payload;
+                    data.serial_number = 0;
+                    data.address = 0;
+                    break;
+
                 case TELEGRAM_TYPE_ACK:
-                    if(payload < 1 || payload > 15) {
+                    if(payload < 1 || payload > 15)
+                    {
                         payload = 1;
                     }
                     data.payload = payload;
@@ -38,9 +49,12 @@ namespace esphome
                     data.raw |= ((serial_number & 0xFFFFF) << 8); // C30BA
 
                     // Call type
-                    if (type == TELEGRAM_TYPE_INTERNAL_CALL) {
+                    if (type == TELEGRAM_TYPE_INTERNAL_CALL)
+                    {
                         data.raw |= (1 << 6); // 8
-                    } else {
+                    }
+                    else
+                    {
                         data.raw &= ~(1 << 6); // 0
                     }
 
@@ -72,18 +86,24 @@ namespace esphome
                         data.raw &= ~(1 << 6); // AS
 
                         // Flags: Door readiness
-                        if(payload > 0) {
+                        if(payload > 0)
+                        {
                             data.raw |= (1 << 7); // door readiness active
-                        } else {
+                        }
+                        else
+                        {
                             data.raw &= ~(1 << 7); // door readiness inactive
                         }
                     } else {
                         data.raw |= (1 << 6); // IA
 
                         // Flags: Talk Mode
-                        if(payload > 0) {
+                        if(payload > 0)
+                        {
                             data.raw |= (1 << 7); // full duplex
-                        } else {
+                        }
+                        else
+                        {
                             data.raw &= ~(1 << 7); // half duplex
                         }
                     }
@@ -99,9 +119,12 @@ namespace esphome
                     data.raw |= (3 << 12); // 3
 
                     // Flags
-                    if (type == TELEGRAM_TYPE_STOP_TALKING) {
+                    if (type == TELEGRAM_TYPE_STOP_TALKING)
+                    {
                         data.raw |= (1 << 6);  // IA
-                    } else {
+                    }
+                    else
+                    {
                         data.raw &= ~(1 << 6); // AS
                     }
                     //data.payload |= (1 << 7);
@@ -118,9 +141,12 @@ namespace esphome
                     data.raw |= (1 << 8); // 1
 
                     // Flags
-                    if(payload > 0) {
+                    if(payload > 0)
+                    {
                         data.raw |= (1 << 7); // door readiness active
-                    } else {
+                    }
+                    else
+                    {
                         data.raw &= ~(1 << 7); // door readiness inactive
                     }
                     //data.raw |= (1 << 6);
@@ -129,7 +155,8 @@ namespace esphome
                     break;
 
                 case TELEGRAM_TYPE_OPEN_DOOR_LONG:
-                    if(serial_number == 0) {
+                    if(serial_number == 0)
+                    {
                         // Convert to short door opener telegram
                         data.type = TELEGRAM_TYPE_OPEN_DOOR;
                         data.address = address;
@@ -140,15 +167,20 @@ namespace esphome
                         data.raw |= (1 << 8); // 1
 
                         // Flags
-                        if(payload > 0) {
+                        if(payload > 0)
+                        {
                             data.raw |= (1 << 7); // door readiness active
-                        } else {
+                        }
+                        else
+                        {
                             data.raw &= ~(1 << 7); // door readiness inactive
                         }
                         //data.raw |= (1 << 6);
 
                         data.raw |= (address & 0x3F); // 0
-                    } else {
+                    }
+                    else
+                    {
                         data.serial_number = serial_number;
                         data.address = address;
                         data.payload = payload;
@@ -159,9 +191,12 @@ namespace esphome
                         data.raw |= (1 << 7);
 
                         // Flags
-                        if(payload > 0) {
+                        if(payload > 0)
+                        {
                             data.raw |= (1 << 6); // door readiness active
-                        } else {
+                        }
+                        else
+                        {
                             data.raw &= ~(1 << 6); // door readiness inactive
                         }
 
@@ -283,10 +318,14 @@ namespace esphome
 
             // Generate telegram HEX
             data.hex = str_upper_case(format_hex(data.raw));
-            if(!data.is_long) {
-                if (data.type == TELEGRAM_TYPE_ACK) {
+            if(!data.is_long)
+            {
+                if (data.type == TELEGRAM_TYPE_ACK)
+                {
                     data.hex = data.hex.substr(7);
-                } else {
+                }
+                else
+                {
                     data.hex = data.hex.substr(4);
                 }
             }
@@ -294,7 +333,7 @@ namespace esphome
             return data;
         }
 
-        TelegramData parseTelegram(uint32_t raw, bool is_long, bool is_response)
+        TelegramData parseTelegram(uint32_t raw, bool is_long, bool is_response, bool is_data)
         {
             TelegramData data{};
             data.raw = raw;
@@ -304,208 +343,254 @@ namespace esphome
             data.is_long = is_long;
             data.is_response = is_response;
 
-            if (raw <= 0xF) {
-                // Handle 4-bit acknowledge telegrams
-
-                data.type = TELEGRAM_TYPE_ACK;
-                data.payload = raw & 0xF;
-
-            } else if (is_long) {
-                // Handle 32-bit telegrams
-
-                data.serial_number = (raw >> 8) & 0xFFFFF; // Serial (from bits 8 to 23)
-
-                switch ((raw >> 28) & 0xF) {
-                    case 0:
-                        data.type = (raw & (1 << 6)) != 0 ? TELEGRAM_TYPE_INTERNAL_CALL : TELEGRAM_TYPE_DOOR_CALL;
-                        data.address = raw & 0x3F;
-
-                        // data.payload = raw & (1 << 7);
-                        break;
-
-                    case 1:
-                        if ((raw & 0xFF) == 0x41) {
-                            data.type = TELEGRAM_TYPE_FLOOR_CALL;
-                        } else if (raw & (1 << 7)) {
-                            data.type = TELEGRAM_TYPE_OPEN_DOOR;
-                            data.address = raw & 0x3F;
-
-                            // Door readiness
-                            data.payload = (raw & (1 << 6)) != 0;
-                        }
-                        break;
-
-                    case 3:
-                        data.type = (raw & (1 << 6)) != 0 ? TELEGRAM_TYPE_START_TALKING : TELEGRAM_TYPE_START_TALKING_DOOR_CALL;
-                        data.address = raw & 0x3F;
-
-                        // Flags
-                        if(data.type == TELEGRAM_TYPE_START_TALKING_DOOR_CALL) {
-                            data.payload = (raw & (1 << 7)) != 0; // Door Readiness
-                        } else if(data.type == TELEGRAM_TYPE_START_TALKING) {
-                            data.payload = (raw & (1 << 7)) != 0; // half duplex / full duplex
-                        }
-                        break;
-
-                    case 5:
-                        switch ((raw >> 4) & 0xF)
-                        {
-                            case 1:
-                                data.type = TELEGRAM_TYPE_FOUND_DEVICE;
-                                data.address = raw & 0xF;
-                                break;
-                            
-                            case 4:
-                                data.type = TELEGRAM_TYPE_FOUND_DEVICE_SUBSYSTEM;
-                                data.address = raw & 0xF;
-                                break;
-
-                            case 8:
-                                // Device test
-                                // Not implemented
-                                break;
-
-                            case 0xC:
-                                data.type = TELEGRAM_TYPE_REQUEST_VERSION;
-
-                                // request type and version
-                                // request versions of subdevices
-                                // Not implemented
-                                // 5 12345 C0
-                                break;
-
-                            default:
-                                // Not implemented
-                                break;
-                        }
-                        break;
-
-                    case 6:
-                        data.type = TELEGRAM_TYPE_CONTROL_FUNCTION;
-                        data.payload = (raw & 0xFF); // Function number
-                        break;
-
-                    case 7:
-                        if(((raw >> 24) & 0xFF) == 0x7F) {
-                            data.type = TELEGRAM_TYPE_FOUND_DOORMAN_DEVICE;
-                            data.payload = raw & 0xFFFFFF; // MAC Address
-                            data.serial_number = 0;
-                        }
-                        break;
-
-                    case 8:
-                        switch ((raw >> 24) & 0xF) {
-                            case 1:
-                            case 9:
-                                data.type = TELEGRAM_TYPE_SELECT_MEMORY_PAGE;
-                                data.address = (raw >> 20) & 0xF;
-                                data.serial_number = raw & 0xFFFFF;
-                                break;
-
-                            case 2:
-                                data.type = TELEGRAM_TYPE_WRITE_MEMORY;
-                                data.address = (raw >> 16) & 0xFF;
-                                data.payload = raw & 0xFFFF;
-                                data.serial_number = 0;
-                                break;
-                        }
-                        break;
+            if(is_data)
+            {
+                data.type = TELEGRAM_TYPE_DATA;
+                data.is_long = true;
+                data.payload = raw;
+                data.serial_number = 0;
+                data.address = 0;
+            }
+            else
+            {
+                if (raw <= 0xF)
+                {
+                    // Handle 4-bit acknowledge telegrams
+                    data.type = TELEGRAM_TYPE_ACK;
+                    data.payload = raw & 0xF;
                 }
-            } else {
-                // Handle 16 bit telegrams
-
-                // For 16-bit telegrams, work on the lower 16 bits
-                uint8_t first = (raw >> 12) & 0xF;
-                uint8_t second = (raw >> 8) & 0xF;
-
-                if (first == 1) {
-                    if (second == 1) {
-                        data.type = TELEGRAM_TYPE_OPEN_DOOR;
-                        data.address = raw & 0x3F;
-
-                        // Door readiness
-                        data.payload = (raw & (1 << 6)) != 0;
-
-                    } else if (second == 2) {
-                        data.type = TELEGRAM_TYPE_LIGHT;
-                        data.address = 0;
-                    }
-                } else if (first == 2) {
-                    switch (second) {
-                        case 1:
-                            data.type = (raw & (1 << 7)) ? TELEGRAM_TYPE_DOOR_CLOSED : TELEGRAM_TYPE_DOOR_OPENED;
-                            break;
-                        case 2:
-                            data.type = TELEGRAM_TYPE_END_OF_RINGTONE;
-                            break;
-                        case 4:
-                            data.type = TELEGRAM_TYPE_END_OF_DOOR_READINESS;
-                            break;
-                        case 8:
-                            data.type = TELEGRAM_TYPE_INITIALIZE_DOOR_STATION;
-                            break;
-                    }
-
-                    data.address = raw & 0x3F;
-                } else if (first == 3) {
-                    data.type = (raw & (1 << 6)) ? TELEGRAM_TYPE_STOP_TALKING : TELEGRAM_TYPE_STOP_TALKING_DOOR_CALL;
-                    data.address = raw & 0x3F;
-                } else if (first == 5) {
-                    switch(second) {
+                else if (is_long)
+                {
+                    // Handle 32-bit telegrams
+    
+                    data.serial_number = (raw >> 8) & 0xFFFFF; // Serial (from bits 8 to 23)
+    
+                    switch ((raw >> 28) & 0xF)
+                    {
                         case 0:
-                            switch((raw >> 4) & 0xF) {
+                            data.type = (raw & (1 << 6)) != 0 ? TELEGRAM_TYPE_INTERNAL_CALL : TELEGRAM_TYPE_DOOR_CALL;
+                            data.address = raw & 0x3F;
+    
+                            // data.payload = raw & (1 << 7);
+                            break;
+    
+                        case 1:
+                            if ((raw & 0xFF) == 0x41)
+                            {
+                                data.type = TELEGRAM_TYPE_FLOOR_CALL;
+                            }
+                            else if (raw & (1 << 7))
+                            {
+                                data.type = TELEGRAM_TYPE_OPEN_DOOR;
+                                data.address = raw & 0x3F;
+    
+                                // Door readiness
+                                data.payload = (raw & (1 << 6)) != 0;
+                            }
+                            break;
+    
+                        case 3:
+                            data.type = (raw & (1 << 6)) != 0 ? TELEGRAM_TYPE_START_TALKING : TELEGRAM_TYPE_START_TALKING_DOOR_CALL;
+                            data.address = raw & 0x3F;
+    
+                            // Flags
+                            if(data.type == TELEGRAM_TYPE_START_TALKING_DOOR_CALL)
+                            {
+                                data.payload = (raw & (1 << 7)) != 0; // Door Readiness
+                            }
+                            else if(data.type == TELEGRAM_TYPE_START_TALKING)
+                            {
+                                data.payload = (raw & (1 << 7)) != 0; // half duplex / full duplex
+                            }
+                            break;
+    
+                        case 5:
+                            switch ((raw >> 4) & 0xF)
+                            {
+                                case 1:
+                                    data.type = TELEGRAM_TYPE_FOUND_DEVICE;
+                                    data.address = raw & 0xF;
+                                    break;
+                                
                                 case 4:
-                                    data.type = TELEGRAM_TYPE_PROGRAMMING_MODE;
-                                    data.payload = raw & 0xF;
+                                    data.type = TELEGRAM_TYPE_FOUND_DEVICE_SUBSYSTEM;
+                                    data.address = raw & 0xF;
+                                    break;
+    
+                                case 8:
+                                    // Device test
+                                    // Not implemented
+                                    break;
+    
+                                case 0xC:
+                                    data.type = TELEGRAM_TYPE_REQUEST_VERSION;
+    
+                                    // request type and version
+                                    // request versions of subdevices
+                                    // Not implemented
+                                    // 5 12345 C0
+                                    break;
+    
+                                default:
+                                    // Not implemented
                                     break;
                             }
                             break;
-
-                        case 1:
-                            data.type = TELEGRAM_TYPE_RESET;
-                            data.address = raw & 0xF;
+    
+                        case 6:
+                            data.type = TELEGRAM_TYPE_CONTROL_FUNCTION;
+                            data.payload = (raw & 0xFF); // Function number
                             break;
-
-                        case 2:
-                            data.type = TELEGRAM_TYPE_SEARCH_DEVICES;
-                            data.payload = raw & 0xF;
+    
+                        case 7:
+                            if(((raw >> 24) & 0xFF) == 0x7F)
+                            {
+                                data.type = TELEGRAM_TYPE_FOUND_DOORMAN_DEVICE;
+                                data.payload = raw & 0xFFFFFF; // MAC Address
+                                data.serial_number = 0;
+                            }
                             break;
-
+    
                         case 8:
-                            data.type = TELEGRAM_TYPE_SELECT_DEVICE_GROUP;
-                            data.payload = raw & 0xF;
-                            break;
-
-                        case 9:
-                            data.type = TELEGRAM_TYPE_SELECT_DEVICE_GROUP_RESET;
-                            data.payload = raw & 0xF;
+                            switch ((raw >> 24) & 0xF)
+                            {
+                                case 1:
+                                case 9:
+                                    data.type = TELEGRAM_TYPE_SELECT_MEMORY_PAGE;
+                                    data.address = (raw >> 20) & 0xF;
+                                    data.serial_number = raw & 0xFFFFF;
+                                    break;
+    
+                                case 2:
+                                    data.type = TELEGRAM_TYPE_WRITE_MEMORY;
+                                    data.address = (raw >> 16) & 0xFF;
+                                    data.payload = raw & 0xFFFF;
+                                    data.serial_number = 0;
+                                    break;
+                            }
                             break;
                     }
-                } else if (first == 7) {
-                    if(raw == 0x7FFF) {
-                        data.type = TELEGRAM_TYPE_SEARCH_DOORMAN_DEVICES;
+                }
+                else
+                {
+                    // Handle 16 bit telegrams
+    
+                    // For 16-bit telegrams, work on the lower 16 bits
+                    uint8_t first = (raw >> 12) & 0xF;
+                    uint8_t second = (raw >> 8) & 0xF;
+    
+                    if (first == 1)
+                    {
+                        if (second == 1)
+                        {
+                            data.type = TELEGRAM_TYPE_OPEN_DOOR;
+                            data.address = raw & 0x3F;
+    
+                            // Door readiness
+                            data.payload = (raw & (1 << 6)) != 0;
+    
+                        }
+                        else if (second == 2)
+                        {
+                            data.type = TELEGRAM_TYPE_LIGHT;
+                            data.address = 0;
+                        }
                     }
-                } else if (first == 8) {
-                    switch(second) {
-                        case 1:
-                            data.type = TELEGRAM_TYPE_SELECT_MEMORY_PAGE;
-                            data.address = (raw & 0xFF);
-                            break;
-
-                        case 4:
-                            data.type = TELEGRAM_TYPE_READ_MEMORY_BLOCK;
-                            data.address = (raw & 0xFF) / 4;
-                            break;
+                    else if (first == 2)
+                    {
+                        switch (second)
+                        {
+                            case 1:
+                                data.type = (raw & (1 << 7)) ? TELEGRAM_TYPE_DOOR_CLOSED : TELEGRAM_TYPE_DOOR_OPENED;
+                                break;
+                            case 2:
+                                data.type = TELEGRAM_TYPE_END_OF_RINGTONE;
+                                break;
+                            case 4:
+                                data.type = TELEGRAM_TYPE_END_OF_DOOR_READINESS;
+                                break;
+                            case 8:
+                                data.type = TELEGRAM_TYPE_INITIALIZE_DOOR_STATION;
+                                break;
+                        }
+    
+                        data.address = raw & 0x3F;
+                    }
+                    else if (first == 3)
+                    {
+                        data.type = (raw & (1 << 6)) ? TELEGRAM_TYPE_STOP_TALKING : TELEGRAM_TYPE_STOP_TALKING_DOOR_CALL;
+                        data.address = raw & 0x3F;
+                    }
+                    else if (first == 5)
+                    {
+                        switch(second)
+                        {
+                            case 0:
+                                switch((raw >> 4) & 0xF)
+                                {
+                                    case 4:
+                                        data.type = TELEGRAM_TYPE_PROGRAMMING_MODE;
+                                        data.payload = raw & 0xF;
+                                        break;
+                                }
+                                break;
+    
+                            case 1:
+                                data.type = TELEGRAM_TYPE_RESET;
+                                data.address = raw & 0xF;
+                                break;
+    
+                            case 2:
+                                data.type = TELEGRAM_TYPE_SEARCH_DEVICES;
+                                data.payload = raw & 0xF;
+                                break;
+    
+                            case 8:
+                                data.type = TELEGRAM_TYPE_SELECT_DEVICE_GROUP;
+                                data.payload = raw & 0xF;
+                                break;
+    
+                            case 9:
+                                data.type = TELEGRAM_TYPE_SELECT_DEVICE_GROUP_RESET;
+                                data.payload = raw & 0xF;
+                                break;
+                        }
+                    }
+                    else if (first == 7)
+                    {
+                        if(raw == 0x7FFF)
+                        {
+                            data.type = TELEGRAM_TYPE_SEARCH_DOORMAN_DEVICES;
+                        }
+                    }
+                    else if (first == 8)
+                    {
+                        switch(second)
+                        {
+                            case 1:
+                                data.type = TELEGRAM_TYPE_SELECT_MEMORY_PAGE;
+                                data.address = (raw & 0xFF);
+                                break;
+    
+                            case 4:
+                                data.type = TELEGRAM_TYPE_READ_MEMORY_BLOCK;
+                                data.address = (raw & 0xFF) / 4;
+                                break;
+                        }
                     }
                 }
             }
 
             // Generate telegram HEX
             data.hex = str_upper_case(format_hex(data.raw));
-            if(!data.is_long) {
-                if (data.type == TELEGRAM_TYPE_ACK) {
+            if(!data.is_long)
+            {
+                if (data.type == TELEGRAM_TYPE_ACK)
+                {
                     data.hex = data.hex.substr(7);
-                } else {
+                }
+                else
+                {
                     data.hex = data.hex.substr(4);
                 }
             }
@@ -532,7 +617,8 @@ namespace esphome
 
         const char* setting_type_to_string(SettingType type)
         {
-            switch (type) {
+            switch (type)
+            {
                 case SETTING_RINGTONE_FLOOR_CALL: return "RINGTONE_FLOOR_CALL";
                 case SETTING_RINGTONE_ENTRANCE_DOOR_CALL: return "RINGTONE_ENTRANCE_DOOR_CALL";
                 case SETTING_RINGTONE_SECOND_ENTRANCE_DOOR_CALL: return "RINGTONE_SECOND_ENTRANCE_DOOR_CALL";
@@ -579,13 +665,15 @@ namespace esphome
             if (str == "WRITE_MEMORY") return TELEGRAM_TYPE_WRITE_MEMORY;
             if (str == "REQUEST_VERSION") return TELEGRAM_TYPE_REQUEST_VERSION;
             if (str == "ACK") return TELEGRAM_TYPE_ACK;
+            if (str == "DATA") return TELEGRAM_TYPE_DATA;
 
             return TELEGRAM_TYPE_UNKNOWN;
         }
 
         const char* telegram_type_to_string(TelegramType type)
         {
-            switch (type) {
+            switch (type)
+            {
                 case TELEGRAM_TYPE_SEARCH_DOORMAN_DEVICES: return "SEARCH_DOORMAN_DEVICES";
                 case TELEGRAM_TYPE_FOUND_DOORMAN_DEVICE: return "FOUND_DOORMAN_DEVICE";
                 case TELEGRAM_TYPE_DOOR_CALL: return "DOOR_CALL";
@@ -616,6 +704,7 @@ namespace esphome
                 case TELEGRAM_TYPE_WRITE_MEMORY: return "WRITE_MEMORY";
                 case TELEGRAM_TYPE_REQUEST_VERSION: return "REQUEST_VERSION";
                 case TELEGRAM_TYPE_ACK: return "ACK";
+                case TELEGRAM_TYPE_DATA: return "DATA";
                 default: return "UNKNOWN";
             }
         }
@@ -831,7 +920,8 @@ namespace esphome
 
         const char* model_to_string(Model model)
         {
-            switch (model) {
+            switch (model)
+            {
                 case MODEL_ISW3030: return "TCS ISW3030 / Koch TC50 / Scantron Stilux";
                 case MODEL_ISW3130: return "TCS ISW3130 / Koch TC50P";
                 case MODEL_ISW3230: return "TCS ISW3230 / Koch TC50 GFA";
@@ -919,7 +1009,8 @@ namespace esphome
             modelData.model = model;
             modelData.capabilities = 0;
 
-            switch (model) {
+            switch (model)
+            {
                 // Category 1
                 case MODEL_ISW3030: /* TC50 */
                     modelData.category = 1;
@@ -1362,38 +1453,38 @@ namespace esphome
             ModelData model_data = getModelData(model);
 
             // Only set data if model supports the capability
-            if (setting == SETTING_RINGTONE_ENTRANCE_DOOR_CALL && 
-                (model_data.capabilities & CAP_RINGTONE_ENTRANCE_DOOR_CALL)) {
+            if (setting == SETTING_RINGTONE_ENTRANCE_DOOR_CALL && (model_data.capabilities & CAP_RINGTONE_ENTRANCE_DOOR_CALL))
+            {
                 data.index = 3;
                 data.left_nibble = true;
             }
-            else if (setting == SETTING_RINGTONE_INTERNAL_CALL && 
-                    (model_data.capabilities & CAP_RINGTONE_INTERNAL_CALL)) {
+            else if (setting == SETTING_RINGTONE_INTERNAL_CALL && (model_data.capabilities & CAP_RINGTONE_INTERNAL_CALL))
+            {
                 data.index = 6;
                 data.left_nibble = true;
             }
-            else if (setting == SETTING_RINGTONE_FLOOR_CALL && 
-                    (model_data.capabilities & CAP_RINGTONE_FLOOR_CALL)) {
+            else if (setting == SETTING_RINGTONE_FLOOR_CALL && (model_data.capabilities & CAP_RINGTONE_FLOOR_CALL))
+            {
                 data.index = 9;
                 data.left_nibble = true;
             }
-            else if (setting == SETTING_RINGTONE_SECOND_ENTRANCE_DOOR_CALL && 
-                    (model_data.capabilities & CAP_RINGTONE_SECOND_ENTRANCE_DOOR_CALL)) {
+            else if (setting == SETTING_RINGTONE_SECOND_ENTRANCE_DOOR_CALL && (model_data.capabilities & CAP_RINGTONE_SECOND_ENTRANCE_DOOR_CALL))
+            {
                 data.index = 12;
                 data.left_nibble = true;
             }
-            else if (setting == SETTING_VOLUME_RINGTONE && 
-                    (model_data.capabilities & CAP_VOLUME_RINGTONE)) {
+            else if (setting == SETTING_VOLUME_RINGTONE && (model_data.capabilities & CAP_VOLUME_RINGTONE))
+            {
                 data.index = 20;
                 data.left_nibble = false;
             }
-            else if (setting == SETTING_VOLUME_HANDSET_DOOR_CALL && 
-                    (model_data.capabilities & CAP_VOLUME_HANDSET_DOOR_CALL)) {
+            else if (setting == SETTING_VOLUME_HANDSET_DOOR_CALL && (model_data.capabilities & CAP_VOLUME_HANDSET_DOOR_CALL))
+            {
                 data.index = 21;
                 data.left_nibble = false;
             }
-            else if (setting == SETTING_VOLUME_HANDSET_INTERNAL_CALL && 
-                    (model_data.capabilities & CAP_VOLUME_HANDSET_INTERNAL_CALL)) {
+            else if (setting == SETTING_VOLUME_HANDSET_INTERNAL_CALL && (model_data.capabilities & CAP_VOLUME_HANDSET_INTERNAL_CALL))
+            {
                 data.index = 21;
                 data.left_nibble = true;
             }
@@ -1421,7 +1512,8 @@ namespace esphome
 
         std::string int_to_ringtone(uint8_t ringtone)
         {
-            if(ringtone > 12) {
+            if(ringtone > 12)
+            {
                 ringtone = 0;
             }
 

@@ -564,7 +564,7 @@ namespace esphome
                     // Check for ACK
                     if (ack_pos == 6)
                     {
-                        TelegramData telegram_data = parseTelegram(ack_telegram, false, true);
+                        TelegramData telegram_data = parseTelegram(ack_telegram, false, true, false);
                         if (ack_crc == ack_cal_crc)
                         {
                             if(!reading_memory_ && identify_model_device_group_ == -1)
@@ -612,7 +612,7 @@ namespace esphome
                 {
                     if (ack_pos == 6)
                     {
-                        TelegramData telegram_data = parseTelegram(ack_telegram, false, true);
+                        TelegramData telegram_data = parseTelegram(ack_telegram, false, true, false);
                         if (ack_crc == ack_cal_crc)
                         {
                             if(!reading_memory_ && identify_model_device_group_ == -1)
@@ -733,7 +733,7 @@ namespace esphome
 
                         if (this->last_sent_telegram_ == -1 || (this->last_sent_telegram_ != -1 && static_cast<int32_t>(telegram) != this->last_sent_telegram_))
                         {
-                            TelegramData telegram_data = parseTelegram(telegram, is_long, is_response);
+                            TelegramData telegram_data = parseTelegram(telegram, is_long, is_response, (reading_memory_ && identify_model_device_group_ != -1));
                             this->received_telegram(telegram_data);
                             this->call_remote_listeners_(telegram_data);
                         }

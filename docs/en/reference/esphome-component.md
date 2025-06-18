@@ -415,6 +415,7 @@ struct TelegramData {
     
     bool is_long;
     bool is_response;
+    bool is_data;
 };
 ```
 

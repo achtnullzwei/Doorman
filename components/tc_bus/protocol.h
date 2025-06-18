@@ -102,6 +102,7 @@ namespace esphome
         enum TelegramType {
             TELEGRAM_TYPE_UNKNOWN,
             TELEGRAM_TYPE_ACK,
+            TELEGRAM_TYPE_DATA,
             TELEGRAM_TYPE_SEARCH_DOORMAN_DEVICES,
             TELEGRAM_TYPE_FOUND_DOORMAN_DEVICE,
             TELEGRAM_TYPE_DOOR_CALL,
@@ -174,7 +175,7 @@ namespace esphome
         };
 
         TelegramData buildTelegram(TelegramType type, uint8_t address = 0, uint32_t payload = 0, uint32_t serial_number = 0);
-        TelegramData parseTelegram(uint32_t telegram, bool is_long = true, bool is_response = false);
+        TelegramData parseTelegram(uint32_t telegram, bool is_long = true, bool is_response = false, bool is_data = false);
 
         const char* telegram_type_to_string(TelegramType type);
         TelegramType string_to_telegram_type(std::string str);
