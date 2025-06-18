@@ -242,13 +242,6 @@ namespace esphome
             std::vector<TCBusListener *> listeners_{};
 #endif
 
-            // Memory reading
-            std::vector<uint8_t> memory_buffer_;
-            bool reading_memory_ = false;
-            uint8_t reading_memory_count_ = 0;
-            uint8_t reading_memory_max_ = 0;
-            uint32_t reading_memory_serial_number_ = 0;
-
             // Indoor station data
             Model model_;
             uint32_t serial_number_;
@@ -262,14 +255,22 @@ namespace esphome
             CallbackManager<void()> identify_unknown_callback_{};
             CallbackManager<void()> identify_timeout_callback_{};
 
+            // Memory reading
+            std::vector<uint8_t> memory_buffer_;
+            bool read_memory_flow_ = false;
+            bool wait_for_memory_block_telegram_ = false;
+            uint8_t reading_memory_count_ = 0;
+            uint8_t reading_memory_max_ = 0;
+            uint32_t reading_memory_serial_number_ = 0;
+
+            // Identification
+            bool identify_model_flow_ = false;
+            bool wait_for_identification_telegram_ = false;
+
             // Misc
             const char *event_;
             std::string hardware_version_str_ = "Generic";
-
             bool programming_mode_ = false;
-            bool wait_for_identification_telegram_ = false;
-            bool identify_model_flow_ = false;
-
             uint8_t selected_device_group_ = 2;
 
             ESPPreferenceObject pref_;

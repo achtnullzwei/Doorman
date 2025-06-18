@@ -197,159 +197,170 @@ namespace esphome
             if (received)
             {
                 // From receiver
-                if (reading_memory_)
+                if (wait_for_memory_block_telegram_)
                 {
                     ESP_LOGD(TAG, "Received 4 memory blocks from %i to %i | Data: 0x%08X", (reading_memory_count_ * 4), (reading_memory_count_ * 4) + 4, telegram_data.raw);
 
-                    // Save Data to memory Store
-                    memory_buffer_.push_back((telegram_data.raw >> 24) & 0xFF);
-                    memory_buffer_.push_back((telegram_data.raw >> 16) & 0xFF);
-                    memory_buffer_.push_back((telegram_data.raw >> 8) & 0xFF);
-                    memory_buffer_.push_back(telegram_data.raw & 0xFF);
+                    ESP_LOGD(TAG, "Reset wait_for_memory_block_telegram_");
+                    this->wait_for_memory_block_telegram_ = false;
 
-                    // Next 4 Data Blocks
-                    reading_memory_count_++;
-
-                    // Memory reading complete
-                    if (reading_memory_count_ == reading_memory_max_)
+                    if(read_memory_flow_)
                     {
-                        // Turn off
-                        this->cancel_timeout("wait_for_memory_reading");
-                        reading_memory_ = false;
+                        // Save Data to memory Store
+                        memory_buffer_.push_back((telegram_data.raw >> 24) & 0xFF);
+                        memory_buffer_.push_back((telegram_data.raw >> 16) & 0xFF);
+                        memory_buffer_.push_back((telegram_data.raw >> 8) & 0xFF);
+                        memory_buffer_.push_back(telegram_data.raw & 0xFF);
 
-                        this->publish_settings();
-                        this->read_memory_complete_callback_.call(memory_buffer_);
-                    }
-                    else
-                    {
-                        read_memory_block();
-                    }
+                        // Next 4 Data Blocks
+                        reading_memory_count_++;
 
-                    // Do not proceed
-                    return;
-                }
-                else if (identify_model_flow_)
-                {
-                    ESP_LOGD(TAG, "Identify model flow received a telegram");
-
-                    // Reset
-                    ESP_LOGD(TAG, "Reset wait_for_identification_telegram_");
-                    ESP_LOGD(TAG, "Reset identify_model_flow_");
-                    wait_for_identification_telegram_ = false;
-                    identify_model_flow_ = false;
-
-                    this->cancel_timeout("wait_for_identification_category_0");
-                    this->cancel_timeout("wait_for_identification_category_1");
-                    this->cancel_timeout("wait_for_identification_other");
-
-                    ModelData device;
-                    device.category = selected_device_group_;
-                    device.memory_size = 0;
-                    
-                    if (telegram_data.hex.substr(4, 1) == "D")
-                    {
-                        // New models
-
-                        // FW Version
-                        device.firmware_version = std::stoi(telegram_data.hex.substr(5, 3), nullptr, 16);
-                        device.firmware_major = std::stoi(telegram_data.hex.substr(5, 1), nullptr, 16);
-                        device.firmware_minor = std::stoi(telegram_data.hex.substr(6, 1), nullptr, 16);
-                        device.firmware_patch = std::stoi(telegram_data.hex.substr(7, 1), nullptr, 16);
-
-                        // HW Version
-                        device.hardware_version = std::stoi(telegram_data.hex.substr(0, 1));
-                        device.model = identifier_string_to_model(device.category, telegram_data.hex.substr(1, 3), device.hardware_version, device.firmware_version);
-                    }
-                    else
-                    {
-                        if(device.category == 0 || device.category == 1)
+                        // Memory reading complete
+                        if (reading_memory_count_ == reading_memory_max_)
                         {
-                            // Old indoor station models
-                            switch(telegram_data.raw)
+                            // Turn off
+                            this->cancel_timeout("wait_for_memory_reading");
+
+                            ESP_LOGD(TAG, "Reset read_memory_flow_");
+                            read_memory_flow_ = false;
+
+                            this->publish_settings();
+                            this->read_memory_complete_callback_.call(memory_buffer_);
+                        }
+                        else
+                        {
+                            read_memory_block();
+                        }
+
+                        // Do not proceed
+                        return;
+                    }
+                }
+                else if (wait_for_identification_telegram_)
+                {
+                    ESP_LOGD(TAG, "Received model identification | Data: %s", telegram_data.hex.c_str());
+
+                    ESP_LOGD(TAG, "Reset wait_for_identification_telegram_");
+                    wait_for_identification_telegram_ = false;
+
+                    if(identify_model_flow_)
+                    {
+                        ESP_LOGD(TAG, "Reset identify_model_flow_");
+                        identify_model_flow_ = false;
+
+                        this->cancel_timeout("wait_for_identification_category_0");
+                        this->cancel_timeout("wait_for_identification_category_1");
+                        this->cancel_timeout("wait_for_identification_other");
+
+                        ModelData device;
+                        device.category = selected_device_group_;
+                        device.memory_size = 0;
+                        
+                        if (telegram_data.hex.substr(4, 1) == "D")
+                        {
+                            // New models
+
+                            // FW Version
+                            device.firmware_version = std::stoi(telegram_data.hex.substr(5, 3), nullptr, 16);
+                            device.firmware_major = std::stoi(telegram_data.hex.substr(5, 1), nullptr, 16);
+                            device.firmware_minor = std::stoi(telegram_data.hex.substr(6, 1), nullptr, 16);
+                            device.firmware_patch = std::stoi(telegram_data.hex.substr(7, 1), nullptr, 16);
+
+                            // HW Version
+                            device.hardware_version = std::stoi(telegram_data.hex.substr(0, 1));
+                            device.model = identifier_string_to_model(device.category, telegram_data.hex.substr(1, 3), device.hardware_version, device.firmware_version);
+                        }
+                        else
+                        {
+                            if(device.category == 0 || device.category == 1)
                             {
-                                // TTC-XX
-                                case 0x08000040:
-                                    device.model = MODEL_TTCXX;
-                                    break;
+                                // Old indoor station models
+                                switch(telegram_data.raw)
+                                {
+                                    // TTC-XX
+                                    case 0x08000040:
+                                        device.model = MODEL_TTCXX;
+                                        break;
 
-                                // TTS-XX
-                                case 0x02010040:
-                                    device.model = MODEL_TTSXX;
-                                    break;
+                                    // TTS-XX
+                                    case 0x02010040:
+                                        device.model = MODEL_TTSXX;
+                                        break;
 
-                                // ISH 1030
-                                case 0x08000048:
-                                case 0x08080048:
-                                    device.model = MODEL_ISH1030;
-                                    break;
+                                    // ISH 1030
+                                    case 0x08000048:
+                                    case 0x08080048:
+                                        device.model = MODEL_ISH1030;
+                                        break;
 
-                                default:
-                                    break;
+                                    default:
+                                        break;
+                                }
+                            }
+                            else if(device.category == 4)
+                            {
+                                // Old controller models
+                                switch(telegram_data.raw)
+                                {
+                                    case 0x877F5804:
+                                        device.model = CONTROLLER_MODEL_BVS20;
+                                        break;
+
+                                    default:
+                                        break;
+                                }
+                            }
+                            else
+                            {
+                                // Old models of other groups
+                                // Not implemented
                             }
                         }
-                        else if(device.category == 4)
-                        {
-                            // Old controller models
-                            switch(telegram_data.raw)
-                            {
-                                case 0x877F5804:
-                                    device.model = CONTROLLER_MODEL_BVS20;
-                                    break;
 
-                                default:
-                                    break;
+                        if (device.model != MODEL_NONE)
+                        {
+                            // Add missing information
+                            device.memory_size = getModelData(device.model).memory_size;
+
+                            ESP_LOGD(TAG, "Identified Hardware: %s (v%i) | Firmware: %i.%i.%i",
+                                    model_to_string(device.model),
+                                    device.hardware_version,
+                                    device.firmware_major,
+                                    device.firmware_minor,
+                                    device.firmware_patch);
+
+                            // Indoor stations only
+                            if(device.category == 0 || device.category == 1)
+                            {
+                                // Update Model
+                                if (device.model != this->model_)
+                                {
+                                    this->model_ = device.model;
+    #ifdef USE_SELECT
+                                    if (this->model_select_ != nullptr)
+                                    {
+                                        this->model_select_->publish_state(model_to_string(device.model));
+                                    }
+    #endif
+                                    this->save_settings();
+                                }
+                                this->identify_complete_callback_.call(device);
                             }
                         }
                         else
                         {
-                            // Old models of other groups
-                            // Not implemented
-                        }
-                    }
-
-                    if (device.model != MODEL_NONE)
-                    {
-                        // Add missing information
-                        device.memory_size = getModelData(device.model).memory_size;
-
-                        ESP_LOGD(TAG, "Identified Hardware: %s (v%i) | Firmware: %i.%i.%i",
-                                model_to_string(device.model),
-                                device.hardware_version,
-                                device.firmware_major,
-                                device.firmware_minor,
-                                device.firmware_patch);
-
-                        // Indoor stations only
-                        if(device.category == 0 || device.category == 1)
-                        {
-                            // Update Model
-                            if (device.model != this->model_)
+                            ESP_LOGE(TAG, "Unable to identify Hardware! Unknown model. Data received: %s", telegram_data.hex.c_str());
+                            
+                            // Indoor stations only
+                            if(device.category == 0 || device.category == 1)
                             {
-                                this->model_ = device.model;
-#ifdef USE_SELECT
-                                if (this->model_select_ != nullptr)
-                                {
-                                    this->model_select_->publish_state(model_to_string(device.model));
-                                }
-#endif
-                                this->save_settings();
+                                this->identify_unknown_callback_.call();
                             }
-                            this->identify_complete_callback_.call(device);
                         }
-                    }
-                    else
-                    {
-                        ESP_LOGE(TAG, "Unable to identify Hardware! Unknown model. Data received: %s", telegram_data.hex.c_str());
-                        
-                        // Indoor stations only
-                        if(device.category == 0 || device.category == 1)
-                        {
-                            this->identify_unknown_callback_.call();
-                        }
-                    }
 
-                    // Do not proceed
-                    return;
+                        // Do not proceed
+                        return;
+                    }
                 }
                 else
                 {
@@ -498,12 +509,18 @@ namespace esphome
             }
             else if (telegram_data.type == TELEGRAM_TYPE_SELECT_DEVICE_GROUP || telegram_data.type == TELEGRAM_TYPE_SELECT_DEVICE_GROUP_RESET)
             {
+                ESP_LOGD(TAG, "Save device group: %d", telegram_data.payload);
                 this->selected_device_group_ = (uint8_t)telegram_data.payload;
+            }
+            else if (telegram_data.type == TELEGRAM_TYPE_READ_MEMORY_BLOCK)
+            {
+                ESP_LOGD(TAG, "Set wait_for_memory_block_telegram_");
+                this->wait_for_memory_block_telegram_ = true;
             }
             else if (telegram_data.type == TELEGRAM_TYPE_REQUEST_VERSION)
             {
-                this->wait_for_identification_telegram_ = true;
                 ESP_LOGD(TAG, "Set wait_for_identification_telegram_");
+                this->wait_for_identification_telegram_ = true;
             }
             else if (telegram_data.type == TELEGRAM_TYPE_SEARCH_DOORMAN_DEVICES)
             {
@@ -594,7 +611,7 @@ namespace esphome
                         TelegramData telegram_data = parseTelegram(ack_telegram, false, true, false);
                         if (ack_crc == ack_cal_crc)
                         {
-                            if(!reading_memory_ && !identify_model_flow_)
+                            if(!read_memory_flow_ && !identify_model_flow_)
                             {
                                 this->received_telegram(telegram_data);
                             }
@@ -642,7 +659,7 @@ namespace esphome
                         TelegramData telegram_data = parseTelegram(ack_telegram, false, true, false);
                         if (ack_crc == ack_cal_crc)
                         {
-                            if(!reading_memory_ && !identify_model_flow_)
+                            if(!read_memory_flow_ && !identify_model_flow_)
                             {
                                 this->received_telegram(telegram_data);
                             }
@@ -760,7 +777,7 @@ namespace esphome
 
                         if (this->last_sent_telegram_ == -1 || (this->last_sent_telegram_ != -1 && static_cast<int32_t>(telegram) != this->last_sent_telegram_))
                         {
-                            TelegramData telegram_data = parseTelegram(telegram, is_long, is_response, (reading_memory_ || wait_for_identification_telegram_));
+                            TelegramData telegram_data = parseTelegram(telegram, is_long, is_response, (wait_for_memory_block_telegram_ || wait_for_identification_telegram_));
                             this->received_telegram(telegram_data);
                             this->call_remote_listeners_(telegram_data);
                         }
@@ -1080,13 +1097,15 @@ namespace esphome
             }
 
             this->cancel_timeout("wait_for_memory_reading");
-            reading_memory_ = false;
+            ESP_LOGD(TAG, "Reset read_memory_flow_");
+            read_memory_flow_ = false;
 
             send_telegram(TELEGRAM_TYPE_SELECT_DEVICE_GROUP, 0, model_data.category);
             send_telegram(TELEGRAM_TYPE_SELECT_MEMORY_PAGE, 0, 0, serial_number);
 
             memory_buffer_.clear();
-            reading_memory_ = true;
+            ESP_LOGD(TAG, "Set read_memory_flow_");
+            read_memory_flow_ = true;
             reading_memory_serial_number_ = serial_number;
             reading_memory_count_ = 0;
             reading_memory_max_ = (model_data.memory_size / 4);
@@ -1094,7 +1113,8 @@ namespace esphome
             this->set_timeout("wait_for_memory_reading", reading_memory_max_ * 600, [this]()
             {
                 memory_buffer_.clear();
-                reading_memory_ = false;
+                ESP_LOGD(TAG, "Reset read_memory_flow_");
+                read_memory_flow_ = false;
                 reading_memory_serial_number_ = 0;
                 reading_memory_count_ = 0;
                 reading_memory_max_ = 0;
