@@ -47,10 +47,10 @@ def get_packages(host, api_variant, firmware, branch):
         ('api', '!include ../components/api.homekit.yaml', api_variant == 'homekit'),
         ('api', '!include ../components/api.custom.yaml', api_variant == 'custom'),
 
-        ('debug_utilities', '!include ../components/debug-utilities.yaml', branch == 'dev'),
+        ('debug_utilities', '!include ../components/debug-utilities.yaml', branch == 'dev' or branch == 'local'),
 
-        ('debug_component', '!include ../components/debug-component.yaml', branch == 'dev'),
-        ('debug_component_psram', '!include ../components/debug-component.psram.yaml', branch == 'dev' and has_psram),
+        ('debug_component', '!include ../components/debug-component.yaml', branch == 'dev' or branch == 'local'),
+        ('debug_component_psram', '!include ../components/debug-component.psram.yaml', (branch == 'dev' or branch == 'local') and has_psram),
 
         ('pattern_events', '!include ../components/pattern-events.yaml', True),
         ('ring_to_open', '!include ../components/ring-to-open.yaml', True),
