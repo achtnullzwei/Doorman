@@ -267,7 +267,9 @@ namespace esphome
             std::string hardware_version_str_ = "Generic";
 
             bool programming_mode_ = false;
-            int8_t identify_model_device_group_ = -1;
+            bool identify_model_ = false;
+
+            uint8_t selected_device_group_ = 2;
 
             ESPPreferenceObject pref_;
         };
