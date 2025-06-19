@@ -716,15 +716,17 @@ script:
 
   - id: rto_entrance_door_action
     then:
+      - logger.log: "RTO: Execute Entrance Door Action"
       - lock.unlock: entrance_door
 
   - id: rto_second_entrance_door_action
     then:
+      - logger.log: "RTO: Execute Second Entrance Door Action"
       - lock.unlock: second_entrance_door
 
   - id: rto_apartment_door_action
     then:
-      - logger.log: "RTO: Apartment Door Action Placeholder"
+      - logger.log: "RTO: Execute Apartment Door Action"
 
   - id: !extend update_led
     then:

@@ -154,7 +154,7 @@ button:
           effect: pulse
 
       # Search Outdoor Stations
-      - logger.log: Search outdoor stations...
+      - logger.log: Search outdoor stations (2)...
       - tc_bus.send:
           type: select_device_group
           payload: 2
