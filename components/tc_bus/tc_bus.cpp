@@ -109,13 +109,6 @@ namespace esphome
             this->rx_->register_listener(this);
         }
 
-        void TCBusComponent::call_remote_listeners_(TelegramData telegram_data, bool received) {
-            for (auto *listener : this->remote_listeners_)
-            {
-                listener->on_receive(telegram_data, received);
-            }
-        }
-
         void TCBusComponent::save_settings()
         {
             TCBusSettings settings{
@@ -194,6 +187,17 @@ namespace esphome
 
         void TCBusComponent::received_telegram(TelegramData telegram_data, bool received)
         {
+            // Call remote listeners
+            for (auto *listener : this->remote_listeners_)
+            {
+                listener->on_receive(telegram_data, received);
+            }
+
+            if(telegram_data.type == TELEGRAM_TYPE_ACK && (read_memory_flow_ || identify_model_flow_))
+            {
+                return;
+            }
+
             if (received)
             {
                 // From receiver
@@ -600,7 +604,7 @@ namespace esphome
                 else if (pulse_duration >= START_CMD && pulse_duration <= START_MAX)
                 {
                     pulse_type = 2;
-                    ESP_LOGV(TAG, "Begin Telegram Telegram (%i)", pulse_duration, cmd_pos);
+                    ESP_LOGV(TAG, "Begin Telegram (%i)", pulse_duration, cmd_pos);
                 }
                 else
                 {
@@ -611,11 +615,7 @@ namespace esphome
                         TelegramData telegram_data = parseTelegram(ack_telegram, false, true, false);
                         if (ack_crc == ack_cal_crc)
                         {
-                            if(!read_memory_flow_ && !identify_model_flow_)
-                            {
-                                this->received_telegram(telegram_data);
-                            }
-                            this->call_remote_listeners_(telegram_data);
+                            this->received_telegram(telegram_data);
                         }
 
                         ack_pos = 0;
@@ -659,11 +659,7 @@ namespace esphome
                         TelegramData telegram_data = parseTelegram(ack_telegram, false, true, false);
                         if (ack_crc == ack_cal_crc)
                         {
-                            if(!read_memory_flow_ && !identify_model_flow_)
-                            {
-                                this->received_telegram(telegram_data);
-                            }
-                            this->call_remote_listeners_(telegram_data);
+                            this->received_telegram(telegram_data);
                         }
                     }
 
@@ -779,7 +775,6 @@ namespace esphome
                         {
                             TelegramData telegram_data = parseTelegram(telegram, is_long, is_response, (wait_for_memory_block_telegram_ || wait_for_identification_telegram_));
                             this->received_telegram(telegram_data);
-                            this->call_remote_listeners_(telegram_data);
                         }
                         else
                         {
@@ -916,7 +911,6 @@ namespace esphome
         void TCBusComponent::transmit_telegram(TelegramData telegram_data)
         {   
             this->received_telegram(telegram_data, false);
-            this->call_remote_listeners_(telegram_data, false);
 
             this->last_sent_telegram_ = telegram_data.raw;
 
