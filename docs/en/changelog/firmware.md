@@ -1,7 +1,7 @@
 # Release Notes & Changelog
 Welcome to the latest updates! Here's a breakdown of all the **new features**, **improvements**, and important **changes** you need to know. Be sure to check out the **Breaking Changes** section for any actions needed to keep everything running smoothly.
 
-## 2025.6.0
+## 2025.6.0 <Badge type="warning" text="Next" />
 ### 🚨 IMPORTANT
 Please carefully review the breaking changes listed below before updating!  
 This release **will impact your current setup** and **requires** you to go through the **setup process again**.
@@ -83,6 +83,11 @@ This release **will impact your current setup** and **requires** you to go throu
    Log messages have been refined for improved clarity and readability.
 
 ### 🚨 Breaking Changes
+- **Renamed `command` to `telegram`**
+  The `command` terminology has been replaced with `telegram`. If you're using the `tc_bus.send` action, you must update your configuration accordingly.  
+  Additionally, the `CommandData` class has been renamed to `TelegramData`.  
+  For full migration details, please refer to the updated ESPHome component documentation.
+
 - **Transition to RMT Components**  
    The `TC:BUS` component no longer supports the `rx_pin` and `tx_pin` options.  
    Instead, you must now define the `remote_receiver` and `remote_transmitter` components when using your own custom config.
@@ -102,7 +107,7 @@ This release **will impact your current setup** and **requires** you to go throu
 - **Minimum ESPHome Version Set**  
    The minimum required version has been updated to **2025.5.0**.
 
-## 2025.3.0
+## 2025.3.0 <Badge type="tip" text="Stable" />
 ### ✨ Improvements
 - **Fix Update Process**  
    Firmware updates are now correctly identified and retrieved for each specific firmware variant.
