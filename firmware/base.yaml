@@ -123,7 +123,9 @@ improv_serial:
 remote_receiver:
   pin:
     number: ${rx_pin}
-    mode: INPUT
+    mode:
+      input: true
+      pulldown: true
   filter: 1500us
   idle: 7000us
 
