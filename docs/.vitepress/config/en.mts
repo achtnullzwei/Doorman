@@ -134,12 +134,17 @@ function sidebarGuide(): DefaultTheme.SidebarItem[] {
 function sidebarReference(): DefaultTheme.SidebarItem[] {
   return [
     {
-      text: 'Reference',
+      text: 'Hardware',
       items: [
-        { text: 'Entities', link: 'entities' },
-        { text: 'GPIO Pinout', link: 'gpio' },
         { text: 'Schematics', link: 'schematics' },
         { text: 'Specifications', link: 'specifications' },
+        { text: 'GPIO Pinout', link: 'gpio' },
+      ]
+    },
+    {
+      text: 'Firmware',
+      items: [
+        { text: 'Entities', link: 'entities' },
         { text: 'ESPHome Component', link: 'esphome-component' }
       ]
     }
