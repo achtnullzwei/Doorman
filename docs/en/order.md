@@ -443,5 +443,6 @@ Once I receive your message, I'll get back to you as soon as possible.
     </div>
     <div class="submit">
         <VPButton text="Submit Inquiry" />
+        {{ modalOpen }}
     </div>
 </form>

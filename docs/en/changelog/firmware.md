@@ -1,7 +1,7 @@
 # Release Notes & Changelog
 Welcome to the latest updates! Here's a breakdown of all the **new features**, **improvements**, and important **changes** you need to know. Be sure to check out the **Breaking Changes** section for any actions needed to keep everything running smoothly.
 
-## 2025.6.0 <Badge type="warning" text="Next" />
+## 2025.9.0 <Badge type="warning" text="Next" />
 ### 🚨 IMPORTANT
 Please carefully review the breaking changes listed below before updating!  
 This release **will impact your current setup** and **requires** you to go through the **setup process again**.
@@ -41,6 +41,9 @@ This release **will impact your current setup** and **requires** you to go throu
 
 - **Show Bus Activity via Status LED**  
    Added a new switch that, when enabled, makes the status LED blink briefly to indicate bus activity. Helpful for debugging and verifying communication with the door system. Disabled by default.
+
+- **Subdevices**  
+   By using sub-devices, entities can now be grouped and organized more logically in Home Assistant.
 
 ### ✨ Improvements
 - **Refined Configuration for Ring to Open**  
