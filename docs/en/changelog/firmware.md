@@ -72,6 +72,9 @@ This release **will impact your current setup** and **requires** you to go throu
 - **Wi-Fi Signal Sensor**  
    The default firmware now includes a Wi-Fi signal strength sensor, which was previously only available in the developer version.
 
+- **Component split**
+  The `tc_bus` ESPHome component has been refactored into three separate components: `tc_bus`, `tc_bus_device`, and `doorman_hardware`. This change improves maintainability and adds flexibility when working with multiple TC:BUS devices.
+
 ### 📝 Other Updates
 - **Firmware Configuration Assistant**  
    The new assistant makes flashing the firmware easier than ever — not much technical experience required.

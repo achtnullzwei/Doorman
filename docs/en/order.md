@@ -135,14 +135,14 @@ export default {
                     name: 'Standard Shipping',
                     icon: '',
                     details: standardTrackingDetails,
-                    price: 8.99
+                    price: 9
                 },
                 {
                     key: 'tracking',
                     name: 'Tracked Shipping',
                     icon: '',
                     details: trackedTrackingDetails,
-                    price: 26.99
+                    price: 27
                 }
             ],
             countries: [
@@ -161,14 +161,14 @@ export default {
                     name: 'Standard Shipping',
                     icon: '',
                     details: standardTrackingDetails,
-                    price: 6.49
+                    price: 7
                 },
                 {
                     key: 'tracking',
                     name: 'Tracked Shipping',
                     icon: '',
                     details: trackedTrackingDetails,
-                    price: 14.49
+                    price: 14.5
                 }
             ],
             countries: [
