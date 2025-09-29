@@ -361,9 +361,13 @@ Interested in a ready-to-use solution? I offer fully assembled and tested Doorma
     <p class="custom-block-title">SORRY</p>
     <p>The inquiry form is currently down. I'm probably working to fix it already—please try again later, or contact me directly in the meantime.</p>
 </div>
+<div v-else-if="status.status == 'pending_review'" class="warning custom-block">
+    <p class="custom-block-title">REVIEW PENDING</p>
+    <p>I have received your order and will now review your inquiry to confirm compatibility. You'll be notified as soon as the review is complete.</p>
+</div>
 <div v-else-if="status.status == 'pending_payment'" class="warning custom-block">
     <p class="custom-block-title">PAYMENT PENDING</p>
-    <p>Your order has been received. Please wait for my message with the payment instructions before proceeding.</p>
+    <p>Your order is ready for the next step. Please complete the payment using the instructions provided so I can proceed with processing your shipment.</p>
 </div>
 <div v-else-if="status.status == 'pending_shipment'" class="tip custom-block">
     <p class="custom-block-title">PREPARING SHIPMENT</p>
