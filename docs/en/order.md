@@ -185,13 +185,15 @@ export default {
     }
   },
   created() {
-    axios.get(this.formEndpoint + '/status')
-      .then(res => {
+    axios.get(this.formEndpoint + '/status', { 
+        withCredentials: true 
+    })
+    .then(res => {
         this.status = res.data
-      })
-      .catch(() => {
+    })
+    .catch(() => {
         this.status = { status: 'error' }
-      })
+    })
   },
   watch: {
     'form.shipping_destination'(new_value) {
@@ -223,7 +225,9 @@ export default {
   },
   methods: {
     async submit() {
-      axios.post(this.formEndpoint + '/submit', this.form)
+      axios.post(this.formEndpoint + '/submit', this.form, { 
+        withCredentials: true 
+      })
       .then(response => {
         this.modalOpen = true;
         this.result_title = "Received!"
@@ -241,7 +245,9 @@ export default {
       });
     },
     async closeOrder() {
-      axios.post(this.formEndpoint + '/close', {})
+      axios.post(this.formEndpoint + '/close', {}, { 
+        withCredentials: true 
+      })
       .then(response => {
         this.modalOpen = true;
         this.result_title = "Thank you!"
