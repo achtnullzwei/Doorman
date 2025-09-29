@@ -14,6 +14,11 @@ import IconSimpleIconsSepa from '~icons/simple-icons/sepa';
 <script lang="ts">
 import axios from 'axios'
 
+const api = axios.create({
+   withCredentials: true,
+   baseURL: 'https://order.doorman.azon.ai'
+})
+
 const allCountries = [
     { value: 'AT', label: 'Austria' },
     { value: 'BE', label: 'Belgium' },
@@ -52,7 +57,6 @@ export default {
     const trackedTrackingDetails = 'Recommended for reliable delivery and shipment visibility. Lost packages may be eligible for investigation or claim.';
 
     return {
-      formEndpoint: 'https://order.doorman.azon.ai',
       status: {},
       form: {
         name: '',
@@ -64,7 +68,7 @@ export default {
         country: 'DE',
         address_extra: '',
         product: 'pcb',
-        shipping_destination: 'de',
+        shipping_destination: 'DE',
         shipping_method: 'standard',
         payment_option: 'paypal',
         message: '',
@@ -101,7 +105,7 @@ export default {
       ],
       shipping_destinations: [
         {
-            key: 'de',
+            key: 'DE',
             name: 'Germany',
             details: '',
             icon: IconTwemojiFlagGermany,
@@ -127,7 +131,7 @@ export default {
             defaultCountry: 'DE'
         },
         {
-            key: 'ch',
+            key: 'CH',
             name: 'Switzerland',
             details: '',
             icon: IconTwemojiFlagSwitzerland,
@@ -153,7 +157,7 @@ export default {
             defaultCountry: 'CH'
         },
         {
-            key: 'eu',
+            key: 'EU',
             name: 'European Union',
             details: '',
             icon: IconTwemojiFlagEuropeanUnion,
@@ -185,7 +189,7 @@ export default {
     }
   },
   created() {
-    axios.get(this.formEndpoint + '/status', { 
+    api.get('/status', { 
         withCredentials: true 
     })
     .then(res => {
@@ -225,13 +229,15 @@ export default {
   },
   methods: {
     async submit() {
-      axios.post(this.formEndpoint + '/submit', this.form, { 
+      api.post('/submit', this.form, { 
         withCredentials: true 
       })
       .then(response => {
         this.modalOpen = true;
-        this.result_title = "Received!"
-        this.result_text = "Thank you."
+        this.result_title = "Received!";
+        this.result_text = "Thank you. I will reach out to you as soon as possible.";
+
+        this.status = response.data;
       })
       .catch(error => {
         this.modalOpen = true;
@@ -245,14 +251,15 @@ export default {
       });
     },
     async closeOrder() {
-      axios.post(this.formEndpoint + '/close', {}, { 
+      api.post('/close', {}, { 
         withCredentials: true 
       })
       .then(response => {
         this.modalOpen = true;
-        this.result_title = "Thank you!"
-        this.result_text = "Your order is now finished. I hope you have fun with your Doorman :)"
-        this.status = response.data
+        this.result_title = "Thank you!";
+        this.result_text = "Your order is now finished. I hope you have fun with your Doorman :)";
+
+        this.status = response.data;
       })
       .catch(error => {
         this.modalOpen = true;
@@ -357,6 +364,12 @@ Interested in a ready-to-use solution? I offer fully assembled and tested Doorma
 <div v-else-if="status.status == 'pending_payment'" class="warning custom-block">
     <p class="custom-block-title">PAYMENT PENDING</p>
     <p>Your order has been received. Please wait for my message with the payment instructions before proceeding.</p>
+</div>
+<div v-else-if="status.status == 'pending_shipment'" class="tip custom-block">
+    <p class="custom-block-title">PREPARING SHIPMENT</p>
+    <p>
+        Your order is being prepared for shipment and will be dispatched soon. Once it has been sent, you will receive an update with tracking details. Thank you for your patience!
+    </p>
 </div>
 <div v-else-if="status.status == 'shipped'" class="tip custom-block">
     <p class="custom-block-title">ORDER SHIPPED</p>
