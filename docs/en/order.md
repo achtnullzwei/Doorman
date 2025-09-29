@@ -68,7 +68,7 @@ export default {
         country: 'DE',
         address_extra: '',
         product: 'pcb',
-        shipping_destination: 'DE',
+        shipping_region: 'DE',
         shipping_method: 'standard',
         payment_option: 'paypal',
         message: '',
@@ -103,7 +103,7 @@ export default {
             price: 37.5
         }
       ],
-      shipping_destinations: [
+      shipping_regions: [
         {
             key: 'DE',
             name: 'Germany',
@@ -200,24 +200,24 @@ export default {
     })
   },
   watch: {
-    'form.shipping_destination'(new_value) {
-        const destination = this.shipping_destinations.find(d => d.key === new_value);
+    'form.shipping_region'(new_value) {
+        const destination = this.shipping_regions.find(d => d.key === new_value);
         if (!destination) return [];
         this.form.country = destination.defaultCountry;
     },
   },
   computed: {
     available_shipping_options() {
-        return this.shipping_destinations.find(dest => dest.key === this.form.shipping_destination)?.options || [];
+        return this.shipping_regions.find(dest => dest.key === this.form.shipping_region)?.options || [];
     },
     countryOptions() {
-        const destination = this.shipping_destinations.find(d => d.key === this.form.shipping_destination);
+        const destination = this.shipping_regions.find(d => d.key === this.form.shipping_region);
         if (!destination) return [];
         return allCountries.filter(c => destination.countries.includes(c.value));
     },
     total_price() {
         const product = this.products.find(p => p.key === this.form.product);
-        const destination = this.shipping_destinations.find(d => d.key === this.form.shipping_destination);
+        const destination = this.shipping_regions.find(d => d.key === this.form.shipping_region);
         const shipping = destination?.options.find(o => o.key === this.form.shipping_method);
 
         // Calculate total
@@ -378,7 +378,9 @@ Interested in a ready-to-use solution? I offer fully assembled and tested Doorma
 <div v-else-if="status.status == 'shipped'" class="tip custom-block">
     <p class="custom-block-title">ORDER SHIPPED</p>
     <p>
-        Good news! Your order is on its way and should normally arrive within a week. Please note that customs may occasionally cause slight delays. Once it's delivered, kindly let me know here. Thank you!
+        Good news! Your order is on its way and should normally arrive within a week.
+        <br>
+        Please note that customs may occasionally cause slight delays. Once it's delivered, kindly let me know here. Thank you!
         <br><br>
         <VPButton text="I received my Doorman" @click="closeOrder" />
     </p>
@@ -404,9 +406,9 @@ Interested in a ready-to-use solution? I offer fully assembled and tested Doorma
         </label>
     </div>
     <h5 class="firmware_title_row">Where do you live?</h5>
-    <div class="firmware_option_row" :class="{ half: shipping_destinations.length <= 2 }">
-        <label class="firmware_option" v-for="destination in shipping_destinations" :key="destination.key">
-            <input type="radio" class="reset_default" v-model="form.shipping_destination" :value="destination.key">
+    <div class="firmware_option_row" :class="{ half: shipping_regions.length <= 2 }">
+        <label class="firmware_option" v-for="destination in shipping_regions" :key="destination.key">
+            <input type="radio" class="reset_default" v-model="form.shipping_region" :value="destination.key">
             <span class="checkmark">
                 <div class="icon" v-if="destination.icon"><component :is="destination.icon" /></div>
                 <div class="title">{{ destination.name }}</div>
@@ -496,7 +498,7 @@ Interested in a ready-to-use solution? I offer fully assembled and tested Doorma
                 {{
                     (available_shipping_options.find(o => o.key === form.shipping_method)?.name || '—')
                 }} ({{
-                    (shipping_destinations.find(o => o.key === form.shipping_destination)?.name || '—')
+                    (shipping_regions.find(o => o.key === form.shipping_region)?.name || '—')
                 }})
                 <Badge type="tip">
                     {{
