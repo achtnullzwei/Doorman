@@ -53,9 +53,11 @@ export default {
 
     return {
       formEndpoint: 'https://order.doorman.azon.ai',
+      status: {},
       form: {
         name: '',
         email: '',
+        discord: '',
         street: '',
         zip: '',
         city: '',
@@ -86,7 +88,7 @@ export default {
             key: 'pcb',
             name: 'Doorman-S3',
             image: '/pcb.png',
-            details: 'PCB only – ideal if you can mount it inside a wallbox or hidden enclosure.',
+            details: 'PCB only – ideal if you can mount it inside a wallbox or the indoor station enclosure.',
             price: 35
         },
         {
@@ -182,6 +184,15 @@ export default {
       result_text: ''
     }
   },
+  created() {
+    axios.get(this.formEndpoint + '/status')
+      .then(res => {
+        this.status = res.data
+      })
+      .catch(() => {
+        this.status = { status: 'error' }
+      })
+  },
   watch: {
     'form.shipping_destination'(new_value) {
         const destination = this.shipping_destinations.find(d => d.key === new_value);
@@ -212,11 +223,30 @@ export default {
   },
   methods: {
     async submit() {
-      axios.post(this.formEndpoint, this.form)
+      axios.post(this.formEndpoint + '/submit', this.form)
       .then(response => {
         this.modalOpen = true;
         this.result_title = "Received!"
         this.result_text = "Thank you."
+      })
+      .catch(error => {
+        this.modalOpen = true;
+        if (error.request.status == 429) {
+            this.result_title = "Slow down!"
+            this.result_text = "You made too many requests, try again later."
+        } else {
+          this.result_title = "Sorry!";
+          this.result_text = "Something went wrong. Please try again later.";
+        }
+      });
+    },
+    async closeOrder() {
+      axios.post(this.formEndpoint + '/close', {})
+      .then(response => {
+        this.modalOpen = true;
+        this.result_title = "Thank you!"
+        this.result_text = "Your order is now finished. I hope you have fun with your Doorman :)"
+        this.status = response.data
       })
       .catch(error => {
         this.modalOpen = true;
@@ -305,11 +335,6 @@ textarea {
 
 Interested in a ready-to-use solution? I offer fully assembled and tested Doorman-S3 units with the [Doorman Firmware](guide/firmware/installation) pre-installed — ready for seamless integration with Home Assistant.
 
-To request one, simply fill out the form below.
-**This is not a purchase or checkout** — it's just a non-binding inquiry to help me gauge interest and manage requests privately.
-
-Once I receive your message, I'll get back to you as soon as possible.
-
 <ContactModal :show="modalOpen" @close="modalOpen = false">
     <template #header>
         <h3>{{ result_title }}</h3>
@@ -319,7 +344,29 @@ Once I receive your message, I'll get back to you as soon as possible.
     </template>
 </ContactModal>
 
-<form @submit.prevent="submit">
+<div v-if="status.status == 'error'" class="danger custom-block">
+    <p class="custom-block-title">SORRY</p>
+    <p>The inquiry form is currently down. I'm probably working to fix it already—please try again later, or contact me directly in the meantime.</p>
+</div>
+<div v-else-if="status.status == 'pending_payment'" class="warning custom-block">
+    <p class="custom-block-title">PAYMENT PENDING</p>
+    <p>Your order has been received. Please wait for my message with the payment instructions before proceeding.</p>
+</div>
+<div v-else-if="status.status == 'shipped'" class="tip custom-block">
+    <p class="custom-block-title">ORDER SHIPPED</p>
+    <p>
+        Good news! Your order is on its way and should normally arrive within a week. Please note that customs may occasionally cause slight delays. Once it's delivered, kindly let me know here. Thank you!
+        <br><br>
+        <VPButton text="I received my Doorman" @click="closeOrder" />
+    </p>
+</div>
+<form v-else-if="status.status == 'none'" @submit.prevent="submit">
+    <div>
+        To request one, simply fill out the form below.
+        <b>This is not a purchase or checkout</b> — it's just a non-binding inquiry to help me gauge interest and manage requests privately.
+        <br><br>
+        Once I receive your message, I'll get back to you as soon as possible.
+    </div>
     <h5 class="firmware_title_row">What would you like to order?</h5>
     <div class="firmware_option_row" :class="{ half: products.length <= 2 }">
         <label class="firmware_option" v-for="product in products" :key="product.key">
@@ -365,12 +412,12 @@ Once I receive your message, I'll get back to you as soon as possible.
         <input type="email" name="email" id="email" placeholder="max@mustermann.net" v-model="form.email" required />
     </div>
     <div class="form-element">
-        <label for="address_extra">Additional address information</label>
-        <input type="text" name="address_extra" id="address_extra" placeholder="" v-model="form.address_extra" />
-    </div>
-    <div class="form-element">
         <label for="street">Street & House number</label>
         <input type="text" name="street" id="street" placeholder="Musterstrasse 1" v-model="form.street" required />
+    </div>
+    <div class="form-element">
+        <label for="address_extra">Additional address information <Badge type="info">Optional</Badge></label>
+        <input type="text" name="address_extra" id="address_extra" placeholder="" v-model="form.address_extra" />
     </div>
     <div class="form-element top name-container">
         <label for="zip">Postal Code</label>
@@ -386,6 +433,10 @@ Once I receive your message, I'll get back to you as soon as possible.
             <option v-for="country in countryOptions" :key="country.value" :value="country.value" :label="country.label">{{ country.label }}</option>
         </select>
     </div>
+    <div class="form-element">
+        <label for="discord">Discord Tag <Badge type="info">Optional</Badge></label>
+        <input type="text" name="discord" id="discord" placeholder="azonflo" v-model="form.discord" />
+    </div>
     <h5 class="firmware_title_row">Which payment method do you prefer?</h5>
     <div class="firmware_option_row" :class="{ half: payment_options.length <= 2 }">
         <label class="firmware_option" v-for="option in payment_options" :key="option.key">
@@ -397,7 +448,7 @@ Once I receive your message, I'll get back to you as soon as possible.
             </span>
         </label>
     </div>
-    <h5 class="firmware_title_row">Any other questions?</h5>
+    <h5 class="firmware_title_row">Any other questions? <Badge type="info">Optional</Badge></h5>
     <div class="form-element">
         <textarea id="message" name="message" v-model="form.message" placeholder="Any special requirements or something else you want to ask?"></textarea>
     </div>
@@ -443,6 +494,5 @@ Once I receive your message, I'll get back to you as soon as possible.
     </div>
     <div class="submit">
         <VPButton text="Submit Inquiry" />
-        {{ modalOpen }}
     </div>
 </form>
