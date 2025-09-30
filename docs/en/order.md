@@ -57,6 +57,14 @@ export default {
     const trackedTrackingDetails = 'Recommended for reliable delivery and shipment visibility. Lost packages may be eligible for investigation or claim.';
 
     return {
+      errors: {
+        name: false,
+        email: false,
+        street: false,
+        zip: false,
+        city: false,
+        country: false,
+      },
       status: {},
       form: {
         name: '',
@@ -68,6 +76,7 @@ export default {
         country: 'DE',
         address_extra: '',
         product: 'pcb',
+        amount: 1,
         shipping_region: 'DE',
         shipping_method: 'standard',
         payment_option: 'paypal',
@@ -183,6 +192,7 @@ export default {
             defaultCountry: 'AT'
         }
       ],
+      step: 1,
       modalOpen: false,
       result_title: '',
       result_text: ''
@@ -205,6 +215,26 @@ export default {
         if (!destination) return [];
         this.form.country = destination.defaultCountry;
     },
+    'form.name'(val) {
+        this.errors.name = !val;
+    },
+    'form.email'(val) {
+        // Simple email regex validation
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        this.errors.email = !emailRegex.test(val);
+    },
+    'form.street'(val) {
+        this.errors.street = !val;
+    },
+    'form.zip'(val) {
+        this.errors.zip = !val;
+    },
+    'form.city'(val) {
+        this.errors.city = !val;
+    },
+    'form.country'(val) {
+        this.errors.country = !val;
+    }
   },
   computed: {
     available_shipping_options() {
@@ -221,13 +251,42 @@ export default {
         const shipping = destination?.options.find(o => o.key === this.form.shipping_method);
 
         // Calculate total
-        const productPrice = product ? product.price : 0;
+        const productPrice = (product ? product.price : 0) * this.form.amount;
         const shippingPrice = shipping ? shipping.price : 0;
 
         return (productPrice + shippingPrice);
     },
   },
   methods: {
+    validate() {
+        const { name, email, street, zip, city, country } = this.form;
+
+        // Reset errors
+        for (const key in this.errors) this.errors[key] = false;
+
+        let valid = true;
+
+        if (!name) { this.errors.name = true; valid = false; }
+        if (!email) { this.errors.email = true; valid = false; }
+        if (!street) { this.errors.street = true; valid = false; }
+        if (!zip) { this.errors.zip = true; valid = false; }
+        if (!city) { this.errors.city = true; valid = false; }
+        if (!country) { this.errors.country = true; valid = false; }
+
+        return valid;
+    },
+    nextStep() {
+        if (this.validate()) {
+            this.step++;
+        } else {
+            this.modalOpen = true;
+            this.result_title = "Sorry!";
+            this.result_text = "Please fill all the required fields to continue.";
+        }
+    },
+    previousStep() {
+        this.step--;
+    },
     async submit() {
       api.post('/submit', this.form, { 
         withCredentials: true 
@@ -328,7 +387,8 @@ textarea {
 .submit {
     align-items: center;
     justify-content: center;
-    display: flex
+    display: flex;
+    gap: 10px;
 }
 
 .estimate-list {
@@ -341,6 +401,10 @@ textarea {
     justify-content: space-between;
     align-items: center;
     margin-bottom: .5rem;
+}
+
+.invalid {
+  border: 1px solid var(--vp-c-red-2) !important;
 }
 </style>
 
@@ -386,138 +450,157 @@ Interested in a ready-to-use solution? I offer fully assembled and tested Doorma
     </p>
 </div>
 <form v-else-if="status.status == 'none'" @submit.prevent="submit">
-    <div>
-        To request one, simply fill out the form below.
-        <b>This is not a purchase or checkout</b> — it's just a non-binding inquiry to help me gauge interest and manage requests privately.
-        <br><br>
-        Once I receive your message, I'll get back to you as soon as possible.
+    <div v-if="step == 1">
+        <div>
+            To request one, simply fill out the form below.
+            <b>This is not a purchase or checkout</b> — it's just a non-binding inquiry to help me gauge interest and manage requests privately.
+            <br><br>
+            Once I receive your message, I'll get back to you as soon as possible.
+        </div>
+        <h5 class="firmware_title_row">What would you like to order?</h5>
+        <div class="firmware_option_row" :class="{ half: products.length <= 2 }">
+            <label class="firmware_option" v-for="product in products" :key="product.key">
+                <input type="radio" class="reset_default" v-model="form.product" :value="product.key">
+                <span class="checkmark">
+                    <div class="image" v-if="product.image">
+                        <img :src="product.image" />
+                    </div>
+                    <div class="title">{{ product.name }} <Badge type="tip">{{ product.price.toFixed(2) }}€</Badge></div>
+                    <div class="details" v-html="product.details"></div>
+                </span>
+            </label>
+        </div>
+        <h5 class="firmware_title_row">How many do you need?</h5>
+        <div class="form-element">
+            <select name="amount" class="form-control" id="amount" v-model.number="form.amount" required>
+                <option v-for="n in 4" :key="n" :value="n">
+                    {{ n }}
+                </option>
+            </select>
+        </div>
+        <h5 class="firmware_title_row">Where do you live?</h5>
+        <div class="firmware_option_row" :class="{ half: shipping_regions.length <= 2 }">
+            <label class="firmware_option" v-for="destination in shipping_regions" :key="destination.key">
+                <input type="radio" class="reset_default" v-model="form.shipping_region" :value="destination.key">
+                <span class="checkmark">
+                    <div class="icon" v-if="destination.icon"><component :is="destination.icon" /></div>
+                    <div class="title">{{ destination.name }}</div>
+                    <div class="details" v-html="destination.details"></div>
+                </span>
+            </label>
+        </div>
+        <h5 class="firmware_title_row">What's your shipping preference?</h5>
+        <div class="firmware_option_row" :class="{ half: available_shipping_options.length <= 2 }">
+            <label class="firmware_option" v-for="option in available_shipping_options" :key="option.key">
+                <input type="radio" class="reset_default" v-model="form.shipping_method" :value="option.key">
+                <span class="checkmark">
+                    <div class="icon" v-if="option.icon"><component :is="option.icon" /></div>
+                    <div class="title">{{ option.name }} <Badge type="tip">{{ option.price.toFixed(2) }}€</Badge></div>
+                    <div class="details" v-html="option.details"></div>
+                </span>
+            </label>
+        </div>
+        <h5 class="firmware_title_row">What's your address?</h5>
+        <div class="form-element top name-container">
+            <label for="name">Name</label>
+            <input type="text" name="name" id="name" placeholder="Max Mustermann" v-model="form.name" :class="{ 'invalid': errors.name }" required />
+        </div>
+        <div class="form-element top email-container">
+            <label for="email">Email</label>
+            <input type="email" name="email" id="email" placeholder="max@mustermann.net" v-model="form.email" :class="{ 'invalid': errors.email }" required />
+        </div>
+        <div class="form-element">
+            <label for="street">Street & House number</label>
+            <input type="text" name="street" id="street" placeholder="Musterstrasse 1" v-model="form.street" :class="{ 'invalid': errors.street }" required />
+        </div>
+        <div class="form-element">
+            <label for="address_extra">Additional address information <Badge type="info">Optional</Badge></label>
+            <input type="text" name="address_extra" id="address_extra" placeholder="" v-model="form.address_extra" />
+        </div>
+        <div class="form-element top name-container">
+            <label for="zip">Postal Code</label>
+            <input type="text" name="zip" id="zip" placeholder="97080" v-model="form.zip" :class="{ 'invalid': errors.zip }" required />
+        </div>
+        <div class="form-element top email-container">
+            <label for="city">Town/city</label>
+            <input type="text" name="city" id="city" placeholder="Würzburg" v-model="form.city" :class="{ 'invalid': errors.city }" required />
+        </div>
+        <div class="form-element">
+            <label for="city">Country</label>
+            <select name="country" class="form-control" id="country" v-model="form.country" required>
+                <option v-for="country in countryOptions" :key="country.value" :value="country.value" :label="country.label">{{ country.label }}</option>
+            </select>
+        </div>
+        <div class="form-element">
+            <label for="discord">Discord Tag <Badge type="info">Optional</Badge></label>
+            <input type="text" name="discord" id="discord" placeholder="azonflo" v-model="form.discord" />
+        </div>
+        <h5 class="firmware_title_row">Which payment method do you prefer?</h5>
+        <div class="firmware_option_row" :class="{ half: payment_options.length <= 2 }">
+            <label class="firmware_option" v-for="option in payment_options" :key="option.key">
+                <input type="radio" class="reset_default" v-model="form.payment_option" :value="option.key">
+                <span class="checkmark">
+                    <div class="icon" v-if="option.icon"><component :is="option.icon" /></div>
+                    <div class="title">{{ option.name }}</div>
+                    <div class="details" v-html="option.details"></div>
+                </span>
+            </label>
+        </div>
+        <h5 class="firmware_title_row">Any other questions? <Badge type="info">Optional</Badge></h5>
+        <div class="form-element">
+            <textarea id="message" name="message" v-model="form.message" placeholder="Any special requirements or something else you want to ask?"></textarea>
+        </div>
+        <div class="submit">
+            <VPButton type="button" text="Next" @click="nextStep" />
+        </div>
     </div>
-    <h5 class="firmware_title_row">What would you like to order?</h5>
-    <div class="firmware_option_row" :class="{ half: products.length <= 2 }">
-        <label class="firmware_option" v-for="product in products" :key="product.key">
-            <input type="radio" class="reset_default" v-model="form.product" :value="product.key">
-            <span class="checkmark">
-                <div class="image" v-if="product.image">
-                    <img :src="product.image" />
-                </div>
-                <div class="title">{{ product.name }} <Badge type="tip">{{ product.price.toFixed(2) }}€</Badge></div>
-                <div class="details" v-html="product.details"></div>
-            </span>
-        </label>
-    </div>
-    <h5 class="firmware_title_row">Where do you live?</h5>
-    <div class="firmware_option_row" :class="{ half: shipping_regions.length <= 2 }">
-        <label class="firmware_option" v-for="destination in shipping_regions" :key="destination.key">
-            <input type="radio" class="reset_default" v-model="form.shipping_region" :value="destination.key">
-            <span class="checkmark">
-                <div class="icon" v-if="destination.icon"><component :is="destination.icon" /></div>
-                <div class="title">{{ destination.name }}</div>
-                <div class="details" v-html="destination.details"></div>
-            </span>
-        </label>
-    </div>
-    <h5 class="firmware_title_row">What's your shipping preference?</h5>
-    <div class="firmware_option_row" :class="{ half: available_shipping_options.length <= 2 }">
-        <label class="firmware_option" v-for="option in available_shipping_options" :key="option.key">
-            <input type="radio" class="reset_default" v-model="form.shipping_method" :value="option.key">
-            <span class="checkmark">
-                <div class="icon" v-if="option.icon"><component :is="option.icon" /></div>
-                <div class="title">{{ option.name }} <Badge type="tip">{{ option.price.toFixed(2) }}€</Badge></div>
-                <div class="details" v-html="option.details"></div>
-            </span>
-        </label>
-    </div>
-    <h5 class="firmware_title_row">What's your address?</h5>
-    <div class="form-element top name-container">
-        <label for="name">Name</label>
-        <input type="text" name="name" id="name" placeholder="Max Mustermann" v-model="form.name" required />
-    </div>
-    <div class="form-element top email-container">
-        <label for="email">Email</label>
-        <input type="email" name="email" id="email" placeholder="max@mustermann.net" v-model="form.email" required />
-    </div>
-    <div class="form-element">
-        <label for="street">Street & House number</label>
-        <input type="text" name="street" id="street" placeholder="Musterstrasse 1" v-model="form.street" required />
-    </div>
-    <div class="form-element">
-        <label for="address_extra">Additional address information <Badge type="info">Optional</Badge></label>
-        <input type="text" name="address_extra" id="address_extra" placeholder="" v-model="form.address_extra" />
-    </div>
-    <div class="form-element top name-container">
-        <label for="zip">Postal Code</label>
-        <input type="text" name="zip" id="zip" placeholder="97080" v-model="form.zip" required />
-    </div>
-    <div class="form-element top email-container">
-        <label for="city">Town/city</label>
-        <input type="text" name="city" id="city" placeholder="Würzburg" v-model="form.city" required />
-    </div>
-    <div class="form-element">
-        <label for="city">Country</label>
-        <select name="country" class="form-control" id="country" v-model="form.country" required>
-            <option v-for="country in countryOptions" :key="country.value" :value="country.value" :label="country.label">{{ country.label }}</option>
-        </select>
-    </div>
-    <div class="form-element">
-        <label for="discord">Discord Tag <Badge type="info">Optional</Badge></label>
-        <input type="text" name="discord" id="discord" placeholder="azonflo" v-model="form.discord" />
-    </div>
-    <h5 class="firmware_title_row">Which payment method do you prefer?</h5>
-    <div class="firmware_option_row" :class="{ half: payment_options.length <= 2 }">
-        <label class="firmware_option" v-for="option in payment_options" :key="option.key">
-            <input type="radio" class="reset_default" v-model="form.payment_option" :value="option.key">
-            <span class="checkmark">
-                <div class="icon" v-if="option.icon"><component :is="option.icon" /></div>
-                <div class="title">{{ option.name }}</div>
-                <div class="details" v-html="option.details"></div>
-            </span>
-        </label>
-    </div>
-    <h5 class="firmware_title_row">Any other questions? <Badge type="info">Optional</Badge></h5>
-    <div class="form-element">
-        <textarea id="message" name="message" v-model="form.message" placeholder="Any special requirements or something else you want to ask?"></textarea>
-    </div>
-    <h5 class="firmware_title_row">Estimated total:</h5>
-    <ul class="estimate-list">
-        <li>
-            <span>Product: </span>
-            <span>
-                {{
-                    (products.find(p => p.key === form.product)?.name || '—')
-                }}
-                <Badge type="tip">
-                    {{
-                        products.find(p => p.key === form.product)?.price?.toFixed(2)
-                    }}€
-                </Badge>
-            </span>
-        </li>
-        <li>
-            <span>Shipping: </span>
-            <span>
-                {{
-                    (available_shipping_options.find(o => o.key === form.shipping_method)?.name || '—')
-                }} ({{
-                    (shipping_regions.find(o => o.key === form.shipping_region)?.name || '—')
-                }})
-                <Badge type="tip">
-                    {{
-                        available_shipping_options.find(o => o.key === form.shipping_method)?.price?.toFixed(2)
-                    }}€
-                </Badge>
-            </span>
-        </li>
-        <li>
-            <span><strong>Total: </strong></span>
-            <span>
-                <Badge type="warning">{{ total_price.toFixed(2) }}€</Badge>
-            </span>
-        </li>
-    </ul>
-    <div class="warning custom-block" style="padding-top: 8px">
-        This is a non-binding estimate including your selected product and shipping. You will receive a confirmation and payment instructions by email after submitting your request.
-    </div>
-    <div class="submit">
-        <VPButton text="Submit Inquiry" />
+    <div v-else-if="step == 2">
+        <h3 class="firmware_title_row">Summary</h3>
+        <ul class="estimate-list">
+            <li>
+                <span>
+                    {{ form.amount }} &times; {{
+                        (products.find(p => p.key === form.product)?.name || '—')
+                    }}
+                </span>
+                <span>
+                    <Badge type="tip">
+                        {{
+                            ((products.find(p => p.key === form.product)?.price || 0) * form.amount).toFixed(2)
+                        }}€
+                    </Badge>
+                </span>
+            </li>
+            <li>
+                <span>
+                    1 &times; {{
+                        (available_shipping_options.find(o => o.key === form.shipping_method)?.name || '—')
+                    }} ({{
+                        (shipping_regions.find(o => o.key === form.shipping_region)?.name || '—')
+                    }})
+                </span>
+                <span>
+                    <Badge type="tip">
+                        {{
+                            available_shipping_options.find(o => o.key === form.shipping_method)?.price?.toFixed(2)
+                        }}€
+                    </Badge>
+                </span>
+            </li>
+            <hr>
+            <li>
+                <span><strong>Estimated Total: </strong></span>
+                <span>
+                    <Badge type="warning">{{ total_price.toFixed(2) }}€</Badge>
+                </span>
+            </li>
+        </ul>
+        <div class="warning custom-block" style="padding-top: 8px">
+            This is a non-binding estimate including your selected product and shipping. You will receive a confirmation and payment instructions by email after submitting your request.
+        </div>
+        <div class="submit">
+            <VPButton type="button" text="Back" @click="previousStep" />
+            <VPButton type="submit" text="Submit Inquiry" />
+        </div>
     </div>
 </form>
