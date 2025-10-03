@@ -124,7 +124,7 @@ export default {
                     name: 'Standard Shipping',
                     icon: '',
                     details: standardTrackingDetails,
-                    price: 1.80
+                    price: 1.8
                 },
                 {
                     key: 'tracking',
@@ -207,6 +207,37 @@ export default {
     })
     .catch(() => {
         this.status = { status: 'error' }
+    });
+
+    api.get('/price_data', { 
+        withCredentials: true 
+    })
+    .then(res => {
+        // merge into products
+        if (res.data.products) {
+            this.products = this.products.map(p => {
+                const override = res.data.products.find(x => { return x.key == p.key });
+                return override ? { ...p, ...override } : p;
+            });
+        }
+
+        if (res.data.shipping_regions) {
+            this.shipping_regions = this.shipping_regions.map(r => {
+                const override = res.data.shipping_regions.find(x => x.key === r.key);
+                if (!override) return r;
+
+                // merge options inside region
+                const mergedOptions = r.options.map(opt => {
+                const optOverride = override.options?.find(o => o.key === opt.key);
+                return optOverride ? { ...opt, ...optOverride } : opt;
+                });
+
+                return { ...r, ...override, options: mergedOptions };
+            });
+        }
+    })
+    .catch(() => {
+        
     })
   },
   watch: {
@@ -535,6 +566,15 @@ Interested in a ready-to-use solution? I offer fully assembled and tested Doorma
             <label for="discord">Discord Tag <Badge type="info">Optional</Badge></label>
             <input type="text" name="discord" id="discord" placeholder="azonflo" v-model="form.discord" />
         </div>
+        <h5 class="firmware_title_row">Any other questions? <Badge type="info">Optional</Badge></h5>
+        <div class="form-element">
+            <textarea id="message" name="message" v-model="form.message" placeholder="Any special requirements or something else you want to ask?"></textarea>
+        </div>
+        <div class="submit">
+            <VPButton type="button" text="Next" @click="nextStep" />
+        </div>
+    </div>
+    <div v-else-if="step == 2">
         <h5 class="firmware_title_row">Which payment method do you prefer?</h5>
         <div class="firmware_option_row" :class="{ half: payment_options.length <= 2 }">
             <label class="firmware_option" v-for="option in payment_options" :key="option.key">
@@ -546,16 +586,7 @@ Interested in a ready-to-use solution? I offer fully assembled and tested Doorma
                 </span>
             </label>
         </div>
-        <h5 class="firmware_title_row">Any other questions? <Badge type="info">Optional</Badge></h5>
-        <div class="form-element">
-            <textarea id="message" name="message" v-model="form.message" placeholder="Any special requirements or something else you want to ask?"></textarea>
-        </div>
-        <div class="submit">
-            <VPButton type="button" text="Next" @click="nextStep" />
-        </div>
-    </div>
-    <div v-else-if="step == 2">
-        <h3 class="firmware_title_row">Summary</h3>
+        <h5 class="firmware_title_row">Summary</h5>
         <ul class="estimate-list">
             <li>
                 <span>
