@@ -51,336 +51,366 @@ const allCountries = [
 ];
 
 export default {
-  data() {
-    const standardTrackingDetails = 'Choose this option if you are comfortable with not being able to track the shipment. Lost packages cannot be refunded or replaced.';
+    data() {
+        const standardTrackingDetails = 'Choose this option if you are comfortable with not being able to track the shipment. Lost packages cannot be refunded or replaced.';
 
-    const trackedTrackingDetails = 'Recommended for reliable delivery and shipment visibility. Lost packages may be eligible for investigation or claim.';
+        const trackedTrackingDetails = 'Recommended for reliable delivery and shipment visibility. Lost packages may be eligible for investigation or claim.';
 
-    return {
-      errors: {
-        name: false,
-        email: false,
-        street: false,
-        zip: false,
-        city: false,
-        country: false,
-      },
-      status: {},
-      form: {
-        name: '',
-        email: '',
-        discord: '',
-        street: '',
-        zip: '',
-        city: '',
-        country: 'DE',
-        address_extra: '',
-        product: 'pcb',
-        amount: 1,
-        shipping_region: 'DE',
-        shipping_method: 'standard',
-        payment_option: 'paypal',
-        message: '',
-      },
-      max_items: 4,
-      payment_options: [
-        {
-            key: 'paypal',
-            name: 'PayPal',
-            icon: IconLogosPaypal,
-            details: 'Please select <code>Family & Friends</code> to avoid additional fees. If you choose another option, you\'ll need to cover the fees.',
-        },
-        {
-            key: 'sepa',
-            name: 'SEPA Bank Transfer',
-            icon: IconSimpleIconsSepa,
-            details: 'If PayPal isn\'t suitable due to fees or other reasons, SEPA bank transfer is also available.',
-        },
-      ],
-      products: [
-        {
-            key: 'pcb',
-            name: 'Doorman-S3',
-            image: '/pcb.png',
-            details: 'PCB only – ideal if you can mount it inside a wallbox or the indoor station enclosure.',
-            price: 35
-        },
-        {
-            key: 'bundle',
-            name: 'Doorman-S3 Bundle',
-            image: '/enclosure.png',
-            details: 'Includes PCB and case – perfect when the device is installed in a visible spot.',
-            price: 37.5
-        }
-      ],
-      shipping_regions: [
-        {
-            key: 'DE',
-            name: 'Germany',
-            details: '',
-            icon: IconTwemojiFlagGermany,
-            options: [
+        return {
+            errors: {
+                name: false,
+                email: false,
+                street: false,
+                zip: false,
+                city: false,
+                country: false,
+            },
+            status: {},
+            orderHash: '',
+            form: {
+                name: '',
+                email: '',
+                discord: '',
+                street: '',
+                zip: '',
+                city: '',
+                country: 'DE',
+                address_extra: '',
+                product: 'pcb',
+                amount: 1,
+                shipping_region: 'DE',
+                shipping_method: 'standard',
+                payment_option: 'paypal',
+                message: '',
+            },
+            max_items: 4,
+            payment_options: [
                 {
-                    key: 'standard',
-                    name: 'Standard Shipping',
-                    icon: '',
-                    details: standardTrackingDetails,
-                    price: 1.8
+                    key: 'paypal',
+                    name: 'PayPal',
+                    icon: IconLogosPaypal,
+                    details: 'Please select <code>Family & Friends</code> to avoid additional fees. If you choose another option, you\'ll need to cover the fees.',
                 },
                 {
-                    key: 'tracking',
-                    name: 'Tracked Shipping',
-                    icon: '',
-                    details: trackedTrackingDetails,
-                    price: 6.19
-                }
+                    key: 'sepa',
+                    name: 'SEPA Bank Transfer',
+                    icon: IconSimpleIconsSepa,
+                    details: 'If PayPal isn\'t suitable due to fees or other reasons, SEPA bank transfer is also available.',
+                },
             ],
-            countries: [
-                'DE'
-            ],
-            defaultCountry: 'DE'
-        },
-        {
-            key: 'CH',
-            name: 'Switzerland',
-            details: '',
-            icon: IconTwemojiFlagSwitzerland,
-            options: [
+            products: [
                 {
-                    key: 'standard',
-                    name: 'Standard Shipping',
-                    icon: '',
-                    details: standardTrackingDetails,
-                    price: 9
+                    key: 'pcb',
+                    name: 'Doorman-S3',
+                    image: '/pcb.png',
+                    details: 'PCB only – ideal if you can mount it inside a wallbox or the indoor station enclosure.',
+                    price: 35
                 },
                 {
-                    key: 'tracking',
-                    name: 'Tracked Shipping',
-                    icon: '',
-                    details: trackedTrackingDetails,
-                    price: 27
+                    key: 'bundle',
+                    name: 'Doorman-S3 Bundle',
+                    image: '/enclosure.png',
+                    details: 'Includes PCB and case – perfect when the device is installed in a visible spot.',
+                    price: 37.5
                 }
             ],
-            countries: [
-                'CH'
-            ],
-            defaultCountry: 'CH'
-        },
-        {
-            key: 'EU',
-            name: 'European Union',
-            details: '',
-            icon: IconTwemojiFlagEuropeanUnion,
-            options: [
+            shipping_regions: [
                 {
-                    key: 'standard',
-                    name: 'Standard Shipping',
-                    icon: '',
-                    details: standardTrackingDetails,
-                    price: 7
+                    key: 'DE',
+                    name: 'Germany',
+                    details: '',
+                    icon: IconTwemojiFlagGermany,
+                    options: [
+                        {
+                            key: 'standard',
+                            name: 'Standard Shipping',
+                            icon: '',
+                            details: standardTrackingDetails,
+                            price: 1.8
+                        },
+                        {
+                            key: 'tracking',
+                            name: 'Tracked Shipping',
+                            icon: '',
+                            details: trackedTrackingDetails,
+                            price: 6.19
+                        }
+                    ],
+                    countries: [
+                        'DE'
+                    ],
+                    defaultCountry: 'DE'
                 },
                 {
-                    key: 'tracking',
-                    name: 'Tracked Shipping',
-                    icon: '',
-                    details: trackedTrackingDetails,
-                    price: 14.5
+                    key: 'CH',
+                    name: 'Switzerland',
+                    details: '',
+                    icon: IconTwemojiFlagSwitzerland,
+                    options: [
+                        {
+                            key: 'standard',
+                            name: 'Standard Shipping',
+                            icon: '',
+                            details: standardTrackingDetails,
+                            price: 9
+                        },
+                        {
+                            key: 'tracking',
+                            name: 'Tracked Shipping',
+                            icon: '',
+                            details: trackedTrackingDetails,
+                            price: 27
+                        }
+                    ],
+                    countries: [
+                        'CH'
+                    ],
+                    defaultCountry: 'CH'
+                },
+                {
+                    key: 'EU',
+                    name: 'European Union',
+                    details: '',
+                    icon: IconTwemojiFlagEuropeanUnion,
+                    options: [
+                        {
+                            key: 'standard',
+                            name: 'Standard Shipping',
+                            icon: '',
+                            details: standardTrackingDetails,
+                            price: 7
+                        },
+                        {
+                            key: 'tracking',
+                            name: 'Tracked Shipping',
+                            icon: '',
+                            details: trackedTrackingDetails,
+                            price: 14.5
+                        }
+                    ],
+                    countries: [
+                        'AT','BE','BG','HR','CY','CZ','DK','EE','FI','FR','GR','HU','IE','IT','LV','LT','LU','MT','NL','PL','PT','RO','SK','SI','SE','ES'
+                    ],
+                    defaultCountry: 'AT'
                 }
             ],
-            countries: [
-                'AT','BE','BG','HR','CY','CZ','DK','EE','FI','FR','GR','HU','IE','IT','LV','LT','LU','MT','NL','PL','PT','RO','SK','SI','SE','ES'
-            ],
-            defaultCountry: 'AT'
+            step: 1,
+            modalOpen: false,
+            result_title: '',
+            result_text: '',
+            available_units: 0
         }
-      ],
-      step: 1,
-      modalOpen: false,
-      result_title: '',
-      result_text: '',
-      available_units: 0
-    }
-  },
-  created() {
-    api.get('/status', { 
-        withCredentials: true 
-    })
-    .then(res => {
-        this.status = res.data;
-    })
-    .catch(() => {
-        this.status = { status: 'error' };
-    });
+    },
+    created() {
+        api.get('/status', { 
+            withCredentials: true 
+        })
+        .then(res => {
+            this.status = res.data;
+        })
+        .catch(() => {
+            this.status = { status: 'error' };
+        });
 
-    api.get('/product_data', { 
-        withCredentials: true 
-    })
-    .then(res => {
-        this.available_units = res.data.available_units;
-        
-        // merge into products
-        if (res.data.products) {
-            this.products = this.products.map(p => {
-                const override = res.data.products.find(x => { return x.key == p.key });
-                return override ? { ...p, price: override.price } : p;
-            });
-        }
-
-        if (res.data.shipping_regions) {
-            this.shipping_regions = this.shipping_regions.map(r => {
-                const override = res.data.shipping_regions.find(x => x.key === r.key);
-                if (!override) return r;
-
-                // merge options inside region
-                const mergedOptions = r.options.map(opt => {
-                    const optOverride = override.options?.find(o => o.key === opt.key);
-                    return optOverride ? { ...opt, ...optOverride } : opt;
+        api.get('/product_data', { 
+            withCredentials: true 
+        })
+        .then(res => {
+            this.available_units = res.data.available_units;
+            
+            // merge into products
+            if (res.data.products) {
+                this.products = this.products.map(p => {
+                    const override = res.data.products.find(x => { return x.key == p.key });
+                    return override ? { ...p, price: override.price } : p;
                 });
+            }
 
-                return { ...r, ...override, options: mergedOptions };
-            });
+            if (res.data.shipping_regions) {
+                this.shipping_regions = this.shipping_regions.map(r => {
+                    const override = res.data.shipping_regions.find(x => x.key === r.key);
+                    if (!override) return r;
+
+                    // merge options inside region
+                    const mergedOptions = r.options.map(opt => {
+                        const optOverride = override.options?.find(o => o.key === opt.key);
+                        return optOverride ? { ...opt, ...optOverride } : opt;
+                    });
+
+                    return { ...r, ...override, options: mergedOptions };
+                });
+            }
+        })
+        .catch(() => {
+            
+        })
+    },
+    watch: {
+        'form.shipping_region'(new_value) {
+            const destination = this.shipping_regions.find(d => d.key === new_value);
+            if (!destination) return [];
+            this.form.country = destination.defaultCountry;
+        },
+        'form.name'(val) {
+            this.errors.name = !val;
+        },
+        'form.email'(val) {
+            // Simple email regex validation
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            this.errors.email = !emailRegex.test(val);
+        },
+        'form.street'(val) {
+            this.errors.street = !val;
+        },
+        'form.zip'(val) {
+            this.errors.zip = !val;
+        },
+        'form.city'(val) {
+            this.errors.city = !val;
+        },
+        'form.country'(val) {
+            this.errors.country = !val;
         }
-    })
-    .catch(() => {
-        
-    })
-  },
-  watch: {
-    'form.shipping_region'(new_value) {
-        const destination = this.shipping_regions.find(d => d.key === new_value);
-        if (!destination) return [];
-        this.form.country = destination.defaultCountry;
     },
-    'form.name'(val) {
-        this.errors.name = !val;
-    },
-    'form.email'(val) {
-        // Simple email regex validation
-        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-        this.errors.email = !emailRegex.test(val);
-    },
-    'form.street'(val) {
-        this.errors.street = !val;
-    },
-    'form.zip'(val) {
-        this.errors.zip = !val;
-    },
-    'form.city'(val) {
-        this.errors.city = !val;
-    },
-    'form.country'(val) {
-        this.errors.country = !val;
-    }
-  },
-  computed: {
-    availability_class() {
-        if(this.available_units > 5) {
-            return 'tip';
-        } else if(this.available_units > 0) {
-            return 'warning';
-        }
-        return 'danger';
-    },
-    availability_text() {
-        if(this.available_units > 0) {
-            return this.available_units + ' available';
-        }
-        return 'Currently unavailable';
-    },
-    available_shipping_options() {
-        return this.shipping_regions.find(dest => dest.key === this.form.shipping_region)?.options || [];
-    },
-    countryOptions() {
-        const destination = this.shipping_regions.find(d => d.key === this.form.shipping_region);
-        if (!destination) return [];
-        return allCountries.filter(c => destination.countries.includes(c.value));
-    },
-    total_price() {
-        const product = this.products.find(p => p.key === this.form.product);
-        const destination = this.shipping_regions.find(d => d.key === this.form.shipping_region);
-        const shipping = destination?.options.find(o => o.key === this.form.shipping_method);
+    computed: {
+        availability_class() {
+            if(this.available_units > 5) {
+                return 'tip';
+            } else if(this.available_units > 0) {
+                return 'warning';
+            }
+            return 'danger';
+        },
+        availability_text() {
+            if(this.available_units > 0) {
+                return this.available_units + ' available';
+            }
+            return 'Currently unavailable';
+        },
+        available_shipping_options() {
+            return this.shipping_regions.find(dest => dest.key === this.form.shipping_region)?.options || [];
+        },
+        countryOptions() {
+            const destination = this.shipping_regions.find(d => d.key === this.form.shipping_region);
+            if (!destination) return [];
+            return allCountries.filter(c => destination.countries.includes(c.value));
+        },
+        total_price() {
+            const product = this.products.find(p => p.key === this.form.product);
+            const destination = this.shipping_regions.find(d => d.key === this.form.shipping_region);
+            const shipping = destination?.options.find(o => o.key === this.form.shipping_method);
 
-        // Calculate total
-        const productPrice = (product ? product.price : 0) * this.form.amount;
-        const shippingPrice = shipping ? shipping.price : 0;
+            // Calculate total
+            const productPrice = (product ? product.price : 0) * this.form.amount;
+            const shippingPrice = shipping ? shipping.price : 0;
 
-        return (productPrice + shippingPrice);
+            return (productPrice + shippingPrice);
+        },
     },
-  },
-  methods: {
-    validate() {
-        const { name, email, street, zip, city, country } = this.form;
-
-        // Reset errors
-        for (const key in this.errors) this.errors[key] = false;
-
-        let valid = true;
-
-        if (!name) { this.errors.name = true; valid = false; }
-        if (!email) { this.errors.email = true; valid = false; }
-        if (!street) { this.errors.street = true; valid = false; }
-        if (!zip) { this.errors.zip = true; valid = false; }
-        if (!city) { this.errors.city = true; valid = false; }
-        if (!country) { this.errors.country = true; valid = false; }
-
-        return valid;
-    },
-    nextStep() {
-        if (this.validate()) {
-            this.step++;
-        } else {
+    methods: {
+        showModal(title, text) {
             this.modalOpen = true;
-            this.result_title = "Sorry!";
-            this.result_text = "Please fill all the required fields to continue.";
-        }
-    },
-    previousStep() {
-        this.step--;
-    },
-    async submit() {
-      api.post('/submit', this.form, { 
-        withCredentials: true 
-      })
-      .then(response => {
-        this.modalOpen = true;
-        this.result_title = "Received!";
-        this.result_text = "Thank you. I will reach out to you as soon as possible.";
+            this.result_title = title;
+            this.result_text = text;
+        },
+        validate() {
+            const { name, email, street, zip, city, country } = this.form;
 
-        this.status = response.data;
-      })
-      .catch(error => {
-        this.modalOpen = true;
-        if (error.request.status == 429) {
-            this.result_title = "Slow down!"
-            this.result_text = "You made too many requests, try again later."
-        } else {
-          this.result_title = "Sorry!";
-          this.result_text = "Something went wrong. Please try again later.";
-        }
-      });
-    },
-    async closeOrder() {
-      api.post('/close', {}, { 
-        withCredentials: true 
-      })
-      .then(response => {
-        this.modalOpen = true;
-        this.result_title = "Thank you!";
-        this.result_text = "Your order is now finished. I hope you have fun with your Doorman :)";
+            // Reset errors
+            for (const key in this.errors) this.errors[key] = false;
 
-        this.status = response.data;
-      })
-      .catch(error => {
-        this.modalOpen = true;
-        if (error.request.status == 429) {
-            this.result_title = "Slow down!"
-            this.result_text = "You made too many requests, try again later."
-        } else {
-          this.result_title = "Sorry!";
-          this.result_text = "Something went wrong. Please try again later.";
+            let valid = true;
+
+            if (!name) { this.errors.name = true; valid = false; }
+            if (!email) { this.errors.email = true; valid = false; }
+            if (!street) { this.errors.street = true; valid = false; }
+            if (!zip) { this.errors.zip = true; valid = false; }
+            if (!city) { this.errors.city = true; valid = false; }
+            if (!country) { this.errors.country = true; valid = false; }
+
+            return valid;
+        },
+        nextStep() {
+            if (this.validate()) {
+                this.step++;
+            } else {
+                this.showModal("Sorry!", "Please fill all the required fields to continue.");
+            }
+        },
+        previousStep() {
+            this.step--;
+        },
+        async submit() {
+            api.post('/submit', this.form, { 
+                withCredentials: true 
+            })
+            .then(response => {
+                this.showModal("Received!", "Thank you. I will reach out to you as soon as possible.");
+                this.status = response.data;
+            })
+            .catch(error => {
+                if (error.request.status == 429) {
+                    this.showModal("Sorry!", "You made too many requests, try again later.");
+                } else {
+                    this.showModal("Sorry!", "Something went wrong. Please try again later.");
+                }
+            });
+        },
+        async closeOrder() {
+            api.post('/close', {}, { 
+                withCredentials: true 
+            })
+            .then(response => {
+                this.status = response.data;
+            })
+            .catch(error => {
+                if (error.request.status == 429) {
+                    this.showModal("Sorry!", "You made too many requests, try again later.");
+                } else {
+                    this.showModal("Sorry!", "Something went wrong. Please try again later.");
+                }
+            });
+        },
+        async resetOrder() {
+            api.post('/reset', {}, { 
+                withCredentials: true 
+            })
+            .then(response => {
+                this.status = response.data;
+            })
+            .catch(error => {
+                if (error.request.status == 429) {
+                    this.showModal("Sorry!", "You made too many requests, try again later.");
+                } else {
+                    this.showModal("Sorry!", "Something went wrong. Please try again later.");
+                }
+            });
+        },
+        async checkOrder() {
+            if (!this.orderHash) return;
+
+            try {
+                await api.get(`/order/${this.orderHash}`, { withCredentials: true });
+
+                const { data: statusData } = await api.get('/status', { withCredentials: true });
+                this.status = statusData;
+
+                if (this.status.status === 'none') {
+                    this.showModal("Sorry!", "This order does not exist! Please check the order number.");
+                }
+            } catch (error) {
+                let title = "Sorry!";
+                let text = "Something went wrong. Please try again later.";
+
+                if (error.response?.status === 429) {
+                    title = "Slow down!";
+                    text = "You made too many requests, try again later.";
+                }
+
+                this.showModal(title, text);
+            }
         }
-      });
     }
-  }
 }
 </script>
 
@@ -532,8 +562,33 @@ Once I receive your message, I'll get back to you as soon as possible.
         <VPButton text="I received my Doorman" @click="closeOrder" />
     </p>
 </div>
+<div v-else-if="status.status == 'closed'" class="tip custom-block">
+    <p class="custom-block-title">THANK YOU</p>
+    <p>
+        Your order has been successfully completed. I hope you have fun with your Doorman 😊<br>
+        If you'd like to place a new order, please click the button below.
+        <br><br>
+        <VPButton text="New Order" @click="resetOrder" />
+    </p>
+</div>
+<div v-else-if="status.status == 'cancelled'" class="danger custom-block">
+    <p class="custom-block-title">ORDER CANCELLED</p>
+    <p>
+        Your order has been cancelled!<br>
+        If you'd like to place a new order, please click the button below.
+        <br><br>
+        <VPButton text="New Order" @click="resetOrder" />
+    </p>
+</div>
 <form v-else-if="status.status == 'none'" @submit.prevent="submit">
     <div v-if="step == 1">
+        <h5 class="firmware_title_row">Already ordered?</h5>
+        <div style="display: flex; gap: 15px;justify-content: space-between; align-items: center;">
+            <input type="text" name="order_hash" id="order_hash" maxlength="8" v-model="orderHash" placeholder="Order Number" style="text-transform: uppercase; margin: 0px;" />
+            <VPButton type="button" text="Check Status" @click="checkOrder" />
+        </div>
+        <br>
+        <hr />
         <h5 class="firmware_title_row">Choose your Doorman package</h5>
         <div class="firmware_option_row" :class="{ half: products.length <= 2 }">
             <label class="firmware_option" v-for="product in products" :key="product.key">
@@ -580,12 +635,12 @@ Once I receive your message, I'll get back to you as soon as possible.
             <input type="text" name="name" id="name" placeholder="Max Mustermann" v-model="form.name" :class="{ 'invalid': errors.name }" required />
         </div>
         <div class="form-element">
-            <label for="street">Street & House number</label>
-            <input type="text" name="street" id="street" placeholder="Musterstrasse 1" v-model="form.street" :class="{ 'invalid': errors.street }" required />
-        </div>
-        <div class="form-element">
             <label for="address_extra">Additional address information <Badge type="info">Optional</Badge></label>
             <input type="text" name="address_extra" id="address_extra" placeholder="" v-model="form.address_extra" />
+        </div>
+        <div class="form-element">
+            <label for="street">Street & House number</label>
+            <input type="text" name="street" id="street" placeholder="Musterstrasse 1" v-model="form.street" :class="{ 'invalid': errors.street }" required />
         </div>
         <div class="form-element top name-container">
             <label for="zip">Postal Code</label>
