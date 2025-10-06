@@ -82,6 +82,7 @@ export default {
         payment_option: 'paypal',
         message: '',
       },
+      max_items: 4,
       payment_options: [
         {
             key: 'paypal',
@@ -195,7 +196,8 @@ export default {
       step: 1,
       modalOpen: false,
       result_title: '',
-      result_text: ''
+      result_text: '',
+      available_units: 0
     }
   },
   created() {
@@ -203,21 +205,23 @@ export default {
         withCredentials: true 
     })
     .then(res => {
-        this.status = res.data
+        this.status = res.data;
     })
     .catch(() => {
-        this.status = { status: 'error' }
+        this.status = { status: 'error' };
     });
 
-    api.get('/price_data', { 
+    api.get('/product_data', { 
         withCredentials: true 
     })
     .then(res => {
+        this.available_units = res.data.available_units;
+        
         // merge into products
         if (res.data.products) {
             this.products = this.products.map(p => {
                 const override = res.data.products.find(x => { return x.key == p.key });
-                return override ? { ...p, ...override } : p;
+                return override ? { ...p, price: override.price } : p;
             });
         }
 
@@ -228,8 +232,8 @@ export default {
 
                 // merge options inside region
                 const mergedOptions = r.options.map(opt => {
-                const optOverride = override.options?.find(o => o.key === opt.key);
-                return optOverride ? { ...opt, ...optOverride } : opt;
+                    const optOverride = override.options?.find(o => o.key === opt.key);
+                    return optOverride ? { ...opt, ...optOverride } : opt;
                 });
 
                 return { ...r, ...override, options: mergedOptions };
@@ -268,6 +272,20 @@ export default {
     }
   },
   computed: {
+    availability_class() {
+        if(this.available_units > 5) {
+            return 'tip';
+        } else if(this.available_units > 0) {
+            return 'warning';
+        }
+        return 'danger';
+    },
+    availability_text() {
+        if(this.available_units > 0) {
+            return this.available_units + ' available';
+        }
+        return 'Currently unavailable';
+    },
     available_shipping_options() {
         return this.shipping_regions.find(dest => dest.key === this.form.shipping_region)?.options || [];
     },
@@ -437,11 +455,45 @@ textarea {
 .invalid {
   border: 1px solid var(--vp-c-red-2) !important;
 }
+
+.amount-control {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  margin-top: 10px;
+  padding-top: 15px;
+  border-top: solid 1px var(--vp-c-default-soft);
+}
+
+.amount-control button {
+    height: 25px !important;
+    line-height: 25px !important;
+}
+
+.amount-control span {
+  width: 64px;
+  text-align: center;
+  font-weight: 600;
+  font-size: 14px;
+}
 </style>
 
-# Get your own Doorman
+# Get your own Doorman <Badge v-if="status.status !== 'error'" :type="availability_class" :text="availability_text"></Badge>
 
 Interested in a ready-to-use solution? I offer fully assembled and tested Doorman-S3 units with the [Doorman Firmware](guide/firmware/installation) pre-installed — ready for seamless integration with Home Assistant.
+
+To request one, simply fill out the form below.
+**This is not a purchase or checkout** — it's just a non-binding inquiry to help me gauge interest and manage requests privately.
+
+Once I receive your message, I'll get back to you as soon as possible.
+
+<div v-if="status.status !== 'error' && available_units === 0" class="warning custom-block">
+    <p class="custom-block-title">HEADS UP</p>
+    <p>All Doorman devices are currently out of stock. More units are on the way! You can still send your inquiry, and I'll make sure to reserve one for you as soon as they arrive.</p>
+</div>
+
+<hr />
 
 <ContactModal :show="modalOpen" @close="modalOpen = false">
     <template #header>
@@ -482,13 +534,7 @@ Interested in a ready-to-use solution? I offer fully assembled and tested Doorma
 </div>
 <form v-else-if="status.status == 'none'" @submit.prevent="submit">
     <div v-if="step == 1">
-        <div>
-            To request one, simply fill out the form below.
-            <b>This is not a purchase or checkout</b> — it's just a non-binding inquiry to help me gauge interest and manage requests privately.
-            <br><br>
-            Once I receive your message, I'll get back to you as soon as possible.
-        </div>
-        <h5 class="firmware_title_row">What would you like to order?</h5>
+        <h5 class="firmware_title_row">Choose your Doorman package</h5>
         <div class="firmware_option_row" :class="{ half: products.length <= 2 }">
             <label class="firmware_option" v-for="product in products" :key="product.key">
                 <input type="radio" class="reset_default" v-model="form.product" :value="product.key">
@@ -498,18 +544,15 @@ Interested in a ready-to-use solution? I offer fully assembled and tested Doorma
                     </div>
                     <div class="title">{{ product.name }} <Badge type="tip">{{ product.price.toFixed(2) }}€</Badge></div>
                     <div class="details" v-html="product.details"></div>
+                    <div class="amount-control" v-if="form.product == product.key">
+                        <VPButton type="button" text="-" @click="form.amount = Math.max(1, form.amount - 1)" />
+                        <span class="font-semibold w-8 text-center">{{ form.amount }} {{ form.amount === 1 ? 'Unit' : 'Units' }}</span>
+                        <VPButton type="button" text="+" @click="form.amount = Math.min(max_items, form.amount + 1)" />
+                    </div>
                 </span>
             </label>
         </div>
-        <h5 class="firmware_title_row">How many do you need?</h5>
-        <div class="form-element">
-            <select name="amount" class="form-control" id="amount" v-model.number="form.amount" required>
-                <option v-for="n in 4" :key="n" :value="n">
-                    {{ n }}
-                </option>
-            </select>
-        </div>
-        <h5 class="firmware_title_row">Where do you live?</h5>
+        <h5 class="firmware_title_row">Where should it be shipped?</h5>
         <div class="firmware_option_row" :class="{ half: shipping_regions.length <= 2 }">
             <label class="firmware_option" v-for="destination in shipping_regions" :key="destination.key">
                 <input type="radio" class="reset_default" v-model="form.shipping_region" :value="destination.key">
@@ -520,7 +563,7 @@ Interested in a ready-to-use solution? I offer fully assembled and tested Doorma
                 </span>
             </label>
         </div>
-        <h5 class="firmware_title_row">What's your shipping preference?</h5>
+        <h5 class="firmware_title_row">How should I send it?</h5>
         <div class="firmware_option_row" :class="{ half: available_shipping_options.length <= 2 }">
             <label class="firmware_option" v-for="option in available_shipping_options" :key="option.key">
                 <input type="radio" class="reset_default" v-model="form.shipping_method" :value="option.key">
@@ -531,14 +574,10 @@ Interested in a ready-to-use solution? I offer fully assembled and tested Doorma
                 </span>
             </label>
         </div>
-        <h5 class="firmware_title_row">What's your address?</h5>
-        <div class="form-element top name-container">
+        <h5 class="firmware_title_row">Your shipping address</h5>
+        <div class="form-element">   
             <label for="name">Name</label>
             <input type="text" name="name" id="name" placeholder="Max Mustermann" v-model="form.name" :class="{ 'invalid': errors.name }" required />
-        </div>
-        <div class="form-element top email-container">
-            <label for="email">Email</label>
-            <input type="email" name="email" id="email" placeholder="max@mustermann.net" v-model="form.email" :class="{ 'invalid': errors.email }" required />
         </div>
         <div class="form-element">
             <label for="street">Street & House number</label>
@@ -562,11 +601,16 @@ Interested in a ready-to-use solution? I offer fully assembled and tested Doorma
                 <option v-for="country in countryOptions" :key="country.value" :value="country.value" :label="country.label">{{ country.label }}</option>
             </select>
         </div>
-        <div class="form-element">
+        <h5 class="firmware_title_row">How can I reach you?</h5>
+        <div class="form-element top name-container">
+            <label for="email">Email</label>
+            <input type="email" name="email" id="email" placeholder="max@mustermann.net" v-model="form.email" :class="{ 'invalid': errors.email }" required />
+        </div>
+        <div class="form-element top email-container">
             <label for="discord">Discord Tag <Badge type="info">Optional</Badge></label>
             <input type="text" name="discord" id="discord" placeholder="azonflo" v-model="form.discord" />
         </div>
-        <h5 class="firmware_title_row">Any other questions? <Badge type="info">Optional</Badge></h5>
+        <h5 class="firmware_title_row">Anything else you’d like to share? <Badge type="info">Optional</Badge></h5>
         <div class="form-element">
             <textarea id="message" name="message" v-model="form.message" placeholder="Any special requirements or something else you want to ask?"></textarea>
         </div>
@@ -575,7 +619,7 @@ Interested in a ready-to-use solution? I offer fully assembled and tested Doorma
         </div>
     </div>
     <div v-else-if="step == 2">
-        <h5 class="firmware_title_row">Which payment method do you prefer?</h5>
+        <h5 class="firmware_title_row">How would you like to pay?</h5>
         <div class="firmware_option_row" :class="{ half: payment_options.length <= 2 }">
             <label class="firmware_option" v-for="option in payment_options" :key="option.key">
                 <input type="radio" class="reset_default" v-model="form.payment_option" :value="option.key">
@@ -586,7 +630,7 @@ Interested in a ready-to-use solution? I offer fully assembled and tested Doorma
                 </span>
             </label>
         </div>
-        <h5 class="firmware_title_row">Summary</h5>
+        <h5 class="firmware_title_row">Order summary</h5>
         <ul class="estimate-list">
             <li>
                 <span>
