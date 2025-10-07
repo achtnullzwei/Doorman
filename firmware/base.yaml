@@ -34,8 +34,6 @@ esphome:
 logger:
   id: esphome_logger
   level: ${log_level}
-  #logs:
-  #  sensor: WARN  # avoids logging debug sensor updates
 
 web_server:
   version: 3

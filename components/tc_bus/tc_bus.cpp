@@ -58,12 +58,19 @@ namespace esphome
 
             // Register remote receiver listener
             this->rx_->register_listener(this);
+
+            #if defined(USE_API) && !defined(USE_API_HOMEASSISTANT_SERVICES)
+            ESP_LOGW(TAG, "EVENTS ARE DISABLED");
+            ESP_LOGW(TAG, "Please set 'api:' -> 'homeassistant_services: true' to fire Home Assistant events.");
+            ESP_LOGW(TAG, "More information here: https://esphome.io/components/api.html");
+            #endif
         }
 
         void TCBusComponent::dump_config()
         {
             ESP_LOGCONFIG(TAG, "TC:BUS:");
 
+            #ifdef USE_API_HOMEASSISTANT_SERVICES
             if (strcmp(this->event_, "esphome.none") != 0)
             {
                 ESP_LOGCONFIG(TAG, "  Event: %s", this->event_);
@@ -72,6 +79,9 @@ namespace esphome
             {
                 ESP_LOGCONFIG(TAG, "  Event: Disabled");
             }
+            #else
+            ESP_LOGCONFIG(TAG, "  Event: API Disabled");
+            #endif
 
             #ifdef USE_TEXT_SENSOR
                 ESP_LOGCONFIG(TAG, "Text Sensors:");
@@ -247,7 +257,7 @@ namespace esphome
                     }
                 #endif
 
-                #ifdef USE_API
+                #ifdef USE_API_HOMEASSISTANT_SERVICES
                     // Fire Home Assistant Event if event name is specified
                     if (strcmp(event_, "esphome.none") != 0)
                     {

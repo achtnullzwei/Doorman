@@ -11,7 +11,7 @@ esphome:
       
 # Add External Components
 external_components:
-  - source: github://uriyacovy/ESPHome_nuki_lock@fix-api-services
+  - source: github://uriyacovy/ESPHome_nuki_lock@9bd4eaefa5f2ccdd5c69756c66ca8918e8615b57
     refresh: 60s
 
 # Pairing Mode
@@ -64,6 +64,8 @@ lock:
     web_server:
       sorting_group_id: sorting_group_controls
       sorting_weight: 3
+
+    security_pin: 1234
 
     # Optional:
     is_connected: 
