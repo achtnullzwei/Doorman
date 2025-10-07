@@ -13,6 +13,7 @@ import IconSimpleIconsSepa from '~icons/simple-icons/sepa';
 
 <script lang="ts">
 import axios from 'axios'
+import moment from 'moment';
 
 const api = axios.create({
    withCredentials: true,
@@ -306,6 +307,9 @@ export default {
 
             return (productPrice + shippingPrice);
         },
+        last_update() {
+            return moment.unix(this.status.updated_timestamp).format('DD.MM.YYYY');
+        }
     },
     methods: {
         showModal(title, text) {
@@ -518,7 +522,7 @@ To request one, simply fill out the form below.
 
 Once I receive your message, I'll get back to you as soon as possible.
 
-<div v-if="status.status !== 'error' && available_units === 0" class="warning custom-block">
+<div v-if="status.status == 'none' && available_units === 0" class="warning custom-block">
     <p class="custom-block-title">HEADS UP</p>
     <p>All Doorman devices are currently out of stock. More units are on the way! You can still send your inquiry, and I'll make sure to reserve one for you as soon as they arrive.</p>
 </div>
@@ -555,9 +559,10 @@ Once I receive your message, I'll get back to you as soon as possible.
 <div v-else-if="status.status == 'shipped'" class="tip custom-block">
     <p class="custom-block-title">ORDER SHIPPED</p>
     <p>
-        Good news! Your order is on its way and should normally arrive within a week.
+        Good news! Your order was shipped on {{last_update}} and should normally arrive within a week.
         <br>
-        Please note that customs may occasionally cause slight delays. Once it's delivered, kindly let me know here. Thank you!
+        Please note that customs may occasionally cause slight delays.
+        <br><br>Once it's delivered, kindly let me know here. Thank you!
         <br><br>
         <VPButton text="I received my Doorman" @click="closeOrder" />
     </p>
@@ -600,9 +605,9 @@ Once I receive your message, I'll get back to you as soon as possible.
                     <div class="title">{{ product.name }} <Badge type="tip">{{ product.price.toFixed(2) }}€</Badge></div>
                     <div class="details" v-html="product.details"></div>
                     <div class="amount-control" v-if="form.product == product.key">
-                        <VPButton type="button" text="-" @click="form.amount = Math.max(1, form.amount - 1)" />
+                        <VPButton theme="alt" type="button" text="-" @click="form.amount = Math.max(1, form.amount - 1)" />
                         <span class="font-semibold w-8 text-center">{{ form.amount }} {{ form.amount === 1 ? 'Unit' : 'Units' }}</span>
-                        <VPButton type="button" text="+" @click="form.amount = Math.min(max_items, form.amount + 1)" />
+                        <VPButton theme="alt" type="button" text="+" @click="form.amount = Math.min(max_items, form.amount + 1)" />
                     </div>
                 </span>
             </label>
@@ -665,9 +670,10 @@ Once I receive your message, I'll get back to you as soon as possible.
             <label for="discord">Discord Tag <Badge type="info">Optional</Badge></label>
             <input type="text" name="discord" id="discord" placeholder="azonflo" v-model="form.discord" />
         </div>
-        <h5 class="firmware_title_row">Anything else you’d like to share? <Badge type="info">Optional</Badge></h5>
+        <h5 class="firmware_title_row">Anything else you’d like to share?</h5>
         <div class="form-element">
-            <textarea id="message" name="message" v-model="form.message" placeholder="Any special requirements or something else you want to ask?"></textarea>
+            <label for="discord">Notes <Badge type="info">Optional</Badge></label>
+            <textarea id="message" name="message" v-model="form.message" placeholder="e.g. your indoor station model, any special requirements or something else you want to ask?"></textarea>
         </div>
         <div class="submit">
             <VPButton type="button" text="Next" @click="nextStep" />
