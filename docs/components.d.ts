@@ -8,11 +8,17 @@ export {}
 declare module 'vue' {
   export interface GlobalComponents {
     ContactModal: typeof import('./.vitepress/theme/components/ContactModal.vue')['default']
+    IconIcBaselineDiscord: typeof import('~icons/ic/baseline-discord')['default']
+    IconIcBaselineEmail: typeof import('~icons/ic/baseline-email')['default']
+    IconIconoirMailSolid: typeof import('~icons/iconoir/mail-solid')['default']
     IconIcRoundOtherHouses: typeof import('~icons/ic/round-other-houses')['default']
+    IconLetsIconsDateFill: typeof import('~icons/lets-icons/date-fill')['default']
     IconLineMdUploadingLoop: typeof import('~icons/line-md/uploading-loop')['default']
+    IconMdiIdentifier: typeof import('~icons/mdi/identifier')['default']
     IconMdiPackageVariantPlus: typeof import('~icons/mdi/package-variant-plus')['default']
+    IconMingcuteTimeFill: typeof import('~icons/mingcute/time-fill')['default']
+    IconPepiconsPopHash: typeof import('~icons/pepicons-pop/hash')['default']
     IconPhCpuBold: typeof import('~icons/ph/cpu-bold')['default']
-    IconSolarHashtagCircleBold: typeof import('~icons/solar/hashtag-circle-bold')['default']
     ModelViewer: typeof import('./.vitepress/theme/components/ModelViewer.vue')['default']
     STLLoader: typeof import('./.vitepress/theme/components/STLLoader.vue')['default']
   }

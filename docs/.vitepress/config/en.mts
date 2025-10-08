@@ -49,6 +49,11 @@ function nav(): DefaultTheme.NavItem[] {
           activeMatch: '/reference/'
         },
         {
+          text: 'Order Doorman',
+          link: '/order',
+          activeMatch: '/order',
+        },
+        {
           text: pkg.version,
           items: [
             { text: 'Issues', link: 'https://github.com/azoninc/doorman/issues' },

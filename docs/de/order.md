@@ -53,9 +53,8 @@ const allCountries = [
 
 export default {
     data() {
-        const standardTrackingDetails = 'Choose this option if you are comfortable with not being able to track the shipment. Lost packages cannot be refunded or replaced.';
-
-        const trackedTrackingDetails = 'Recommended for reliable delivery and shipment visibility. Lost packages may be eligible for investigation or claim.';
+        const standardTrackingDetails = 'Wähle diese Option, wenn du auf Sendungsverfolgung verzichten kannst. Verlorene Sendungen können nicht erstattet oder ersetzt werden.';
+        const trackedTrackingDetails = 'Empfohlen für eine zuverlässige Lieferung mit Sendungsverfolgung. Verlorene Sendungen können untersucht oder reklamiert werden.';
 
         return {
             errors: {
@@ -90,13 +89,13 @@ export default {
                     key: 'paypal',
                     name: 'PayPal',
                     icon: IconLogosPaypal,
-                    details: 'Please select <code>Family & Friends</code> to avoid additional fees. If you choose another option, you\'ll need to cover the fees.',
+                    details: 'Bitte wähle bei PayPal <code>Freunde & Familie</code>, um zusätzliche Gebühren zu vermeiden. Wenn du eine andere Option nutzt, musst du die Gebühren selbst tragen.',
                 },
                 {
                     key: 'sepa',
-                    name: 'SEPA Bank Transfer',
+                    name: 'SEPA-Überweisung',
                     icon: IconSimpleIconsSepa,
-                    details: 'If PayPal isn\'t suitable due to fees or other reasons, SEPA bank transfer is also available.',
+                    details: 'Wenn PayPal für dich nicht geeignet ist (z. B. wegen Gebühren), kannst du auch per SEPA-Überweisung bezahlen.',
                 },
             ],
             products: [
@@ -104,34 +103,34 @@ export default {
                     key: 'pcb',
                     name: 'Doorman-S3',
                     image: '/pcb.png',
-                    details: 'PCB only – ideal if you can mount it inside a wallbox or the indoor station enclosure.',
+                    details: 'Nur die Platine – ideal, wenn du sie in eine bestehende Wandbox oder deine Innenstation einbauen kannst.',
                     price: 35
                 },
                 {
                     key: 'bundle',
                     name: 'Doorman-S3 Bundle',
                     image: '/enclosure.png',
-                    details: 'Includes PCB and case – perfect when the device is installed in a visible spot.',
+                    details: 'Beinhaltet Platine und Gehäuse – perfekt, wenn du deinen Doorman sichtbar anbringen möchtest.',
                     price: 37.5
                 }
             ],
             shipping_regions: [
                 {
                     key: 'DE',
-                    name: 'Germany',
+                    name: 'Deutschland',
                     details: '',
                     icon: IconTwemojiFlagGermany,
                     options: [
                         {
                             key: 'standard',
-                            name: 'Standard Shipping',
+                            name: 'Standardversand',
                             icon: '',
                             details: standardTrackingDetails,
                             price: 1.8
                         },
                         {
                             key: 'tracking',
-                            name: 'Tracked Shipping',
+                            name: 'Sendungsverfolgung',
                             icon: '',
                             details: trackedTrackingDetails,
                             price: 6.19
@@ -144,20 +143,20 @@ export default {
                 },
                 {
                     key: 'CH',
-                    name: 'Switzerland',
+                    name: 'Schweiz',
                     details: '',
                     icon: IconTwemojiFlagSwitzerland,
                     options: [
                         {
                             key: 'standard',
-                            name: 'Standard Shipping',
+                            name: 'Standardversand',
                             icon: '',
                             details: standardTrackingDetails,
                             price: 9
                         },
                         {
                             key: 'tracking',
-                            name: 'Tracked Shipping',
+                            name: 'Sendungsverfolgung',
                             icon: '',
                             details: trackedTrackingDetails,
                             price: 27
@@ -170,20 +169,20 @@ export default {
                 },
                 {
                     key: 'EU',
-                    name: 'European Union',
+                    name: 'Europäische Union',
                     details: '',
                     icon: IconTwemojiFlagEuropeanUnion,
                     options: [
                         {
                             key: 'standard',
-                            name: 'Standard Shipping',
+                            name: 'Standardversand',
                             icon: '',
                             details: standardTrackingDetails,
                             price: 7
                         },
                         {
                             key: 'tracking',
-                            name: 'Tracked Shipping',
+                            name: 'Sendungsverfolgung',
                             icon: '',
                             details: trackedTrackingDetails,
                             price: 14.5
@@ -284,9 +283,9 @@ export default {
         },
         availability_text() {
             if(this.available_units > 0) {
-                return this.available_units + ' available';
+                return this.available_units + ' verfügbar';
             }
-            return 'Currently unavailable';
+            return 'Derzeit nicht verfügbar';
         },
         available_shipping_options() {
             return this.shipping_regions.find(dest => dest.key === this.form.shipping_region)?.options || [];
@@ -312,9 +311,6 @@ export default {
         }
     },
     methods: {
-        openManagement() {
-            window.location = '/management';
-        },
         showModal(title, text) {
             this.modalOpen = true;
             this.result_title = title;
@@ -341,7 +337,7 @@ export default {
             if (this.validate()) {
                 this.step++;
             } else {
-                this.showModal("Sorry!", "Please fill all the required fields to continue.");
+                this.showModal("Entschuldigung!", "Bitte fülle alle erforderlichen Felder aus, um fortzufahren.");
             }
         },
         previousStep() {
@@ -352,14 +348,14 @@ export default {
                 withCredentials: true 
             })
             .then(response => {
-                this.showModal("Received!", "Thank you. I will reach out to you as soon as possible.");
+                this.showModal("Erhalten!", "Vielen Dank. Ich melde mich so schnell wie möglich bei dir.");
                 this.status = response.data;
             })
             .catch(error => {
                 if (error.request.status == 429) {
-                    this.showModal("Sorry!", "You made too many requests, try again later.");
+                    this.showModal("Entschuldigung!", "Du hast zu viele Anfragen gesendet – bitte versuche es später erneut.");
                 } else {
-                    this.showModal("Sorry!", "Something went wrong. Please try again later.");
+                    this.showModal("Entschuldigung!", "Etwas ist schiefgelaufen. Bitte versuche es später erneut.");
                 }
             });
         },
@@ -372,9 +368,9 @@ export default {
             })
             .catch(error => {
                 if (error.request.status == 429) {
-                    this.showModal("Sorry!", "You made too many requests, try again later.");
+                    this.showModal("Entschuldigung!", "Du hast zu viele Anfragen gesendet – bitte versuche es später erneut.");
                 } else {
-                    this.showModal("Sorry!", "Something went wrong. Please try again later.");
+                    this.showModal("Entschuldigung!", "Etwas ist schiefgelaufen. Bitte versuche es später erneut.");
                 }
             });
         },
@@ -387,9 +383,9 @@ export default {
             })
             .catch(error => {
                 if (error.request.status == 429) {
-                    this.showModal("Sorry!", "You made too many requests, try again later.");
+                    this.showModal("Entschuldigung!", "Du hast zu viele Anfragen gesendet – bitte versuche es später erneut.");
                 } else {
-                    this.showModal("Sorry!", "Something went wrong. Please try again later.");
+                    this.showModal("Entschuldigung!", "Etwas ist schiefgelaufen. Bitte versuche es später erneut.");
                 }
             });
         },
@@ -403,15 +399,15 @@ export default {
                 this.status = statusData;
 
                 if (this.status.status === 'none') {
-                    this.showModal("Sorry!", "This order does not exist! Please check the order number.");
+                    this.showModal("Entschuldigung!", "Diese Bestellung existiert nicht! Bitte überprüfe die Bestellnummer.");
                 }
             } catch (error) {
-                let title = "Sorry!";
-                let text = "Something went wrong. Please try again later.";
+                let title = "Entschuldigung!";
+                let text = "Etwas ist schiefgelaufen. Bitte versuche es später erneut.";
 
                 if (error.response?.status === 429) {
-                    title = "Slow down!";
-                    text = "You made too many requests, try again later.";
+                    title = "Langsamer!";
+                    text = "Du hast zu viele Anfragen gesendet – bitte versuche es später erneut.";
                 }
 
                 this.showModal(title, text);
@@ -516,18 +512,18 @@ textarea {
 }
 </style>
 
-# Get your own Doorman <Badge v-if="status.status !== 'error' && available_units >= 0" :type="availability_class" :text="availability_text" @click="openManagement" />
 
-Interested in a ready-to-use solution? I offer fully assembled and tested Doorman-S3 units with the [Doorman Firmware](guide/firmware/installation) pre-installed — ready for seamless integration with Home Assistant.
+# Hol dir deinen Doorman <Badge v-if="status.status !== 'error' && available_units >= 0" :type="availability_class" :text="availability_text"></Badge>
 
-To request one, simply fill out the form below.
-**This is not a purchase or checkout** — it's just a non-binding inquiry to help me gauge interest and manage requests privately.
+Du suchst eine einfache Lösung? Ich hab einen einsatzbereiten Doorman-S3 für dich, schon mit der [Doorman-Firmware](guide/firmware/installation) geflasht. Den kannst du direkt in dein Home Assistant Setup einbinden – ganz ohne Stress.
 
-Once I receive your message, I'll get back to you as soon as possible.
+Um eine Anfrage zu stellen, fülle einfach das untenstehende Formular aus. **Dies ist kein Kauf oder Checkout** — nur eine unverbindliche Anfrage, damit ich das Interesse einschätzen und Bestellungen privat koordinieren kann.
 
-<div v-if="status.status == 'none' && available_units === 0" class="tip custom-block">
-    <p class="custom-block-title">HEADS UP</p>
-    <p>All Doorman devices are currently out of stock. More units are on the way! You can still send your inquiry, and I'll make sure to reserve one for you as soon as they arrive.</p>
+Sobald ich deine Nachricht erhalte, melde ich mich schnellstmöglich bei dir.
+
+<div v-if="status.status == 'none' && available_units === 0" class="warning custom-block">
+    <p class="custom-block-title">ACHTUNG</p>
+    <p>Alle Doormans sind gerade ausverkauft. Aber kein Grund zur Sorge - bald kommen neue!<br>Du kannst deine Anfrage trotzdem schonmal senden, dann reserviere ich dir einen.</p>
 </div>
 
 <hr />
@@ -543,61 +539,61 @@ Once I receive your message, I'll get back to you as soon as possible.
 
 <div v-if="status.status == 'error'" class="danger custom-block">
     <p class="custom-block-title">SORRY</p>
-    <p>The inquiry form is currently down. I'm probably working to fix it already—please try again later, or contact me directly in the meantime.</p>
+    <p>Das Anfrageformular ist derzeit nicht verfügbar. Wahrscheinlich arbeite ich bereits an einer Lösung – bitte versuche es später erneut oder kontaktiere mich direkt in der Zwischenzeit.</p>
 </div>
 <div v-else-if="status.status == 'pending_review'" class="warning custom-block">
-    <p class="custom-block-title">REVIEW PENDING</p>
-    <p>I have received your order and will now review your inquiry to confirm compatibility. You'll be notified as soon as the review is complete.</p>
+    <p class="custom-block-title">ÜBERPRÜFUNG AUSSTEHEND</p>
+    <p>Ich habe deine Bestellung erhalten und werde diese mit dir prüfen, um die Kompatibilität abzuklären. Du wirst benachrichtigt, sobald die Überprüfung abgeschlossen ist.</p>
 </div>
 <div v-else-if="status.status == 'pending_payment'" class="warning custom-block">
-    <p class="custom-block-title">PAYMENT PENDING</p>
-    <p>Your order is ready for the next step. Please complete the payment using the instructions provided so I can proceed with processing your shipment.</p>
+    <p class="custom-block-title">ZAHLUNG AUSSTEHEND</p>
+    <p>Deine Bestellung ist bereit für den nächsten Schritt. Bitte führe die Zahlung gemäß den bereitgestellten Anweisungen durch, damit ich mit der Bearbeitung des Versands fortfahren kann.</p>
 </div>
 <div v-else-if="status.status == 'pending_shipment'" class="tip custom-block">
-    <p class="custom-block-title">PREPARING SHIPMENT</p>
+    <p class="custom-block-title">VERSAND WIRD VORBEREITET</p>
     <p>
-        Your order is being prepared for shipment and will be dispatched soon. Once it has been sent, you will receive an update with tracking details. Thank you for your patience!
+        Deine Bestellung wird für den Versand vorbereitet und wird bald versendet. Sobald sie verschickt wurde, erhälst du ein Update mit den Versanddetails. Vielen Dank für deine Geduld!
     </p>
 </div>
 <div v-else-if="status.status == 'shipped'" class="tip custom-block">
-    <p class="custom-block-title">ORDER SHIPPED</p>
+    <p class="custom-block-title">BESTELLUNG VERSCHICKT</p>
     <p>
-        Good news! Your order was shipped on {{last_update}} and should normally arrive within a week.
+        Gute Nachrichten! Deine Bestellung wurde am {{last_update}} versandt und sollte normalerweise innerhalb einer Woche eintreffen.
         <br>
-        Please note that customs may occasionally cause slight delays.
-        <br><br>Once it's delivered, kindly let me know here. Thank you!
+        Bitte beachte, dass der Zoll gelegentlich zu leichten Verzögerungen führen kann.
+        <br><br>Sobald die Lieferung erfolgt ist, informiere mich bitte hier. Vielen Dank!
         <br><br>
-        <VPButton text="I received my Doorman" @click="closeOrder" />
+        <VPButton text="Ich habe meinen Doorman erhalten" @click="closeOrder" />
     </p>
 </div>
 <div v-else-if="status.status == 'closed'" class="tip custom-block">
-    <p class="custom-block-title">THANK YOU</p>
+    <p class="custom-block-title">DANKE</p>
     <p>
-        Your order has been successfully completed. I hope you have fun with your Doorman 😊<br>
-        If you'd like to place a new order, please click the button below.
+        Deine Bestellung wurde erfolgreich abgeschlossen. Ich hoffe, du hast viel Freude mit deinem Doorman 😊<br>
+        Wenn du eine neue Bestellung aufgeben möchten, klicke bitte auf den Button unten.
         <br><br>
-        <VPButton text="New Order" @click="resetOrder" />
+        <VPButton text="Neue Bestellung" @click="resetOrder" />
     </p>
 </div>
 <div v-else-if="status.status == 'cancelled'" class="danger custom-block">
-    <p class="custom-block-title">ORDER CANCELLED</p>
+    <p class="custom-block-title">BESTELLUNG ABGESAGT</p>
     <p>
-        Your order has been cancelled!<br>
-        If you'd like to place a new order, please click the button below.
+        Deine Bestellung wurde storniert!<br>
+        Wenn du eine neue Bestellung aufgeben möchten, klicke bitte auf den Button unten.
         <br><br>
-        <VPButton text="New Order" @click="resetOrder" />
+        <VPButton text="Neue Bestellung" @click="resetOrder" />
     </p>
 </div>
 <form v-else-if="status.status == 'none'" @submit.prevent="submit">
     <div v-if="step == 1">
-        <h5 class="firmware_title_row">Already ordered?</h5>
+        <h5 class="firmware_title_row">Schon bestellt?</h5>
         <div style="display: flex; gap: 15px;justify-content: space-between; align-items: center;">
-            <input type="text" name="order_hash" id="order_hash" maxlength="8" v-model="orderHash" placeholder="Order Number" style="text-transform: uppercase; margin: 0px;" />
-            <VPButton type="button" text="Check Status" @click="checkOrder" />
+            <input type="text" name="order_hash" id="order_hash" maxlength="8" v-model="orderHash" placeholder="Bestellnummer" style="text-transform: uppercase; margin: 0px;" />
+            <VPButton type="button" text="Status prüfen" @click="checkOrder" />
         </div>
         <br>
         <hr />
-        <h5 class="firmware_title_row">Choose your Doorman package</h5>
+        <h5 class="firmware_title_row">Wähle dein Doorman-Paket</h5>
         <div class="firmware_option_row" :class="{ half: products.length <= 2 }">
             <label class="firmware_option" v-for="product in products" :key="product.key">
                 <input type="radio" class="reset_default" v-model="form.product" :value="product.key">
@@ -609,13 +605,13 @@ Once I receive your message, I'll get back to you as soon as possible.
                     <div class="details" v-html="product.details"></div>
                     <div class="amount-control" v-if="form.product == product.key">
                         <VPButton theme="alt" type="button" text="-" @click="form.amount = Math.max(1, form.amount - 1)" />
-                        <span class="font-semibold w-8 text-center">{{ form.amount }} {{ form.amount === 1 ? 'Unit' : 'Units' }}</span>
+                        <span class="font-semibold w-8 text-center">{{ form.amount }} {{ form.amount === 1 ? 'Stück' : 'Stücke' }}</span>
                         <VPButton theme="alt" type="button" text="+" @click="form.amount = Math.min(max_items, form.amount + 1)" />
                     </div>
                 </span>
             </label>
         </div>
-        <h5 class="firmware_title_row">Where should it be shipped?</h5>
+        <h5 class="firmware_title_row">Wohin soll's geschickt werden?</h5>
         <div class="firmware_option_row" :class="{ half: shipping_regions.length <= 2 }">
             <label class="firmware_option" v-for="destination in shipping_regions" :key="destination.key">
                 <input type="radio" class="reset_default" v-model="form.shipping_region" :value="destination.key">
@@ -626,7 +622,7 @@ Once I receive your message, I'll get back to you as soon as possible.
                 </span>
             </label>
         </div>
-        <h5 class="firmware_title_row">How should it be shipped?</h5>
+        <h5 class="firmware_title_row">Wie soll's verschickt werden?</h5>
         <div class="firmware_option_row" :class="{ half: available_shipping_options.length <= 2 }">
             <label class="firmware_option" v-for="option in available_shipping_options" :key="option.key">
                 <input type="radio" class="reset_default" v-model="form.shipping_method" :value="option.key">
@@ -637,53 +633,53 @@ Once I receive your message, I'll get back to you as soon as possible.
                 </span>
             </label>
         </div>
-        <h5 class="firmware_title_row">Your shipping address</h5>
+        <h5 class="firmware_title_row">Deine Lieferadresse</h5>
         <div class="form-element">   
             <label for="name">Name</label>
             <input type="text" name="name" id="name" placeholder="Max Mustermann" v-model="form.name" :class="{ 'invalid': errors.name }" required />
         </div>
         <div class="form-element">
-            <label for="address_extra">Additional address information <Badge type="info">Optional</Badge></label>
+            <label for="address_extra">Zusätzliche Adressinfos <Badge type="info">Optional</Badge></label>
             <input type="text" name="address_extra" id="address_extra" placeholder="" v-model="form.address_extra" />
         </div>
         <div class="form-element">
-            <label for="street">Street & House number</label>
-            <input type="text" name="street" id="street" placeholder="Musterstrasse 1" v-model="form.street" :class="{ 'invalid': errors.street }" required />
+            <label for="street">Straße & Hausnummer</label>
+            <input type="text" name="street" id="street" placeholder="Musterstraße 1" v-model="form.street" :class="{ 'invalid': errors.street }" required />
         </div>
         <div class="form-element top name-container">
-            <label for="zip">Postal Code</label>
+            <label for="zip">Postleitzahl</label>
             <input type="text" name="zip" id="zip" placeholder="97080" v-model="form.zip" :class="{ 'invalid': errors.zip }" required />
         </div>
         <div class="form-element top email-container">
-            <label for="city">Town/city</label>
+            <label for="city">Ort / Stadt</label>
             <input type="text" name="city" id="city" placeholder="Würzburg" v-model="form.city" :class="{ 'invalid': errors.city }" required />
         </div>
         <div class="form-element">
-            <label for="city">Country</label>
+            <label for="city">Land</label>
             <select name="country" class="form-control" id="country" v-model="form.country" required>
                 <option v-for="country in countryOptions" :key="country.value" :value="country.value" :label="country.label">{{ country.label }}</option>
             </select>
         </div>
-        <h5 class="firmware_title_row">How can I reach you?</h5>
+        <h5 class="firmware_title_row">Wie kann ich dich erreichen?</h5>
         <div class="form-element top name-container">
-            <label for="email">Email</label>
+            <label for="email">E-Mail</label>
             <input type="email" name="email" id="email" placeholder="max@mustermann.net" v-model="form.email" :class="{ 'invalid': errors.email }" required />
         </div>
         <div class="form-element top email-container">
-            <label for="discord">Discord Tag <Badge type="info">Optional</Badge></label>
+            <label for="discord">Discord-Tag <Badge type="info">Optional</Badge></label>
             <input type="text" name="discord" id="discord" placeholder="azonflo" v-model="form.discord" />
         </div>
-        <h5 class="firmware_title_row">Anything else you’d like to share?</h5>
+        <h5 class="firmware_title_row">Noch was, das du mir sagen willst?</h5>
         <div class="form-element">
-            <label for="discord">Notes <Badge type="info">Optional</Badge></label>
-            <textarea id="message" name="message" v-model="form.message" placeholder="e.g. your indoor station model, any special requirements or something else you want to ask?"></textarea>
+            <label for="discord">Notizen <Badge type="info">Optional</Badge></label>
+            <textarea id="message" name="message" v-model="form.message" placeholder="z.B. das Modell der Innenstation, besondere Anforderungen oder was du sonst fragen willst?"></textarea>
         </div>
         <div class="submit">
-            <VPButton type="button" text="Next" @click="nextStep" />
+            <VPButton type="button" text="Weiter" @click="nextStep" />
         </div>
     </div>
     <div v-else-if="step == 2">
-        <h5 class="firmware_title_row">How would you like to pay?</h5>
+        <h5 class="firmware_title_row">Wie willst du bezahlen?</h5>
         <div class="firmware_option_row" :class="{ half: payment_options.length <= 2 }">
             <label class="firmware_option" v-for="option in payment_options" :key="option.key">
                 <input type="radio" class="reset_default" v-model="form.payment_option" :value="option.key">
@@ -694,7 +690,7 @@ Once I receive your message, I'll get back to you as soon as possible.
                 </span>
             </label>
         </div>
-        <h5 class="firmware_title_row">Order summary</h5>
+        <h5 class="firmware_title_row">Bestellübersicht</h5>
         <ul class="estimate-list">
             <li>
                 <span>
@@ -728,18 +724,18 @@ Once I receive your message, I'll get back to you as soon as possible.
             </li>
             <hr>
             <li>
-                <span><strong>Estimated Total: </strong></span>
+                <span><strong>Voraussichtlicher Gesamtpreis: </strong></span>
                 <span>
                     <Badge type="warning">{{ total_price.toFixed(2) }} €</Badge>
                 </span>
             </li>
         </ul>
         <div class="warning custom-block" style="padding-top: 8px">
-            This is a non-binding estimate including your selected product and shipping. You will receive a confirmation and payment instructions by email after submitting your request.
+            Das ist nur ein unverbindlicher Kostenvoranschlag für das ausgewählte Produkt und Versand. Nach Absenden deiner Anfrage bekommst du eine Bestätigung und Zahlungsinfos per E-Mail.
         </div>
         <div class="submit">
-            <VPButton type="button" text="Back" @click="previousStep" />
-            <VPButton type="submit" text="Submit Inquiry" />
+            <VPButton type="button" text="Zurück" @click="previousStep" />
+            <VPButton type="submit" text="Anfrage absenden" />
         </div>
     </div>
 </form>
