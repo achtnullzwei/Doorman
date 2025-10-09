@@ -623,7 +623,7 @@ Once I receive your message, I'll get back to you as soon as possible.
         <h5 class="firmware_title_row">Already ordered?</h5>
         <div style="display: flex; gap: 15px;justify-content: space-between; align-items: center;">
             <input type="text" name="order_hash" id="order_hash" maxlength="8" v-model="orderHash" placeholder="Order Number" style="text-transform: uppercase; margin: 0px;" />
-            <VPButton type="button" text="Check Status" @click="checkOrder" />
+            <VPButton type="button" text="Check Status" :disabled="orderHash.length != 8" @click="checkOrder" />
         </div>
         <br>
         <hr />

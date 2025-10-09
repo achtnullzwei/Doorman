@@ -3,6 +3,8 @@ layout: doc
 footer: false
 aside: false
 sidebar: false
+editLink: false
+lastUpdated: false
 ---
 
 <script setup lang="ts">
@@ -39,6 +41,9 @@ export default {
 
             showAll: false,
             orderFilter: '',
+
+            currentPage: 1,
+            ordersPerPage: 10,
 
             modalOpen: false,
             result_title: '',
@@ -77,6 +82,14 @@ export default {
                 // Then sort by id descending
                 return b.id - a.id;
             });
+        },
+        paginatedOrders() {
+            const start = (this.currentPage - 1) * this.ordersPerPage;
+            const end = start + this.ordersPerPage;
+            return this.filteredOrders.slice(start, end);
+        },
+        totalPages() {
+            return Math.ceil(this.filteredOrders.length / this.ordersPerPage) || 1;
         },
         openOrderCount() {
             return this.orders.filter(x => { return x.status == 'pending_review'; }).length;
@@ -147,6 +160,14 @@ export default {
                 }
             };
         },
+    },
+    watch: {
+        orderFilter() {
+            this.currentPage = 1;
+        },
+        showAll() {
+            this.currentPage = 1;
+        }
     },
     methods: {
         showModal(title, text) {
@@ -495,7 +516,7 @@ textarea:hover,input[type=text]:hover,input[type=email]:hover,input[type=number]
         flex-wrap: wrap;
         gap: 15px 0;
     ">
-        <div style="flex: 0 0 60%; min-width: 250px;">
+        <div style="flex: 1 0 60%; min-width: 250px;">
             <h5 class="firmware_title_row" style="margin-bottom: 5px;margin-top: 0;">Update Stock</h5>
             <div>Add more items and notify customers.</div>
         </div>
@@ -509,7 +530,7 @@ textarea:hover,input[type=text]:hover,input[type=email]:hover,input[type=number]
             flex-grow: 1;
         ">
             <input type="number" id="stock_add_amount" v-model="stock_add_amount" min="1">
-            <VPButton type="button" text="Add" @click="addStock" />
+            <VPButton type="button" text="Add" :disabled="stock_add_amount == 0" @click="addStock" />
         </div>
     </div>
     <hr>
@@ -522,11 +543,11 @@ textarea:hover,input[type=text]:hover,input[type=email]:hover,input[type=number]
         flex-wrap: wrap;
         gap: 15px 0;
     ">
-        <div style="flex: 0 0 60%; min-width: 250px;">
+        <div style="flex: 1 0 60%; min-width: 250px;">
             <h5 class="firmware_title_row" style="margin-bottom: 5px;margin-top: 0px;">Orders</h5>
-            <div v-if="orderFilter">Filter: Custom (found <b>{{ filteredOrders.length }}</b> orders)</div>
-            <div v-else-if="showAll">Filter: All orders</div>
-            <div v-else>Filter: All ongoing orders</div>
+            <div v-if="orderFilter">Filter: Custom (<b>{{ filteredOrders.length }}</b> orders)</div>
+            <div v-else-if="showAll">Filter: All orders  (<b>{{ filteredOrders.length }}</b> orders)</div>
+            <div v-else>Filter: All ongoing orders  (<b>{{ filteredOrders.length }}</b> orders)</div>
         </div>
         <div style="
             flex: 0 0 40%;
@@ -538,7 +559,7 @@ textarea:hover,input[type=text]:hover,input[type=email]:hover,input[type=number]
             flex-grow: 1;
         ">
             <input type="text" name="orderFilter" id="orderFilter" placeholder="Search" v-model="orderFilter" />
-            <VPButton theme="alt" type="button" :text="showAll ? 'Show Ongoing' : 'Show All'" @click="showAll = !showAll" />
+            <VPButton :theme="showAll ? 'alt' : 'brand'" type="button" :text="showAll ? 'All' : 'Ongoing'" @click="showAll = !showAll" />
         </div>
     </div>
     <div v-if="orders.length > 0" class="order_list">
@@ -546,13 +567,13 @@ textarea:hover,input[type=text]:hover,input[type=email]:hover,input[type=number]
             <p class="custom-block-title">SORRY</p>
             <p>No order matches your filter!</p>
         </div>
-        <div v-for="order in filteredOrders" :key="order.id" class="order_row">
+        <div v-for="order in paginatedOrders" :key="order.id" class="order_row">
             <div class="header">
                 <div class="title">
                     <div class="name">ORDER FROM {{ order.name.split(' ')[0].toUpperCase() }} <Badge :type="statusLabelColor(order.status)">{{ statusLabel(order.status) }}</Badge></div>
                     <div class="meta">
                         <span><MingcuteTimeFill /> {{ moment.unix(order.timestamp).format('DD.MM.YYYY') }}</span>
-                        <span><IonMail /> {{ order.email }}</span>
+                        <span><IonMail /> {{ order.email || 'Not available' }}</span>
                         <span v-if="order.discord"><IcBaselineDiscord /> {{ order.discord }}</span>
                         <span><PepiconsPopHash  /> {{ order.hash }}</span>
                     </div>
@@ -596,6 +617,34 @@ textarea:hover,input[type=text]:hover,input[type=email]:hover,input[type=number]
                         {{ order.message }}
                     </div>
                 </div>
+            </div>
+        </div>
+        <div style="display: flex; justify-content: space-between; align-items: center; gap: 10px; margin-top: 20px;">
+            <div style="display: flex; align-items: center; gap: 10px;">
+                Show:
+                <select style="width: 70px;" name="ordersPerPage" class="form-control" id="ordersPerPage" v-model="ordersPerPage">
+                    <option value="10">10</option>
+                    <option value="20">20</option>
+                    <option value="50">50</option>
+                    <option value="100">100</option>
+                </select>
+            </div>
+            <div style="display: flex; align-items: center; gap: 10px;">
+                <VPButton 
+                    theme="alt" 
+                    type="button" 
+                    text="‹" 
+                    :disabled="currentPage === 1"
+                    @click="currentPage--"
+                />
+                <span>Page {{ currentPage }} of {{ totalPages }}</span>
+                <VPButton 
+                    theme="alt" 
+                    type="button" 
+                    text="›" 
+                    :disabled="currentPage === totalPages"
+                    @click="currentPage++"
+                />
             </div>
         </div>
     </div>

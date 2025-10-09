@@ -609,7 +609,7 @@ Sobald ich deine Nachricht erhalte, melde ich mich schnellstmöglich bei dir.
     </p>
 </div>
 <div v-else-if="status.status == 'cancelled'" class="danger custom-block">
-    <p class="custom-block-title">BESTELLUNG ABGESAGT</p>
+    <p class="custom-block-title">BESTELLUNG STORNIERT</p>
     <p>
         Deine Bestellung wurde storniert!<br>
         Wenn du eine neue Bestellung aufgeben möchten, klicke bitte auf den Button unten.
@@ -622,7 +622,7 @@ Sobald ich deine Nachricht erhalte, melde ich mich schnellstmöglich bei dir.
         <h5 class="firmware_title_row">Schon bestellt?</h5>
         <div style="display: flex; gap: 15px;justify-content: space-between; align-items: center;">
             <input type="text" name="order_hash" id="order_hash" maxlength="8" v-model="orderHash" placeholder="Bestellnummer" style="text-transform: uppercase; margin: 0px;" />
-            <VPButton type="button" text="Status prüfen" @click="checkOrder" />
+            <VPButton type="button" text="Status prüfen" :disabled="orderHash.length != 8" @click="checkOrder" />
         </div>
         <br>
         <hr />
