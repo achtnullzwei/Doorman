@@ -70,7 +70,13 @@ export default {
                     x.city.toLowerCase().includes(this.orderFilter.toLowerCase()) ||
                     x.street.toLowerCase().includes(this.orderFilter.toLowerCase()) ||
                     x.address_extra.toLowerCase().includes(this.orderFilter.toLowerCase());
-            }).sort((a, b) => b.id - a.id);
+            }).sort((a, b) => {
+                // Put pending_review first
+                if (a.status === 'pending_review' && b.status !== 'pending_review') return -1;
+                if (a.status !== 'pending_review' && b.status === 'pending_review') return 1;
+                // Then sort by id descending
+                return b.id - a.id;
+            });
         },
         openOrderCount() {
             return this.orders.filter(x => { return x.status == 'pending_review'; }).length;
@@ -127,11 +133,11 @@ export default {
                 if(status == 'pending_review') {
                     return 'Accept';
                 } else if(status == 'pending_payment') {
-                    return 'Mark paid';
+                    return 'Paid';
                 } else if(status == 'pending_shipment') {
-                    return 'Mark shipped';
+                    return 'Shipped';
                 } else if(status == 'shipped') {
-                    return 'Mark arrived';
+                    return 'Received';
                 } else if(status == 'closed') {
                     return '';
                 } else if(status == 'cancelled') {
@@ -535,9 +541,10 @@ textarea:hover,input[type=text]:hover,input[type=email]:hover,input[type=number]
             <VPButton theme="alt" type="button" :text="showAll ? 'Show Ongoing' : 'Show All'" @click="showAll = !showAll" />
         </div>
     </div>
-    <div class="order_list">
-        <div v-if="filteredOrders.length == 0" class="order_row">
-            No order matches your filter!
+    <div v-if="orders.length > 0" class="order_list">
+        <div v-if="orders.length > 0 && filteredOrders.length == 0" class="danger custom-block">
+            <p class="custom-block-title">SORRY</p>
+            <p>No order matches your filter!</p>
         </div>
         <div v-for="order in filteredOrders" :key="order.id" class="order_row">
             <div class="header">
@@ -565,7 +572,7 @@ textarea:hover,input[type=text]:hover,input[type=email]:hover,input[type=number]
                             <span class="price">{{ (order.product_details.price * order.amount).toFixed(2) }} €</span>
                         </div>
                         <div class="item_row">
-                            <span>1 × {{ order.shipping_details.name }} ({{ order.country_details.key }})</span>
+                            <span>1 × {{ order.shipping_details.name }} ({{ order.shipping_region }})</span>
                             <span class="price">{{ order.shipping_details.price.toFixed(2) }} €</span>
                         </div>
                         <div class="item_row total">
@@ -591,5 +598,9 @@ textarea:hover,input[type=text]:hover,input[type=email]:hover,input[type=number]
                 </div>
             </div>
         </div>
+    </div>
+    <div v-else class="info custom-block">
+        <p class="custom-block-title">SORRY</p>
+        <p>No order available!</p>
     </div>
 </div>

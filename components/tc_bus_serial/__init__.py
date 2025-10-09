@@ -15,11 +15,11 @@ DEPENDENCIES = ["logger", "tc_bus"]
 
 MULTI_CONF = False
 
-CONF_CONFIGO_ID = "tc_serial"
+CONF_CONFIGO_ID = "tc_bus_serial"
 CONF_TC_BUS_ID = "tc_bus"
 
-tc_serial_ns = cg.esphome_ns.namespace("tc_serial")
-TCSerialComponent = tc_serial_ns.class_("TCSerialComponent", cg.Component)
+tc_bus_serial_ns = cg.esphome_ns.namespace("tc_bus_serial")
+TCSerialComponent = tc_bus_serial_ns.class_("TCSerialComponent", cg.Component)
 
 tc_bus_ns = cg.esphome_ns.namespace("tc_bus")
 TCBusComponent = tc_bus_ns.class_("TCBusComponent", cg.Component)
@@ -54,7 +54,7 @@ FINAL_VALIDATE_SCHEMA = validate_logger
 
 
 async def to_code(config):
-    cg.add_global(tc_serial_ns.using)
+    cg.add_global(tc_bus_serial_ns.using)
     var = cg.new_Pvariable(config[CONF_ID])
 
     tc_bus_component = await cg.get_variable(config[CONF_TC_BUS_ID])

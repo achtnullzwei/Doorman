@@ -7,6 +7,7 @@ import IconNotoPackage from '~icons/noto/package'
 import IconTwemojiFlagGermany from '~icons/twemoji/flag-germany'
 import IconTwemojiFlagSwitzerland from '~icons/twemoji/flag-switzerland';
 import IconTwemojiFlagEuropeanUnion from '~icons/twemoji/flag-european-union'
+import EmojioneV1GlobeShowingAmericas from '~icons/emojione-v1/globe-showing-americas';
 import IconLogosPaypal from '~icons/logos/paypal';
 import IconSimpleIconsSepa from '~icons/simple-icons/sepa';
 </script>
@@ -49,6 +50,8 @@ const allCountries = [
     { value: 'SE', label: 'Sweden' },
     { value: 'ES', label: 'Spain' },
     { value: 'CH', label: 'Switzerland' },
+    { value: 'RS', label: 'Serbia' },
+    { value: 'CN', label: 'China' },
 ];
 
 export default {
@@ -193,6 +196,32 @@ export default {
                         'AT','BE','BG','HR','CY','CZ','DK','EE','FI','FR','GR','HU','IE','IT','LV','LT','LU','MT','NL','PL','PT','RO','SK','SI','SE','ES'
                     ],
                     defaultCountry: 'AT'
+                },
+                {
+                    key: 'INT',
+                    name: 'Other',
+                    details: '',
+                    icon: EmojioneV1GlobeShowingAmericas,
+                    options: [
+                        {
+                            key: 'standard',
+                            name: 'Standard Shipping',
+                            icon: '',
+                            details: standardTrackingDetails,
+                            price: 15
+                        },
+                        {
+                            key: 'tracking',
+                            name: 'Tracked Shipping',
+                            icon: '',
+                            details: trackedTrackingDetails,
+                            price: 30
+                        }
+                    ],
+                    countries: [
+                        'RS','CN'
+                    ],
+                    defaultCountry: 'RS'
                 }
             ],
             step: 1,
@@ -364,6 +393,7 @@ export default {
             });
         },
         async closeOrder() {
+            if (!confirm('Are you sure you want to close the order?')) return;
             api.post('/close', {}, { 
                 withCredentials: true 
             })

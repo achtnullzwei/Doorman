@@ -1,4 +1,4 @@
-#include "tc_serial_component.h"
+#include "tc_bus_serial_component.h"
 
 #include "esphome/core/application.h"
 #include "esphome/core/defines.h"
@@ -12,11 +12,11 @@
 
 namespace esphome
 {
-  namespace tc_serial
+  namespace tc_bus_serial
   {
-    static const char *const TAG = "tc_serial";
+    static const char *const TAG = "tc_bus_serial";
 
-    void TCSerialComponent::setup() {
+    void TCBusSerialComponent::setup() {
 
       ESP_LOGCONFIG(TAG, "Running setup");
 
@@ -44,11 +44,11 @@ namespace esphome
       this->base_component_->register_remote_listener(this);
     }
 
-    void TCSerialComponent::dump_config() {
+    void TCBusSerialComponent::dump_config() {
       ESP_LOGCONFIG(TAG, "TC:BUS Serial:");
     }
 
-    optional<uint8_t> TCSerialComponent::read_byte_() {
+    optional<uint8_t> TCBusSerialComponent::read_byte_() {
       optional<uint8_t> byte;
       uint8_t data = 0;
 
@@ -104,7 +104,7 @@ namespace esphome
       return byte;
     }
 
-    void TCSerialComponent::write_data_(std::vector<uint8_t> &data, bool linebreak) {
+    void TCBusSerialComponent::write_data_(std::vector<uint8_t> &data, bool linebreak) {
       
       std::string str(data.begin(), data.end());
       ESP_LOGD(TAG, "Send data to Serial: \"%s\"", str.c_str());
@@ -151,7 +151,7 @@ namespace esphome
     }
 
     // Received data from bus
-    bool TCSerialComponent::on_receive(tc_bus::TelegramData telegram_data, bool received)
+    bool TCBusSerialComponent::on_receive(tc_bus::TelegramData telegram_data, bool received)
     {
       if(telegram_data.is_long)
       {
@@ -169,8 +169,8 @@ namespace esphome
       return true;
     }
 
-    // Received data from tc_serial software
-    bool TCSerialComponent::parse_byte_(uint8_t byte)
+    // Received data from tc_bus_serial software
+    bool TCBusSerialComponent::parse_byte_(uint8_t byte)
     {
       ESP_LOGD(TAG, "Parse Byte: 0x%02X", byte);
 
@@ -209,7 +209,7 @@ namespace esphome
       return true;
     }
 
-    void TCSerialComponent::loop()
+    void TCBusSerialComponent::loop()
     {
       auto byte = this->read_byte_();
       while (byte.has_value())
@@ -219,5 +219,5 @@ namespace esphome
       }
     }
 
-  }  // namespace tc_serial
+  }  // namespace tc_bus_serial
 }  // namespace esphome

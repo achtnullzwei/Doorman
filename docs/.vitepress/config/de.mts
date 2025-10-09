@@ -174,9 +174,12 @@ function sidebarReference(): DefaultTheme.SidebarItem[] {
       ]
     },
     {
-      text: 'ESPHome',
+      text: 'ESPHome Komponenten',
       items: [
-        { text: 'TC:BUS Komponente', link: 'esphome-component' }
+        { text: 'TC:BUS', link: 'esphome-component' },
+        { text: 'TC:BUS Device', link: 'esphome-component-device' },
+        { text: 'TC:BUS Serial', link: 'esphome-component-serial' },
+        { text: 'Doorman Hardware', link: 'esphome-component-doorman' }
       ]
     },
     {

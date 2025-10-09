@@ -7,6 +7,7 @@ import IconNotoPackage from '~icons/noto/package'
 import IconTwemojiFlagGermany from '~icons/twemoji/flag-germany'
 import IconTwemojiFlagSwitzerland from '~icons/twemoji/flag-switzerland';
 import IconTwemojiFlagEuropeanUnion from '~icons/twemoji/flag-european-union'
+import EmojioneV1GlobeShowingAmericas from '~icons/emojione-v1/globe-showing-americas';
 import IconLogosPaypal from '~icons/logos/paypal';
 import IconSimpleIconsSepa from '~icons/simple-icons/sepa';
 </script>
@@ -21,34 +22,36 @@ const api = axios.create({
 })
 
 const allCountries = [
-    { value: 'AT', label: 'Austria' },
-    { value: 'BE', label: 'Belgium' },
-    { value: 'BG', label: 'Bulgaria' },
-    { value: 'HR', label: 'Croatia' },
-    { value: 'CY', label: 'Cyprus' },
-    { value: 'CZ', label: 'Czech Republic' },
-    { value: 'DK', label: 'Denmark' },
-    { value: 'EE', label: 'Estonia' },
+    { value: 'AT', label: 'Österreich' },
+    { value: 'BE', label: 'Belgien' },
+    { value: 'BG', label: 'Bulgarien' },
+    { value: 'HR', label: 'Kroatien' },
+    { value: 'CY', label: 'Zypern' },
+    { value: 'CZ', label: 'Tschechische Republik' },
+    { value: 'DK', label: 'Dänemark' },
+    { value: 'EE', label: 'Estland' },
     { value: 'FI', label: 'Finland' },
-    { value: 'FR', label: 'France' },
-    { value: 'DE', label: 'Germany' },
-    { value: 'GR', label: 'Greece' },
-    { value: 'HU', label: 'Hungary' },
-    { value: 'IE', label: 'Ireland' },
-    { value: 'IT', label: 'Italy' },
-    { value: 'LV', label: 'Latvia' },
-    { value: 'LT', label: 'Lithuania' },
-    { value: 'LU', label: 'Luxembourg' },
+    { value: 'FR', label: 'Frankreich' },
+    { value: 'DE', label: 'Deutschland' },
+    { value: 'GR', label: 'Griechenland' },
+    { value: 'HU', label: 'Ungarn' },
+    { value: 'IE', label: 'Irland' },
+    { value: 'IT', label: 'Italien' },
+    { value: 'LV', label: 'Lettland' },
+    { value: 'LT', label: 'Litauen' },
+    { value: 'LU', label: 'Luxemburg' },
     { value: 'MT', label: 'Malta' },
-    { value: 'NL', label: 'Netherlands' },
-    { value: 'PL', label: 'Poland' },
+    { value: 'NL', label: 'Niederlande' },
+    { value: 'PL', label: 'Polen' },
     { value: 'PT', label: 'Portugal' },
-    { value: 'RO', label: 'Romania' },
-    { value: 'SK', label: 'Slovakia' },
-    { value: 'SI', label: 'Slovenia' },
-    { value: 'SE', label: 'Sweden' },
-    { value: 'ES', label: 'Spain' },
-    { value: 'CH', label: 'Switzerland' },
+    { value: 'RO', label: 'Rumänien' },
+    { value: 'SK', label: 'Slovakei' },
+    { value: 'SI', label: 'Slovenien' },
+    { value: 'SE', label: 'Schweden' },
+    { value: 'ES', label: 'Spanien' },
+    { value: 'CH', label: 'Schweiz' },
+    { value: 'RS', label: 'Serbien' },
+    { value: 'CN', label: 'China' },
 ];
 
 export default {
@@ -192,6 +195,32 @@ export default {
                         'AT','BE','BG','HR','CY','CZ','DK','EE','FI','FR','GR','HU','IE','IT','LV','LT','LU','MT','NL','PL','PT','RO','SK','SI','SE','ES'
                     ],
                     defaultCountry: 'AT'
+                },
+                {
+                    key: 'INT',
+                    name: 'Other',
+                    details: '',
+                    icon: EmojioneV1GlobeShowingAmericas,
+                    options: [
+                        {
+                            key: 'standard',
+                            name: 'Standard Shipping',
+                            icon: '',
+                            details: standardTrackingDetails,
+                            price: 15
+                        },
+                        {
+                            key: 'tracking',
+                            name: 'Tracked Shipping',
+                            icon: '',
+                            details: trackedTrackingDetails,
+                            price: 30
+                        }
+                    ],
+                    countries: [
+                        'RS','CN'
+                    ],
+                    defaultCountry: 'RS'
                 }
             ],
             step: 1,
@@ -363,6 +392,7 @@ export default {
             });
         },
         async closeOrder() {
+            if (!confirm('Bist du dir sicher dass du die Bestellung abschließen möchtest?')) return;
             api.post('/close', {}, { 
                 withCredentials: true 
             })

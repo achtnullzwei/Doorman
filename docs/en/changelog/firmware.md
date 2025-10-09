@@ -1,7 +1,7 @@
 # Release Notes & Changelog
 Welcome to the latest updates! Here's a breakdown of all the **new features**, **improvements**, and important **changes** you need to know. Be sure to check out the **Breaking Changes** section for any actions needed to keep everything running smoothly.
 
-## 2025.9.0 <Badge type="warning" text="Next" />
+## 2025.10.0 <Badge type="warning" text="Next" />
 ### 🚨 IMPORTANT
 Please carefully review the breaking changes listed below before updating!  
 This release **will impact your current setup** and **requires** you to go through the **setup process again**.
@@ -74,6 +74,9 @@ This release **will impact your current setup** and **requires** you to go throu
 
 - **Component split**
   The `tc_bus` ESPHome component has been refactored into three separate components: `tc_bus`, `tc_bus_device`, and `doorman_hardware`. This change improves maintainability and adds flexibility when working with multiple TC:BUS devices.
+
+- **TC:Serial Component**
+  The `tc_serial` ESPHome component is now available, enabling serial communication with the TC:BUS via USB.
 
 ### 📝 Other Updates
 - **Firmware Configuration Assistant**  

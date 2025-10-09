@@ -26,22 +26,9 @@
 
 namespace esphome
 {
-  namespace tc_serial
+  namespace tc_bus_serial
   {
-    // Serial Number in decimal 
-    // 0x12345 in HEX
-    constexpr uint32_t DEVICE_SERIAL = 74565;
-
-    // SW Version 1.0
-    constexpr char DEVICE_SW_VER[]   = "10";
-
-    // Product
-    // 00: PC1-I
-    // 01: FBI1200
-    // 10: FBI1210
-    constexpr char DEVICE_PRODUCT[]  = "01";
-
-    class TCSerialComponent : public Component, public tc_bus::TCBusRemoteListener {
+    class TCBusSerialComponent : public Component, public tc_bus::TCBusRemoteListener {
     public:
       void setup() override;
       void loop() override;
@@ -67,5 +54,5 @@ namespace esphome
       uint32_t last_read_byte_{0};
     };
 
-  }  // namespace tc_serial
+  }  // namespace tc_bus_serial
 }  // namespace esphome

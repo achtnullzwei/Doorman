@@ -33,6 +33,10 @@ Du hast gerade deinen Doorman erhalten? Geh direkt zur [Quickstart](getting-star
 
 ## Möchtest du auch einen?
 
-Wenn du Fragen hast, kannst du mich gerne auf [Discord](https://discord.gg/t2d34dvmBf) oder per [E-Mail](mailto:flo@azon.ai?subject=Doorman) erreichen.
+Wenn du an einem Doorman-S3 interessiert bist, nutze einfach den Button unten, um eine Anfrage zu senden.
 
-Ich habe auch vollständig gelötete und getestete Doorman-S3 im Angebot, die schon mit der [Doorman Firmware](firmware/installation) geflasht sind. Diese können direkt in Home Assistant integriert werden.
+Wenn du Fragen hast oder direkten Kontakt wünschst, kannst du mich gerne auf [Discord](https://discord.gg/t2d34dvmBf) oder per [E-Mail](mailto:flo@azon.ai?subject=Doorman) anschreiben.
+
+<div class="custom-layout">
+    <a class="btn" href="../order">Anfrage senden</a>
+</div>

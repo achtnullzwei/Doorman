@@ -1,5 +1,6 @@
 <script setup>
 import { inBrowser } from 'vitepress'
+import pkg from '../../../package.json';
 </script>
 <script>
 export default {
@@ -148,7 +149,7 @@ export default {
 }
 </script>
 
-# Installation und Updates
+# Installation und Updates <Badge type="tip" :text="pkg.version" />
 
 Auf dieser Seite findest du alle verfügbaren Methoden, um die Doorman-Firmware zu installieren oder zu aktualisieren. Egal, ob du die Firmware zum ersten Mal flashst oder ein Update einspielst – die Anleitungen führen dich Schritt für Schritt durch den Prozess. Dazu gehören die direkte Installation per Web Serial, Updates über die Web-Oberfläche der Firmware und die Integration in das Update-System von Home Assistant.
 
