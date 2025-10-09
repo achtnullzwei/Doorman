@@ -9,10 +9,10 @@ esphome:
   name: ${name}
   friendly_name: ${friendly_name}
   name_add_mac_suffix: false
-  min_version: "2025.8.0"
+  min_version: "2025.9.1"
   project:
     name: "AzonInc.Doorman"
-    version: "2025.9.0"
+    version: "2025.10.0"
   on_boot:
     priority: 600
     then:
