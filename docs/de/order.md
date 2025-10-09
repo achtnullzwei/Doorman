@@ -311,6 +311,9 @@ export default {
         }
     },
     methods: {
+        openManagement() {
+            window.location = '/order-management';
+        },
         showModal(title, text) {
             this.modalOpen = true;
             this.result_title = title;
@@ -513,7 +516,7 @@ textarea {
 </style>
 
 
-# Hol dir deinen Doorman <Badge v-if="status.status !== 'error' && available_units >= 0" :type="availability_class" :text="availability_text"></Badge>
+# Hol dir deinen Doorman <Badge v-if="status.status !== 'error' && available_units >= 0" :type="availability_class" :text="availability_text" @click="openManagement" />
 
 Du suchst eine einfache Lösung? Ich hab einen einsatzbereiten Doorman-S3 für dich, schon mit der [Doorman-Firmware](guide/firmware/installation) geflasht. Den kannst du direkt in dein Home Assistant Setup einbinden – ganz ohne Stress.
 

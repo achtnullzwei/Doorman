@@ -313,7 +313,7 @@ export default {
     },
     methods: {
         openManagement() {
-            window.location = '/management';
+            window.location = '/order-management';
         },
         showModal(title, text) {
             this.modalOpen = true;

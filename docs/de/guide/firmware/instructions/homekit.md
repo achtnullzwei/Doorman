@@ -16,6 +16,6 @@ Folge den untenstehenden Schritten, um die Verbindung mit der Home-App auf deine
 
    </div>
    <div style="min-width: 100px;max-width:150px;flex: 1 1 100px;" markdown>
-      <img style="" src="/homekit-qrcode.svg">
+      <img style="" src="/homekit-qrcode.svg?url">
    </div>
 </div>

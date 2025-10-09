@@ -8,6 +8,11 @@ sidebar: false
 <script setup lang="ts">
 import type { DefaultTheme } from 'vitepress/theme'
 import { VPButton } from 'vitepress/theme'
+
+import MingcuteTimeFill from '~icons/mingcute/time-fill';
+import IonMail from '~icons/ion/mail';
+import IcBaselineDiscord from '~icons/ic/baseline-discord';
+import PepiconsPopHash from '~icons/pepicons-pop/hash';
 </script>
 
 <script lang="ts">
@@ -327,14 +332,16 @@ textarea:hover,input[type=text]:hover,input[type=email]:hover,input[type=number]
 .order_row .header {
     display: flex;
     gap: 15px;
-    margin-bottom: 10px;
     align-items: center;
+    flex-wrap: wrap; /* erlaubt Umbruch */
+    margin-bottom: 15px;
 }
 
 .order_row .header .title {
-    flex: 1;
+    flex: 1 1 auto; /* Titel nimmt verfügbaren Platz */
     display: flex;
     flex-direction: column;
+    width: 60%;
 }
 
 .order_row .header .title .VPBadge {
@@ -351,7 +358,7 @@ textarea:hover,input[type=text]:hover,input[type=email]:hover,input[type=number]
 
 .order_row .header .title .meta {
     display: flex;
-    gap: 7px;
+    gap: 0 7px;
     font-size: var(--vp-custom-block-font-size);
     color: var(--vp-c-text-3);
     flex-wrap: wrap;
@@ -368,6 +375,19 @@ textarea:hover,input[type=text]:hover,input[type=email]:hover,input[type=number]
     display: inline;
 }
 
+/* ACTIONS CONTAINER */
+.order_row .header .actions {
+    display: flex;
+    gap: 10px;
+    flex: 1 1 50px; /* Basis 250px, darf wachsen */
+    min-width: 200px; /* minimum 250px */
+}
+
+/* BUTTONS */
+.order_row .header .actions button {
+    flex: 1 1 0; /* Buttons wachsen gleichmäßig */
+    min-width: 80px; /* optional: Mindestbreite */
+}
 
 .order_row .details {
     display: flex;
@@ -400,11 +420,6 @@ textarea:hover,input[type=text]:hover,input[type=email]:hover,input[type=number]
 
 .order_row .details .address span {
     line-height: 17px;
-}
-
-.order_row .actions {
-    display: flex;
-    gap: 10px;
 }
 
 .order_summary {
@@ -447,7 +462,7 @@ textarea:hover,input[type=text]:hover,input[type=email]:hover,input[type=number]
 </ContactModal>
 
 <div style="display: flex;justify-content: space-between;align-items:center;">
-    <h1 class="firmware_title_row" style="margin-bottom: 10px;">Order Management</h1>
+    <h1 class="firmware_title_row" style="margin-bottom: 10px;margin-top: 10px;">Order Management</h1>
     <VPButton v-if="user" theme="alt" type="button" text="Logout" @click="logout" />
 </div>
 <div style="margin-bottom: 25px;">
@@ -457,7 +472,7 @@ textarea:hover,input[type=text]:hover,input[type=email]:hover,input[type=number]
 <hr>
 
 <div v-if="!user">
-    <h5 class="firmware_title_row" style="margin-bottom: 10px;">Login</h5>
+    <h5 class="firmware_title_row" style="margin-bottom: 10px;margin-top: 10px;">Login</h5>
     <div style="display: flex; gap: 15px;justify-content: space-between;align-items:center;">
         <input type="text" name="username" id="username" v-model="username" placeholder="Username" />
         <input type="password" name="password" id="password" v-model="password" placeholder="Password" />
@@ -465,26 +480,58 @@ textarea:hover,input[type=text]:hover,input[type=email]:hover,input[type=number]
     </div>
 </div>
 <div v-else>
-    <div style="margin-bottom: 25px;margin-top: 25px;display: flex;justify-content: space-between;align-items: center; gap: 15px; flex-wrap: wrap;">
-        <div style="flex-grow: 1;">
-            <h5 class="firmware_title_row" style="margin-bottom: 5px;margin-top: 0px;">Update Stock</h5>
-            <div>Add more items and inform customers.</div>
+    <div style="
+        margin-bottom: 25px;
+        margin-top: 25px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        flex-wrap: wrap;
+        gap: 15px 0;
+    ">
+        <div style="flex: 0 0 60%; min-width: 250px;">
+            <h5 class="firmware_title_row" style="margin-bottom: 5px;margin-top: 0;">Update Stock</h5>
+            <div>Add more items and notify customers.</div>
         </div>
-        <div style="display: flex;justify-content: space-between;align-items: center; gap: 15px;">
-            <input type="number" id="stock_add_amount" v-model="stock_add_amount" style="width:auto;" min="1">
+        <div style="
+            flex: 0 0 40%;
+            min-width: 250px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 15px;
+            flex-grow: 1;
+        ">
+            <input type="number" id="stock_add_amount" v-model="stock_add_amount" min="1">
             <VPButton type="button" text="Add" @click="addStock" />
         </div>
     </div>
     <hr>
-    <div style="margin-bottom: 25px;margin-top: 25px;display: flex;justify-content: space-between;align-items: center; gap: 15px;flex-wrap: wrap;">
-        <div style="flex-grow: 1;">
+    <div style="
+        margin-bottom: 25px;
+        margin-top: 25px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        flex-wrap: wrap;
+        gap: 15px 0;
+    ">
+        <div style="flex: 0 0 60%; min-width: 250px;">
             <h5 class="firmware_title_row" style="margin-bottom: 5px;margin-top: 0px;">Orders</h5>
             <div v-if="orderFilter">Filter: Custom (found <b>{{ filteredOrders.length }}</b> orders)</div>
             <div v-else-if="showAll">Filter: All orders</div>
             <div v-else>Filter: All ongoing orders</div>
         </div>
-        <div style="display: flex;justify-content: space-between;align-items: center; gap: 15px;">
-            <input style="width: auto;" type="text" name="orderFilter" id="orderFilter" placeholder="Search" v-model="orderFilter" />
+        <div style="
+            flex: 0 0 40%;
+            min-width: 250px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 15px;
+            flex-grow: 1;
+        ">
+            <input type="text" name="orderFilter" id="orderFilter" placeholder="Search" v-model="orderFilter" />
             <VPButton theme="alt" type="button" :text="showAll ? 'Show Ongoing' : 'Show All'" @click="showAll = !showAll" />
         </div>
     </div>
@@ -497,10 +544,10 @@ textarea:hover,input[type=text]:hover,input[type=email]:hover,input[type=number]
                 <div class="title">
                     <div class="name">ORDER FROM {{ order.name.split(' ')[0].toUpperCase() }} <Badge :type="statusLabelColor(order.status)">{{ statusLabel(order.status) }}</Badge></div>
                     <div class="meta">
-                        <span><icon-mingcute-time-fill />{{ moment.unix(order.timestamp).format('DD.MM.YYYY') }}</span>
-                        <span><icon-iconoir-mail-solid />{{ order.email }}</span>
-                        <span v-if="order.discord"><icon-ic-baseline-discord />{{ order.discord }}</span>
-                        <span><icon-pepicons-pop-hash />{{ order.hash }}</span>
+                        <span><MingcuteTimeFill /> {{ moment.unix(order.timestamp).format('DD.MM.YYYY') }}</span>
+                        <span><IonMail /> {{ order.email }}</span>
+                        <span v-if="order.discord"><IcBaselineDiscord /> {{ order.discord }}</span>
+                        <span><PepiconsPopHash  /> {{ order.hash }}</span>
                     </div>
                 </div>
                 <div class="actions">
