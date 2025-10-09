@@ -739,7 +739,6 @@ jobs:
       build-esp32-s3-quad-custom-nuki-bridge-dev-firmware
     ]
 
-
   # Deployment job
   deploy-stable:
     if: github.ref_name == 'master'
