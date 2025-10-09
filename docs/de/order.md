@@ -524,7 +524,7 @@ Um eine Anfrage zu stellen, fülle einfach das untenstehende Formular aus. **Die
 
 Sobald ich deine Nachricht erhalte, melde ich mich schnellstmöglich bei dir.
 
-<div v-if="status.status == 'none' && available_units === 0" class="warning custom-block">
+<div v-if="status.status == 'none' && available_units === 0" class="tip custom-block">
     <p class="custom-block-title">ACHTUNG</p>
     <p>Alle Doormans sind gerade ausverkauft. Aber kein Grund zur Sorge - bald kommen neue!<br>Du kannst deine Anfrage trotzdem schonmal senden, dann reserviere ich dir einen.</p>
 </div>
