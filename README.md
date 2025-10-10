@@ -40,7 +40,7 @@ Before diving into the installation process, visit the [Doorman Docs](https://do
 
 You can get fully assembled **Doorman S3** units with the **[Doorman Firmware](https://doorman.azon.ai/guide/firmware/installation)** pre-installed and ready for immediate integration into **Home Assistant**. 
 
-For inquiries, please use [this page](https://dev.doorman.azon.ai/order).
+For inquiries, please use [this page](https://doorman.azon.ai/order).
 
 ---
 

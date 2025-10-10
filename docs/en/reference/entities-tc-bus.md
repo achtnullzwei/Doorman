@@ -214,7 +214,7 @@ Defines the trigger to toggle the [Ring To Open](../guide/features/ring-to-open)
 - **External Button**
 
 ### Indoor Station Model <Badge type="tip" text="indoor_station_model" /> <Badge type="info" text="Disabled by default" />
-Sets the intercom indoor station model. Check the [Supported Models and Settings](esphome-component#model-setting-availability) to see your options.
+Sets the intercom indoor station model. Check the [Supported Models and Settings](esphome-component-device#model-setting-availability) to see your options.
 
 ### Ringtone: Entrance Door Call <Badge type="tip" text="indoor_station_ringtone_entrance_door_call" />
 Sets the intercom phone ringtone for entrance door calls.

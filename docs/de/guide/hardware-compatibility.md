@@ -67,5 +67,5 @@ Es tritt ein lautes Piepen auf, wenn jemand spricht.
 Wenn du mehrere Innenstationen hast, wird's etwas tricky. Du musst dann eine eigene YAML-Konfiguration erstellen, damit alle zusammen funktionieren. Die Standard-Firmware kann nämlich nur mit einer Innenstation umgehen.
 
 ## Verifizierte Modelle
-Schau dir die [unterstützten Modelle und Einstellungen](../../reference/esphome-component.md#model-setting-availability) an.  
+Schau dir die [unterstützten Modelle und Einstellungen](../../reference/esphome-component-device#model-setting-availability) an.  
 Modelle mit verfügbaren Einstellungen sind auf jeden Fall kompatibel. Falls dein Modell nicht dabei ist, erstelle bitte ein Issue, um die Kompatibilität zu überprüfen.

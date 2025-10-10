@@ -6,7 +6,7 @@ Die Einstellungen werden automatisch verfügbar, sobald deine Innenstation erfol
 
 ## Verfügbare Einstellungen
 
-Welche Einstellungen dir zur Verfügung stehen, hängt vom Modell deiner Innenstation ab. Eine Übersicht der unterstützten Einstellungen findest du in der [Liste unterstützter Einstellungen](../../reference/esphome-component#model-setting-availability).
+Welche Einstellungen dir zur Verfügung stehen, hängt vom Modell deiner Innenstation ab. Eine Übersicht der unterstützten Einstellungen findest du in der [Liste unterstützter Einstellungen](../../reference/esphome-component-device#model-setting-availability).
 
 ::: info HINWEIS
 Die meisten Einstellungen sind standardmäßig in der Oberfläche ausgeblendet.

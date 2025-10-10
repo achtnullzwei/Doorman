@@ -6,7 +6,7 @@ Settings are automatically made available once your device has been successfully
 
 ## Available Settings
 
-The actual settings available to you depend on your specific indoor station model and firmware version. Please refer to the [supported settings list](../../reference/esphome-component#model-setting-availability) for up-to-date compatibility.
+The actual settings available to you depend on your specific indoor station model and firmware version. Please refer to the [supported settings list](../../reference/esphome-component-device#model-setting-availability) for up-to-date compatibility.
 
 ::: info NOTE
 Most intercom-related settings are hidden by default in the interface.

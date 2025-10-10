@@ -69,5 +69,5 @@ If you have multiple indoor stations, things become a bit more complex. You'll n
 
 ## Verified Hardware
 
-Check out the [supported models and settings](../reference/esphome-component.md#model-setting-availability).  
+Check out the [supported models and settings](../reference/esphome-component-device#model-setting-availability).  
 Models with available settings are guaranteed to be compatible. If your model isn't listed, please open an issue to verify its compatibility.

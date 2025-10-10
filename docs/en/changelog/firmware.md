@@ -204,12 +204,12 @@ This release **will impact your current setup** and **requires** you to go throu
    As part of streamlining the models for each manufacturer, you may need to reconfigure your intercom model.
    Now, you can also see the Koch and Scantron models.
 
-   👉 **Check the [Model Setting availability](https://doorman.azon.ai/reference/esphome-component#model-setting-availability) for details!**
+   👉 **Check the [Model Setting availability](https://doorman.azon.ai/reference/esphome-component-device#model-setting-availability) for details!**
 
 - **Intercom Settings Updated**  
    To accommodate compatibility with new models, the settings `ringtone_door_call` and `volume_handset` have been renamed.  
 
-   👉 **Refer to the [Setting Types](https://doorman.azon.ai/reference/esphome-component#setting-types) for the updated names and additional settings!**
+   👉 **Refer to the [Setting Types](https://doorman.azon.ai/reference/esphome-component-device#setting-types) for the updated names and additional settings!**
 
 ## 2024.11.2
 ### ✨ Improvements
