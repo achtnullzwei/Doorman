@@ -161,7 +161,7 @@ on_...:
 
 ## Example YAML Configuration
 
-Here is an example configuration for the TC:Device component in ESPHome:
+Here is an example configuration for the component in ESPHome:
 
 ```yaml
 external_components:

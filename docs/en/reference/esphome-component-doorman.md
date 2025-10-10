@@ -29,6 +29,10 @@ Example log output:
 Here is an example configuration for the component in ESPHome:
 
 ```yaml
+external_components:
+  - source: github://azoninc/doorman@master
+    components: [ doorman_hardware ]
+
 text_sensor:
   - platform: doorman_hardware
     id: doorman_hardware_version

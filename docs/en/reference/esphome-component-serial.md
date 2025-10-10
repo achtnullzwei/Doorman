@@ -1,8 +1,8 @@
-# TC:BUS Serial Component <Badge type="tip" text="tc_serial" />
+# TC:BUS Serial Component <Badge type="tip" text="tc_bus_serial" />
 This component extends the `tc_bus` component, enabling direct interaction with the bus over a serial connection.
 
 ## Configuration
-The `tc_serial` component does not offer any configuration options.
+The `tc_bus_serial` component does not offer any configuration options.
 
 ## Example YAML Configuration
 
@@ -11,7 +11,7 @@ Here is an example configuration for the TC:Serial component in ESPHome:
 ```yaml
 external_components:
   - source: github://azoninc/doorman@master
-    components: [ tc_bus, tc_serial ]
+    components: [ tc_bus, tc_bus_serial ]
 
 ## RMT configuration
 remote_receiver:
@@ -30,8 +30,8 @@ remote_transmitter:
 # TC:BUS configuration
 tc_bus:
 
-# TC:Serial configuration
-tc_serial:
+# TC:BUS Serial configuration
+tc_bus_serial:
 ```
 
 ## Example Application
@@ -44,7 +44,7 @@ This Node.js example listens for a door call telegram and automatically opens th
 const { SerialPort } = require('serialport');
 const { RegexParser } = require('@serialport/parser-regex');
 
-// Port-Name und Baudrate anpassen
+// Port-Name and Baudrate
 const portName = 'COM11';
 const baudRate = 9600;
 

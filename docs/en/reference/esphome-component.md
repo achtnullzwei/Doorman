@@ -172,7 +172,7 @@ Be sure to modify the telegram and event name as needed based on your configurat
 
 ## Example YAML Configuration
 
-Here is an example configuration for the TC:BUS component in ESPHome:
+Here is an example configuration for the component in ESPHome:
 
 ```yaml
 external_components:

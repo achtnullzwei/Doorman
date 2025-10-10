@@ -550,11 +550,15 @@ textarea {
 
 Du suchst eine einfache Lösung? Ich hab einen einsatzbereiten Doorman-S3 für dich, schon mit der [Doorman-Firmware](guide/firmware/installation) geflasht. Den kannst du direkt in dein Home Assistant Setup einbinden – ganz ohne Stress.
 
+:::tip BITTE BEACHTE
+Dies ist **kein offizielles oder zertifiziertes Produkt**. Es basiert auf Reverse Engineering und wird **ohne Garantie auf Kompatibilität, Sicherheit oder Funktionalität** bereitgestellt.
+:::
+
 Um eine Anfrage zu stellen, fülle einfach das untenstehende Formular aus. **Dies ist kein Kauf oder Checkout** — nur eine unverbindliche Anfrage, damit ich das Interesse einschätzen und Bestellungen privat koordinieren kann.
 
-Sobald ich deine Nachricht erhalte, melde ich mich schnellstmöglich bei dir.
+Sobald ich deine Nachricht erhalte, melde ich mich schnellstmöglich bei dir. Die Status Updates sind automatisiert, **bitte prüfe auch deinen Spam Ordner.**
 
-<div v-if="status.status == 'none' && available_units === 0" class="tip custom-block">
+<div v-if="status.status == 'none' && available_units === 0" class="warning custom-block">
     <p class="custom-block-title">ACHTUNG</p>
     <p>Alle Doormans sind gerade ausverkauft. Aber kein Grund zur Sorge - bald kommen neue!<br>Du kannst deine Anfrage trotzdem schonmal senden, dann reserviere ich dir einen.</p>
 </div>

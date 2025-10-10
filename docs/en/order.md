@@ -550,12 +550,17 @@ textarea {
 
 Interested in a ready-to-use solution? I offer fully assembled and tested Doorman-S3 units with the [Doorman Firmware](guide/firmware/installation) pre-installed — ready for seamless integration with Home Assistant.
 
+:::tip PLEASE NOTE
+This is **not an official or certified product**. It is the result of a reverse engineering effort and is provided **as-is**, with **no guarantee of compatibility, safety, or functionality**.
+:::
+
 To request one, simply fill out the form below.
 **This is not a purchase or checkout** — it's just a non-binding inquiry to help me gauge interest and manage requests privately.
 
-Once I receive your message, I'll get back to you as soon as possible.
+Once I receive your message, I'll get back to you as soon as possible. The status updates are automated, **please also check your spam folder.**
 
-<div v-if="status.status == 'none' && available_units === 0" class="tip custom-block">
+
+<div v-if="status.status == 'none' && available_units === 0" class="warning custom-block">
     <p class="custom-block-title">HEADS UP</p>
     <p>All Doorman devices are currently out of stock. More units are on the way! You can still send your inquiry, and I'll make sure to reserve one for you as soon as they arrive.</p>
 </div>
