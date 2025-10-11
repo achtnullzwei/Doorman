@@ -9,10 +9,7 @@
 
 #include <vector>
 
-#ifdef USE_ARDUINO
-#include <HardwareSerial.h>
-#endif
-#ifdef USE_ESP_IDF
+#ifdef USE_ESP32
 #include <driver/uart.h>
 #if defined(USE_ESP32_VARIANT_ESP32C3) || defined(USE_ESP32_VARIANT_ESP32C6) || defined(USE_ESP32_VARIANT_ESP32S3) || \
     defined(USE_ESP32_VARIANT_ESP32H2)
@@ -22,6 +19,8 @@
 #if defined(USE_ESP32_VARIANT_ESP32S2) || defined(USE_ESP32_VARIANT_ESP32S3)
 #include <esp_private/usb_console.h>
 #endif
+#elif defined(USE_ARDUINO)
+#include <HardwareSerial.h>
 #endif
 
 namespace esphome
@@ -43,11 +42,10 @@ namespace esphome
       optional<uint8_t> read_byte_();
       void write_data_(std::vector<uint8_t> &data, bool linebreak = false);
 
-    #ifdef USE_ARDUINO
-      Stream *hw_serial_{nullptr};
-    #endif
-    #ifdef USE_ESP_IDF
+    #ifdef USE_ESP32
       uart_port_t uart_num_;
+    #elif defined(USE_ARDUINO)
+      Stream *hw_serial_{nullptr};
     #endif
 
       std::vector<uint8_t> rx_buffer_;
