@@ -29,11 +29,9 @@ CONFIG_SCHEMA = cv.All(
         {
             cv.GenerateID(): cv.declare_id(DeviceTelegramListenerBinarySensor),
             cv.GenerateID(CONF_TC_BUS_DEVICE_ID): cv.use_id(TCBusDeviceComponent),
-
-            cv.Optional(CONF_TYPE): cv.enum(TELEGRAM_TYPES, upper=False),
+            cv.Required(CONF_TYPE): cv.enum(TELEGRAM_TYPES, upper=False),
             cv.Optional(CONF_ADDRESS): cv.templatable(cv.hex_uint8_t),
             cv.Optional(CONF_PAYLOAD): cv.templatable(cv.hex_uint32_t),
-
             cv.Optional(CONF_ICON, default="mdi:doorbell"): cv.icon,
             cv.Optional(CONF_NAME, default="Doorbell"): cv.string,
             cv.Optional(CONF_AUTO_OFF, default="3s"): cv.positive_time_period_milliseconds
@@ -51,8 +49,7 @@ async def to_code(config):
     var = cg.new_Pvariable(config[CONF_ID])
     await binary_sensor.register_binary_sensor(var, config)
 
-    if CONF_TYPE in config:
-        cg.add(var.set_type(config[CONF_TYPE]))
+    cg.add(var.set_type(config[CONF_TYPE]))
 
     if CONF_ADDRESS in config:
         telegram_address = await cg.templatable(config[CONF_ADDRESS], [], cg.uint8)

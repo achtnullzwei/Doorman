@@ -21,32 +21,20 @@ DEPENDENCIES = ["tc_bus"]
 def validate(config):
     config = config.copy()
 
-    has_telegram_option = any(
-        key in config for key in [CONF_TELEGRAM]
-    )
+    has_telegram = CONF_TELEGRAM in config
+    has_type = CONF_TYPE in config
+    has_address = CONF_ADDRESS in config
+    has_payload = CONF_PAYLOAD in config
+    has_serial_number = CONF_SERIAL_NUMBER in config
 
-    has_type_option = CONF_TYPE in config
-
-    has_address_option = any(
-        key in config for key in [CONF_ADDRESS]
-    )
-
-    has_payload_option = any(
-        key in config for key in [CONF_PAYLOAD]
-    )
-
-    has_serial_number_option = any(
-        key in config for key in [CONF_SERIAL_NUMBER]
-    )
-
-    if not (has_telegram_option or has_type_option):
+    if not (has_telegram or has_type):
         raise cv.Invalid("You need to set either TELEGRAM or TYPE.")
 
-    if has_telegram_option:
-        if has_type_option or has_address_option or has_payload_option or has_serial_number_option:
+    if has_telegram:
+        if has_type or has_address or has_payload or has_serial_number:
             raise cv.Invalid("You can either set TELEGRAM or TYPE and ADDRESS, PAYLOAD and SERIAL_NUMBER.")
     else:
-        if not has_type_option:
+        if not has_type:
             raise cv.Invalid("You need to set TYPE.")
 
     return config

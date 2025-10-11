@@ -225,11 +225,8 @@ async def to_code(config):
 
     tc_bus_component = await cg.get_variable(config[CONF_TC_BUS_ID])
     cg.add(var.set_tc_bus_component(tc_bus_component))
-
     cg.add(var.set_internal_id(str(config[CONF_ID])))
-
-    if CONF_TYPE in config:
-        cg.add(var.set_device_group(config[CONF_TYPE]))
+    cg.add(var.set_device_group(config[CONF_TYPE]))
 
     for conf in config.get(CONF_ON_READ_MEMORY_COMPLETE, []):
         trigger = cg.new_Pvariable(conf[CONF_TRIGGER_ID], var)
@@ -252,19 +249,14 @@ async def to_code(config):
         await automation.build_automation(trigger, [], conf)
 
 
-
-def validate_send(config):
-    return config
-
 TC_BUS_DEVICE_SEND_SCHEMA = cv.All(
     cv.Schema(
     {
         cv.GenerateID(CONF_ID): cv.use_id(TCBusDeviceComponent),
-        cv.Optional(CONF_TYPE): cv.templatable(cv.enum(TELEGRAM_TYPES, upper=False)),
+        cv.Required(CONF_TYPE): cv.templatable(cv.enum(TELEGRAM_TYPES, upper=False)),
         cv.Optional(CONF_ADDRESS, default="0"): cv.templatable(cv.hex_uint8_t),
         cv.Optional(CONF_PAYLOAD, default="0"): cv.templatable(cv.hex_uint32_t)
-    }),
-    validate_send
+    })
 )
 
 @automation.register_action(
@@ -276,17 +268,14 @@ async def tc_bus_device_send_to_code(config, action_id, template_args, args):
     parent = await cg.get_variable(config[CONF_ID])
     var = cg.new_Pvariable(action_id, template_args, parent)
 
-    if CONF_TYPE in config:
-        type_template_ = await cg.templatable(config[CONF_TYPE], args, TELEGRAM_TYPE)
-        cg.add(var.set_type(type_template_))
+    type_template = await cg.templatable(config[CONF_TYPE], args, TELEGRAM_TYPE)
+    cg.add(var.set_type(type_template))
 
-    if CONF_ADDRESS in config:
-        address_template_ = await cg.templatable(config[CONF_ADDRESS], args, cg.uint8)
-        cg.add(var.set_address(address_template_))
+    address_template = await cg.templatable(config[CONF_ADDRESS], args, cg.uint8)
+    cg.add(var.set_address(address_template))
 
-    if CONF_PAYLOAD in config:
-        payload_template_ = await cg.templatable(config[CONF_PAYLOAD], args, cg.uint32)
-        cg.add(var.set_payload(payload_template_))
+    payload_template = await cg.templatable(config[CONF_PAYLOAD], args, cg.uint32)
+    cg.add(var.set_payload(payload_template))
 
     return var
 
@@ -310,13 +299,11 @@ async def tc_bus_device_update_setting_to_code(config, action_id, template_args,
     parent = await cg.get_variable(config[CONF_ID])
     var = cg.new_Pvariable(action_id, template_args, parent)
 
-    if CONF_TYPE in config:
-        type_template_ = await cg.templatable(config[CONF_TYPE], args, SETTING_TYPE)
-        cg.add(var.set_type(type_template_))
+    type_template = await cg.templatable(config[CONF_TYPE], args, SETTING_TYPE)
+    cg.add(var.set_type(type_template))
 
-    if CONF_VALUE in config:
-        value_template_ = await cg.templatable(config[CONF_VALUE], args, cg.uint8)
-        cg.add(var.set_value(value_template_))
+    value_template = await cg.templatable(config[CONF_VALUE], args, cg.uint8)
+    cg.add(var.set_value(value_template))
 
     return var
 

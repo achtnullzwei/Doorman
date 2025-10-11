@@ -33,13 +33,10 @@ CONFIG_SCHEMA = cv.All(
         {
             cv.GenerateID(): cv.declare_id(BusTelegramListenerLock),
             cv.GenerateID(CONF_TC_BUS_ID): cv.use_id(TCBusComponent),
-
             cv.Optional(CONF_ADDRESS): cv.templatable(cv.hex_uint8_t),
-
             cv.Optional(CONF_ICON, default="mdi:door"): cv.icon,
             cv.Optional(CONF_NAME, default="Entrance Door"): cv.string,
             cv.Optional(CONF_AUTO_LOCK, default="5s"): cv.positive_time_period_milliseconds,
-
             cv.Optional(CONF_ON_BEFORE_UNLOCK): automation.validate_automation(
             {
                 cv.GenerateID(CONF_TRIGGER_ID): cv.declare_id(BeforeUnlockTrigger),
