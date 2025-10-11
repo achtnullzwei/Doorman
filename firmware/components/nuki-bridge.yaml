@@ -11,7 +11,7 @@ esphome:
       
 # Add External Components
 external_components:
-  - source: github://uriyacovy/ESPHome_nuki_lock
+  - source: github://uriyacovy/ESPHome_nuki_lock@cdca1b1f6fecdf6452068e16b2ac679d19a15604
     refresh: 60s
 
 # Pairing Mode
