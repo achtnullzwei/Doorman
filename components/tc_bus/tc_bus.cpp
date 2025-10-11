@@ -64,6 +64,20 @@ namespace esphome
             ESP_LOGW(TAG, "Please set 'api:' -> 'homeassistant_services: true' to fire Home Assistant events.");
             ESP_LOGW(TAG, "More information here: https://esphome.io/components/api.html");
             #endif
+
+            #ifdef USE_API_HOMEASSISTANT_SERVICES
+                ha_event_data_["telegram"] = "";
+                ha_event_data_["type"] = "";
+                ha_event_data_["address"] = "";
+                ha_event_data_["payload"] = "";
+                ha_event_data_["serial_number"] = "";
+
+                ha_event_data_["telegram"].reserve(32);
+                ha_event_data_["type"].reserve(128);
+                ha_event_data_["address"].reserve(8);
+                ha_event_data_["payload"].reserve(32);
+                ha_event_data_["serial_number"].reserve(32);
+            #endif
         }
 
         void TCBusComponent::dump_config()
@@ -80,7 +94,7 @@ namespace esphome
                 ESP_LOGCONFIG(TAG, "  Event: Disabled");
             }
             #else
-            ESP_LOGCONFIG(TAG, "  Event: API Disabled");
+            ESP_LOGCONFIG(TAG, "  Event: Not available (Home Assistant Services disabled)");
             #endif
 
             #ifdef USE_TEXT_SENSOR
@@ -222,11 +236,15 @@ namespace esphome
                         std::string type_str = telegram_type_to_string(telegram_data.type);
                         std::transform(type_str.begin(), type_str.end(), type_str.begin(), ::tolower);
 
-                        this->fire_homeassistant_event(event_, {{"telegram", telegram_data.hex},
-                                                                {"type", type_str},
-                                                                {"address", std::to_string(telegram_data.address)},
-                                                                {"payload", std::to_string(telegram_data.payload)},
-                                                                {"serial_number", std::to_string(telegram_data.serial_number)}});
+                        // Update preallocated map values
+                        ha_event_data_["telegram"]      = telegram_data.hex;
+                        ha_event_data_["type"]          = type_str;
+                        ha_event_data_["address"]       = std::to_string(telegram_data.address);
+                        ha_event_data_["payload"]       = std::to_string(telegram_data.payload);
+                        ha_event_data_["serial_number"] = std::to_string(telegram_data.serial_number);
+
+                        // Fire the event
+                        this->fire_homeassistant_event(event_, ha_event_data_);
                     }
                 #endif
             }

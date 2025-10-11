@@ -185,6 +185,10 @@ namespace esphome
             uint32_t last_telegram_time_ = 0;
             int32_t last_sent_telegram_ = -1;
 
+            #ifdef USE_API_HOMEASSISTANT_SERVICES
+                std::map<std::string, std::string> ha_event_data_;
+            #endif
+
             // Telegram binary listeners
             #ifdef USE_BINARY_SENSOR
             std::vector<TCBusListener *> listeners_{};

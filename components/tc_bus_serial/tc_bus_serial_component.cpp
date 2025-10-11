@@ -96,18 +96,14 @@ namespace esphome
       return byte;
     }
 
-    void TCBusSerialComponent::write_data_(std::vector<uint8_t> &data, bool linebreak) {
+    void TCBusSerialComponent::write_data_(std::vector<uint8_t> &data) {
       
       std::string str(data.begin(), data.end());
       ESP_LOGD(TAG, "Send data to Serial: \"%s\"", str.c_str());
 
       data.insert(data.begin(), 0x01);
       data.push_back(0x04);
-
-      if(linebreak)
-      {
-        data.push_back('\n');
-      }
+      data.push_back('\n');
 
     #ifdef USE_ESP32
       switch (logger::global_logger->get_uart()) {
@@ -141,7 +137,7 @@ namespace esphome
     #endif
     }
 
-    // Received data from bus
+    // Received data from tc_bus
     bool TCBusSerialComponent::on_receive(tc_bus::TelegramData telegram_data, bool received)
     {
       if(telegram_data.is_long)
@@ -155,27 +151,30 @@ namespace esphome
 
       std::vector<uint8_t> vec(telegram_data.hex.begin(), telegram_data.hex.end());
       vec.insert(vec.begin(), received ? '$' : ' ');
-      this->write_data_(vec, true);
+      this->write_data_(vec);
 
       return true;
     }
 
-    // Received data from tc_bus_serial software
+    // Received data from serial input
     bool TCBusSerialComponent::parse_byte_(uint8_t byte)
     {
-      ESP_LOGD(TAG, "Parse Byte: 0x%02X", byte);
+      ESP_LOGV(TAG, "Parse Byte: 0x%02X", byte);
 
       if(byte == 0x01)
       {
+        ESP_LOGV(TAG, "Clear RX Buffer");
         this->rx_buffer_.clear();
       }
       else if(byte == 0x04)
       {
+        ESP_LOGV(TAG, "Telegram complete");
+
         std::string str(this->rx_buffer_.begin(), this->rx_buffer_.end());
 
         if(str.substr(0, 1) == " ")
         {
-          ESP_LOGI(TAG, "Data received from Serial: \"%s\"", str.c_str());
+          ESP_LOGD(TAG, "Data received from Serial: \"%s\"", str.c_str());
 
           // Parse telegram
           std::string hex = str.substr(1);
@@ -191,6 +190,8 @@ namespace esphome
         {
           ESP_LOGW(TAG, "Unknown message format received: \"%s\"", str.c_str());
         }
+
+        ESP_LOGV(TAG, "Clear RX Buffer");
         this->rx_buffer_.clear();
       }
       else
