@@ -53,7 +53,7 @@ jobs:
       matrix:
         file: ${{ fromJson(needs.prepare.outputs.files) }}
     outputs:
-      esphome-version: ${{ steps.esphome-build.outputs.esphome-version }}
+      esphome-version: ${{ steps.esphome-build.outputs.version }}
       esphome-build-name: ${{ steps.esphome-build.outputs.name}}
       project-version: ${{ steps.esphome-build.outputs.project-version }}
     steps:
@@ -66,7 +66,7 @@ jobs:
           TIMESTAMP=$(date +%d%H%M)
           sed -i '/^  project:/,/^  platformio_options:/s/^    version: .*/    version: "'"$VERSION"'-dev.'"$TIMESTAMP"'"/' firmware/base.yaml
 
-      - uses: esphome/build-action@v7.0.0
+      - uses: esphome/build-action@v7.1.0
         id: esphome-build
         with:
           yaml-file: ${{ matrix.file }}
@@ -82,7 +82,8 @@ jobs:
           mv temp "output/${{ inputs.directory_name }}"
           sed -i '/"new_install_prompt_erase"/s/false/true/' output/${{ inputs.directory_name }}/manifest.json
           sed -i 's/Doorman S3/${{ inputs.name }}/g' output/${{ inputs.directory_name }}/manifest.json
-
+          sed -i '/"builds"/i \  "funding_url": "https://github.com/sponsors/AzonInc",' output/${{ inputs.directory_name }}/manifest.json
+    
       - uses: actions/upload-artifact@v4
         with:
           name: firmware.${{ inputs.directory_name }}
