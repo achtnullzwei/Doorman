@@ -173,55 +173,10 @@ namespace esphome
                     // Fire Binary Sensors
                     for (auto &listener : listeners_)
                     {
-                        // Listener Telegram lambda or telegram property when not available
                         uint32_t listener_telegram = listener->telegram_.has_value() ? listener->telegram_.value() : 0;
-                        if (listener->telegram_lambda_.has_value())
-                        {
-                            auto optional_value = (*listener->telegram_lambda_)();
-                            if (optional_value.has_value())
-                            {
-                                listener_telegram = optional_value.value();
-                            }
-                        }
-
-                        // Listener Serial Number lambda or serial_number property when not available
-                        uint32_t listener_serial_number = 0;
-                        if (listener->serial_number_lambda_.has_value())
-                        {
-                            auto optional_value = (*listener->serial_number_lambda_)();
-                            if (optional_value.has_value())
-                            {
-                                listener_serial_number = optional_value.value();
-                            }
-                        }
-                        else if(listener->serial_number_.has_value())
-                        {
-                            listener_serial_number = listener->serial_number_.value();
-                        }
-
-                        // Listener Address lambda or address property when not available
+                        uint32_t listener_serial_number = listener->serial_number_.has_value() ? listener->serial_number_.value() : 0;
                         uint8_t listener_address = listener->address_.has_value() ? listener->address_.value() : 0;
-                        if (listener->address_lambda_.has_value())
-                        {
-                            auto optional_value = (*listener->address_lambda_)();
-                            if (optional_value.has_value())
-                            {
-                                listener_address = optional_value.value();
-                            }
-                        }
-
-                        // Listener payload lambda or payload property when not available
                         uint32_t listener_payload = listener->payload_.has_value() ? listener->payload_.value() : 0;
-                        if (listener->payload_lambda_.has_value())
-                        {
-                            auto optional_value = (*listener->payload_lambda_)();
-                            if (optional_value.has_value())
-                            {
-                                listener_payload = optional_value.value();
-                            }
-                        }
-
-                        // Listener Telegram Type
                         TelegramType listener_type = listener->type_.has_value() ? listener->type_.value() : TELEGRAM_TYPE_UNKNOWN;
 
                         bool allow_publish = false;
@@ -353,16 +308,7 @@ namespace esphome
                 // Update Locks
                 for (auto &listener : lock_listeners_)
                 {
-                    // Listener Address lambda or address property when not available
                     uint8_t listener_address = listener->address_.has_value() ? listener->address_.value() : 0;
-                    if (listener->address_lambda_.has_value())
-                    {
-                        auto optional_value = (*listener->address_lambda_)();
-                        if (optional_value.has_value())
-                        {
-                            listener_address = optional_value.value();
-                        }
-                    }
 
                     if(telegram_data.address == listener_address || listener_address == 255)
                     {

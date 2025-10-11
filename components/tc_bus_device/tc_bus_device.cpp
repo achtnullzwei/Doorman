@@ -312,32 +312,9 @@ namespace esphome
                         // Fire Binary Sensors
                         for (auto &listener : listeners_)
                         {
-                            // Listener Serial Number
                             uint32_t listener_serial_number = this->serial_number_;
-
-                            // Listener Address lambda or address property when not available
                             uint8_t listener_address = listener->address_.has_value() ? listener->address_.value() : 0;
-                            if (listener->address_lambda_.has_value())
-                            {
-                                auto optional_value = (*listener->address_lambda_)();
-                                if (optional_value.has_value())
-                                {
-                                    listener_address = optional_value.value();
-                                }
-                            }
-
-                            // Listener payload lambda or payload property when not available
                             uint32_t listener_payload = listener->payload_.has_value() ? listener->payload_.value() : 0;
-                            if (listener->payload_lambda_.has_value())
-                            {
-                                auto optional_value = (*listener->payload_lambda_)();
-                                if (optional_value.has_value())
-                                {
-                                    listener_payload = optional_value.value();
-                                }
-                            }
-
-                            // Listener Telegram Type
                             TelegramType listener_type = listener->type_.has_value() ? listener->type_.value() : TELEGRAM_TYPE_UNKNOWN;
 
                             bool allow_publish = false;
@@ -346,20 +323,10 @@ namespace esphome
                             if (
                                 telegram_data.type == listener_type && 
                                 (telegram_data.address == listener_address || listener_address == 255) &&
-                                (telegram_data.payload == listener_payload || listener_payload == 255)
-                            )
-                            {
-                                if (listener_serial_number != 0)
-                                {
-                                    if (telegram_data.serial_number == listener_serial_number || listener_serial_number == 255)
-                                    {
-                                        allow_publish = true;
-                                    }
-                                }
-                                else
-                                {
-                                    allow_publish = true; // Accept any serial number
-                                }
+                                (telegram_data.payload == listener_payload || listener_payload == 255) &&
+                                telegram_data.serial_number == listener_serial_number
+                            ) {
+                                allow_publish = true;
                             }
 
                             // Trigger listener binary sensor if match found

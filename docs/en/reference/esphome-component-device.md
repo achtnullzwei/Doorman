@@ -7,10 +7,11 @@ The `tc_bus_device` component offers the following configuration options:
 | Option                    | Description                                                                                                                                   | Required | Default       |
 |---------------------------|-----------------------------------------------------------------------------------------------------------------------------------------------|----------|---------------|
 | `id`                      | Unique ID for the component.                                                                                                                  | Yes      |               |
+| `type`                    | Device Group of the TC:BUS Device. E.g. Indoor Station, Outdoor Station.                                                                      | Yes      |               |
 | `on_read_memory_complete` | Defines actions to be triggered when the memory reading is complete. Returns a `std::vector<uint8_t>` buffer as the `x` variable.             | No       |               |
 | `on_read_memory_timeout`  | Defines actions to be triggered when the memory reading times out.                                                                            | No       |               |
 | `on_identify_complete`    | Defines actions to be triggered when the identification of the indoor station is complete. Returns a `ModelData` object as the `x` variable.  | No       |               |
-| `on_identify_unknown`     | Defines actions to be triggered when the identification of the indoor station completes with unknown model.                                                      | No       |               |
+| `on_identify_unknown`     | Defines actions to be triggered when the identification of the indoor station completes with unknown model.                                   | No       |               |
 | `on_identify_timeout`     | Defines actions to be triggered when the identification of the indoor station times out.                                                      | No       |               |
 
 
@@ -31,12 +32,12 @@ The `tc_bus_device` Select platform offers the following configuration options:
 
 | Option                               | Description                                                                                                    | Required | Default       |
 |--------------------------------------|----------------------------------------------------------------------------------------------------------------|----------|---------------|
-| `tc_bus_device_id` | ID of the related `tc_bus_device` instance.                                                             | Yes      |               |
+| `tc_bus_device_id`                   | ID of the related `tc_bus_device` instance.                                                                    | Yes      |               |
 | `model`                              | Model Select to set the model of your device (used to read and write settings). Take a look at the [supported models and settings](#model-setting-availability).| No       | `None`        |
-| `ringtone_entrance_door_call`        | Entrance Door Call Ringtone Select to set the entrance door call ringtone of your indoor station.              | No       | |
-| `ringtone_second_entrance_door_call` | Second Entrance Door Call Ringtone Select to set the second entrance door call ringtone of your indoor station.| No       | |
-| `ringtone_floor_call`                | Floor Call Ringtone Select to set the floor call ringtone of your indoor station.                              | No       | |
-| `ringtone_internal_call`             | Internal Call Ringtone Select to set the internal call ringtone of your indoor station.                        | No       | |
+| `ringtone_entrance_door_call`        | Entrance Door Call Ringtone Select to set the entrance door call ringtone of your indoor station.              | No       |               |
+| `ringtone_second_entrance_door_call` | Second Entrance Door Call Ringtone Select to set the second entrance door call ringtone of your indoor station.| No       |               |
+| `ringtone_floor_call`                | Floor Call Ringtone Select to set the floor call ringtone of your indoor station.                              | No       |               |
+| `ringtone_internal_call`             | Internal Call Ringtone Select to set the internal call ringtone of your indoor station.                        | No       |               |
 
 
 ## Switches
@@ -44,12 +45,12 @@ The `tc_bus_device` Switch platform offers the following configuration options:
 
 | Option                               | Description                                                                                                    | Required | Default       |
 |--------------------------------------|----------------------------------------------------------------------------------------------------------------|----------|---------------|
-| `tc_bus_device_id` | ID of the related `tc_bus_device` instance.                                                             | Yes      |               |
+| `tc_bus_device_id`                   | ID of the related `tc_bus_device` instance.                                                                    | Yes      |               |
 | `force_long_door_opener`             | This enforces execution of the long door opener telegram and mandates inclusion of a serial number in the short door opener telegram. | No       | |
 
 
 ## Binary Sensors
-The `tc_bus_device` Binary Sensor detects binary states such as doorbell presses. It can be configured to trigger based on a predefined telegram or a lambda expression.
+The `tc_bus_device` Binary Sensor detects binary states such as doorbell presses. It can be configured to trigger based on a predefined telegram.
 
 | Option           | Description                                                                                              | Required | Default       |
 |------------------|----------------------------------------------------------------------------------------------------------|----------|---------------|
@@ -60,10 +61,7 @@ The `tc_bus_device` Binary Sensor detects binary states such as doorbell presses
 | `auto_off`       | Time period after which the sensor automatically turns off, useful for momentary signals like doorbell presses.  | No       | `3s`          |
 | `type`           | Telegram type that will trigger the binary sensor, used alongside `address` and `payload`.               | Yes       | `unknown`     |
 | `address`        | 8-bit address that serves as a condition to trigger the binary sensor. If you set it to `255`, it will catch all addresses. | No       | `0`           |
-| `address_lambda` | Lambda expression to evaluate whether the binary sensor should trigger based on the address.             | No       |               |
 | `payload`        | 32-bit payload that serves as a condition to trigger the binary sensor.                                  | No       | `0`           |
-| `payload_lambda` | Lambda expression to evaluate whether the binary sensor should trigger based on the payload.             | No       |               |
-
 
 ## Callbacks
 ### Read Memory Complete <Badge type="tip" text="on_read_memory_complete" />

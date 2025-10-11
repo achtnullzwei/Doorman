@@ -38,18 +38,9 @@ namespace esphome
         class TCBusDeviceListener
         {
         public:
-            void set_telegram_lambda(std::function<optional<uint32_t>()> &&f) { this->telegram_lambda_ = f; }
-            void set_telegram(uint32_t telegram) { this->telegram_ = telegram; }
-
-            void set_address_lambda(std::function<optional<uint8_t>()> &&f) { this->address_lambda_ = f; }
-            void set_address(uint8_t address) { this->address_ = address; }
-
-            void set_payload_lambda(std::function<optional<uint32_t>()> &&f) { this->payload_lambda_ = f; }
-            void set_payload(uint32_t payload) { this->payload_ = payload; }
-
-            void set_telegram_type(TelegramType type) { this->type_ = type; }
-
-            void set_serial_number(uint32_t serial_number) { this->serial_number_ = serial_number; }
+            template<typename T> void set_type(T type) { this->type_ = type; }
+            template<typename T> void set_address(T address) { this->address_ = address; }
+            template<typename T> void set_payload(T payload) { this->payload_ = payload; }
 
             void set_auto_off(uint16_t auto_off) { this->auto_off_ = auto_off; }
 
@@ -59,17 +50,9 @@ namespace esphome
             uint32_t timer_;
             uint16_t auto_off_;
 
-            optional<uint32_t> serial_number_;
-            optional<TelegramType> type_;
-
-            optional<uint32_t> telegram_;
-            optional<std::function<optional<uint32_t>()>> telegram_lambda_;
-
-            optional<uint8_t> address_;
-            optional<std::function<optional<uint8_t>()>> address_lambda_;
-
-            optional<uint32_t> payload_;
-            optional<std::function<optional<uint32_t>()>> payload_lambda_;
+            TemplatableValue<TelegramType> type_{};
+            TemplatableValue<uint8_t> address_{};
+            TemplatableValue<uint32_t> payload_{};
         };
 #endif
 
@@ -108,10 +91,10 @@ namespace esphome
 
             void set_internal_id(const std::string &internal_id) { this->internal_id_.assign(internal_id); }
             void set_tc_bus_component(TCBusComponent *bus) { this->tc_bus_ = bus; }
-            void set_device_group(DeviceGroup device_group) { this->device_group_ = device_group; }
+
             void set_serial_number(uint32_t serial_number) { this->serial_number_ = serial_number; }
+            void set_device_group(DeviceGroup device_group) { this->device_group_ = device_group; }
             void set_force_long_door_opener(bool force_long_door_opener) { this->force_long_door_opener_ = force_long_door_opener; }
-            
             void set_model(Model model, bool save = true);
 
             void setup() override;

@@ -8,7 +8,6 @@ from .. import tc_bus_ns, TCBusComponent, CONF_TC_BUS_ID
 BusTelegramListenerLock = tc_bus_ns.class_("BusTelegramListenerLock", lock.Lock, cg.Component)
 
 CONF_ADDRESS = "address"
-CONF_ADDRESS_LAMBDA = "address_lambda"
 
 CONF_NAME = "name"
 CONF_AUTO_LOCK = "auto_lock"
@@ -27,9 +26,6 @@ LockTrigger = tc_bus_ns.class_("LockTrigger", automation.Trigger.template())
 def validate(config):
     config = config.copy()
 
-    if CONF_ADDRESS in config and CONF_ADDRESS_LAMBDA in config:
-        raise cv.Invalid("You can either set ADDRESS or ADDRESS_LAMBDA, not both.")
-
     return config
 
 CONFIG_SCHEMA = cv.All(
@@ -38,8 +34,7 @@ CONFIG_SCHEMA = cv.All(
             cv.GenerateID(): cv.declare_id(BusTelegramListenerLock),
             cv.GenerateID(CONF_TC_BUS_ID): cv.use_id(TCBusComponent),
 
-            cv.Optional(CONF_ADDRESS): cv.hex_uint8_t,
-            cv.Optional(CONF_ADDRESS_LAMBDA): cv.returning_lambda,
+            cv.Optional(CONF_ADDRESS): cv.templatable(cv.hex_uint8_t),
 
             cv.Optional(CONF_ICON, default="mdi:door"): cv.icon,
             cv.Optional(CONF_NAME, default="Entrance Door"): cv.string,
@@ -72,13 +67,8 @@ async def to_code(config):
     await lock.register_lock(var, config)
 
     if CONF_ADDRESS in config:
-        cg.add(var.set_address(config[CONF_ADDRESS]))
-
-    if CONF_ADDRESS_LAMBDA in config:
-        address_template_ = await cg.process_lambda(
-            config[CONF_ADDRESS_LAMBDA], [], return_type=cg.optional.template(cg.uint8)
-        )
-        cg.add(var.set_address_lambda(address_template_))
+        telegram_address = await cg.templatable(config[CONF_ADDRESS], [], cg.uint8)
+        cg.add(var.set_address(telegram_address))
 
     cg.add(var.set_auto_lock(config[CONF_AUTO_LOCK]))
 

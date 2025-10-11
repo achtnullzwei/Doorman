@@ -30,14 +30,6 @@ namespace esphome
                 {
                     listener_address = this->address_.value();
                 }
-                else if (this->address_lambda_.has_value())
-                {
-                    auto optional_value = (*this->address_lambda_)();
-                    if (optional_value.has_value())
-                    {
-                        listener_address = optional_value.value();
-                    }
-                }
 
                 this->parent_->send_telegram(TELEGRAM_TYPE_OPEN_DOOR, listener_address);
 

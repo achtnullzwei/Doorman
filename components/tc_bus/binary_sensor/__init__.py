@@ -7,15 +7,11 @@ from .. import tc_bus_ns, TCBusComponent, CONF_TC_BUS_ID, TELEGRAM_TYPES
 BusTelegramListenerBinarySensor = tc_bus_ns.class_("BusTelegramListenerBinarySensor", binary_sensor.BinarySensor, cg.Component)
 
 CONF_TELEGRAM = "telegram"
-CONF_TELEGRAM_LAMBDA = "telegram_lambda"
 
 CONF_TYPE = "type"
 CONF_ADDRESS = "address"
-CONF_ADDRESS_LAMBDA = "address_lambda"
 CONF_PAYLOAD = "payload"
-CONF_PAYLOAD_LAMBDA = "payload_lambda"
 CONF_SERIAL_NUMBER = "serial_number"
-CONF_SERIAL_NUMBER_LAMBDA = "serial_number_lambda"
 
 CONF_NAME = "name"
 CONF_AUTO_OFF = "auto_off"
@@ -26,44 +22,32 @@ def validate(config):
     config = config.copy()
 
     has_telegram_option = any(
-        key in config for key in [CONF_TELEGRAM, CONF_TELEGRAM_LAMBDA]
+        key in config for key in [CONF_TELEGRAM]
     )
 
     has_type_option = CONF_TYPE in config
 
     has_address_option = any(
-        key in config for key in [CONF_ADDRESS, CONF_ADDRESS_LAMBDA]
+        key in config for key in [CONF_ADDRESS]
     )
 
     has_payload_option = any(
-        key in config for key in [CONF_PAYLOAD, CONF_PAYLOAD_LAMBDA]
+        key in config for key in [CONF_PAYLOAD]
     )
 
     has_serial_number_option = any(
-        key in config for key in [CONF_SERIAL_NUMBER, CONF_SERIAL_NUMBER_LAMBDA]
+        key in config for key in [CONF_SERIAL_NUMBER]
     )
 
     if not (has_telegram_option or has_type_option):
-        raise cv.Invalid("You need to set either TELEGRAM/TELEGRAM_LAMBDA or TYPE.")
+        raise cv.Invalid("You need to set either TELEGRAM or TYPE.")
 
     if has_telegram_option:
         if has_type_option or has_address_option or has_payload_option or has_serial_number_option:
-            raise cv.Invalid("You can either set TELEGRAM/TELEGRAM_LAMBDA or TYPE and ADDRESS/ADDRESS_LAMBDA, PAYLOAD/PAYLOAD_LAMBDA and SERIAL_NUMBER.")
+            raise cv.Invalid("You can either set TELEGRAM or TYPE and ADDRESS, PAYLOAD and SERIAL_NUMBER.")
     else:
         if not has_type_option:
             raise cv.Invalid("You need to set TYPE.")
-
-    if CONF_TELEGRAM in config and CONF_TELEGRAM_LAMBDA in config:
-        raise cv.Invalid("You can either set TELEGRAM or TELEGRAM_LAMBDA, not both.")
-
-    if CONF_ADDRESS in config and CONF_ADDRESS_LAMBDA in config:
-        raise cv.Invalid("You can either set ADDRESS or ADDRESS_LAMBDA, not both.")
-
-    if CONF_PAYLOAD in config and CONF_PAYLOAD_LAMBDA in config:
-        raise cv.Invalid("You can either set PAYLOAD or PAYLOAD_LAMBDA, not both.")
-
-    if CONF_SERIAL_NUMBER in config and CONF_SERIAL_NUMBER_LAMBDA in config:
-        raise cv.Invalid("You can either set SERIAL_NUMBER or SERIAL_NUMBER_LAMBDA, not both.")
 
     return config
 
@@ -72,18 +56,11 @@ CONFIG_SCHEMA = cv.All(
         {
             cv.GenerateID(): cv.declare_id(BusTelegramListenerBinarySensor),
             cv.GenerateID(CONF_TC_BUS_ID): cv.use_id(TCBusComponent),
-
             cv.Optional(CONF_TELEGRAM): cv.hex_uint32_t,
-            cv.Optional(CONF_TELEGRAM_LAMBDA): cv.returning_lambda,
-
             cv.Optional(CONF_TYPE): cv.enum(TELEGRAM_TYPES, upper=False),
-            cv.Optional(CONF_ADDRESS): cv.hex_uint8_t,
-            cv.Optional(CONF_ADDRESS_LAMBDA): cv.returning_lambda,
-            cv.Optional(CONF_PAYLOAD): cv.hex_uint32_t,
-            cv.Optional(CONF_PAYLOAD_LAMBDA): cv.returning_lambda,
-            cv.Optional(CONF_SERIAL_NUMBER): cv.hex_uint32_t,
-            cv.Optional(CONF_SERIAL_NUMBER_LAMBDA): cv.returning_lambda,
-
+            cv.Optional(CONF_ADDRESS): cv.templatable(cv.hex_uint8_t),
+            cv.Optional(CONF_PAYLOAD): cv.templatable(cv.hex_uint32_t),
+            cv.Optional(CONF_SERIAL_NUMBER): cv.templatable(cv.hex_uint32_t),
             cv.Optional(CONF_ICON, default="mdi:doorbell"): cv.icon,
             cv.Optional(CONF_NAME, default="Doorbell"): cv.string,
             cv.Optional(CONF_AUTO_OFF, default="3s"): cv.positive_time_period_milliseconds
@@ -102,43 +79,23 @@ async def to_code(config):
     await binary_sensor.register_binary_sensor(var, config)
 
     if CONF_TELEGRAM in config:
-        cg.add(var.set_telegram(config[CONF_TELEGRAM]))
-
-    if CONF_TELEGRAM_LAMBDA in config:
-        telegram_template_ = await cg.process_lambda(
-            config[CONF_TELEGRAM_LAMBDA], [], return_type=cg.optional.template(cg.uint32)
-        )
-        cg.add(var.set_telegram_lambda(telegram_template_))
+        telegram = await cg.templatable(config[CONF_TELEGRAM], [], cg.uint32)
+        cg.add(var.set_telegram(telegram))
 
     if CONF_TYPE in config:
-        cg.add(var.set_telegram_type(config[CONF_TYPE]))
+        cg.add(var.set_type(config[CONF_TYPE]))
 
     if CONF_ADDRESS in config:
-        cg.add(var.set_address(config[CONF_ADDRESS]))
-
-    if CONF_ADDRESS_LAMBDA in config:
-        address_template_ = await cg.process_lambda(
-            config[CONF_ADDRESS_LAMBDA], [], return_type=cg.optional.template(cg.uint8)
-        )
-        cg.add(var.set_address_lambda(address_template_))
+        telegram_address = await cg.templatable(config[CONF_ADDRESS], [], cg.uint8)
+        cg.add(var.set_address(telegram_address))
 
     if CONF_PAYLOAD in config:
-        cg.add(var.set_payload(config[CONF_PAYLOAD]))
-
-    if CONF_PAYLOAD_LAMBDA in config:
-        payload_template_ = await cg.process_lambda(
-            config[CONF_PAYLOAD_LAMBDA], [], return_type=cg.optional.template(cg.uint32)
-        )
-        cg.add(var.set_payload_lambda(payload_template_))
+        telegram_payload = await cg.templatable(config[CONF_PAYLOAD], [], cg.uint32)
+        cg.add(var.set_payload(telegram_payload))
 
     if CONF_SERIAL_NUMBER in config:
-        cg.add(var.set_serial_number(config[CONF_SERIAL_NUMBER]))
-
-    if CONF_SERIAL_NUMBER_LAMBDA in config:
-        serial_number_template_ = await cg.process_lambda(
-            config[CONF_SERIAL_NUMBER_LAMBDA], [], return_type=cg.optional.template(cg.uint32)
-        )
-        cg.add(var.set_serial_number_lambda(serial_number_template_))
+        telegram_serial_number = await cg.templatable(config[CONF_SERIAL_NUMBER], [], cg.uint32)
+        cg.add(var.set_serial_number(telegram_serial_number))
 
     cg.add(var.set_auto_off(config[CONF_AUTO_OFF]))
 

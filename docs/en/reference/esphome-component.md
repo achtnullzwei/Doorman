@@ -28,7 +28,7 @@ The `tc_bus` Text Sensor component offers the following configuration options:
 | `bus_telegram`         | Displays the most recently received bus telegram, showing the full communication traffic from all connected devices. | No       |               |
 
 ## Binary Sensors
-The `tc_bus` Binary Sensor detects binary states such as doorbell presses. It can be configured to trigger based on a predefined telegram or a lambda expression.
+The `tc_bus` Binary Sensor detects binary states such as doorbell presses. It can be configured to trigger based on a predefined telegram.
 
 | Option           | Description                                                                                              | Required | Default       |
 |------------------|----------------------------------------------------------------------------------------------------------|----------|---------------|
@@ -37,17 +37,13 @@ The `tc_bus` Binary Sensor detects binary states such as doorbell presses. It ca
 | `name`           | Name of the binary sensor.                                                                               | No       | `Doorbell`    |
 | `auto_off`       | Time period after which the sensor automatically turns off, useful for momentary signals like doorbell presses.  | No       | `3s`          |
 | `telegram`        | A specific 32-bit hexadecimal telegram that triggers the binary sensor when received from the TC:BUS.| Yes       | `0`           |
-| `telegram_lambda` | Lambda expression used to dynamically generate the telegram that will trigger the binary sensor, instead of using a fixed telegram. Cannot be used with `telegram`.  | No       |               |
 | `type`           | Telegram type that will trigger the binary sensor, used alongside `address`, `payload` and `serial_number`. Cannot be used with `telegram`.  | Yes       | `unknown`     |
 | `address`        | 8-bit address that serves as a condition to trigger the binary sensor. If you set it to `255`, it will catch all addresses. | No       | `0`           |
-| `address_lambda` | Lambda expression to evaluate whether the binary sensor should trigger based on the address.              | No       |               |
 | `payload`        | 32-bit payload that serves as a condition to trigger the binary sensor.  | No       | `0`           |
-| `payload_lambda` | Lambda expression to evaluate whether the binary sensor should trigger based on the payload.              | No       |               |
 | `serial_number`  | Specific device serial number that serves as a condition to trigger the binary sensor. If you set it to `255`, it will catch all serial numbers. | No       | `unknown`     |
-| `serial_number_lambda`  | Lambda expression to evaluate whether the binary sensor should trigger based on the serial number. | No       | `unknown`     |
 
 ::: info
-You can use **either** `telegram`/`telegram_lambda` **or** a combination of `type`, `address`/`address_lambda`, `payload`/`payload_lambda`, and `serial_number`/`serial_number_lambda`, but **not both** simultaneously.\
+You can use **either** `telegram` **or** a combination of `type`, `address`, `payload`, and `serial_number`, but **not both** simultaneously.  
 This ensures the binary sensor triggers either through a specific telegram or a combination of parameters, preventing conflicts.
 :::
 
@@ -61,7 +57,6 @@ The `tc_bus` Lock platform can be configured to trigger based on a predefined ou
 | `name`           | Name of the lock.                                                                                        | No       | `Entrance Door` |
 | `auto_lock`      | Time period after which the lock resets the virtual state to `locked`.                                   | No       | `5s`          |
 | `address`        | 8-bit address that serves as a condition to trigger the lock. If you set it to `255`, it will catch all addresses. | No       | `0`           |
-| `address_lambda` | Lambda expression to evaluate whether the lock should trigger based on the address.                      | No       |               |
 | `before_unlock_action` | Defines actions to be triggered before the `open_door` telegram is sent.                           | No       |               |
 | `after_unlock_action` | Defines actions to be triggered after the `open_door` telegram is sent.                             | No       |               |
 | `lock_action`    | Defines actions to be triggered when the lock state is changed back to locked.                           | No       |               |

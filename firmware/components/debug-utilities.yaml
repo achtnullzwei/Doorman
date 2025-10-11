@@ -10,6 +10,7 @@ esphome:
 
 logger:
   initial_level: DEBUG
+  runtime_tag_levels: true
 
 remote_receiver:
   dump: raw
