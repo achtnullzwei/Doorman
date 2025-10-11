@@ -4,12 +4,12 @@ The TC:BUS Component for ESPHome allows you to interface with [TCS:Bus](https://
 This component can trigger automations based on specific telegrams received from the intercom system, send telegrams to the intercom, and receive various status updates (e.g., bus telegrams and door readiness). Actions can also be configured to respond to particular telegrams from the intercom.
 
 ::: tip NOTE
-This is the only component required for communication on the bus. However, it can be extended with additional components, such as `TC:BUS Device` and `TC:BUS Serial`.
+This is the only component required for communication on the bus. However, it can be extended with additional components, such as [TC:BUS Device](./esphome-component-device) and [TC:BUS Serial](./esphome-component-serial).
 
 **Note:** This component requires hardware like the Doorman-S3 or a [DIY solution](https://github.com/peteh/doorman) to communicate on the bus.
 :::
 
-## TC:BUS Hub
+## Configuration
 The `tc_bus` hub serves as the central component enabling bus communication. It provides the following configuration options:
 
 | Option                    | Description                                                                                                                                   | Required | Default       |
@@ -25,7 +25,7 @@ The `tc_bus` Text Sensor component offers the following configuration options:
 
 | Option                 | Description                                                | Required | Default       |
 |------------------------|------------------------------------------------------------|----------|---------------|
-| `bus_telegram`         | Text Sensor to display the last received bus telegram.     | No       |               |
+| `bus_telegram`         | Displays the most recently received bus telegram, showing the full communication traffic from all connected devices. | No       |               |
 
 ## Binary Sensors
 The `tc_bus` Binary Sensor detects binary states such as doorbell presses. It can be configured to trigger based on a predefined telegram or a lambda expression.
@@ -171,8 +171,7 @@ Be sure to modify the telegram and event name as needed based on your configurat
 
 
 ## Example YAML Configuration
-
-Here is an example configuration for the component in ESPHome:
+This is an example configuration for the component in ESPHome:
 
 ```yaml
 external_components:

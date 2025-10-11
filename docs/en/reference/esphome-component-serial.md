@@ -1,12 +1,11 @@
 # TC:BUS Serial Component <Badge type="tip" text="tc_bus_serial" />
-This component extends the `tc_bus` component, enabling direct interaction with the bus over a serial connection.
+This component extends the [TC:BUS](./esphome-component) base component, enabling direct interaction over a serial connection.
 
 ## Configuration
-The `tc_bus_serial` component does not offer any configuration options.
+This component does not offer any configuration options.
 
 ## Example YAML Configuration
-
-Here is an example configuration for the TC:Serial component in ESPHome:
+This is an example configuration for the component in ESPHome:
 
 ```yaml
 external_components:

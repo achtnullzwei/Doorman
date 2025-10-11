@@ -1,7 +1,7 @@
 # TC:BUS Device Component <Badge type="tip" text="tc_bus_device" />
-This component extends the `tc_bus` component, making communication easier and allowing you to read and modify device settings directly on the bus.
+This component extends the [TC:BUS](./esphome-component) base component, making it easier to communicate with individual devices on the bus. It lets you identify devices, access their memory, and read or modify their settings - take a look at the [supported models and settings](#model-setting-availability).
 
-## TC:BUS Device
+## Configuration
 The `tc_bus_device` component offers the following configuration options:
 
 | Option                    | Description                                                                                                                                   | Required | Default       |
@@ -160,8 +160,7 @@ on_...:
 ```
 
 ## Example YAML Configuration
-
-Here is an example configuration for the component in ESPHome:
+This is an example configuration for the component in ESPHome:
 
 ```yaml
 external_components:
@@ -185,7 +184,7 @@ remote_transmitter:
 # TC:BUS configuration
 tc_bus:
 
-# TC:BUS devices
+# TC:BUS Device configuration
 tc_bus_device:
   - id: my_tc_bus_indoor_station_device
     type: indoor_station

@@ -34,6 +34,16 @@
 .VPHero .VPImage {
     filter: drop-shadow(-2px 4px 6px rgba(0, 0, 0, 0.2));
     padding: 18px;
+    animation: floatUpDown 5s ease-in-out infinite;
+}
+
+@keyframes floatUpDown {
+    0%, 100% {
+      transform: translate(-50%, -45%);
+    }
+    50% {
+      transform: translate(-50%, -50%);
+    }
 }
 
 .VPButton[disabled] {

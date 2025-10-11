@@ -25,8 +25,7 @@ Example log output:
 ```
 
 ## Example YAML Configuration
-
-Here is an example configuration for the component in ESPHome:
+This is an example configuration for the component in ESPHome:
 
 ```yaml
 external_components:
