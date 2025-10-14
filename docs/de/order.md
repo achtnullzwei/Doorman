@@ -1,3 +1,8 @@
+---
+editLink: false
+lastUpdated: false
+---
+
 <script setup lang="ts">
 import type { DefaultTheme } from 'vitepress/theme'
 import { VPButton } from 'vitepress/theme'
@@ -67,7 +72,9 @@ export default {
                 zip: false,
                 city: false,
                 country: false,
+                model: false,
             },
+            user: null,
             status: {},
             orderHash: '',
             form: {
@@ -85,6 +92,7 @@ export default {
                 shipping_method: 'standard',
                 payment_option: 'paypal',
                 message: '',
+                model: ''
             },
             max_items: 4,
             payment_options: [
@@ -241,6 +249,16 @@ export default {
             this.status = { status: 'error' };
         });
 
+        api.get('/user', { 
+            withCredentials: true 
+        })
+        .then(response => {
+            this.user = response.data;
+        })
+        .catch(() => {
+            this.user = null;
+        });
+
         api.get('/product_data', { 
             withCredentials: true 
         })
@@ -299,6 +317,9 @@ export default {
         },
         'form.country'(val) {
             this.errors.country = !val;
+        },
+        'form.model'(val) {
+            this.errors.model = !val;
         }
     },
     computed: {
@@ -349,7 +370,7 @@ export default {
             this.result_text = text;
         },
         validate() {
-            const { name, email, street, zip, city, country } = this.form;
+            const { name, email, street, zip, city, country, model } = this.form;
 
             // Reset errors
             for (const key in this.errors) this.errors[key] = false;
@@ -358,10 +379,15 @@ export default {
 
             if (!name) { this.errors.name = true; valid = false; }
             if (!email) { this.errors.email = true; valid = false; }
+
             if (!street) { this.errors.street = true; valid = false; }
+            if (street.split(' ').length < 2) { this.errors.street = true; valid = false; }
+            if (/\d/.test(street) == false) { this.errors.street = true; valid = false; }
+
             if (!zip) { this.errors.zip = true; valid = false; }
             if (!city) { this.errors.city = true; valid = false; }
             if (!country) { this.errors.country = true; valid = false; }
+            if (!model) { this.errors.model = true; valid = false; }
 
             return valid;
         },
@@ -384,11 +410,7 @@ export default {
                 this.status = response.data;
             })
             .catch(error => {
-                if (error.request.status == 429) {
-                    this.showModal("Entschuldigung!", "Du hast zu viele Anfragen gesendet – bitte versuche es später erneut.");
-                } else {
-                    this.showModal("Entschuldigung!", "Etwas ist schiefgelaufen. Bitte versuche es später erneut.");
-                }
+                this.showModal("Entschuldigung!", this.getErrorMessage(error, 'Etwas ist schiefgelaufen. Bitte versuche es später erneut.'));
             });
         },
         async closeOrder() {
@@ -400,11 +422,38 @@ export default {
                 this.status = response.data;
             })
             .catch(error => {
-                if (error.request.status == 429) {
-                    this.showModal("Entschuldigung!", "Du hast zu viele Anfragen gesendet – bitte versuche es später erneut.");
-                } else {
-                    this.showModal("Entschuldigung!", "Etwas ist schiefgelaufen. Bitte versuche es später erneut.");
+                this.showModal("Entschuldigung!", this.getErrorMessage(error, 'Etwas ist schiefgelaufen. Bitte versuche es später erneut.'));
+            });
+        },
+        async updateOrderStatus() {
+            if(!this.status) {
+                alert('Die Bestelldetails stehen nicht zur Verfügung!');
+                return;
+            }
+
+            if (!confirm('Bist du dir sicher dass du den Bestellstatus aktualisieren möchtest?')) return;
+
+            if(this.status.shipping_method == 'tracking' && this.status.status == 'pending_shipment') {
+                const trackingUrl = prompt('Trackingdaten angeben:');
+                if (!trackingUrl) {
+                    alert('Keine Trackingdaten angegeben! Wird abgebrochen!');
+                    return;
                 }
+                this.setNextStep(this.status.id, trackingUrl);
+            } else {
+                this.setNextStep(this.status.id, '');
+            }
+        },
+        async setNextStep(id, tracking) {
+            api.post('/orders/' + id + '/next', { tracking }, { 
+                withCredentials: true 
+            })
+            .then(response => {
+                this.showModal("Aktualisiert!", "Der Bestellstatus wurde erfolgreich aktualisiert!");
+                this.refreshOrderStatus();
+            })
+            .catch(error => {
+                this.showModal("Entschuldigung!", this.getErrorMessage(error, 'Der Bestellstatus konnte nicht aktualisiert werden!'));
             });
         },
         async resetOrder() {
@@ -415,12 +464,16 @@ export default {
                 this.status = response.data;
             })
             .catch(error => {
-                if (error.request.status == 429) {
-                    this.showModal("Entschuldigung!", "Du hast zu viele Anfragen gesendet – bitte versuche es später erneut.");
-                } else {
-                    this.showModal("Entschuldigung!", "Etwas ist schiefgelaufen. Bitte versuche es später erneut.");
-                }
+                this.showModal("Entschuldigung!", this.getErrorMessage(error, 'Etwas ist schiefgelaufen. Bitte versuche es später erneut.'));
             });
+        },
+        async refreshOrderStatus() {
+            try {
+                const { data: statusData } = await api.get('/status', { withCredentials: true });
+                this.status = statusData;
+            } catch (error) {
+
+            }
         },
         async checkOrder() {
             if (!this.orderHash) return;
@@ -435,17 +488,20 @@ export default {
                     this.showModal("Entschuldigung!", "Diese Bestellung existiert nicht! Bitte überprüfe die Bestellnummer.");
                 }
             } catch (error) {
-                let title = "Entschuldigung!";
-                let text = "Etwas ist schiefgelaufen. Bitte versuche es später erneut.";
-
-                if (error.response?.status === 429) {
-                    title = "Langsamer!";
-                    text = "Du hast zu viele Anfragen gesendet – bitte versuche es später erneut.";
-                }
-
-                this.showModal(title, text);
+                this.showModal("Entschuldigung!", this.getErrorMessage(error, 'Etwas ist schiefgelaufen. Bitte versuche es später erneut.'));
             }
-        }
+        },
+        getErrorMessage(error, defaultMessage = "Etwas ist schiefgelaufen. Bitte versuche es später erneut.") {
+            if (!error) return defaultMessage;
+
+            if (error.response) {
+                return error.response.data?.error || error.response.data?.message || `Server error (${error.response.status})`;
+            } else if (error.request) {
+                return "No response from server. Please check your connection.";
+            } else {
+                return error.message || defaultMessage;
+            }
+        },
     }
 }
 </script>
@@ -591,6 +647,9 @@ Sobald ich deine Nachricht erhalte, melde ich mich schnellstmöglich bei dir. Di
     <p>
         Deine Bestellung wird für den Versand vorbereitet und wird bald versendet. Sobald sie verschickt wurde, erhälst du ein Update mit den Versanddetails. Vielen Dank für deine Geduld!
     </p>
+    <p v-if="user">
+        <VPButton text="Mark as shipped" @click="updateOrderStatus" />
+    </p>
 </div>
 <div v-else-if="status.status == 'shipped'" class="tip custom-block">
     <p class="custom-block-title">BESTELLUNG VERSCHICKT</p>
@@ -599,7 +658,11 @@ Sobald ich deine Nachricht erhalte, melde ich mich schnellstmöglich bei dir. Di
         <br>
         Bitte beachte, dass der Zoll gelegentlich zu leichten Verzögerungen führen kann.
         <br><br>Sobald die Lieferung erfolgt ist, informiere mich bitte hier. Vielen Dank!
-        <br><br>
+    </p>
+    <p v-if="user">
+        <VPButton text="Bestellung abschließen" @click="closeOrder" />
+    </p>
+    <p v-else>
         <VPButton text="Ich habe meinen Doorman erhalten" @click="closeOrder" />
     </p>
 </div>
@@ -607,8 +670,14 @@ Sobald ich deine Nachricht erhalte, melde ich mich schnellstmöglich bei dir. Di
     <p class="custom-block-title">DANKE</p>
     <p>
         Deine Bestellung wurde erfolgreich abgeschlossen. Ich hoffe, du hast viel Freude mit deinem Doorman 😊<br>
+    </p>
+    <p>
+        <b>Schau dir doch gleich Mal den <a href="/de/guide/getting-started">Quickstart Guide</a> an.</b>
+    </p>
+    <p>
         Wenn du eine neue Bestellung aufgeben möchten, klicke bitte auf den Button unten.
-        <br><br>
+    </p>
+    <p>
         <VPButton text="Neue Bestellung" @click="resetOrder" />
     </p>
 </div>
@@ -617,7 +686,8 @@ Sobald ich deine Nachricht erhalte, melde ich mich schnellstmöglich bei dir. Di
     <p>
         Deine Bestellung wurde storniert!<br>
         Wenn du eine neue Bestellung aufgeben möchten, klicke bitte auf den Button unten.
-        <br><br>
+    </p>
+    <p>
         <VPButton text="Neue Bestellung" @click="resetOrder" />
     </p>
 </div>
@@ -647,6 +717,11 @@ Sobald ich deine Nachricht erhalte, melde ich mich schnellstmöglich bei dir. Di
                     </div>
                 </span>
             </label>
+        </div>
+        <h5 class="firmware_title_row">Erzähl mir Etwas über deine Anlage</h5>
+        <div class="form-element">
+            <label for="model">Modell der Innenstation</label>
+            <input type="text" name="model" id="model" placeholder="z.B. TCS ISH3030" maxlength="30" v-model="form.model" :class="{ 'invalid': errors.model }" required />
         </div>
         <h5 class="firmware_title_row">Wohin soll's geschickt werden?</h5>
         <div class="firmware_option_row" :class="{ half: shipping_regions.length <= 2 }">
@@ -709,7 +784,7 @@ Sobald ich deine Nachricht erhalte, melde ich mich schnellstmöglich bei dir. Di
         <h5 class="firmware_title_row">Noch was, das du mir sagen willst?</h5>
         <div class="form-element">
             <label for="discord">Notizen <Badge type="info">Optional</Badge></label>
-            <textarea id="message" name="message" v-model="form.message" placeholder="z.B. das Modell der Innenstation, besondere Anforderungen oder was du sonst fragen willst?"></textarea>
+            <textarea id="message" name="message" v-model="form.message" placeholder="Besondere Anforderungen oder sonstige Fragen?"></textarea>
         </div>
         <div class="submit">
             <VPButton type="button" text="Weiter" @click="nextStep" />

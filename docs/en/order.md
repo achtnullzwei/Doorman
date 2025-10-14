@@ -1,3 +1,8 @@
+---
+editLink: false
+lastUpdated: false
+---
+
 <script setup lang="ts">
 import type { DefaultTheme } from 'vitepress/theme'
 import { VPButton } from 'vitepress/theme'
@@ -68,7 +73,9 @@ export default {
                 zip: false,
                 city: false,
                 country: false,
+                model: false,
             },
+            user: null,
             status: {},
             orderHash: '',
             form: {
@@ -86,6 +93,7 @@ export default {
                 shipping_method: 'standard',
                 payment_option: 'paypal',
                 message: '',
+                model: ''
             },
             max_items: 4,
             payment_options: [
@@ -242,6 +250,16 @@ export default {
             this.status = { status: 'error' };
         });
 
+        api.get('/user', { 
+            withCredentials: true 
+        })
+        .then(response => {
+            this.user = response.data;
+        })
+        .catch(() => {
+            this.user = null;
+        });
+
         api.get('/product_data', { 
             withCredentials: true 
         })
@@ -300,6 +318,9 @@ export default {
         },
         'form.country'(val) {
             this.errors.country = !val;
+        },
+        'form.model'(val) {
+            this.errors.model = !val;
         }
     },
     computed: {
@@ -350,7 +371,7 @@ export default {
             this.result_text = text;
         },
         validate() {
-            const { name, email, street, zip, city, country } = this.form;
+            const { name, email, street, zip, city, country, model } = this.form;
 
             // Reset errors
             for (const key in this.errors) this.errors[key] = false;
@@ -359,10 +380,15 @@ export default {
 
             if (!name) { this.errors.name = true; valid = false; }
             if (!email) { this.errors.email = true; valid = false; }
+
             if (!street) { this.errors.street = true; valid = false; }
+            if (street.split(' ').length < 2) { this.errors.street = true; valid = false; }
+            if (/\d/.test(street) == false) { this.errors.street = true; valid = false; }
+
             if (!zip) { this.errors.zip = true; valid = false; }
             if (!city) { this.errors.city = true; valid = false; }
             if (!country) { this.errors.country = true; valid = false; }
+            if (!model) { this.errors.model = true; valid = false; }
 
             return valid;
         },
@@ -385,11 +411,7 @@ export default {
                 this.status = response.data;
             })
             .catch(error => {
-                if (error.request.status == 429) {
-                    this.showModal("Sorry!", "You made too many requests, try again later.");
-                } else {
-                    this.showModal("Sorry!", "Something went wrong. Please try again later.");
-                }
+                this.showModal("Sorry!", this.getErrorMessage(error, 'Something went wrong. Please try again later.'));
             });
         },
         async closeOrder() {
@@ -401,11 +423,38 @@ export default {
                 this.status = response.data;
             })
             .catch(error => {
-                if (error.request.status == 429) {
-                    this.showModal("Sorry!", "You made too many requests, try again later.");
-                } else {
-                    this.showModal("Sorry!", "Something went wrong. Please try again later.");
+                this.showModal("Sorry!", this.getErrorMessage(error, 'Something went wrong. Please try again later.'));
+            });
+        },
+        async updateOrderStatus() {
+            if(!this.status) {
+                alert('Missing order data!');
+                return;
+            }
+
+            if (!confirm('Are you sure you want update the order status?')) return;
+
+            if(this.status.shipping_method == 'tracking' && this.status.status == 'pending_shipment') {
+                const trackingUrl = prompt('Provide the Tracking ID:');
+                if (!trackingUrl) {
+                    alert('No Tracking provided! Aborted.');
+                    return;
                 }
+                this.setNextStep(this.status.id, trackingUrl);
+            } else {
+                this.setNextStep(this.status.id, '');
+            }
+        },
+        async setNextStep(id, tracking) {
+            api.post('/orders/' + id + '/next', { tracking }, { 
+                withCredentials: true 
+            })
+            .then(response => {
+                this.showModal("Updated!", "The order status was updated successfully.");
+                this.refreshOrderStatus();
+            })
+            .catch(error => {
+                this.showModal("Oops!", this.getErrorMessage(error, 'Failed to update order status!'));
             });
         },
         async resetOrder() {
@@ -416,12 +465,16 @@ export default {
                 this.status = response.data;
             })
             .catch(error => {
-                if (error.request.status == 429) {
-                    this.showModal("Sorry!", "You made too many requests, try again later.");
-                } else {
-                    this.showModal("Sorry!", "Something went wrong. Please try again later.");
-                }
+                this.showModal("Oops!", this.getErrorMessage(error, 'Failed to reset order!'));
             });
+        },
+        async refreshOrderStatus() {
+            try {
+                const { data: statusData } = await api.get('/status', { withCredentials: true });
+                this.status = statusData;
+            } catch (error) {
+
+            }
         },
         async checkOrder() {
             if (!this.orderHash) return;
@@ -436,17 +489,20 @@ export default {
                     this.showModal("Sorry!", "This order does not exist! Please check the order number.");
                 }
             } catch (error) {
-                let title = "Sorry!";
-                let text = "Something went wrong. Please try again later.";
-
-                if (error.response?.status === 429) {
-                    title = "Slow down!";
-                    text = "You made too many requests, try again later.";
-                }
-
-                this.showModal(title, text);
+                this.showModal("Sorry!", this.getErrorMessage(error, 'Something went wrong. Please try again later.'));
             }
-        }
+        },
+        getErrorMessage(error, defaultMessage = "Something went wrong.") {
+            if (!error) return defaultMessage;
+
+            if (error.response) {
+                return error.response.data?.error || error.response.data?.message || `Server error (${error.response.status})`;
+            } else if (error.request) {
+                return "No response from server. Please check your connection.";
+            } else {
+                return error.message || defaultMessage;
+            }
+        },
     }
 }
 </script>
@@ -559,7 +615,6 @@ To request one, simply fill out the form below.
 
 Once I receive your message, I'll get back to you as soon as possible. The status updates are automated, **please also check your spam folder.**
 
-
 <div v-if="status.status == 'none' && available_units === 0" class="warning custom-block">
     <p class="custom-block-title">HEADS UP</p>
     <p>All Doorman devices are currently out of stock. More units are on the way! You can still send your inquiry, and I'll make sure to reserve one for you as soon as they arrive.</p>
@@ -593,6 +648,9 @@ Once I receive your message, I'll get back to you as soon as possible. The statu
     <p>
         Your order is being prepared for shipment and will be dispatched soon. Once it has been sent, you will receive an update with tracking details. Thank you for your patience!
     </p>
+    <p v-if="user">
+        <VPButton text="Mark as shipped" @click="updateOrderStatus" />
+    </p>
 </div>
 <div v-else-if="status.status == 'shipped'" class="tip custom-block">
     <p class="custom-block-title">ORDER SHIPPED</p>
@@ -601,7 +659,11 @@ Once I receive your message, I'll get back to you as soon as possible. The statu
         <br>
         Please note that customs may occasionally cause slight delays.
         <br><br>Once it's delivered, kindly let me know here. Thank you!
-        <br><br>
+    </p>
+    <p v-if="user">
+        <VPButton text="Close order" @click="closeOrder" />
+    </p>
+    <p v-else>
         <VPButton text="I received my Doorman" @click="closeOrder" />
     </p>
 </div>
@@ -609,8 +671,14 @@ Once I receive your message, I'll get back to you as soon as possible. The statu
     <p class="custom-block-title">THANK YOU</p>
     <p>
         Your order has been successfully completed. I hope you have fun with your Doorman 😊<br>
+    </p>
+    <p>
+        <b>Make sure to check the <a href="/guide/getting-started">Quickstart Guide</a> to get started.</b>
+    </p>
+    <p>
         If you'd like to place a new order, please click the button below.
-        <br><br>
+    </p>
+    <p>
         <VPButton text="New Order" @click="resetOrder" />
     </p>
 </div>
@@ -619,7 +687,8 @@ Once I receive your message, I'll get back to you as soon as possible. The statu
     <p>
         Your order has been cancelled!<br>
         If you'd like to place a new order, please click the button below.
-        <br><br>
+    </p>
+    <p>
         <VPButton text="New Order" @click="resetOrder" />
     </p>
 </div>
@@ -649,6 +718,11 @@ Once I receive your message, I'll get back to you as soon as possible. The statu
                     </div>
                 </span>
             </label>
+        </div>
+        <h5 class="firmware_title_row">Tell me something about your System</h5>
+        <div class="form-element">
+            <label for="model">Indoor Station Model</label>
+            <input type="text" name="model" id="model" placeholder="e.g. TCS ISH3030" maxlength="30" v-model="form.model" :class="{ 'invalid': errors.model }" required />
         </div>
         <h5 class="firmware_title_row">Where should it be shipped?</h5>
         <div class="firmware_option_row" :class="{ half: shipping_regions.length <= 2 }">
@@ -711,7 +785,7 @@ Once I receive your message, I'll get back to you as soon as possible. The statu
         <h5 class="firmware_title_row">Anything else you’d like to share?</h5>
         <div class="form-element">
             <label for="discord">Notes <Badge type="info">Optional</Badge></label>
-            <textarea id="message" name="message" v-model="form.message" placeholder="e.g. your indoor station model, any special requirements or something else you want to ask?"></textarea>
+            <textarea id="message" name="message" v-model="form.message" placeholder="Any special requirements or something else you want to ask?"></textarea>
         </div>
         <div class="submit">
             <VPButton type="button" text="Next" @click="nextStep" />
