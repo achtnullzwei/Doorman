@@ -58,11 +58,6 @@ tc_bus:
               id: indoor_station_serial_number
               value: !lambda "return x.serial_number;"
 
-          # Save Entrance Door Station address
-          - number.set:
-              id: entrance_door_station_address
-              value: !lambda "return x.address;"
-
           # Waiting for ringtone to finish before proceeding
           - delay: 3s
 
@@ -71,6 +66,15 @@ tc_bus:
           - tc_bus_device.identify:
               id: tc_bus_indoor_station
 
+    # If no door station id is set, wait for one
+    - if:
+        condition:
+          - lambda: return id(entrance_door_station_address).state == 63 && (x.type == TELEGRAM_TYPE_DOOR_CALL || x.type == TELEGRAM_TYPE_OPEN_DOOR) && x.address != id(entrance_door_station_address).state;
+        then:
+          - number.set:
+              id: entrance_door_station_address
+              value: !lambda "return x.address;"
+              
     # If no second door station id is set, wait for one
     - if:
         condition:

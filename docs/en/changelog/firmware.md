@@ -92,7 +92,7 @@ This release **will impact your current setup** and **requires** you to go throu
    Log messages have been refined for improved clarity and readability.
 
 ### 🚨 Breaking Changes
-- **Renamed `command` to `telegram`**
+- **Renamed `command` to `telegram`**  
   The `command` terminology has been replaced with `telegram`. If you're using the `tc_bus.send` action, you must update your configuration accordingly.  
   Additionally, the `CommandData` class has been renamed to `TelegramData`.  
   For full migration details, please refer to the updated ESPHome component documentation.

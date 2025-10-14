@@ -241,20 +241,22 @@ The indoor station **must be connected**, to complete the setup process.
 :::
 
 ### 3. Wait until you ring the doorbell
-When you press the doorbell button at your apartment or entrance, the system will save your indoor station's serial number and attempt to detect the model.
-
-:::info
-If you have multiple door stations, the firmware will try to detect additional stations automatically.
-
-To enable detection of the **second doorbell** and allow unlocking of the **second door**, you need to **press the second doorbell** or **manually press the unlock button** on the second door **at least once** — but only **after setup is complete**.
-
-🕒 Wait about **one minute after setup finishes** before doing this, so the system can correctly store the second door's address.
-:::
+When you press the doorbell button at your apartment or entrance, the system will first save your indoor station's serial number and attempt to detect the model.
 
 Once the model is successfully detected, the system will read the memory of your indoor station.
 **Note:** This entire process can take **up to 30 seconds**.
 
 If the model detection is successful or if it times out, the setup will be considered finished.
+
+:::info PLEASE NOTE
+The firmware will attempt to detect all outdoor stations automatically.
+
+To enable detection of the **doorbell(s)** and allow unlocking of the **door(s)**, you must **press each doorbell** or **manually press the unlock button** on each door **at least once** — but only **after setup is complete**.
+
+⚠️ **Order matters:** Start with the main entrance doorbell, then proceed to the second entrance. This ensures the stations are detected correctly.
+
+🕒 Wait about **one minute after setup finishes** before doing this, so the system can correctly store the second door's address.
+:::
 
 ### 4. Setup complete
 The LED will remain green-turquoise for 3 seconds, then turn off, and the setup mode will be turned off. The setup is complete.
@@ -262,7 +264,13 @@ The LED will remain green-turquoise for 3 seconds, then turn off, and the setup 
 ## Next Steps
 You're probably looking to configure your Doorman. To get started, open the Doorman web interface or the Home Assistant [device dashboard](https://my.home-assistant.io/redirect/integration/?domain=esphome).
 
+::: tip
+The Doorman web interface is sometimes available at [doorman-s3.local](http://doorman-s3.local), or you can simply use its IP address.
+:::
+
 If you're unsure about what each entity does, what it controls, or how to configure it, check out the [Entity Reference](../reference/entities) for a detailed guide on all available entities, their functions, and setup options.
+
+If you’re a power user, don’t forget to explore the [Customization](../guide/firmware/customization) section. Tailor Doorman to your exact needs and tweak it however you like.
 
 ## Still having issues?
 If you're having trouble setting up your Doorman in Home Assistant, we're here to help.  

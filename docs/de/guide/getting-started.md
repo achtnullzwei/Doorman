@@ -241,20 +241,22 @@ Deine Innenstation **muss angeschlossen sein**, damit die Einrichtung abgeschlos
 :::
 
 ### 3. Warte, bis du auf die Klingel drückst
-Wenn du den Klingelknopf an deiner Wohnung oder am Eingang drückst, speichert das System die Seriennummer deiner Innenstation und versucht, das Modell zu erkennen.
-
-:::info
-Wenn du mehrere Außenstationen hast, versucht die Firmware, zusätzliche Stationen automatisch zu erkennen.
-
-Um die **zweite Klingel** zu erkennen und das **Öffnen der zweiten Tür** zu ermöglichen, musst du **die zweite Klingeltaste drücken** oder **den Tür der zweiten Tür manuell betätigen** – aber erst **nachdem die Einrichtung abgeschlossen ist**.
-
-🕒 Warte etwa **eine Minute nach Abschluss der Einrichtung**, damit die Adresse der zweiten Tür korrekt gespeichert werden kann.
-:::
+Wenn du die Klingel an deiner Wohnungstür oder am Eingang drückst, speichert das System als erstes die Seriennummer deiner Innenstation und versucht dann das Modell zu erkennen.
 
 Sobald das Modell erfolgreich erkannt wurde, wird der Speicher deiner Innenstation ausgelesen.  
 **Hinweis:** Der gesamte Prozess kann **bis zu 30 Sekunden** dauern.
 
 Wenn das Modell erfolgreich erkannt wurde oder die Zeit abläuft, wird die Einrichtung abgeschlossen.
+
+:::info BITTE BEACHTE
+Die Firmware versucht alle Außenstationen automatisch zu erkennen.
+
+Damit die **Türklingel(n)** erkannt werden und du die **Tür(en) öffnen** kannst, musst du **einmal jede Türklingel drücken** oder **die Türöffnertaste jeder Tür manuell betätigen** — aber **erst, nachdem die Einrichtung abgeschlossen ist**.
+
+⚠️ **Die Reihenfolge ist wichtig:** Fang mit der Klingel am Haupteingang an und dann die zweite. So erkennt das System alles richtig.
+
+🕒 Warte etwa **eine Minute nach der Einrichtung**, bevor du das machst, damit die Adresse der zweiten Tür korrekt gespeichert wird.
+:::
 
 ### 4. Einrichtung abgeschlossen
 Die LED leuchtet 3 Sekunden lang grün-türkis und geht dann aus, der Setup-Modus wird deaktiviert. Die Einrichtung ist abgeschlossen.
@@ -262,7 +264,13 @@ Die LED leuchtet 3 Sekunden lang grün-türkis und geht dann aus, der Setup-Modu
 ## Nächste Schritte
 Du möchtest deinen Doorman konfigurieren? Öffne dafür die Weboberfläche von Doorman oder das [Geräte-Dashboard](https://my.home-assistant.io/redirect/integration/?domain=esphome) in Home Assistant.
 
+::: tip
+Die Weboberfläche von Doorman ist manchmal unter [doorman-s3.local](http://doorman-s3.local) erreichbar, oder du benutzt einfach die IP-Adresse.
+:::
+
 Falls du dir unsicher bist, was jede Entität macht, welche Funktionen sie steuert oder wie du sie einrichtest, findest du in der [Entitätsreferenz](../reference/entities) eine ausführliche Anleitung zu allen verfügbaren Entitäten und deren Konfigurationsmöglichkeiten.
+
+Wenn du ein Power-User bist, solltest du unbedingt den Bereich [Anpassung](../guide/firmware/customization) anschauen. Passe Doorman genau an deine Bedürfnisse an und ändere, was immer du willst.
 
 ## Hast du noch Probleme?
 Falls du Probleme hast, deinen Doorman in Home Assistant einzurichten, helfen wir dir gerne weiter.
