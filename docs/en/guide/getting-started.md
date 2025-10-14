@@ -270,7 +270,7 @@ The Doorman web interface is sometimes available at [doorman-s3.local](http://do
 
 If you're unsure about what each entity does, what it controls, or how to configure it, check out the [Entity Reference](../reference/entities) for a detailed guide on all available entities, their functions, and setup options.
 
-If you’re a power user, don’t forget to explore the [Customization](../guide/firmware/customization) section. Tailor Doorman to your exact needs and tweak it however you like.
+If you're a power user, don’t forget to explore the [Customization](../guide/firmware/customization) section. Tailor Doorman to your exact needs and tweak it however you like.
 
 ## Still having issues?
 If you're having trouble setting up your Doorman in Home Assistant, we're here to help.  

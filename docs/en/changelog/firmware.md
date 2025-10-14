@@ -75,8 +75,8 @@ This release **will impact your current setup** and **requires** you to go throu
 - **Component split**
   The `tc_bus` ESPHome component has been refactored into three separate components: `tc_bus`, `tc_bus_device`, and `doorman_hardware`. This change improves maintainability and adds flexibility when working with multiple TC:BUS devices.
 
-- **TC:Serial Component**
-  The `tc_serial` ESPHome component is now available, enabling serial communication with the TC:BUS via USB.
+- **TC:BUS Serial Component**
+  The `tc_bus_serial` ESPHome component is now available, enabling serial communication with the TC:BUS via USB.
 
 ### 📝 Other Updates
 - **Firmware Configuration Assistant**  
@@ -112,6 +112,10 @@ This release **will impact your current setup** and **requires** you to go throu
 
 - **Renamed Nuki Lock**  
   The `Nuki Lock` entity has been renamed to `Apartment Door` for better alignment with the naming convention used for other doors.
+
+- **Changed Setup Mode logic**  
+  Previously, setup mode saved the outdoor station address only once, when pressing either the apartment doorbell or the outdoor station doorbell. This caused issues if the system was using a non-default address.  
+  Now, you need to press the outdoor station doorbell for each door to ensure the address is saved correctly. Take a look [here](https://doorman.azon.ai/guide/getting-started#interactive-setup) for more information.
 
 - **Minimum ESPHome Version Set**  
    The minimum required version has been updated to **2025.5.0**.
