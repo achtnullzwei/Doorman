@@ -90,6 +90,7 @@ export default {
 
                 return x.name.toLowerCase().includes(this.orderFilter.toLowerCase()) || 
                     x.hash.toLowerCase() == this.orderFilter.toLowerCase().trim() || 
+                    x.status.toLowerCase() == this.orderFilter.toLowerCase().trim() || 
                     x.message.toLowerCase().includes(this.orderFilter.toLowerCase()) ||
                     x.discord.toLowerCase().includes(this.orderFilter.toLowerCase()) ||
                     x.model.toLowerCase().includes(this.orderFilter.toLowerCase()) ||
