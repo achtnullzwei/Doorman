@@ -835,6 +835,7 @@ canvas {
                 </div>
             </div>
         </div>
+        <hr />
         <div style="
             margin-bottom: 25px;
             margin-top: 25px;
