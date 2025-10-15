@@ -13,6 +13,7 @@ export const en = defineConfig({
         ['meta', { property: 'og:locale', content: 'en' }],
         ['meta', { property: 'og:title', content: 'Doorman | Gateway for TCS and Koch intercoms' }],
         ['meta', { property: 'og:description', content: 'Doorman S3 lets you connect your TCS or Koch intercom to any home automation system.' }],
+        ['meta', { name: 'og:description', content: 'Doorman S3 lets you connect your TCS or Koch intercom to any home automation system.' }],
     ],
 
   themeConfig: {

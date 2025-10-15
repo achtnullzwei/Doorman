@@ -13,6 +13,7 @@ export const de = defineConfig({
         ['meta', { property: 'og:locale', content: 'de' }],
         ['meta', { property: 'og:title', content: 'Doorman | Gateway für TCS und Koch Gegensprechanlagen' }],
         ['meta', { property: 'og:description', content: 'Mit dem Doorman S3 Gateway kannst du deine TCS oder Koch Gegensprechanlage an jedes Heimautomatisierungssystem anbinden.' }],
+        ['meta', { name: 'og:description', content: 'Mit dem Doorman S3 Gateway kannst du deine TCS oder Koch Gegensprechanlage an jedes Heimautomatisierungssystem anbinden.' }],
     ],
 
   themeConfig: {
