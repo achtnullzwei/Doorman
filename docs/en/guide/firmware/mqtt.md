@@ -17,7 +17,7 @@ Each entity publishes its state to a topic in the following format:
 You can control certain entities by publishing a telegram to this topic format:
 ::: code-group
 ``` [Topic]
-<TOPIC_PREFIX>/<COMPONENT_TYPE>/<COMPONENT_NAME>/telegram 
+<TOPIC_PREFIX>/<COMPONENT_TYPE>/<COMPONENT_NAME>/command 
 ```
 ``` [Payload]
 ON or OFF or whatever is supported
@@ -28,7 +28,7 @@ ON or OFF or whatever is supported
 To enable or disable the [Ring-To-Open](../features/ring-to-open.md) automation, send `ON` or `OFF` as the payload to the topic:
 ::: code-group
 ``` [Topic]
-doorman-s3/switch/ring_to_open/telegram
+doorman-s3/switch/ring_to_open/command
 ```
 ``` [Payload]
 ON

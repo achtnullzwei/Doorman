@@ -17,7 +17,7 @@ Jede Entität veröffentlicht ihren Status auf einem Topic im folgenden Format:
 Du kannst bestimmte Entitäten steuern, indem du einen Befehl an ein Topic mit folgendem Format sendest:
 ::: code-group
 ``` [Topic]
-<TOPIC_PREFIX>/<COMPONENT_TYPE>/<COMPONENT_NAME>/telegram 
+<TOPIC_PREFIX>/<COMPONENT_TYPE>/<COMPONENT_NAME>/command 
 ```
 ``` [Payload]
 ON oder OFF oder was sonst unterstützt wird
@@ -28,7 +28,7 @@ ON oder OFF oder was sonst unterstützt wird
 Um die [Ring-To-Open](../features/ring-to-open.md) Automatisierung zu aktivieren oder zu deaktivieren, sende ON oder OFF als Payload an dieses Topic:
 ::: code-group
 ``` [Topic]
-doorman-s3/switch/ring_to_open/telegram
+doorman-s3/switch/ring_to_open/command
 ```
 ``` [Payload]
 ON
