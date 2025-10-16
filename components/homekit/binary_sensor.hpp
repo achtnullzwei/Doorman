@@ -97,28 +97,32 @@ namespace esphome
 
         hap_serv_t* service = nullptr;
 
-        std::string device_class = entityPtr->get_device_class();
-        if (device_class == "motion") {
+        const char* device_class = entityPtr->get_device_class().c_str();
+        if (device_class == nullptr) {
+            service = hap_serv_contact_sensor_create(entityPtr->state);
+        }
+        else if (strcmp(device_class, "motion") == 0) {
           service = hap_serv_motion_sensor_create(entityPtr->state);
         }
-        else if (device_class == "door") {
+        else if (strcmp(device_class, "door") == 0) {
           service = hap_serv_contact_sensor_create(entityPtr->state);
         }
-        else if (device_class == "window") {
+        else if (strcmp(device_class, "window") == 0) {
           service = hap_serv_contact_sensor_create(entityPtr->state);
         }
-        else if (device_class == "occupancy") {
+        else if (strcmp(device_class, "occupancy") == 0) {
           service = hap_serv_occupancy_sensor_create(entityPtr->state);
         }
-        else if (device_class == "moisture") {
+        else if (strcmp(device_class, "moisture") == 0) {
           service = hap_serv_leak_sensor_create(entityPtr->state);
         }
-        else if (device_class == "carbon_monoxide") {
+        else if (strcmp(device_class, "carbon_monoxide") == 0) {
           service = hap_serv_carbon_dioxide_sensor_create(entityPtr->state);
         }
-        else if (device_class == "smoke") {
+        else if (strcmp(device_class, "smoke") == 0) {
           service = hap_serv_smoke_sensor_create(entityPtr->state);
-        } else {
+        }
+        else {
           service = hap_serv_contact_sensor_create(entityPtr->state);
         }
 

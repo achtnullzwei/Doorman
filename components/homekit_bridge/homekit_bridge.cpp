@@ -91,11 +91,17 @@ namespace esphome
             hap_cfg.task_priority = 2;
             hap_set_config(&hap_cfg);
 
+            char mac_buf[13];
+            uint8_t mac[6];
+            get_mac_address_raw(mac);
+            format_mac_addr_lower_no_sep(mac, mac_buf);
+
+
             hap_acc_cfg_t cfg = {
                 .name = (char*)this->name_,
                 .model = (char*)this->model_,
                 .manufacturer = (char*)this->manufacturer_,
-                .serial_num = (char*)get_mac_address().c_str(),
+                .serial_num = mac_buf,
                 .fw_rev = (char*)"1.0.0",
                 .hw_rev = (char*)"1.0.0",
                 .pv = (char*)"1.1.0",
@@ -108,8 +114,7 @@ namespace esphome
             if (!accessory) {
                 hap_acc_delete(accessory);
 
-                std::string hap_acc_create_fail_msg = "Failed to create accessory";
-                this->mark_failed(hap_acc_create_fail_msg.c_str());
+                this->mark_failed("Failed to create accessory");
                 return;
             }
 
@@ -158,6 +163,7 @@ namespace esphome
         }
 
         void HomeKitBridgeComponent::loop() {
+
         }
 
         void HomeKitBridgeComponent::dump_config() {

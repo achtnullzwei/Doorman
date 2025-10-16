@@ -10,15 +10,13 @@ namespace esphome
 
       ESP_LOGCONFIG(TAG, "Running setup");
 
-      if(this->base_component_->is_failed()) {
-        std::string failed_msg = "HomeKit Base failed to setup!";
-        this->mark_failed(failed_msg.c_str());
+      if(this->base_component_->is_failed()) { 
+        this->mark_failed("HomeKit Base failed to setup!");
         return;
       }
 
       if(!this->base_component_->is_ready()) {
-        std::string not_ready_msg = "HomeKit Base is not setup yet!";
-        this->mark_failed(not_ready_msg.c_str());
+        this->mark_failed("HomeKit Base is not setup yet!");
         return;
       }
 

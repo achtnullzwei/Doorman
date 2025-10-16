@@ -99,30 +99,33 @@ namespace esphome
 
         hap_serv_t* service = nullptr;
 
-        std::string device_class = entityPtr->get_device_class();
-        if (device_class == "temperature") {
+        const char* device_class = entityPtr->get_device_class().c_str();
+        if (device_class == nullptr) {
+            service = hap_serv_temperature_sensor_create(entityPtr->state);
+        } 
+        else if (strcmp(device_class, "temperature") == 0) {
           service = hap_serv_temperature_sensor_create(entityPtr->state);
         }
-        else if (device_class == "humidity") {
+        else if (strcmp(device_class, "humidity") == 0) {
           service = hap_serv_humidity_sensor_create(entityPtr->state);
         }
-        else if (device_class == "illuminance") {
+        else if (strcmp(device_class, "illuminance") == 0) {
           service = hap_serv_light_sensor_create(entityPtr->state);
         }
-        else if (device_class == "aqi") {
+        else if (strcmp(device_class, "aqi") == 0) {
           service = hap_serv_air_quality_sensor_create(entityPtr->state);
         }
-        else if (device_class == "carbon_dioxide") {
+        else if (strcmp(device_class, "carbon_dioxide") == 0) {
           service = hap_serv_carbon_dioxide_sensor_create(false);
         }
-        else if (device_class == "carbon_monoxide") {
+        else if (strcmp(device_class, "carbon_monoxide") == 0) {
           service = hap_serv_carbon_monoxide_sensor_create(false);
         }
-        else if (device_class == "pm10") {
+        else if (strcmp(device_class, "pm10") == 0) {
           service = hap_serv_create(HAP_SERV_UUID_AIR_QUALITY_SENSOR);
           hap_serv_add_char(service, hap_char_pm_10_density_create(entityPtr->state));
         }
-        else if (device_class == "pm25") {
+        else if (strcmp(device_class, "pm25") == 0) {
           service = hap_serv_create(HAP_SERV_UUID_AIR_QUALITY_SENSOR);
           hap_serv_add_char(service, hap_char_pm_2_5_density_create(entityPtr->state));
         }
