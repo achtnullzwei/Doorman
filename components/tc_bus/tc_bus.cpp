@@ -150,34 +150,29 @@ namespace esphome
                     // Fire Binary Sensors
                     for (auto &listener : listeners_)
                     {
-                        uint32_t listener_telegram = listener->telegram_.has_value() ? listener->telegram_.value() : 0;
-                        uint32_t listener_serial_number = listener->serial_number_.has_value() ? listener->serial_number_.value() : 0;
-                        uint8_t listener_address = listener->address_.has_value() ? listener->address_.value() : 0;
-                        uint32_t listener_payload = listener->payload_.has_value() ? listener->payload_.value() : 0;
-                        TelegramType listener_type = listener->type_.has_value() ? listener->type_.value() : TELEGRAM_TYPE_UNKNOWN;
-
                         bool allow_publish = false;
 
-                        // Check if listener matches the telegram
+                        uint32_t listener_telegram = listener->telegram_.value_or(0);
+
                         if (listener_telegram != 0)
                         {
-                            if (telegram_data.raw == listener_telegram)
+                            allow_publish = (telegram_data.raw == listener_telegram);
+                        }
+                        else
+                        {
+                            auto type = listener->type_.value_or(TELEGRAM_TYPE_UNKNOWN);
+                            auto addr = listener->address_.value_or(0);
+                            auto payload = listener->payload_.value_or(0);
+                            auto serial = listener->serial_number_.value_or(0);
+
+                            if (
+                                telegram_data.type == type &&
+                                (telegram_data.address == addr || addr == 255) &&
+                                (telegram_data.payload == payload || payload == 255) &&
+                                (serial == 0 || telegram_data.serial_number == serial || serial == 255)
+                            )
                             {
                                 allow_publish = true;
-                            }
-                        }
-                        else if (telegram_data.type == listener_type && (telegram_data.address == listener_address || listener_address == 255) && (telegram_data.payload == listener_payload || listener_payload == 255))
-                        {
-                            if (listener_serial_number != 0)
-                            {
-                                if (telegram_data.serial_number == listener_serial_number || listener_serial_number == 255)
-                                {
-                                    allow_publish = true;
-                                }
-                            }
-                            else
-                            {
-                                allow_publish = true; // Accept any serial number
                             }
                         }
 
@@ -257,24 +252,21 @@ namespace esphome
                 mac[1] = (telegram_data.payload >> 8) & 0xFF;
                 mac[2] = telegram_data.payload & 0xFF;
 
-                ESP_LOGD(TAG, "Discovered Doorman with MAC: %02X:%02X:%02X",
-                            mac[0], mac[1], mac[2]);
+                ESP_LOGD(TAG, "Discovered Doorman with MAC: %02X:%02X:%02X", mac[0], mac[1], mac[2]);
             }
 
             #ifdef USE_LOCK
-            if (telegram_data.type == TELEGRAM_TYPE_OPEN_DOOR || telegram_data.type == TELEGRAM_TYPE_OPEN_DOOR_LONG)
-            {
-                // Update Locks
-                for (auto &listener : lock_listeners_)
+                if (telegram_data.type == TELEGRAM_TYPE_OPEN_DOOR || telegram_data.type == TELEGRAM_TYPE_OPEN_DOOR_LONG)
                 {
-                    uint8_t listener_address = listener->address_.has_value() ? listener->address_.value() : 0;
-
-                    if(telegram_data.address == listener_address || listener_address == 255)
+                    // Update Locks
+                    for (auto &listener : lock_listeners_)
                     {
-                        listener->unlock(&listener->timer_, listener->auto_lock_);
+                        if(telegram_data.address == listener->address_.value_or(0) || listener->address_.value_or(0) == 255)
+                        {
+                            listener->unlock(&listener->timer_, listener->auto_lock_);
+                        }
                     }
                 }
-            }
             #endif
 
             #ifdef USE_TEXT_SENSOR

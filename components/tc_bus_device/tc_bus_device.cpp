@@ -324,22 +324,10 @@ namespace esphome
                         // Fire Binary Sensors
                         for (auto &listener : listeners_)
                         {
-                            uint32_t listener_serial_number = this->serial_number_;
-                            uint8_t listener_address = listener->address_.has_value() ? listener->address_.value() : 0;
-                            uint32_t listener_payload = listener->payload_.has_value() ? listener->payload_.value() : 0;
-                            TelegramType listener_type = listener->type_.has_value() ? listener->type_.value() : TELEGRAM_TYPE_UNKNOWN;
-
-                            bool allow_publish = false;
-
-                            // Check if listener matches the telegram
-                            if (
-                                telegram_data.type == listener_type && 
-                                (telegram_data.address == listener_address || listener_address == 255) &&
-                                (telegram_data.payload == listener_payload || listener_payload == 255) &&
-                                telegram_data.serial_number == listener_serial_number
-                            ) {
-                                allow_publish = true;
-                            }
+                            bool allow_publish = (telegram_data.type == (listener->type_.value_or(TELEGRAM_TYPE_UNKNOWN))) &&
+                                (telegram_data.address == listener->address_.value_or(0) || listener->address_.value_or(0) == 255) &&
+                                (telegram_data.payload == listener->payload_.value_or(0) || listener->payload_.value_or(0) == 255) &&
+                                (telegram_data.serial_number == this->serial_number_);
 
                             // Trigger listener binary sensor if match found
                             if (allow_publish)

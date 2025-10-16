@@ -164,15 +164,6 @@ namespace esphome
     // Received data from bus
     bool ConfigoComponent::on_receive(tc_bus::TelegramData telegram_data, bool received)
     {
-      if(telegram_data.is_long)
-      {
-        ESP_LOGD(TAG, "TC:BUS telegram received: %08X", telegram_data.raw);
-      }
-      else
-      {
-        ESP_LOGD(TAG, "TC:BUS telegram received: %04X", telegram_data.raw);
-      }
-
       // Send to serial output -> configo software
       bool qprot = true;
 
@@ -218,10 +209,10 @@ namespace esphome
 
       /*if(telegram_data.type == TELEGRAM_TYPE_REQUEST_VERSION)
       {
-        waitingForResponse = true;
+        waitingForResponse_ = true;
       }
 
-      waitingForResponse = false;*/
+      waitingForResponse_ = false;*/
 
       return true;
     }

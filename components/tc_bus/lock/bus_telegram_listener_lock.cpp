@@ -25,13 +25,10 @@ namespace esphome
             {
                 this->before_unlock_callback_.call();
 
-                uint8_t listener_address = 0;
-                if(this->address_.has_value())
-                {
-                    listener_address = this->address_.value();
-                }
-
-                this->parent_->send_telegram(TELEGRAM_TYPE_OPEN_DOOR, listener_address);
+                this->parent_->send_telegram(
+                    TELEGRAM_TYPE_OPEN_DOOR,
+                    this->address_.value_or(0)
+                );
 
                 this->after_unlock_callback_.call();
             }

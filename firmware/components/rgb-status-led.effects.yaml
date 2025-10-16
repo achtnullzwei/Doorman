@@ -11,7 +11,8 @@ light:
             static uint32_t transition_off_length_ = 250;
             static bool on_ = false;
 
-            auto call = id(doorman_rgb_status_led).turn_on();
+            auto call = id(doorman_rgb_status_led).make_call();
+            call.set_state(true);
 
             float out = on_ ? (id(doorman_rgb_status_led_brightness).state / 100.0) : 0;
             call.set_brightness_if_supported(out);
@@ -32,7 +33,8 @@ light:
             static uint32_t transition_off_length_ = 2500;
             static bool on_ = false;
 
-            auto call = id(doorman_rgb_status_led).turn_on();
+            auto call = id(doorman_rgb_status_led).make_call();
+            call.set_state(true);
 
             float out = on_ ? (id(doorman_rgb_status_led_brightness).state / 100.0) : 0;
             call.set_brightness_if_supported(out);
@@ -53,8 +55,9 @@ light:
             static uint32_t transition_off_length_ = 4000;
             static bool on_ = false;
 
-            auto call = id(doorman_rgb_status_led).turn_on();
-
+            auto call = id(doorman_rgb_status_led).make_call();
+            call.set_state(true);
+            
             float out = on_ ? (id(doorman_rgb_status_led_brightness).state / 100.0) : 0;
             call.set_brightness_if_supported(out);
 
@@ -72,7 +75,10 @@ light:
           lambda: |-
             static bool state = false;
 
-            auto call = id(doorman_rgb_status_led).turn_on();
+            auto call = id(doorman_rgb_status_led).make_call();
+
+            call.set_state(true);
+            call.set_brightness_if_supported(id(doorman_rgb_status_led_brightness).state / 100.0);
 
             // Transition of 1000ms = 1s
             call.set_transition_length(1000);
@@ -84,32 +90,9 @@ light:
               call.set_rgb(0, 0.22, 1.0);
             }
 
-            call.set_brightness_if_supported(id(doorman_rgb_status_led_brightness).state / 100.0);
-
             // don't tell HA every change
             call.set_publish(false);
             call.set_save(false);
             call.perform();
 
             state = !state;
-
-      #- pulse:
-      #    name: pulse
-      #    transition_length: 250ms
-      #    update_interval: 250ms
-      #    min_brightness: 0%
-      #    max_brightness: 40%
-
-      #- pulse:
-      #    name: slow_pulse
-      #    transition_length: 1s
-      #    update_interval: 2s
-      #    min_brightness: 0%
-      #    max_brightness: 40%
-      
-      #- pulse:
-      #    name: slow_partymode
-      #    transition_length: 4s
-      #    update_interval: 2s
-      #    min_brightness: 0%
-      #    max_brightness: 40%

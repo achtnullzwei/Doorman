@@ -50,8 +50,6 @@ namespace esphome
 
       void set_base_component(tc_bus::TCBusComponent *base_component) { this->base_component_ = base_component; }
 
-      bool waitingForResponse = false;
-
     protected:
       tc_bus::TCBusComponent *base_component_{nullptr};
 
@@ -68,6 +66,7 @@ namespace esphome
 
       std::vector<uint8_t> rx_buffer_;
       uint32_t last_read_byte_{0};
+      bool waitingForResponse_ = false;
     };
 
   }  // namespace configo
