@@ -89,7 +89,7 @@ CONFIG_SCHEMA = cv.Schema(
         cv.GenerateID(CONF_RECEIVER_ID): cv.use_id(
             remote_receiver.RemoteReceiverComponent
         ),
-        cv.Optional(CONF_EVENT, default="tc"): cv.string,
+        cv.Optional(CONF_EVENT, default="none"): cv.string,
         cv.Optional(CONF_ON_TELEGRAM): automation.validate_automation(
             {
                 cv.GenerateID(CONF_TRIGGER_ID): cv.declare_id(ReceivedTelegramTrigger),
