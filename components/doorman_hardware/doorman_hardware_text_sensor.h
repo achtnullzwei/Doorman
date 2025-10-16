@@ -13,7 +13,7 @@ namespace esphome
         void setup() override;
         void dump_config() override;
 
-        std::string hardware_version_str_ = "Generic";
+        char hardware_version_str_[32] = "Generic";
     };
   }  // namespace doorman_hardware_text_sensor
 }  // namespace esphome

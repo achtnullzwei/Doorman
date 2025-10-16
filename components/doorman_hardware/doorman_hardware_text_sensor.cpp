@@ -18,7 +18,7 @@ namespace esphome
         {
             ESP_LOGCONFIG(TAG, "Running setup");
 
-            #if defined(USE_ESP_IDF) || (defined(USE_ARDUINO) && defined(ESP32))
+            #ifdef ESP32
             ESP_LOGD(TAG, "Checking for Doorman hardware");
 
             // Doorman Hardware Revision
@@ -32,7 +32,14 @@ namespace esphome
             if (ver[0] > 0)
             {
                 ESP_LOGI(TAG, "Detected Doorman Hardware: Revision %i.%i.%i.", ver[0], ver[1], ver[2]);
-                this->hardware_version_str_ = "Doorman-S3 " + std::to_string(ver[0]) + "." + std::to_string(ver[1]) + "." + std::to_string(ver[2]);
+
+                static char hw_version_str[32];
+                int len = snprintf(hw_version_str, sizeof(hw_version_str), "Doorman-S3 %u.%u.%u", ver[0], ver[1], ver[2]);
+                if (len < 0 || len >= static_cast<int>(sizeof(hw_version_str)))
+                {
+                    hw_version_str[sizeof(hw_version_str) - 1] = '\0';
+                }
+                this->hardware_version_str_ = hw_version_str;
             }
             #endif
 
