@@ -8,7 +8,7 @@ Follow the steps below to pair it with the Home app on your iPhone or iPad:
    1. To pair Doorman via HomeKit, open the Home app on your iPhone or iPad. Tap the "+" icon and select "Add Accessory".
 
    2. Scan the HomeKit setup QR code on the right side.  
-      If you can't scan the code, select "I Don’t Have a Code or Cannot Scan" and then choose "Enter Code Manually" to type in the setup code: `291-21-998`
+      If you can't scan the code, select "I Don't Have a Code or Cannot Scan" and then choose "Enter Code Manually" to type in the setup code: `291-21-998`
    
    3. Follow the on-screen instructions to complete pairing.  
     Once connected, you can control Doorman through the Home app or with Siri.

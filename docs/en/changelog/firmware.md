@@ -33,7 +33,7 @@ This release **will impact your current setup** and **requires** you to go throu
   To enable native control through Apple's Home app and Siri, you can now choose the [HomeKit integration](https://doorman.azon.ai/guide/firmware/homekit) in the configuration assistant.
 
 - **Pre-Open Telegrams**  
-   In some setups, it’s necessary to send one or more preparatory telegrams to select the correct door. This feature allows you to define and send a sequence of telegrams before the `open_door` telegram is executed.
+   In some setups, it's necessary to send one or more preparatory telegrams to select the correct door. This feature allows you to define and send a sequence of telegrams before the `open_door` telegram is executed.
 
 - **Relay Mode**  
    It is now possible to activate the integrated relay when opening the entrance doors.  
@@ -149,7 +149,7 @@ This release **will impact your current setup** and **requires** you to go throu
    The new option is set to `Manual` by default. You'll need to set it to `Function Button` to restore the previous behavior.
 
 - **Minimum ESPHome Version Set**  
-   We’ve bumped the minimum required version to **2025.2.0**.
+   We've bumped the minimum required version to **2025.2.0**.
 
 ## 2025.2.0
 ### 🚀 What's New?
@@ -249,7 +249,7 @@ This release **will impact your current setup** and **requires** you to go throu
    👉 **Check the [Supported Models and Settings](https://doorman.azon.ai/reference/esphome-component#model-setting-availability)**
 
 - **Programming Mode Actions**  
-   Just **toggle the control unit’s programming mode** using ESPHome for instant actions.
+   Just **toggle the control unit's programming mode** using ESPHome for instant actions.
 
 - **New Nuki Lock Settings**  
    With this release, we fully harness the expanded settings options of the Nuki Lock component, unlocking enhanced customization and control for an elevated user experience.
@@ -259,7 +259,7 @@ This release **will impact your current setup** and **requires** you to go throu
    Navigate with ease! **Entities** are now more logically grouped on the web interface for effortless control and access.
 
 - **Simplified ESPHome Configuration**  
-   We’ve made the ESPHome config files **more modular**! Configurations are now split into separate add-ons for smoother management.
+   We've made the ESPHome config files **more modular**! Configurations are now split into separate add-ons for smoother management.
 
 - **Doorman Discovery**  
    We've introduced a new custom protocol that enables seamless discovery of other devices running this firmware for troubleshooting, as well as those utilizing the [custom Doorman firmware](https://doorman.azon.ai/guide/firmware/custom-firmware) .
@@ -270,12 +270,12 @@ This release **will impact your current setup** and **requires** you to go throu
 
 ### 🚨 Breaking Changes
 - **Re-setup Required!**  
-   The new protocol means you’ll need to **reconfigure** your system. Old stored telegrams won't work anymore. Simply **press the apartment or entrance doorbell** to start the setup again.  
+   The new protocol means you'll need to **reconfigure** your system. Old stored telegrams won't work anymore. Simply **press the apartment or entrance doorbell** to start the setup again.  
 
    👉 **Check the [setup guide](https://doorman.azon.ai/guide/getting-started#interactive-setup) for details!**
 
 - **New Service Names**  
-   We’ve made changes to the Home Assistant service names to make them easier to understand and use:
+   We've made changes to the Home Assistant service names to make them easier to understand and use:
    - **Old Format**:
      ```yaml
      service: esphome.doorman_s3_send_tcs_telegram
@@ -297,7 +297,7 @@ This release **will impact your current setup** and **requires** you to go throu
        payload: 0        # Data payload
        serial_number: 0  # Indoor Station serial number
      ```
-     **Why it’s awesome**: It’s now **more readable** and lets you **easily specify** telegram types!
+     **Why it's awesome**: It's now **more readable** and lets you **easily specify** telegram types!
 
 
 ## 2024.8.5
@@ -310,7 +310,7 @@ This release **will impact your current setup** and **requires** you to go throu
    Fixed those pesky import file name issues—no more confusion!
 
 - **Better Status Colors**  
-   We’ve revamped the **status colors** to improve visibility and clarity, making it easier to track everything at a glance.
+   We've revamped the **status colors** to improve visibility and clarity, making it easier to track everything at a glance.
 
 ### 📝 Other Updates
 - **Development Builds**  
@@ -353,7 +353,7 @@ This release **will impact your current setup** and **requires** you to go throu
 
 ### 🚨 Breaking Changes
 - **Telegram Reset**  
-   Due to the simplified setup process and configurable telegrams, the substituations are not used anymore. Thus you’ll need to **reconfigure** them using the new input entities.
+   Due to the simplified setup process and configurable telegrams, the substituations are not used anymore. Thus you'll need to **reconfigure** them using the new input entities.
    
 - **Minimum ESPHome Version Set**  
-   We’ve bumped the minimum required version to **2024.8.0**.
+   We've bumped the minimum required version to **2024.8.0**.

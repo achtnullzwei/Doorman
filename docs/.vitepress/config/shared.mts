@@ -141,6 +141,13 @@ export const shared = defineConfig({
         [
           "meta",
           {
+            property: "og:description",
+            content: pageDescription,
+          },
+        ],
+        [
+          "meta",
+          {
             name: "twitter:description",
             content: pageDescription,
           },

@@ -42,7 +42,7 @@ If your device gets stuck on **"Preparing installation"**, follow these steps:
 Unplug your device and connect it to another USB port on your computer. Then, restart the installation.
 
 **Press the FLASH button**  
-If the issue persists, while the **"Preparing installation"** screen is displayed, press the **FLASH** button once on the device. Your device should now proceed with the installation. If it still doesn’t proceed you can hold down the boot button for 3-5 seconds whilst on the “Preparing Installation” phase.
+If the issue persists, while the **"Preparing installation"** screen is displayed, press the **FLASH** button once on the device. Your device should now proceed with the installation. If it still doesn't proceed you can hold down the boot button for 3-5 seconds whilst on the “Preparing Installation” phase.
 :::
 
 ::: details A loud beeping noise occurs on the speaker

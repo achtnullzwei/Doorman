@@ -782,7 +782,7 @@ Once I receive your message, I'll get back to you as soon as possible. The statu
             <label for="discord">Discord Tag <Badge type="info">Optional</Badge></label>
             <input type="text" name="discord" id="discord" placeholder="azonflo" v-model="form.discord" />
         </div>
-        <h5 class="firmware_title_row">Anything else you’d like to share?</h5>
+        <h5 class="firmware_title_row">Anything else you'd like to share?</h5>
         <div class="form-element">
             <label for="discord">Notes <Badge type="info">Optional</Badge></label>
             <textarea id="message" name="message" v-model="form.message" placeholder="Any special requirements or something else you want to ask?"></textarea>

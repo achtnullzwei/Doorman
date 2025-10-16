@@ -43,7 +43,7 @@ Always double-check all connections carefully before plugging anything in.
 > [!DANGER] IMPORTANT
 > **Please remove the jumper cap on `BUS PWR` before you proceed!**
 > 
-> The intercom’s power supply must provide **at least 60 mA**, which is usually the case.  
+> The intercom's power supply must provide **at least 60 mA**, which is usually the case.  
 > However, since the available power is limited, **connecting additional devices like the Doorman-S3 directly to the bus may cause instability** in the system.
 
 Connect the `b` line (Ground) and the `a` line (24V Bus) to the TC:BUS terminals on your Doorman—one line per terminal.
@@ -61,7 +61,7 @@ Example:
 > Starting with revision `1.5` this method will only produce a subtle, yet noticeable hissing sound on the speaker.
 
 > [!DANGER] IMPORTANT
-> The intercom’s power supply must provide **at least 60 mA**, which is usually the case.  
+> The intercom's power supply must provide **at least 60 mA**, which is usually the case.  
 > However, since the available power is limited, **connecting additional devices like the Doorman-S3 directly to the bus may cause instability** in the system.
 
 Connect the `b` line (Ground) and the `a` line (24V Bus) to the TC:BUS terminals on your Doorman—one line per terminal.
@@ -270,7 +270,7 @@ The Doorman web interface is sometimes available at [doorman-s3.local](http://do
 
 If you're unsure about what each entity does, what it controls, or how to configure it, check out the [Entity Reference](../reference/entities) for a detailed guide on all available entities, their functions, and setup options.
 
-If you're a power user, don’t forget to explore the [Customization](../guide/firmware/customization) section. Tailor Doorman to your exact needs and tweak it however you like.
+If you're a power user, don't forget to explore the [Customization](../guide/firmware/customization) section. Tailor Doorman to your exact needs and tweak it however you like.
 
 ## Still having issues?
 If you're having trouble setting up your Doorman in Home Assistant, we're here to help.  
