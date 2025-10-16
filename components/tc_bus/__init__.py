@@ -65,8 +65,6 @@ CONF_TC_BUS_ID = "tc_bus_id"
 CONF_TRANSMITTER_ID = "transmitter_id"
 CONF_RECEIVER_ID = "receiver_id"
 
-CONF_EVENT = "event"
-
 CONF_TELEGRAM = "telegram"
 CONF_IS_LONG = "is_long"
 CONF_ADDRESS = "address"
@@ -89,7 +87,6 @@ CONFIG_SCHEMA = cv.Schema(
         cv.GenerateID(CONF_RECEIVER_ID): cv.use_id(
             remote_receiver.RemoteReceiverComponent
         ),
-        cv.Optional(CONF_EVENT, default="none"): cv.string,
         cv.Optional(CONF_ON_TELEGRAM): automation.validate_automation(
             {
                 cv.GenerateID(CONF_TRIGGER_ID): cv.declare_id(ReceivedTelegramTrigger),
@@ -113,8 +110,6 @@ async def to_code(config):
 
     receiver = await cg.get_variable(config[CONF_RECEIVER_ID])
     cg.add(var.set_rx(receiver))
-
-    cg.add(var.set_event("esphome." + config[CONF_EVENT]))
 
     for conf in config.get(CONF_ON_TELEGRAM, []):
         trigger = cg.new_Pvariable(conf[CONF_TRIGGER_ID], var)

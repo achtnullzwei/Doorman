@@ -10,10 +10,6 @@
 #include "esphome/core/helpers.h"
 #include "esphome/core/preferences.h"
 
-#ifdef USE_API
-#include "esphome/components/api/custom_api_device.h"
-#endif
-
 #if defined(USE_ESP_IDF) || (defined(USE_ARDUINO) && defined(ESP32))
 #include "soc/efuse_reg.h"
 #include "soc/efuse_periph.h"
@@ -58,44 +54,11 @@ namespace esphome
 
             // Register remote receiver listener
             this->rx_->register_listener(this);
-
-            #if defined(USE_API) && !defined(USE_API_HOMEASSISTANT_SERVICES)
-            ESP_LOGW(TAG, "EVENTS ARE DISABLED");
-            ESP_LOGW(TAG, "Please set 'api:' -> 'homeassistant_services: true' to fire Home Assistant events.");
-            ESP_LOGW(TAG, "More information here: https://esphome.io/components/api.html");
-            #endif
-
-            #ifdef USE_API_HOMEASSISTANT_SERVICES
-                ha_event_data_["telegram"] = "";
-                ha_event_data_["type"] = "";
-                ha_event_data_["address"] = "";
-                ha_event_data_["payload"] = "";
-                ha_event_data_["serial_number"] = "";
-
-                ha_event_data_["telegram"].reserve(32);
-                ha_event_data_["type"].reserve(128);
-                ha_event_data_["address"].reserve(8);
-                ha_event_data_["payload"].reserve(32);
-                ha_event_data_["serial_number"].reserve(32);
-            #endif
         }
 
         void TCBusComponent::dump_config()
         {
             ESP_LOGCONFIG(TAG, "TC:BUS:");
-
-            #ifdef USE_API_HOMEASSISTANT_SERVICES
-            if (strcmp(this->event_, "esphome.none") != 0)
-            {
-                ESP_LOGCONFIG(TAG, "  Event: %s", this->event_);
-            }
-            else
-            {
-                ESP_LOGCONFIG(TAG, "  Event: Disabled");
-            }
-            #else
-            ESP_LOGCONFIG(TAG, "  Event: Not available (Home Assistant Services disabled)");
-            #endif
 
             #ifdef USE_TEXT_SENSOR
                 ESP_LOGCONFIG(TAG, "Text Sensors:");
@@ -139,7 +102,7 @@ namespace esphome
 
             if (!this->telegram_queue_.empty())
             {
-                TCBusTelegramQueueItem queue_item = this->telegram_queue_.front();
+                TCBusTelegramQueueItem &queue_item = this->telegram_queue_.front();
 
                 if (currentTime - this->last_telegram_time_ >= queue_item.wait_duration)
                 {
@@ -177,7 +140,7 @@ namespace esphome
                 }
                 else
                 {
-                    ESP_LOGD(TAG, "Received Telegram - Type: %s | Address: %i | Payload: 0x%X | Serial-Number: %i | Length: %i-bit | Is response: %s | Raw Data: 0x%08X", telegram_type_to_string(telegram_data.type), telegram_data.address, telegram_data.payload, telegram_data.serial_number, (telegram_data.is_long ? 32 : 16), YESNO(telegram_data.is_response), telegram_data.raw);
+                    ESP_LOGD(TAG, "Received Telegram - Type: %s | Address: %i | Payload: 0x%X | Serial-Number: %i | Length: %i-bit | Is response: %s | Raw Data: 0x%08X | Hex Convert: %s", telegram_type_to_string(telegram_data.type), telegram_data.address, telegram_data.payload, telegram_data.serial_number, (telegram_data.is_long ? 32 : 16), YESNO(telegram_data.is_response), telegram_data.raw, telegram_data.hex);
                 }
 
                 // Fire Callback
@@ -223,28 +186,6 @@ namespace esphome
                         {
                             listener->turn_on(&listener->timer_, listener->auto_off_);
                         }
-                    }
-                #endif
-
-                #ifdef USE_API_HOMEASSISTANT_SERVICES
-                    // Fire Home Assistant Event if event name is specified
-                    if (strcmp(event_, "esphome.none") != 0)
-                    {
-                        ESP_LOGV(TAG, "Send event to Home Assistant on %s", event_);
-
-                        // Convert type to lowercase
-                        std::string type_str = telegram_type_to_string(telegram_data.type);
-                        std::transform(type_str.begin(), type_str.end(), type_str.begin(), ::tolower);
-
-                        // Update preallocated map values
-                        ha_event_data_["telegram"]      = telegram_data.hex;
-                        ha_event_data_["type"]          = type_str;
-                        ha_event_data_["address"]       = std::to_string(telegram_data.address);
-                        ha_event_data_["payload"]       = std::to_string(telegram_data.payload);
-                        ha_event_data_["serial_number"] = std::to_string(telegram_data.serial_number);
-
-                        // Fire the event
-                        this->fire_homeassistant_event(event_, ha_event_data_);
                     }
                 #endif
             }
@@ -642,7 +583,10 @@ namespace esphome
                 return;
             }
 
-            this->telegram_queue_.push({telegram_data, wait_duration});
+            if (!this->telegram_queue_.push({telegram_data, wait_duration}))
+            {
+                ESP_LOGW(TAG, "Telegram queue full, dropping telegram 0x%08X", telegram_data.raw);
+            }
         }
 
         void TCBusComponent::transmit_telegram(TelegramData telegram_data)

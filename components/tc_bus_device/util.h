@@ -99,6 +99,11 @@ namespace esphome
             MODEL_EXT_DEBUG
         };
 
+        struct ModelMapping {
+            Model model;
+            const char* name;
+        };
+
         enum SettingType {
             SETTING_UNKNOWN,
             SETTING_RINGTONE_FLOOR_CALL,
@@ -108,6 +113,11 @@ namespace esphome
             SETTING_VOLUME_RINGTONE,
             SETTING_VOLUME_HANDSET_DOOR_CALL,
             SETTING_VOLUME_HANDSET_INTERNAL_CALL
+        };
+
+        struct SettingMapping {
+            SettingType type;
+            const char* name;
         };
 
         struct SettingCellData {
@@ -138,17 +148,17 @@ namespace esphome
         };
 
         const char* setting_type_to_string(SettingType type);
-        SettingType string_to_setting_type(std::string str);
+        SettingType string_to_setting_type(const char* str);
 
         SettingCellData getSettingCellData(SettingType setting, Model model);
         ModelData getModelData(Model model = MODEL_NONE);
 
         const char* model_to_string(Model model = MODEL_NONE);
-        Model string_to_model(const std::string& str);
-        Model identifier_string_to_model(const uint8_t& device_group, const std::string& model_key, const uint8_t& hw_version = 0, const uint32_t& fw_version = 0);
+        Model string_to_model(const char* str);
+        Model identifier_string_to_model(const uint8_t& device_group, const char* model_key, const uint8_t& hw_version = 0, const uint32_t& fw_version = 0);
 
-        uint8_t ringtone_to_int(const std::string& str);
-        std::string int_to_ringtone(uint8_t ringtone);
+        uint8_t ringtone_to_int(const char* str);
+        const char* int_to_ringtone(uint8_t ringtone);
 
     }  // namespace tc_bus
 }  // namespace esphome

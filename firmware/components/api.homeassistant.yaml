@@ -34,8 +34,6 @@ esphome:
 
 api:
   batch_delay: 0ms
-  custom_services: true
-  homeassistant_services: true
   actions:
     - action: send_tc_telegram_raw
       variables:
@@ -52,7 +50,7 @@ api:
         serial_number: int
       then:
         - tc_bus.send:
-            type: !lambda 'return string_to_telegram_type(type);'
+            type: !lambda 'return string_to_telegram_type(type.c_str());'
             address: !lambda 'return address;'
             payload: !lambda 'return payload;'
             serial_number: !lambda 'return serial_number;'
@@ -65,6 +63,29 @@ api:
       then:
         - tc_bus_device.send:
             id: tc_bus_indoor_station
-            type: !lambda 'return string_to_telegram_type(type);'
+            type: !lambda 'return string_to_telegram_type(type.c_str());'
             address: !lambda 'return address;'
             payload: !lambda 'return payload;'
+
+tc_bus:
+  on_telegram:
+    - lambda: |-
+        ESP_LOGW("TAG", "Received Telegram Test: %s", x.hex);
+
+    - homeassistant.event:
+        event: esphome.doorman_test
+        data_template:
+          telegram: "{{ telegram }}"
+          type: "{{ type }}"
+          address: "{{ address }}"
+          payload: "{{ payload }}"
+          serial_number: "{{ serial_number }}"
+        variables:
+          telegram: !lambda |-
+            static char buf[9];
+            memcpy(buf, x.hex, 9);
+            return buf;
+          type: !lambda return telegram_type_to_string(x.type);
+          address: !lambda return x.address;
+          payload: !lambda return x.payload;
+          serial_number: !lambda return x.serial_number;

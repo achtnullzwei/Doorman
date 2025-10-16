@@ -126,7 +126,6 @@ remote_transmitter:
 # Setup TC:BUS Component
 tc_bus:
   id: tc_bus_id
-  event: "doorman"
   on_telegram:
     - if:
         condition:
@@ -134,6 +133,7 @@ tc_bus:
         then:
           - script.execute: blink_status_led
 
+# Setup TC:BUS Device Component
 tc_bus_device:
   - id: tc_bus_indoor_station
     type: indoor_station

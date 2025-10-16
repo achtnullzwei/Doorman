@@ -317,17 +317,11 @@ namespace esphome
             }
 
             // Generate telegram HEX
-            data.hex = str_upper_case(format_hex(data.raw));
-            if(!data.is_long)
-            {
-                if (data.type == TELEGRAM_TYPE_ACK)
-                {
-                    data.hex = data.hex.substr(7);
-                }
-                else
-                {
-                    data.hex = data.hex.substr(4);
-                }
+            size_t pos = 0;
+            size_t len =  data.is_long ? 7 : (data.type == TELEGRAM_TYPE_ACK ? 1 : 3);
+            for (int i = len; i >= 0; --i) {
+                uint8_t nibble = (data.raw >> (i * 4)) & 0xF;
+                data.hex[pos++] = "0123456789ABCDEF"[nibble];
             }
 
             return data;
@@ -582,98 +576,81 @@ namespace esphome
             }
 
             // Generate telegram HEX
-            data.hex = str_upper_case(format_hex(data.raw));
-            if(!data.is_long)
-            {
-                if (data.type == TELEGRAM_TYPE_ACK)
-                {
-                    data.hex = data.hex.substr(7);
-                }
-                else
-                {
-                    data.hex = data.hex.substr(4);
-                }
+            size_t pos = 0;
+            size_t len =  data.is_long ? 7 : (data.type == TELEGRAM_TYPE_ACK ? 1 : 3);
+            for (int i = len; i >= 0; --i) {
+                uint8_t nibble = (data.raw >> (i * 4)) & 0xF;
+                data.hex[pos++] = "0123456789ABCDEF"[nibble];
             }
 
             return data;
         }
 
-        TelegramType string_to_telegram_type(std::string str)
-        {
-            std::transform(str.begin(), str.end(), str.begin(), ::toupper);
-
-            if (str == "SEARCH_DOORMAN_DEVICES") return TELEGRAM_TYPE_SEARCH_DOORMAN_DEVICES;
-            if (str == "FOUND_DOORMAN_DEVICE") return TELEGRAM_TYPE_FOUND_DOORMAN_DEVICE;
-            if (str == "DOOR_CALL") return TELEGRAM_TYPE_DOOR_CALL;
-            if (str == "FLOOR_CALL") return TELEGRAM_TYPE_FLOOR_CALL;
-            if (str == "INTERNAL_CALL") return TELEGRAM_TYPE_INTERNAL_CALL;
-            if (str == "CONTROL_FUNCTION") return TELEGRAM_TYPE_CONTROL_FUNCTION;
-            if (str == "START_TALKING_DOOR_CALL") return TELEGRAM_TYPE_START_TALKING_DOOR_CALL;
-            if (str == "START_TALKING") return TELEGRAM_TYPE_START_TALKING;
-            if (str == "STOP_TALKING_DOOR_CALL") return TELEGRAM_TYPE_STOP_TALKING_DOOR_CALL;
-            if (str == "STOP_TALKING") return TELEGRAM_TYPE_STOP_TALKING;
-            if (str == "OPEN_DOOR") return TELEGRAM_TYPE_OPEN_DOOR;
-            if (str == "OPEN_DOOR_LONG") return TELEGRAM_TYPE_OPEN_DOOR_LONG;
-            if (str == "LIGHT") return TELEGRAM_TYPE_LIGHT;
-            if (str == "DOOR_OPENED") return TELEGRAM_TYPE_DOOR_OPENED;
-            if (str == "DOOR_CLOSED") return TELEGRAM_TYPE_DOOR_CLOSED;
-            if (str == "END_OF_RINGTONE") return TELEGRAM_TYPE_END_OF_RINGTONE;
-            if (str == "END_OF_DOOR_READINESS") return TELEGRAM_TYPE_END_OF_DOOR_READINESS;
-            if (str == "INITIALIZE_DOOR_STATION") return TELEGRAM_TYPE_INITIALIZE_DOOR_STATION;
-            if (str == "RESET") return TELEGRAM_TYPE_RESET;
-            if (str == "SELECT_DEVICE_GROUP") return TELEGRAM_TYPE_SELECT_DEVICE_GROUP;
-            if (str == "SELECT_DEVICE_GROUP_RESET") return TELEGRAM_TYPE_SELECT_DEVICE_GROUP_RESET;
-            if (str == "SEARCH_DEVICES") return TELEGRAM_TYPE_SEARCH_DEVICES;
-            if (str == "FOUND_DEVICE") return TELEGRAM_TYPE_FOUND_DEVICE;
-            if (str == "FOUND_DEVICE_SUBSYSTEM") return TELEGRAM_TYPE_FOUND_DEVICE_SUBSYSTEM;
-            if (str == "PROGRAMMING_MODE") return TELEGRAM_TYPE_PROGRAMMING_MODE;
-            if (str == "READ_MEMORY_BLOCK") return TELEGRAM_TYPE_READ_MEMORY_BLOCK;
-            if (str == "SELECT_MEMORY_PAGE") return TELEGRAM_TYPE_SELECT_MEMORY_PAGE;
-            if (str == "WRITE_MEMORY") return TELEGRAM_TYPE_WRITE_MEMORY;
-            if (str == "REQUEST_VERSION") return TELEGRAM_TYPE_REQUEST_VERSION;
-            if (str == "ACK") return TELEGRAM_TYPE_ACK;
-            if (str == "DATA") return TELEGRAM_TYPE_DATA;
-
-            return TELEGRAM_TYPE_UNKNOWN;
-        }
-
+        const TelegramMapping telegram_mappings[] = {
+            {TELEGRAM_TYPE_SEARCH_DOORMAN_DEVICES, "SEARCH_DOORMAN_DEVICES"},
+            {TELEGRAM_TYPE_FOUND_DOORMAN_DEVICE, "FOUND_DOORMAN_DEVICE"},
+            {TELEGRAM_TYPE_DOOR_CALL, "DOOR_CALL"},
+            {TELEGRAM_TYPE_FLOOR_CALL, "FLOOR_CALL"},
+            {TELEGRAM_TYPE_INTERNAL_CALL, "INTERNAL_CALL"},
+            {TELEGRAM_TYPE_CONTROL_FUNCTION, "CONTROL_FUNCTION"},
+            {TELEGRAM_TYPE_START_TALKING_DOOR_CALL, "START_TALKING_DOOR_CALL"},
+            {TELEGRAM_TYPE_START_TALKING, "START_TALKING"},
+            {TELEGRAM_TYPE_STOP_TALKING_DOOR_CALL, "STOP_TALKING_DOOR_CALL"},
+            {TELEGRAM_TYPE_STOP_TALKING, "STOP_TALKING"},
+            {TELEGRAM_TYPE_OPEN_DOOR, "OPEN_DOOR"},
+            {TELEGRAM_TYPE_OPEN_DOOR_LONG, "OPEN_DOOR_LONG"},
+            {TELEGRAM_TYPE_LIGHT, "LIGHT"},
+            {TELEGRAM_TYPE_DOOR_OPENED, "DOOR_OPENED"},
+            {TELEGRAM_TYPE_DOOR_CLOSED, "DOOR_CLOSED"},
+            {TELEGRAM_TYPE_END_OF_RINGTONE, "END_OF_RINGTONE"},
+            {TELEGRAM_TYPE_END_OF_DOOR_READINESS, "END_OF_DOOR_READINESS"},
+            {TELEGRAM_TYPE_INITIALIZE_DOOR_STATION, "INITIALIZE_DOOR_STATION"},
+            {TELEGRAM_TYPE_RESET, "RESET"},
+            {TELEGRAM_TYPE_SELECT_DEVICE_GROUP, "SELECT_DEVICE_GROUP"},
+            {TELEGRAM_TYPE_SELECT_DEVICE_GROUP_RESET, "SELECT_DEVICE_GROUP_RESET"},
+            {TELEGRAM_TYPE_SEARCH_DEVICES, "SEARCH_DEVICES"},
+            {TELEGRAM_TYPE_FOUND_DEVICE, "FOUND_DEVICE"},
+            {TELEGRAM_TYPE_FOUND_DEVICE_SUBSYSTEM, "FOUND_DEVICE_SUBSYSTEM"},
+            {TELEGRAM_TYPE_PROGRAMMING_MODE, "PROGRAMMING_MODE"},
+            {TELEGRAM_TYPE_READ_MEMORY_BLOCK, "READ_MEMORY_BLOCK"},
+            {TELEGRAM_TYPE_SELECT_MEMORY_PAGE, "SELECT_MEMORY_PAGE"},
+            {TELEGRAM_TYPE_WRITE_MEMORY, "WRITE_MEMORY"},
+            {TELEGRAM_TYPE_REQUEST_VERSION, "REQUEST_VERSION"},
+            {TELEGRAM_TYPE_ACK, "ACK"},
+            {TELEGRAM_TYPE_DATA, "DATA"},
+        };
+        
         const char* telegram_type_to_string(TelegramType type)
         {
-            switch (type)
-            {
-                case TELEGRAM_TYPE_SEARCH_DOORMAN_DEVICES: return "SEARCH_DOORMAN_DEVICES";
-                case TELEGRAM_TYPE_FOUND_DOORMAN_DEVICE: return "FOUND_DOORMAN_DEVICE";
-                case TELEGRAM_TYPE_DOOR_CALL: return "DOOR_CALL";
-                case TELEGRAM_TYPE_FLOOR_CALL: return "FLOOR_CALL";
-                case TELEGRAM_TYPE_INTERNAL_CALL: return "INTERNAL_CALL";
-                case TELEGRAM_TYPE_CONTROL_FUNCTION: return "CONTROL_FUNCTION";
-                case TELEGRAM_TYPE_START_TALKING_DOOR_CALL: return "START_TALKING_DOOR_CALL";
-                case TELEGRAM_TYPE_START_TALKING: return "START_TALKING";
-                case TELEGRAM_TYPE_STOP_TALKING_DOOR_CALL: return "STOP_TALKING_DOOR_CALL";
-                case TELEGRAM_TYPE_STOP_TALKING: return "STOP_TALKING";
-                case TELEGRAM_TYPE_OPEN_DOOR: return "OPEN_DOOR";
-                case TELEGRAM_TYPE_OPEN_DOOR_LONG: return "OPEN_DOOR_LONG";
-                case TELEGRAM_TYPE_LIGHT: return "LIGHT";
-                case TELEGRAM_TYPE_DOOR_OPENED: return "DOOR_OPENED";
-                case TELEGRAM_TYPE_DOOR_CLOSED: return "DOOR_CLOSED";
-                case TELEGRAM_TYPE_END_OF_RINGTONE: return "END_OF_RINGTONE";
-                case TELEGRAM_TYPE_END_OF_DOOR_READINESS: return "END_OF_DOOR_READINESS";
-                case TELEGRAM_TYPE_INITIALIZE_DOOR_STATION: return "INITIALIZE_DOOR_STATION";
-                case TELEGRAM_TYPE_RESET: return "RESET";
-                case TELEGRAM_TYPE_SELECT_DEVICE_GROUP: return "SELECT_DEVICE_GROUP";
-                case TELEGRAM_TYPE_SELECT_DEVICE_GROUP_RESET: return "SELECT_DEVICE_GROUP_RESET";
-                case TELEGRAM_TYPE_SEARCH_DEVICES: return "SEARCH_DEVICES";
-                case TELEGRAM_TYPE_FOUND_DEVICE: return "FOUND_DEVICE";
-                case TELEGRAM_TYPE_FOUND_DEVICE_SUBSYSTEM: return "FOUND_DEVICE_SUBSYSTEM";
-                case TELEGRAM_TYPE_PROGRAMMING_MODE: return "PROGRAMMING_MODE";
-                case TELEGRAM_TYPE_READ_MEMORY_BLOCK: return "READ_MEMORY_BLOCK";
-                case TELEGRAM_TYPE_SELECT_MEMORY_PAGE: return "SELECT_MEMORY_PAGE";
-                case TELEGRAM_TYPE_WRITE_MEMORY: return "WRITE_MEMORY";
-                case TELEGRAM_TYPE_REQUEST_VERSION: return "REQUEST_VERSION";
-                case TELEGRAM_TYPE_ACK: return "ACK";
-                case TELEGRAM_TYPE_DATA: return "DATA";
-                default: return "UNKNOWN";
+            for (const auto& mapping : telegram_mappings) {
+                if (mapping.type == type) {
+                    return mapping.name;
+                }
             }
+            return "UNKNOWN";
+        }
+
+        TelegramType string_to_telegram_type(const char* str)
+        {
+            if (str == nullptr) return TELEGRAM_TYPE_UNKNOWN;
+
+            for (const auto& mapping : telegram_mappings) {
+                // Compare lengths first
+                if (strlen(str) == strlen(mapping.name)) {
+                    bool match = true;
+                    for (size_t i = 0; i < strlen(str); ++i) {
+                        if (toupper(str[i]) != toupper(mapping.name[i])) {
+                            match = false;
+                            break;
+                        }
+                    }
+                    if (match) {
+                        return mapping.type;
+                    }
+                }
+            }
+
+            return TELEGRAM_TYPE_UNKNOWN;
         }
 
     }  // namespace tc_bus

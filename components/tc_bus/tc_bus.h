@@ -1,6 +1,7 @@
 #pragma once
 
 #include "protocol.h"
+#include "queue.h"
 
 #include "esphome/core/application.h"
 #include "esphome/core/defines.h"
@@ -103,12 +104,7 @@ namespace esphome
                 virtual bool on_receive(TelegramData data, bool received) = 0;
         };
         
-        class TCBusComponent:
-            public Component,
-            public remote_base::RemoteReceiverListener
-#ifdef USE_API
-          , public api::CustomAPIDevice
-#endif
+        class TCBusComponent: public Component, public remote_base::RemoteReceiverListener
         {
 #ifdef USE_TEXT_SENSOR
             SUB_TEXT_SENSOR(bus_telegram);
@@ -117,8 +113,6 @@ namespace esphome
         public:
             void set_tx(remote_transmitter::RemoteTransmitterComponent *tx) { this->tx_ = tx; }
             void set_rx(remote_receiver::RemoteReceiverComponent *rx) { this->rx_ = rx; }
-
-            void set_event(const char *event) { this->event_ = event; }
 
             void setup() override;
             void dump_config() override;
@@ -181,13 +175,9 @@ namespace esphome
 
             std::vector<TCBusRemoteListener *> remote_listeners_;
 
-            std::queue<TCBusTelegramQueueItem> telegram_queue_;
+            FixedQueue<TCBusTelegramQueueItem, 16> telegram_queue_;
             uint32_t last_telegram_time_ = 0;
             int32_t last_sent_telegram_ = -1;
-
-            #ifdef USE_API_HOMEASSISTANT_SERVICES
-                std::map<std::string, std::string> ha_event_data_;
-            #endif
 
             // Telegram binary listeners
             #ifdef USE_BINARY_SENSOR
@@ -203,7 +193,6 @@ namespace esphome
             CallbackManager<void(TelegramData)> received_telegram_callback_{};
 
             // Misc
-            const char *event_;
             bool programming_mode_ = false;
             bool wait_for_data_telegram_ = false;
         };

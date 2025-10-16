@@ -40,10 +40,15 @@ namespace esphome
             TELEGRAM_TYPE_WRITE_MEMORY,
             TELEGRAM_TYPE_REQUEST_VERSION
         };
+
+        struct TelegramMapping {
+            TelegramType type;
+            const char* name;
+        };
         
         struct TelegramData {
             uint32_t raw;
-            std::string hex;
+            char hex[9];
 
             TelegramType type;
             uint8_t address;
@@ -59,7 +64,7 @@ namespace esphome
         TelegramData parseTelegram(uint32_t telegram, bool is_long = true, bool is_response = false, bool is_data = false);
 
         const char* telegram_type_to_string(TelegramType type);
-        TelegramType string_to_telegram_type(std::string str);
+        TelegramType string_to_telegram_type(const char* str);
 
     }  // namespace tc_bus
 }  // namespace esphome

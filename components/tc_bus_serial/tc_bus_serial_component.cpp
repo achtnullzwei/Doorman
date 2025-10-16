@@ -16,19 +16,20 @@ namespace esphome
   {
     static const char *const TAG = "tc_bus_serial";
 
-    void TCBusSerialComponent::setup() {
+    void TCBusSerialComponent::setup()
+    {
 
       ESP_LOGCONFIG(TAG, "Running setup");
 
-      if(this->base_component_->is_failed()) {
-        std::string failed_msg = "TC:BUS failed to setup!";
-        this->mark_failed(failed_msg.c_str());
+      if(this->base_component_->is_failed())
+      {
+        this->mark_failed("TC:BUS is not setup yet!");
         return;
       }
 
-      if(!this->base_component_->is_ready()) {
-        std::string not_ready_msg = "TC:BUS is not setup yet!";
-        this->mark_failed(not_ready_msg.c_str());
+      if(!this->base_component_->is_ready())
+      {
+        this->mark_failed("TC:BUS is not setup yet!");
         return;
       }
 
@@ -42,26 +43,31 @@ namespace esphome
       this->base_component_->register_remote_listener(this);
     }
 
-    void TCBusSerialComponent::dump_config() {
+    void TCBusSerialComponent::dump_config()
+    {
       ESP_LOGCONFIG(TAG, "TC:BUS Serial:");
     }
 
-    optional<uint8_t> TCBusSerialComponent::read_byte_() {
+    optional<uint8_t> TCBusSerialComponent::read_byte_()
+    {
       optional<uint8_t> byte;
       uint8_t data = 0;
 
     #ifdef USE_ESP32
-      switch (logger::global_logger->get_uart()) {
+      switch (logger::global_logger->get_uart())
+      {
         case logger::UART_SELECTION_UART0:
         case logger::UART_SELECTION_UART1:
     #if !defined(USE_ESP32_VARIANT_ESP32C3) && !defined(USE_ESP32_VARIANT_ESP32C6) && \
         !defined(USE_ESP32_VARIANT_ESP32S2) && !defined(USE_ESP32_VARIANT_ESP32S3)
         case logger::UART_SELECTION_UART2:
     #endif  // !USE_ESP32_VARIANT_ESP32C3 && !USE_ESP32_VARIANT_ESP32S2 && !USE_ESP32_VARIANT_ESP32S3
-          if (this->uart_num_ >= 0) {
+          if (this->uart_num_ >= 0)
+          {
             size_t available;
             uart_get_buffered_data_len(this->uart_num_, &available);
-            if (available) {
+            if (available)
+            {
               uart_read_bytes(this->uart_num_, &data, 1, 0);
               byte = data;
             }
@@ -69,7 +75,8 @@ namespace esphome
           break;
     #if defined(USE_LOGGER_USB_CDC) && defined(CONFIG_ESP_CONSOLE_USB_CDC)
         case logger::UART_SELECTION_USB_CDC:
-          if (esp_usb_console_available_for_read()) {
+          if (esp_usb_console_available_for_read())
+          {
             esp_usb_console_read_buf((char *) &data, 1);
             byte = data;
           }
@@ -77,7 +84,8 @@ namespace esphome
     #endif  // USE_LOGGER_USB_CDC
     #ifdef USE_LOGGER_USB_SERIAL_JTAG
         case logger::UART_SELECTION_USB_SERIAL_JTAG: {
-          if (usb_serial_jtag_read_bytes((char *) &data, 1, 0)) {
+          if (usb_serial_jtag_read_bytes((char *) &data, 1, 0))
+          {
             byte = data;
           }
           break;
@@ -87,7 +95,8 @@ namespace esphome
           break;
       }
     #elif defined(USE_ARDUINO)
-      if (this->hw_serial_->available()) {
+      if (this->hw_serial_->available())
+      {
         this->hw_serial_->readBytes(&data, 1);
         byte = data;
       }
@@ -96,17 +105,17 @@ namespace esphome
       return byte;
     }
 
-    void TCBusSerialComponent::write_data_(std::vector<uint8_t> &data) {
-      
-      std::string str(data.begin(), data.end());
-      ESP_LOGD(TAG, "Send data to Serial: \"%s\"", str.c_str());
+    void TCBusSerialComponent::write_data_(std::vector<uint8_t> &data)
+    {
+      ESP_LOGI(TAG, "Send data to Serial: \"%.*s\"", (int)data.size(), data.data());
 
       data.insert(data.begin(), 0x01);
       data.push_back(0x04);
       data.push_back('\n');
 
     #ifdef USE_ESP32
-      switch (logger::global_logger->get_uart()) {
+      switch (logger::global_logger->get_uart())
+      {
         case logger::UART_SELECTION_UART0:
         case logger::UART_SELECTION_UART1:
     #if !defined(USE_ESP32_VARIANT_ESP32C3) && !defined(USE_ESP32_VARIANT_ESP32C6) && \
@@ -149,7 +158,8 @@ namespace esphome
         ESP_LOGD(TAG, "TC:BUS telegram received: %04X", telegram_data.raw);
       }
 
-      std::vector<uint8_t> vec(telegram_data.hex.begin(), telegram_data.hex.end());
+      size_t len = strlen(telegram_data.hex);
+      std::vector<uint8_t> vec(telegram_data.hex, telegram_data.hex + len);
       vec.insert(vec.begin(), received ? '$' : ' ');
       this->write_data_(vec);
 
@@ -170,16 +180,30 @@ namespace esphome
       {
         ESP_LOGV(TAG, "Telegram complete");
 
-        std::string str(this->rx_buffer_.begin(), this->rx_buffer_.end());
+        const char* buf = reinterpret_cast<const char*>(this->rx_buffer_.data());
+        size_t len = this->rx_buffer_.size();
 
-        if(str.substr(0, 1) == " ")
+        if(len >= 2 && buf[0] == ' ')
         {
-          ESP_LOGD(TAG, "Data received from Serial: \"%s\"", str.c_str());
+          ESP_LOGI(TAG, "Data received from Serial: \"%.*s\"", (int)len, buf);
 
           // Parse telegram
-          std::string hex = str.substr(1);
-          uint32_t raw = std::stoul(hex, nullptr, 16);
-          bool is_long = hex.length() == 8;
+          const char* hex_str = buf + 1; // Skip leading space
+          size_t hex_len = len - 1;
+
+          uint32_t raw = 0;
+          for (size_t i = 0; i < hex_len; ++i)
+          {
+              char c = hex_str[i];
+              uint8_t value = 0;
+              if (c >= '0' && c <= '9') value = c - '0';
+              else if (c >= 'A' && c <= 'F') value = 10 + (c - 'A');
+              else if (c >= 'a' && c <= 'f') value = 10 + (c - 'a');
+              else break; // invalid char, stop
+              raw = (raw << 4) | value;
+          }
+
+          bool is_long = (hex_len == 8);
 
           tc_bus::TelegramData telegram_data = tc_bus::parseTelegram(raw, is_long, false);
 
@@ -188,7 +212,7 @@ namespace esphome
         }
         else
         {
-          ESP_LOGW(TAG, "Unknown message format received: \"%s\"", str.c_str());
+          ESP_LOGW(TAG, "Unknown message format received: \"%.*s\"", (int)len, buf);
         }
 
         ESP_LOGV(TAG, "Clear RX Buffer");

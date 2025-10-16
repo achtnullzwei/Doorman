@@ -79,7 +79,7 @@
             "command": "esphome",
             "args": [
                 "run",
-                "esp32-s3.ha.custom.local.example.yaml"
+                "esp32-s3.custom.stock.local.example.yaml"
             ],
             "type": "shell",
             "options": {
@@ -97,6 +97,18 @@
             "options": {
                 "cwd": "./firmware/examples/"
             }
-        }
+        },
+        {
+            "label": "ESPHome: Compile & Upload - ESP32-S3 HomeKit Stock",
+            "command": "esphome",
+            "args": [
+                "run",
+                "esp32-s3.homekit.stock.local.example.yaml"
+            ],
+            "type": "shell",
+            "options": {
+                "cwd": "./firmware/examples/"
+            }
+        },
     ]
 }

@@ -33,14 +33,12 @@ namespace esphome
             ESP_LOGCONFIG(TAG, "Running setup");
 
             if(this->tc_bus_->is_failed()) {
-                std::string failed_msg = "TC:BUS failed to setup!";
-                this->mark_failed(failed_msg.c_str());
+                this->mark_failed("TC:BUS failed to setup!");
                 return;
             }
         
             if(!this->tc_bus_->is_ready()) {
-                std::string not_ready_msg = "TC:BUS is not setup yet!";
-                this->mark_failed(not_ready_msg.c_str());
+                this->mark_failed("TC:BUS is not setup yet!");
                 return;
             }
 
@@ -200,7 +198,7 @@ namespace esphome
                 }
                 else if (identify_model_flow_)
                 {
-                    ESP_LOGD(TAG, "Received model identification | Data: %s", telegram_data.hex.c_str());
+                    ESP_LOGD(TAG, "Received model identification | Data: %s", telegram_data.hex);
 
                     ESP_LOGD(TAG, "Reset identify_model_flow_");
                     identify_model_flow_ = false;
@@ -216,19 +214,33 @@ namespace esphome
                     device.device_group = this->tc_bus_->selected_device_group_;
                     device.memory_size = 0;
                     
-                    if (telegram_data.hex.substr(4, 1) == "D")
+                    const char* hex = telegram_data.hex;
+
+                    if (hex[4] == 'D')
                     {
                         // New models
 
                         // FW Version
-                        device.firmware_version = std::stoi(telegram_data.hex.substr(5, 3), nullptr, 16);
-                        device.firmware_major = std::stoi(telegram_data.hex.substr(5, 1), nullptr, 16);
-                        device.firmware_minor = std::stoi(telegram_data.hex.substr(6, 1), nullptr, 16);
-                        device.firmware_patch = std::stoi(telegram_data.hex.substr(7, 1), nullptr, 16);
+                        char fw_buf[4] = { hex[5], hex[6], hex[7], '\0' };
+                        device.firmware_version = strtol(fw_buf, nullptr, 16);
 
-                        // HW Version
-                        device.hardware_version = std::stoi(telegram_data.hex.substr(0, 1));
-                        device.model = identifier_string_to_model(device.device_group, telegram_data.hex.substr(1, 3), device.hardware_version, device.firmware_version);
+                        // Firmware major, minor, patch (1 char each)
+                        char tmp[2] = {0};
+                        tmp[0] = hex[5];
+                        device.firmware_major = strtol(tmp, nullptr, 16);
+                        tmp[0] = hex[6];
+                        device.firmware_minor = strtol(tmp, nullptr, 16);
+                        tmp[0] = hex[7];
+                        device.firmware_patch = strtol(tmp, nullptr, 16);
+
+                        // Hardware version (first char, decimal)
+                        tmp[0] = hex[0];
+                        tmp[1] = '\0';
+                        device.hardware_version = strtol(tmp, nullptr, 10);
+
+                        // Model string (substring 1-3)
+                        char model_buf[4] = { hex[1], hex[2], hex[3], '\0' };
+                        device.model = identifier_string_to_model(device.device_group, model_buf, device.hardware_version, device.firmware_version);
                     }
                     else
                     {
@@ -299,7 +311,7 @@ namespace esphome
                     }
                     else
                     {
-                        ESP_LOGE(TAG, "Unable to identify Hardware! Unknown model. Data received: %s", telegram_data.hex.c_str());
+                        ESP_LOGE(TAG, "Unable to identify Hardware! Unknown model. Data received: %s", telegram_data.hex);
                         this->identify_unknown_callback_.call();
                     }
 
