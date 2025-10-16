@@ -46,7 +46,7 @@ Jedes Event ist ungefähr so aufgebaut:
 event_type: esphome.doorman
 data:
   device_id: 373c62d6788cf81d322763235513310e
-  telegram: "00001100"
+  telegram: "1100"
   type: "open_door"
   address: "0"
   payload: "0"

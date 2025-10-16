@@ -17,7 +17,7 @@ binary_sensor: # [!code ++] [!code focus]
     web_server: # [!code ++] [!code focus]
       sorting_group_id: sorting_group_listeners # [!code ++] [!code focus]
 ```
-```yaml [32-Bit Telegrams]
+```yaml [32-Bit Telegramme]
 <!--@include: minimal.example.yaml-->
 
 binary_sensor: # [!code ++] [!code focus]
