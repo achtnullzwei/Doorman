@@ -17,7 +17,6 @@ The `tc_bus` hub serves as the central component enabling bus communication. It 
 | `id`                      | Unique ID for the component.                                                                                                                  | Yes      |               |
 | `receiver_id`             | ID of remote_receiver for receiving data from the TC:BUS.                                                                            | No       | The configured remote_receiver |
 | `transmitter_id`          | ID of remote_transmitter for transmitting data to the TC:BUS. Should be connected to the transistor.                                 | No       | The configured remote_receiver |
-| `event`                   | Event name generated in Home Assistant when a bus telegram is received. For example, `tc` creates the event `esphome.tc`. Set to `none` to disable. See [Event Handling](#event-handling) for an example. | No       | `none`         |
 | `on_telegram`             | Defines actions to be triggered when a telegram is received from the TC:BUS. Returns a `TelegramData` struct as the `x` variable.          | No       |               |
 
 ## Text Sensors
@@ -120,76 +119,6 @@ on_...:
 ```
 :::
 
-
-
-## Event Handling
-By default, event generation is disabled.
-To generate events in Home Assistant when a bus telegram is received, set the `event` parameter to a name of your choice.
-
-For example, setting `event: tc` creates the event `esphome.tc`. If the `event` parameter is set (and not `none`), an event is generated each time a telegram is received. 
-
-You can monitor these events in Home Assistant on the  page.
-
-::: info
-Starting with **ESPHome 2025.8.0**, interaction with **Home Assistant events** must be explicitly enabled.
-
-Make sure to enable this in your `api` configuration before using events:
-
-```yaml
-api:
-  homeassistant_services: true
-```
-:::
-
-Once enabled, each time a telegram is received, an event like the following will be emitted in Home Assistant (visible in the [Developer Tools → Events](https://my.home-assistant.io/redirect/developer_events/)):
-
-```yaml
-event_type: esphome.tc
-data:
-  device_id: xxxxxxxxxxxxxxxxxxxxxxxxx
-  telegram: "0x00002400"
-  type: "end_of_door_readiness"
-  address: "0"
-  payload: "0"
-  serial_number: "0"
-origin: LOCAL
-time_fired: "2024-01-01T00:00:00.000000+00:00"
-context:
-  id: xxxxxxxxxxxxxxxxxxxxxxxx
-  parent_id: null
-  user_id: null
-```
-
-You can then trigger a Home Assistant automation based on this event using a Manual Event (`event`) trigger:
-
-::: code-group
-```yaml [Telegram Builder]
-description: ""
-mode: single
-triggers:
-  - trigger: event
-    event_type: esphome.tc
-    event_data:
-      type: "end_of_door_readiness"
-      address: "0"
-      serial_number: "0"
-conditions: []
-actions: []
-```
-```yaml [Raw Telegram]
-description: ""
-mode: single
-triggers:
-  - trigger: event
-    event_type: esphome.tc
-    event_data:
-      telegram: "0x00002400"
-conditions: []
-actions: []
-```
-:::
-
-Adjust the event name and telegram values as needed for your setup.
 
 ## Example YAML Configuration
 This is an example configuration for the component in ESPHome:

@@ -29,6 +29,8 @@ Sonst sitzt du da und wunderst dich, warum nichts passiert. 😄
 ## Kabel anschließen
 Öffne als Erstes das Gehäuse deiner Innenstation. Bei den meisten Modellen findest du Schraubklemmen mit der Beschriftung `a`, `b`, `E` und `P`.
 
+Du benötigst **einen kleinen Schraubendreher**, um Doorman an deiner Innenstation anzuschließen.
+
 Der Doorman wird — wie jedes andere Gerät — **parallel zum Bus** angeschlossen.
 
 ::: danger VORSICHT
@@ -76,6 +78,10 @@ Beispiel:
 > [!DANGER] WICHTIG
 > Bitte entferne die Jumper-Kappe auf `BUS PWR`, bevor du fortfährst!
 
+> [!WARNING] BEKANNTES PROBLEM
+> Du könntest Probleme beim Empfangen von Telegrammen bekommen. Wenn das passiert, brauchst du ein isoliertes Netzteil, um Störungen durch Erdrauschen zu vermeiden.  
+> Das Problem entsteht, weil die Stromversorgung von Doorman nicht galvanisch getrennt ist – dadurch können zwei unterschiedliche Masseverbindungen (Grounds) miteinander gekoppelt werden.
+
 Schließe die `b`-Leitung (Ground) an einen der TC:BUS-Anschlüsse deines Doorman und die `a`-Leitung (24V Bus) an den anderen TC:BUS-Anschluss an.
 
 Verbinde die externe Stromversorgung mit deinem Doorman über die Schraubklemmen `P` (+5V bis +30V) und `G` (Ground).
@@ -87,6 +93,10 @@ Beispiel:
 ::: details 2-Draht-Modus über externe USB-C-Stromversorgung
 > [!DANGER] WICHTIG
 > Bitte entferne die Jumper-Kappe auf `BUS PWR`, bevor du fortfährst!
+
+> [!WARNING] BEKANNTES PROBLEM
+> Du könntest Probleme beim Empfangen von Telegrammen bekommen. Wenn das passiert, brauchst du einen USB-Isolator (zum Beispiel [diesen hier](https://amzn.eu/d/fYaZGTp)), um Störungen durch Erdrauschen zu vermeiden.  
+> Das Problem entsteht, weil die Stromversorgung von Doorman nicht galvanisch getrennt ist – dadurch können zwei unterschiedliche Masseverbindungen (Grounds) miteinander gekoppelt werden.
 
 Schließe die `b`-Leitung (Ground) an einen der TC:BUS-Anschlüsse deines Doorman und die `a`-Leitung (24V Bus) an den anderen TC:BUS-Anschluss an.
 

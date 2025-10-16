@@ -6,7 +6,7 @@ This add-on integrates the [Nuki Bridge](https://github.com/uriyacovy/ESPHome_nu
 While the official Nuki app allows you to control the smart lock, it does not support the emulated Nuki Bridge provided by this add-on. To control your lock remotely through this bridge, you'll need to use the Home Assistant app instead.
 :::
 
-## Pair your Nuki Smart Lock
+## Pair your Smart Lock
 ::: warning
 If your Smart Lock is already paired, this process will unpair it!
 :::
@@ -15,8 +15,8 @@ Depending on the PCB revision, either press the `FLASH`- or `PRG`-button on the 
 
 After a successful pairing, the status LED will remain steadily on for 3 seconds.
 
-## Unpair your Nuki Smart Lock
-You can unpair your smart lock either by using the `Nuki Unpair Device` button in the Home Assistant or Doorman web interface, or by pressing the physical `FLASH` or `PRG` button on the Doorman-S3 PCB.
+## Unpair your Smart Lock
+You can unpair your smart lock either by using the `Unpair Device` button in the Home Assistant or Doorman web interface, or by pressing the physical `FLASH` or `PRG` button on the Doorman-S3 PCB.
 
 ::: info Physical Button
 If your Smart Lock is already paired with Doorman, press the `FLASH`- or `PRG`-button on the Doorman-S3 PCB for 5 seconds until the RGB status LED starts flashing purple. Your Smart Lock will then be unpaired. Note that the pairing mode will time out after 30 seconds.

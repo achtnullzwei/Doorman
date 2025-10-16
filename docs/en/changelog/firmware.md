@@ -101,6 +101,9 @@ This release **will impact your current setup** and **requires** you to go throu
    The `TC:BUS` component no longer supports the `rx_pin` and `tx_pin` options.  
    Instead, you must now define the `remote_receiver` and `remote_transmitter` components when using your own custom config.
 
+- **Home Assistant Events Removed from Component**  
+  Events are no longer directly handled by the `tc_bus` component. Instead, they are now defined in the Home Assistant–specific Doorman configuration YAML file.
+
 - **Removed Open Door and Light Buttons**  
   The `Turn on the light` and `Open Door` buttons have been removed in favor of more efficient control methods.
 
@@ -118,7 +121,7 @@ This release **will impact your current setup** and **requires** you to go throu
   Now, you need to press the outdoor station doorbell for each door to ensure the address is saved correctly. Take a look [here](https://doorman.azon.ai/guide/getting-started#interactive-setup) for more information.
 
 - **Minimum ESPHome Version Set**  
-   The minimum required version has been updated to **2025.5.0**.
+   The minimum required version has been updated to **2025.10.0**.
 
 ## 2025.3.0 <Badge type="tip" text="Stable" />
 ### ✨ Improvements

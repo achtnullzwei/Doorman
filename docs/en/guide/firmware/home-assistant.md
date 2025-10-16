@@ -37,7 +37,9 @@ data:
 :::
 
 ## Listening for ESPHome events
-Doorman will send esphome.doorman events to Home Assistant every time a telegram is received.
+Doorman sends `esphome.doorman` events to Home Assistant each time a telegram is received.
+
+These events contain the parsed telegram data and can also be viewed in the [Developer Tools → Events](https://my.home-assistant.io/redirect/developer_events/).
 
 Each event is structured as follows:
 ```yaml

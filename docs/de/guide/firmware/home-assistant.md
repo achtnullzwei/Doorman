@@ -5,7 +5,7 @@ Entdecke praktische Beispiele zur Integration und Automatisierung von Doorman mi
 ## Zu Home Assistant hinzufügen
 <!--@include: ./instructions/home-assistant.md-->
 
-## Bus Telegrams senden
+## Bus Telegramme senden
 Mit Home Assistant kannst du Aktionen nutzen, um Telegramme über den Bus zu senden.
 Benutze entweder `telegram` für hexadezimale Befehle oder `type`, `address`, `payload` und `serial_number` um Befehle über den Telegram Builder zu senden.
 
@@ -29,17 +29,19 @@ data:
   address: 0
   payload: 0
 ```
-```yaml [HEX Telegrams]
+```yaml [HEX Telegramme]
 service: esphome.doorman_s3_send_tc_telegram_raw
 data:
   telegram: 0x3a001100
 ```
 :::
 
-## Auf ESPHome-Ereignisse hören
-Der Doorman sendet `esphome.doorman`-Ereignisse an Home Assistant, jedes Mal wenn ein Befehl empfangen wird.
+## ESPHome-Events abhören
+Doorman schickt jedes Mal, wenn ein Telegramm ankommt, `esphome.doorman`-Events an Home Assistant.
 
-Jedes Ereignis sieht so aus:
+In diesen Events steckt das bereits geparste Telegramm, und du kannst sie auch in den [Entwickler-Tools → Events](https://my.home-assistant.io/redirect/developer_events/) anschauen.
+
+Jedes Event ist ungefähr so aufgebaut:
 ```yaml
 event_type: esphome.doorman
 data:
@@ -71,7 +73,7 @@ condition: []
 action: []
 mode: single
 ```
-```yaml [HEX Telegrams]
+```yaml [HEX Telegramme]
 alias: Bei Doorman TC Türöffnungsbefehl auslösen
 description: ""
 trigger:

@@ -27,6 +27,8 @@ Otherwise, you'll be staring at a very quiet device while wondering why nothing 
 ## Connect the Wires
 Start by opening your indoor station's enclosure. On most models, you'll find screw terminals labeled `a`, `b`, `E`, and `P`.
 
+You'll need **a small screwdriver** to connect Doorman to your indoor station.
+
 The Doorman connects **in parallel** to the bus — just like any other device.
 
 Before proceeding, review the power supply options below and choose the one that best suits your setup.
@@ -76,6 +78,10 @@ Example:
 > [!DANGER] IMPORTANT
 > Please remove the jumper cap on `BUS PWR` before you proceed!
 
+> [!WARNING] KNOWN ISSUE
+> You may encounter issues receiving telegrams. If this happens, you'll need an isolated power supply to eliminate ground noise.  
+> The problem occurs because Doorman's power supply is not electrically isolated, which can cause ground loops when two different grounds are connected.
+
 Connect the `b` line (Ground) and the `a` line (24V Bus) to the TC:BUS terminals on your Doorman—one line per terminal.
 
 Then connect the external power supply to your Doorman using the `P` (+5V to +30V) and `G` (Ground) screw terminals.
@@ -87,6 +93,10 @@ Example:
 ::: details 2-Wire Mode via external USB-C Power Supply
 > [!DANGER] IMPORTANT
 > Please remove the jumper cap on `BUS PWR` before you proceed!
+
+> [!WARNING] KNOWN ISSUE
+> You may encounter issues receiving telegrams. If this happens, you'll need a USB isolator (or example, [this one](https://amzn.eu/d/fYaZGTp)) to eliminate ground noise.  
+> The problem occurs because Doorman's power supply is not electrically isolated, which can cause ground loops when two different grounds are connected.
 
 Connect the `b` line (Ground) and the `a` line (24V Bus) to the TC:BUS terminals on your Doorman—one line per terminal.
 
