@@ -69,9 +69,6 @@ api:
 
 tc_bus:
   on_telegram:
-    - lambda: |-
-        ESP_LOGW("TAG", "Received Telegram Test: %s", x.hex);
-
     - homeassistant.event:
         event: esphome.doorman_test
         data_template:

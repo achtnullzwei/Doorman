@@ -28,7 +28,7 @@ ON oder OFF oder was sonst unterstützt wird
 Um die [Ring-To-Open](../features/ring-to-open.md) Automatisierung zu aktivieren oder zu deaktivieren, sende ON oder OFF als Payload an dieses Topic:
 ::: code-group
 ``` [Topic]
-doorman-s3/switch/rto__entrance_door/telegram
+doorman-s3/switch/ring_to_open/telegram
 ```
 ``` [Payload]
 ON
@@ -84,6 +84,25 @@ doorman-s3/send_tc_is_telegram
     "type": "open_door",
     "address": 0,
     "payload": 0
+}
+```
+:::
+
+
+### Empfang von geparsten Telegrammen
+Alle Telegramme werden auf einem speziellen Topic veröffentlicht. Die Nachrichten enthalten die geparsten Telegrammdaten.
+
+::: code-group
+``` [Topic]
+doorman-s3/last_telegram
+```
+```json [Payload]
+{
+    "telegram": "1100",
+    "type": "open_door",
+    "address": "0",
+    "payload": "0",
+    "serial_number": "0"
 }
 ```
 :::
