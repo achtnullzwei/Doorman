@@ -13,14 +13,13 @@ const props = defineProps<{
         <div class="modal-content">
           <div class="modal-header">
             <slot name="header" />
+            <button class="close" @click="$emit('close')">&times;</button>
           </div>
           <div class="modal-body">
             <slot name="body" />
           </div>
           <div class="modal-footer">
-            <slot name="footer">
-                <VPButton text="Close" @click="$emit('close')" />
-            </slot>
+            <slot name="footer" />
           </div>
         </div>
       </div>
@@ -49,7 +48,6 @@ const props = defineProps<{
   justify-content: center;
   align-items: center;
   margin: 0; /* remove auto margin for centering via flex */
-  padding: 20px 30px;
   border-radius: 12px;
   border: 1px solid var(--vp-button-brand-active-bg);
   background-color: var(--vp-c-bg);
@@ -57,11 +55,28 @@ const props = defineProps<{
   transition: all 0.3s ease;
   max-width: 90vw;
   max-height: 90vh;
+  min-width: 400px;
   overflow: auto;
 }
 
 .modal-content {
   display: block;
+  width: 100%;
+}
+
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid var(--vp-c-divider);
+  padding: 20px;
+}
+
+.modal-header .close {
+    height: 35px;
+    width: 35px;
+    font-size: 23px;
+    line-height: 23px;
 }
 
 .modal-header h3 {
@@ -69,7 +84,14 @@ const props = defineProps<{
 }
 
 .modal-body {
-  margin: 20px 0;
+  padding: 20px;
+}
+
+.modal-footer {
+  padding: 20px;
+  display: flex;
+  justify-content: center;
+  gap: 15px;
 }
 
 .modal-enter-from {

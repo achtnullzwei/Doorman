@@ -25,7 +25,7 @@ ON oder OFF oder was sonst unterstützt wird
 :::
 
 ### Beispiel
-Um die [Ring-To-Open](../features/ring-to-open.md) Automatisierung zu aktivieren oder zu deaktivieren, sende ON oder OFF als Payload an dieses Topic:
+Um die [Ring-To-Open](../features/ring-to-open.md) Automatisierung zu aktivieren oder zu deaktivieren, sende `ON` oder `OFF` als Payload an dieses Topic:
 ::: code-group
 ``` [Topic]
 doorman-s3/switch/ring_to_open/command

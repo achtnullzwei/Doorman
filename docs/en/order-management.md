@@ -803,10 +803,12 @@ canvas {
     <template #header>
         <h3>Settings</h3>
     </template>
+    <template #footer>
+        <VPButton theme="alt" type="button" @click="settingsOpen = false" text="Close Settings" />
+    </template>
     <template #body>
         <div style="
             margin-bottom: 25px;
-            margin-top: 25px;
             display: flex;
             justify-content: space-between;
             align-items: center;
@@ -837,7 +839,6 @@ canvas {
         </div>
         <hr />
         <div style="
-            margin-bottom: 25px;
             margin-top: 25px;
             display: flex;
             justify-content: space-between;
