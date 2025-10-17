@@ -222,7 +222,7 @@ The `TelegramData` struct is used internally and can also be used in the `on_tel
 ```c++
 struct TelegramData {
     uint32_t raw;
-    std::string hex;
+    char hex[9];
 
     TelegramType type;
     uint8_t address;
