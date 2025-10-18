@@ -161,6 +161,7 @@ Want to customize the firmware and use only the features you need? Good news!
 The Doorman firmware is modular, organized into packages that you can easily mix and match.
 
 Don't need a feature, like the indoor station settings? Simply comment it out in your configuration.
+The order of the packages is important because some depend on others.
 
 Check out the example YAML configuration below for guidance:
 
@@ -182,8 +183,8 @@ packages:
   # Device type
   # Either esp32, esp32-s3 or esp32-s3-quad
   host: github://azoninc/doorman/firmware/hosts/esp32-s3.yaml@master
-  #host: github://azoninc/doorman/firmware/hosts/esp32-s3-quad.yaml@master
-  #host: github://azoninc/doorman/firmware/hosts/esp32.yaml@master
+  # host: github://azoninc/doorman/firmware/hosts/esp32-s3-quad.yaml@master
+  # host: github://azoninc/doorman/firmware/hosts/esp32.yaml@master
 
   # External Components (REQUIRED)
   external_components: github://azoninc/doorman/firmware/components/external-components.yaml@master
@@ -206,9 +207,9 @@ packages:
   # Either homeassistant, mqtt, homekit or custom
   # Use custom, if you just want to use it via wifi (http requests)
   api: github://azoninc/doorman/firmware/components/api.homeassistant.yaml@master
-  #api: github://azoninc/doorman/firmware/components/api.mqtt.yaml@master
-  #api: github://azoninc/doorman/firmware/components/api.homekit.yaml@master
-  #api: github://azoninc/doorman/firmware/components/api.custom.yaml@master
+  # api: github://azoninc/doorman/firmware/components/api.mqtt.yaml@master
+  # api: github://azoninc/doorman/firmware/components/api.homekit.yaml@master
+  # api: github://azoninc/doorman/firmware/components/api.custom.yaml@master
   
   # TC:BUS debug tools
   debug_utilities: github://azoninc/doorman/firmware/components/debug-utilities.yaml@master
@@ -226,6 +227,10 @@ packages:
   # TC:BUS Device Settings (Indoor Station)
   # Ringtones, Volume
   indoor_station_settings: github://azoninc/doorman/firmware/components/indoor-station-settings.yaml@master
+
+  # Nuki Bridge
+  # Incompatible with Improv BLE (bluedroid-ble)
+  # addon_nuki_bridge: !include github://azoninc/doorman/firmware/components/nuki-bridge.yaml@master
 
   # Interactive Setup Mode
   interactive_setup: github://azoninc/doorman/firmware/components/interactive-setup.yaml@master
