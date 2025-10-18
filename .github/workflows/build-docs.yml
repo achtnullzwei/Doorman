@@ -53,6 +53,10 @@ jobs:
           
           # Update schematics references
           sed -i "s/@master/@${{ github.ref_name }}/g" */reference/schematics.md
+
+          # Update example references
+          sed -i "s/@master/@${{ github.ref_name }}/g" */guide/firmware/customization.md
+          sed -i "s/branch: \"master\"/branch: \"${{ github.ref_name }}\"/g" */guide/firmware/customization.md
           
           # Update firmware example references
           sed -i "s/master.yaml@master/dev.yaml@${{ github.ref_name }}/g" */guide/firmware/minimal.example.yaml

@@ -155,3 +155,83 @@ binary_sensor: # [!code ++] [!code focus]
                 type: "light" # [!code ++] [!code focus]
 ```
 :::
+
+## Mix and Match
+Want to customize the firmware and use only the features you need? Good news!  
+The Doorman firmware is modular, organized into packages that you can easily mix and match.
+
+Don't need a feature, like the indoor station settings? Simply comment it out in your configuration.
+
+Check out the example YAML configuration below for guidance:
+
+:::details Example configuration
+```yaml 
+# Doorman S3 DIY Firmware
+
+# You can change a few options here.
+substitutions:
+  name: "doorman-s3"
+  friendly_name: "Doorman S3"
+
+  log_level: "INFO"
+  
+  # Required for "External Components"
+  branch: "master"
+
+packages:
+  # Device type
+  # Either esp32, esp32-s3 or esp32-s3-quad
+  host: github://azoninc/doorman/firmware/hosts/esp32-s3.yaml@master
+  #host: github://azoninc/doorman/firmware/hosts/esp32-s3-quad.yaml@master
+  #host: github://azoninc/doorman/firmware/hosts/esp32.yaml@master
+
+  # External Components (REQUIRED)
+  external_components: github://azoninc/doorman/firmware/components/external-components.yaml@master
+
+  # RGB Status LED (REQUIRED)
+  rgb_status_led: github://azoninc/doorman/firmware/components/rgb-status-led.yaml@master
+  rgb_status_led_effects: github://azoninc/doorman/firmware/components/rgb-status-led.effects.yaml@master
+
+  # Base Doorman Firmware (REQUIRED)
+  base: github://azoninc/doorman/firmware/base.yaml@master
+
+  # Improv BLE
+  # Incompatible with Nuki Bridge
+  bluedroid_ble: github://azoninc/doorman/firmware/components/bluedroid-ble.yaml@master
+
+  # OTA via Webserver & Device Builder
+  ota_update: github://azoninc/doorman/firmware/components/ota-update.esphome.yaml@master
+
+  # Smart Home Integration
+  # Either homeassistant, mqtt, homekit or custom
+  # Use custom, if you just want to use it via wifi (http requests)
+  api: github://azoninc/doorman/firmware/components/api.homeassistant.yaml@master
+  #api: github://azoninc/doorman/firmware/components/api.mqtt.yaml@master
+  #api: github://azoninc/doorman/firmware/components/api.homekit.yaml@master
+  #api: github://azoninc/doorman/firmware/components/api.custom.yaml@master
+  
+  # TC:BUS debug tools
+  debug_utilities: github://azoninc/doorman/firmware/components/debug-utilities.yaml@master
+
+  # ESPHome debug sensors
+  debug_component: github://azoninc/doorman/firmware/components/debug-component.yaml@master
+  debug_component_psram: github://azoninc/doorman/firmware/components/debug-component.psram.yaml@master
+
+  # Pattern events
+  pattern_events: github://azoninc/doorman/firmware/components/pattern-events.yaml@master
+
+  # Ring To Open automation
+  ring_to_open: github://azoninc/doorman/firmware/components/ring-to-open.yaml@master
+
+  # TC:BUS Device Settings (Indoor Station)
+  # Ringtones, Volume
+  indoor_station_settings: github://azoninc/doorman/firmware/components/indoor-station-settings.yaml@master
+
+  # Interactive Setup Mode
+  interactive_setup: github://azoninc/doorman/firmware/components/interactive-setup.yaml@master
+
+wifi:
+  ssid: !secret wifi_ssid
+  password: !secret wifi_password
+```
+:::
