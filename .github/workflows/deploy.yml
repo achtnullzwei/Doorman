@@ -109,9 +109,9 @@ jobs:
     needs: [build-docs, build-firmware]
 
   # Deployment job
-  deploy-stable:
+  deploy-pages:
     if: github.ref_name == 'master'
-    name: Deploy to Github Pages (stable)
+    name: Deploy to Github Pages
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
@@ -124,7 +124,7 @@ jobs:
 
   deploy-dev:
     if: startsWith(github.ref_name, 'dev')
-    name: Deploy to Webserver (dev)
+    name: Deploy to Dev Server
     environment:
       name: dev.doorman.azon.ai
       url: "https://dev.doorman.azon.ai/"
@@ -137,7 +137,7 @@ jobs:
           name: asset-bundle
           path: output
 
-      - name: Upload Assets
+      - name: Deploy via SSH
         uses: SamKirkland/web-deploy@v1
         with:
           target-server: dev.doorman.azon.ai
