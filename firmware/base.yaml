@@ -36,6 +36,8 @@ logger:
   level: ${log_level}
 
 web_server:
+  js_include: "../web/www.js"
+  js_url: ""
   version: 3
   sorting_groups:
     - id: sorting_group_controls
