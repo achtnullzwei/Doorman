@@ -145,7 +145,6 @@ remote_transmitter:
 # TC:BUS configuration
 tc_bus:
   id: my_tc_bus
-  event: "doorman"
   on_telegram:
     - logger.log: "Received telegram from bus!"
 

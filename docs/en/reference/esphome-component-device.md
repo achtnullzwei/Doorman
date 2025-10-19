@@ -48,6 +48,14 @@ The `tc_bus_device` Switch platform offers the following configuration options:
 | `tc_bus_device_id`                   | ID of the related `tc_bus_device` instance.                                                                    | Yes      |               |
 | `force_long_door_opener`             | This enforces execution of the long door opener telegram and mandates inclusion of a serial number in the short door opener telegram. | No       | |
 
+## Buttons
+The `tc_bus_device` Button platform offers the following configuration options:
+
+| Option                | Description                                                                                       | Required | Default       |
+|-----------------------|---------------------------------------------------------------------------------------------------|----------|---------------|
+| `tc_bus_device_id`    | ID of the related `tc_bus_device` instance.                                                       | Yes      |               |
+| `identify_device`     | This starts the identification process to determine the device model by using it's serial number. | No       | |
+| `read_memory`         | This reads the device memory if supported into a memory buffer. Take a look at the [supported models and settings](#model-setting-availability). | No       | |
 
 ## Binary Sensors
 The `tc_bus_device` Binary Sensor detects binary states such as doorbell presses. It can be configured to trigger based on a predefined telegram.
@@ -237,6 +245,14 @@ switch:
     tc_bus_device_id: my_tc_bus_indoor_station_device
     force_long_door_opener:
       name: "Enforce long Door Opener Telegram"
+
+button:
+  - platform: tc_bus_device
+    tc_bus_device_id: my_tc_bus_indoor_station_device
+    identify_device:
+      name: "Identify Device"
+    read_memory:
+      name: "Read Memory"
 
 binary_sensor:
   - platform: tc_bus_device

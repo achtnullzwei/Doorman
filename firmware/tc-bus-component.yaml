@@ -32,7 +32,6 @@ remote_transmitter:
 
 tc_bus:
   id: my_tc_bus
-  event: "doorman"
   on_telegram:
     - logger.log: "Bus Telegram received"
 
