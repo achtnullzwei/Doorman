@@ -14,6 +14,12 @@ Du kannst ebenso einen zusätzlichen Auslöser konfigurieren, zum Beispiel die F
 Zusätzlich gibt es einen **zentralen Schalter** namens `Ring to Open`, der das für mehrere Türen gleichzeitig steuern kann.
 Welche Türen davon betroffen sind, legst du über die Einstellung `RTO: Central Toggle – Door Selection` fest.
 
+::: tip INFO
+Die meisten Einstellungen sind standardmäßig in der Oberfläche ausgeblendet.
+
+Um diese anzuzeigen, klicke in der Doorman-Weboberfläche auf `SHOW ALL` oder aktiviere die entsprechende Entität in Home Assistant.
+:::
+
 #### Allgemeine Einstellungen:
 ::: info Confirmation
 Wenn diese Option aktiviert ist, klingelt deine Innenstation jedes Mal, wenn die Ring-to-Open-Automation manuell über eine physische Taste ausgelöst wird – je nachdem, welche Taste du dafür eingerichtet hast.

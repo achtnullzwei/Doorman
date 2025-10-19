@@ -15,6 +15,12 @@ You can also configure an additional trigger, like the function button or the ex
 Additionally, there's a central switch called `Ring to Open`, which can control multiple doors at once.
 You can configure which doors are affected via the setting `RTO: Central Toggle – Door Selection`.
 
+::: tip INFO
+Most settings are hidden by default in the interface.
+
+To view them, click `SHOW ALL` in the Doorman web interface or enable the corresponding entity in Home Assistant.
+:::
+
 #### General Configuration:
 ::: info Confirmation
 If this option is enabled, your indoor station will ring each time the Ring-to-Open automation is triggered by a physical button — depending on which physical button you've configured as the trigger.
