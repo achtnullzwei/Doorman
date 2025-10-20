@@ -114,6 +114,7 @@ namespace esphome
             void read_memory();
             void read_memory_block();
             bool write_memory();
+            bool memory_buffer_empty() { return this->memory_buffer_.empty(); }
 
             // Bus Device Settings
             bool supports_setting(SettingType type);

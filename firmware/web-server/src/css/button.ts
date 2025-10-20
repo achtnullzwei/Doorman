@@ -8,12 +8,13 @@ export default css`
     color: rgb(3, 169, 244);
     border: none;
     background-color: unset;
-    padding: 8px;
+    padding: 4px;
     font-weight: 500;
     font-size: 12.25px;
     letter-spacing: 1.09375px;
     text-transform: uppercase;
-    margin-right: -8px;
+    margin: 6px;
+    margin-right: -6px;
   }
 
   button:active,
@@ -32,7 +33,7 @@ export default css`
     background-color: #28a745;
     color: white;
     border: none;
-    padding: 10px 20px;
+    padding: 6px 20px;
     font-size: 16px;
     border-radius: 4px;
     transition: background-color 0.3s ease;
