@@ -15,12 +15,18 @@ export default css`
     background-color: var(--primary-color, currentColor);
   }
   input[type="range"],
-  input[type="text"] {
+  input[type="text"],
+  input[type="number"],
+  input[type="password"] {
     width: calc(100% - 3rem);
     height: 0.75rem;
   }
   .range {
-    text-align: center;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    gap: 15px;
+    align-items: center;
   }
   .entity-row {
     display: flex;
