@@ -176,7 +176,7 @@ export class EspRangeSlider extends LitElement {
               @change="${this.onInputChangeEvent}"
             />
         </div>
-        <label style="text-align: left;">${this.max || 100}</label>
+        <label>${this.max || 100}</label>
       </div>
     `;
   }
@@ -278,6 +278,25 @@ export class EspRangeSlider extends LitElement {
           display: flex;
           align-items: center;
         }
+
+        @media (max-width: 500px) {
+          .range-wrap {
+            flex-direction: column;
+            align-items: stretch;
+            padding: 5px;
+            gap: 5px;
+          }
+
+          .range-wrap label {
+            text-align: center;
+            width: 100%;
+          }
+
+          .range-wrap .slider-wrap {
+            margin: 0px;
+          }
+        }
+
         .slider-wrap {
           flex-grow: 1;
           margin: 0px 15px;

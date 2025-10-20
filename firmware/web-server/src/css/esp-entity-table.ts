@@ -27,6 +27,31 @@ export default css`
     justify-content: space-between;
     gap: 15px;
     align-items: center;
+    flex-wrap: wrap;
+  }
+  .range label {
+    flex: 0 0 auto;
+  }
+  .range input{
+    min-width: 50px;
+    flex: 1;
+  }
+  @media (max-width: 500px) {
+    .range {
+      flex-direction: column;
+      align-items: stretch;
+      padding: 5px;
+      gap: 5px;
+    }
+
+    .range label {
+      text-align: center;
+      width: 100%;
+    }
+
+    .range input {
+      width: 100%;
+    }
   }
   .entity-row {
     display: flex;
