@@ -10,7 +10,9 @@ switch:
     entity_category: CONFIG
     optimistic: true
     on_turn_on:
-      - logger.log: "Reset saved setup data"
+      - logger.log:
+          format: "Reset saved setup data"
+          level: INFO
       - number.set:
           id: indoor_station_serial_number
           value: 0
@@ -23,7 +25,9 @@ switch:
       - number.set:
           id: second_entrance_door_station_address
           value: 63
-      - logger.log: "Setup Step 1: Waiting for door or floor call."
+      - logger.log:
+          format: "Setup Step 1: Waiting for door or floor call."
+          level: INFO
       - script.execute: update_setup_sensors
       - script.execute: update_led
     on_turn_off:
@@ -250,7 +254,9 @@ tc_bus:
           - delay: 3s
 
           # Start Identification
-          - logger.log: "Setup Step 2: Identifying Indoor Station."
+          - logger.log:
+              format: "Setup Step 2: Identifying Indoor Station."
+              level: INFO
           - tc_bus_device.identify:
               id: tc_bus_indoor_station
 
@@ -303,7 +309,9 @@ script:
       
       - script.execute: update_led
 
-      - logger.log: "Setup completed."
+      - logger.log:
+          format: "Setup completed. You can now continue with the Doorbells."
+          level: INFO
 
   - id: !extend update_led
     then:
