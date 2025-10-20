@@ -88,10 +88,11 @@ export default css`
     flex: 1 1 40%;
     margin-left: 16px;
     margin-right: 8px;
-    text-wrap: nowrap;
+    /*text-wrap: nowrap;
     overflow: hidden;
-    text-overflow: ellipsis;
-    min-width: 150px;
+    text-overflow: ellipsis;*/
+    min-width: 100px;
+    padding: 5px 0px;
   }
   .entity-row > :nth-child(3) {
     flex: 1 1 50%;
@@ -126,7 +127,7 @@ export default css`
   }
   .climate-row > label{
     align-content: center;
-    width: 150px;
+    width: 100px;
   }
     
   input[type="color"]::-webkit-color-swatch-wrapper {
