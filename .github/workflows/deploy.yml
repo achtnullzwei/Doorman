@@ -86,7 +86,7 @@ jobs:
   build-firmware:
     name: Build ${{ matrix.chip }} ${{ matrix.variant }} (${{ matrix.integration }})
     uses: ./.github/workflows/build-esphome.yml
-    needs: prepare-release
+    needs: [prepare-release, build-webserver]
     strategy:
       matrix:
         chip: [esp32, esp32-s3, esp32-s3-quad]
