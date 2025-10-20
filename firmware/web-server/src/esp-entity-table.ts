@@ -326,9 +326,9 @@ export class EntityTable extends LitElement implements RestAction {
                 `
               )}
             </div>
+            ${this.renderShowAll()}
           `
         )}
-        ${this.renderShowAll()}
       </div>
     `;
   }

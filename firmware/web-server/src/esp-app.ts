@@ -197,7 +197,7 @@ export default class EspApp extends LitElement {
         <div class="title">
           ${this.renderTitle()}
         </div>
-        <div>
+        <div class="status">
           <iconify-icon
             .icon="${!!this.connected ? "mdi:circle" : "mdi:circle-off-outline"}"
             .title="${this.uptime()}"
@@ -218,6 +218,10 @@ export default class EspApp extends LitElement {
           </a>
         </div>
       </header>
+      <infobox>
+        <iconify-icon icon="mdi:file-document-box-search"></iconify-icon>
+        <span>See the <a target="_blank" href="https://dev.doorman.azon.ai/reference/entities">documentation</a> to understand each entity and how to configure them.</span>
+      </infobox>
       <main class="flex-grid-half" @toggle-layout="${this._handleLayoutToggle}">
         <section
           id="col_entities"

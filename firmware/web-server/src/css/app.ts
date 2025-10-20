@@ -46,15 +46,25 @@ export default css`
     margin-block: 0;
   }
   header {
-    background-color: rgba(127, 127, 127, 0.05);
+    /*background-color: rgba(127, 127, 127, 0.05);
+    border: 2px solid rgba(127, 127, 127, 0.3);
+    border-radius: 12px;*/
     padding: 10px;
     display: flex;
     justify-content: space-between;
     align-items: center;
     gap: 15px;
+    margin: 8px;
+  }
+  infobox {
+    background-color: rgba(127, 127, 127, 0.05);
+    padding: 10px;
     border: 2px solid rgba(127, 127, 127, 0.3);
     border-radius: 12px;
     margin: 8px;
+    display: flex;
+    align-items: center;
+    gap: 15px;
   }
   header iconify-icon {
     font-size: 2.5rem;
@@ -65,6 +75,9 @@ export default css`
   }
   header .title {
     flex-grow: 1;
+  }
+  header .status {
+    display: flex;
   }
   .connected {
     color: rgba(0, 157, 16, 0.75);
