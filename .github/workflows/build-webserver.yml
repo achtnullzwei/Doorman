@@ -13,7 +13,11 @@ jobs:
           fetch-depth: 0
 
       - name: Setup Node
-        uses: actions/setup-node@v4.0.2
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+          cache-dependency-path: firmware/web-server/package-lock.json
 
       - name: Install dependencies
         run: npm install
@@ -27,4 +31,5 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: webserver-bundle
-          path: dist
+          path: firmware/web-server/dist
+          if-no-files-found: error
