@@ -14,7 +14,7 @@ export default css`
     letter-spacing: 1.09375px;
     text-transform: uppercase;
     margin: 6px;
-    margin-right: -6px;
+    margin-right: 0px;
   }
 
   button:active,
