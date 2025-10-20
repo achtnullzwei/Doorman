@@ -197,7 +197,7 @@ export class DebugLog extends LitElement {
         }
         .logs {
           overflow-x: auto;
-          border-radius: 12px;
+          border-radius: 0px 12px 12px;
           border-width: 1px;
           border-style: solid;
           border-color: rgba(127, 127, 127, 0.12);

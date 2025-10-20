@@ -45,7 +45,7 @@ text_sensor:
     lambda: |-
       if(id(indoor_station_serial_number).state != 0)
       {
-        return {"All set"};
+        return {"Complete"};
       }
       else
       {
@@ -70,7 +70,7 @@ text_sensor:
     lambda: |-
       if(id(indoor_station_model).state != "None")
       {
-        return {"All set"};
+        return {"Complete"};
       }
       else
       {
@@ -102,7 +102,7 @@ text_sensor:
     lambda: |-
       if(id(tc_bus_indoor_station).memory_buffer_empty() != true)
       {
-        return {"All set"};
+        return {"Complete"};
       }
       else
       {
@@ -130,12 +130,12 @@ text_sensor:
 
   - platform: template
     id: setup_status_entrance_door_address
-    name: "Entrance Door"
-    icon: "mdi:numeric"
+    name: "Entrance Doorbell"
+    icon: "mdi:doorbell"
     lambda: |-
       if(id(entrance_door_station_address).state != 63)
       {
-        return {"All set"};
+        return {"Complete"};
       }
       else
       {
@@ -162,12 +162,12 @@ text_sensor:
 
   - platform: template
     id: setup_status_second_entrance_door_address
-    name: "Second Entrance Door"
-    icon: "mdi:numeric"
+    name: "Second Entrance Doorbell"
+    icon: "mdi:doorbell"
     lambda: |-
       if(id(second_entrance_door_station_address).state != 63)
       {
-        return {"All set"};
+        return {"Complete"};
       }
       else
       {
@@ -185,7 +185,7 @@ text_sensor:
           {
             if(id(entrance_door_station_address).state == 63)
             {
-              return {"Setup Entrance Doorbell first!"};
+              return {"Pending"};
             }
             else
             {

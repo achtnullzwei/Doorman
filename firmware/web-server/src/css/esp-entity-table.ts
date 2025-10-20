@@ -21,6 +21,14 @@ export default css`
     width: calc(100% - 3rem);
     height: 0.75rem;
   }
+  input, select
+  {
+    border-radius: 5px;
+    padding: 4px;
+    border: solid 1px #333333;
+    background-color: transparent;
+    box-sizing: border-box;
+  }
   .range {
     width: 100%;
     display: flex;
