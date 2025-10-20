@@ -17,5 +17,6 @@ export default css`
   .tab-container {
     border: 2px solid rgba(127, 127, 127, 0.3);
     border-radius: 0px 12px 12px 12px;
+    margin-bottom: 10px;
   }
 `;

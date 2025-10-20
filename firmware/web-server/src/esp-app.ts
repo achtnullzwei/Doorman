@@ -219,7 +219,7 @@ export default class EspApp extends LitElement {
         </div>
       </header>
       <infobox>
-        <iconify-icon icon="mdi:file-document-box-search"></iconify-icon>
+        <iconify-icon icon="mdi:file-document-box-search" height="24px"></iconify-icon>
         <span>See the <a target="_blank" href="https://dev.doorman.azon.ai/reference/entities">documentation</a> to understand each entity and how to configure them.</span>
       </infobox>
       <main class="flex-grid-half" @toggle-layout="${this._handleLayoutToggle}">

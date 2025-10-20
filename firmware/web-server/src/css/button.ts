@@ -8,7 +8,7 @@ export default css`
     color: rgb(3, 169, 244);
     border: none;
     background-color: unset;
-    padding: 4px;
+    padding: 6px;
     font-weight: 500;
     font-size: 12.25px;
     letter-spacing: 1.09375px;

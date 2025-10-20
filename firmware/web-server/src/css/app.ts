@@ -66,6 +66,9 @@ export default css`
     align-items: center;
     gap: 15px;
   }
+  infobox iconify-icon {
+    color: #bd34fe;
+  }
   header iconify-icon {
     font-size: 2.5rem;
     color: rgba(127, 127, 127, 0.5);
