@@ -43,6 +43,10 @@ web_server:
       name: "Quick Actions"
       sorting_weight: -100
 
+    - id: sorting_group_setup_status
+      name: "Setup"
+      sorting_weight: -99
+
     - id: sorting_group_settings
       name: "Settings - General"
       sorting_weight: -91

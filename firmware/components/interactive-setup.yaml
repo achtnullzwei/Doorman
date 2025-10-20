@@ -15,8 +15,54 @@ switch:
     on_turn_off:
       - script.execute: update_led
     web_server:
-      sorting_group_id: sorting_group_settings
-      sorting_weight: 100
+      sorting_group_id: sorting_group_setup_status
+      sorting_weight: 0
+
+binary_sensor:
+  - platform: template
+    id: setup_status_serial_number
+    name: "Status: Serial Number"
+    icon: "mdi:list-status"
+    lambda: |-
+      return id(indoor_station_serial_number).state != 0;
+    entity_category: DIAGNOSTIC
+    web_server:
+      sorting_group_id: sorting_group_setup_status
+      sorting_weight: 1
+
+  - platform: template
+    id: setup_status_second_entrance_door_address
+    name: "Status: Indoor Station Model"
+    icon: "mdi:list-status"
+    lambda: |-
+      return id(indoor_station_model).state != "None";
+    entity_category: DIAGNOSTIC
+    web_server:
+      sorting_group_id: sorting_group_setup_status
+      sorting_weight: 2
+
+  - platform: template
+    id: setup_status_entrance_door_address
+    name: "Status: Entrance Door"
+    icon: "mdi:list-status"
+    lambda: |-
+      return id(entrance_door_station_address).state != 63;
+    entity_category: DIAGNOSTIC
+    web_server:
+      sorting_group_id: sorting_group_setup_status
+      sorting_weight: 3
+
+  - platform: template
+    id: setup_status_second_entrance_door_address
+    name: "Status: Second Entrance Door"
+    icon: "mdi:list-status"
+    lambda: |-
+      return id(second_entrance_door_station_address).state != 63;
+    entity_category: DIAGNOSTIC
+    web_server:
+      sorting_group_id: sorting_group_setup_status
+      sorting_weight: 4
+
 
 # Extend TC:BUS Component
 tc_bus_device:

@@ -215,7 +215,7 @@ Dieser geführte Prozess sorgt für eine nahtlose Integration mit der Home Assis
             <div slot="unsupported">
                 <div class="danger custom-block">
                     <p class="custom-block-title">OH NEIN!</p>
-                    <p>Dein Browser unterstützt leider kein Web Serial :(</p>
+                    <p>Dein Browser unterstützt leider kein Web Serial :( Bitte verwende einen Chromium-basierten Browser.</p>
                 </div>
             </div>
             <div slot="not-allowed">

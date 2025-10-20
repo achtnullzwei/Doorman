@@ -216,7 +216,7 @@ This guided process ensures seamless integration with the Home Assistant API and
             <div slot="unsupported">
                 <div class="danger custom-block">
                     <p class="custom-block-title">OH SNAP!</p>
-                    <p>Your Browser doesn't support Web Serial :(</p>
+                    <p>Your Browser doesn't support Web Serial :( Please use a Chromium-based browser instead.</p>
                 </div>
             </div>
             <div slot="not-allowed">

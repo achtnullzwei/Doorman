@@ -182,7 +182,13 @@ Make sure your Doorman is powered on and nearby, then click the button below to 
    <div slot="unsupported">
          <div class="danger custom-block">
             <p class="custom-block-title">OH SNAP!</p>
-            <p>Your browser does not support provisioning :(</p>
+            <p>Your browser does not support provisioning :( Please use a Chromium-based browser instead.</p>
+         </div>
+   </div>
+   <div slot="not-allowed">
+         <div class="danger custom-block">
+            <p class="custom-block-title">OH SNAP!</p>
+            <p>You are not allowed to use this on HTTP :(</p>
          </div>
    </div>
 </improv-wifi-launch-button>
@@ -201,7 +207,13 @@ Just connect your Doorman to this computer using a USB cable, then click the but
    <div slot="unsupported">
          <div class="danger custom-block">
             <p class="custom-block-title">OH SNAP!</p>
-            <p>Your browser does not support provisioning :(</p>
+            <p>Your browser does not support provisioning :( Please use a Chromium-based browser instead.</p>
+         </div>
+   </div>
+   <div slot="not-allowed">
+         <div class="danger custom-block">
+            <p class="custom-block-title">OH SNAP!</p>
+            <p>You are not allowed to use this on HTTP :(</p>
          </div>
    </div>
 </improv-wifi-serial-launch-button>

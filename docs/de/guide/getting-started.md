@@ -181,8 +181,14 @@ Stelle sicher, dass dein Doorman eingeschaltet und in der Nähe ist, und klicke 
    </button>
    <div slot="unsupported">
          <div class="danger custom-block">
-            <p class="custom-block-title">OH SNAP!</p>
-            <p>Your browser does not support provisioning :(</p>
+            <p class="custom-block-title">OH NEIN!</p>
+            <p>Diese Funktion wird von deinem Browser nicht unterstützt :( Bitte verwende einen Chromium-basierten Browser.</p>
+         </div>
+   </div>
+   <div slot="not-allowed">
+         <div class="danger custom-block">
+            <p class="custom-block-title">OH NEIN!</p>
+            <p>Das funktioniert mit HTTP nicht :(</p>
          </div>
    </div>
 </improv-wifi-launch-button>
@@ -200,8 +206,14 @@ Schließe deinen Doorman einfach per USB-Kabel an deinen Computer an und klicke 
    </button>
    <div slot="unsupported">
          <div class="danger custom-block">
-            <p class="custom-block-title">OH SNAP!</p>
-            <p>Your browser does not support provisioning :(</p>
+            <p class="custom-block-title">OH NEIN!</p>
+            <p>Diese Funktion wird von deinem Browser nicht unterstützt :( Bitte verwende einen Chromium-basierten Browser.</p>
+         </div>
+   </div>
+   <div slot="not-allowed">
+         <div class="danger custom-block">
+            <p class="custom-block-title">OH NEIN!</p>
+            <p>Das funktioniert mit HTTP nicht :(</p>
          </div>
    </div>
 </improv-wifi-serial-launch-button>
