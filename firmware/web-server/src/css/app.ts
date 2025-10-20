@@ -67,7 +67,13 @@ export default css`
     gap: 15px;
   }
   infobox iconify-icon {
-    color: #bd34fe;
+    color: #9269fe;
+  }
+  a {
+    color: #9269fe;
+  }
+  a:visted {
+    color: #9269fe;
   }
   header iconify-icon {
     font-size: 2.5rem;
@@ -100,6 +106,6 @@ export default css`
     border-color: rgba(127, 127, 127, 0.12);
   }
   form .btn {
-    margin-right: 0px;
+    margin-right: 6px;
   }
 `;

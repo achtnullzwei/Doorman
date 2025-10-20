@@ -205,7 +205,7 @@ export class EspRangeSlider extends LitElement {
           height: 4px;
           cursor: pointer;
           animate: 0.2s;
-          background: #03a9f4;
+          background: #9269fe;
           border-radius: 25px;
         }
         input[type=range]::-moz-range-track {
@@ -213,7 +213,7 @@ export class EspRangeSlider extends LitElement {
           height: 4px;
           cursor: pointer;
           animate: 0.2s;
-          background: #03a9f4;
+          background: #9269fe;
           border-radius: 25px;
         }
         input[type=range]::-ms-track {
@@ -227,11 +227,11 @@ export class EspRangeSlider extends LitElement {
           color: transparent;
         }
         input[type=range]::-ms-fill-lower {
-          background: #03a9f4;
+          background: #9269fe;
           border-radius: 25px;
         }
         input[type=range]::-ms-fill-upper {
-          background: #03a9f4;
+          background: #9269fe;
           border-radius: 25px;
         }
         input[type=range]::-webkit-slider-thumb {
@@ -263,16 +263,16 @@ export class EspRangeSlider extends LitElement {
           border: none;
         }
         input[type=range]:focus::-webkit-slider-runnable-track {
-          background: #03a9f4;
+          background: #9269fe;
         }
         input[type=range]:focus::-moz-range-track {
-          background: #03a9f4;
+          background: #9269fe;
         }
         input[type=range]:focus::-ms-fill-lower {
-          background: #03a9f4;
+          background: #9269fe;
         }
         input[type=range]:focus::-ms-fill-upper {
-          background: #03a9f4;
+          background: #9269fe;
         }
         .range-wrap {
           display: flex;
@@ -311,7 +311,7 @@ export class EspRangeSlider extends LitElement {
           height: 19px;
           line-height: 18px;
           text-align: center;
-          background: #03a9f4;
+          background: #9269fe;
           color: #fff;
           font-size: 11px;
           display: block;
@@ -330,7 +330,7 @@ export class EspRangeSlider extends LitElement {
           position: absolute;
           width: 0;
           height: 0;
-          border-top: 10px solid #03a9f4;
+          border-top: 10px solid #9269fe;
           border-left: 5px solid transparent;
           border-right: 5px solid transparent;
           top: 100%;

@@ -5,7 +5,7 @@ export default css`
   .btn {
     cursor: pointer;
     border-radius: 4px;
-    color: rgb(3, 169, 244);
+    color: #9269fe;
     border: none;
     background-color: unset;
     padding: 6px;

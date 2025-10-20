@@ -68,6 +68,8 @@ export default class EspApp extends LitElement {
   version: String = import.meta.env.PACKAGE_VERSION;
   config: Config = { ota: false, log: true, title: "", comment: "" };
 
+  firmwareVersion: string = "Unknown Version";
+
   darkQuery: MediaQueryList = window.matchMedia("(prefers-color-scheme: dark)");
 
   frames = [{}, { color: "rgba(0, 196, 21, 0.75)" }, {}];
@@ -86,6 +88,12 @@ export default class EspApp extends LitElement {
 
     document.title = config.title;
     document.documentElement.lang = config.lang;
+  }
+
+  async getFirmwareVersion() {
+    const response = await fetch(`${getBasePath()}/text_sensor/doorman_firmware_version`);
+    const data = await response.json();
+    this.firmwareVersion = data.value;
   }
 
   firstUpdated(changedProperties: PropertyValues) {
@@ -128,10 +136,12 @@ export default class EspApp extends LitElement {
       const mainElement = this.shadowRoot?.querySelector('main.flex-grid-half');
       mainElement?.classList.toggle('expanded_logs');
     });
+
+    this.getFirmwareVersion();
   }
 
   schemeDefault() {
-    return this.darkQuery.matches ? "dark" : "light";
+    return "dark";
   }
 
   updated(changedProperties: Map<string, unknown>) {
@@ -161,7 +171,12 @@ export default class EspApp extends LitElement {
         >
           <input class="btn" type="file" name="update" accept="application/octet-stream" />
           <input class="btn" type="submit" value="Update" />
-        </form>`;
+        </form>
+        
+        <infobox style="margin: 0;">
+          <iconify-icon icon="mdi:update" height="24px"></iconify-icon>
+          <span>Learn how to update your firmware <a target="_blank" href="https://dev.doorman.azon.ai/guide/firmware/installation">here</a>.</span>
+        </infobox>`;
     }
   }
 
@@ -180,7 +195,7 @@ export default class EspApp extends LitElement {
     return html`
       <h1>${this.config.title || html`&nbsp;`}</h1>
       <div>
-        ${[this.config.comment, `started ${this.uptime()}`]
+        ${[this.config.comment, this.firmwareVersion, `started ${this.uptime()}`]
           .filter((n) => n)
           .map((e) => `${e}`)
           .join(" · ")}
@@ -204,18 +219,6 @@ export default class EspApp extends LitElement {
             class="top-icon ${!!this.connected ? "connected" : ""}"
             id="beat"
           ></iconify-icon>
-          <a
-            href="#"
-            id="scheme"
-            @click="${() => {
-              this.scheme = this.scheme !== "dark" ? "dark" : "light";
-            }}"
-          >
-            <iconify-icon
-              icon="mdi:theme-light-dark"
-              class="top-icon"
-            ></iconify-icon>
-          </a>
         </div>
       </header>
       <infobox>

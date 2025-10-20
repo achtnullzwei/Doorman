@@ -80,7 +80,7 @@ export default css`
   }
   .entity-row > :nth-child(1) {
     flex: 0 0 40px;
-    color: #bd34fe;
+    color: #9269fe;
     line-height: 40px;
     text-align: center;
   }
