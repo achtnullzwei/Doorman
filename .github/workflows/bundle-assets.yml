@@ -24,6 +24,12 @@ jobs:
 
       - name: Copy interactive BOM
         run: cp pcb/bom/ibom.html output/
+
+      - name: Download Webserver Bundle
+        uses: actions/download-artifact@v4
+        with:
+          name: webserver-bundle
+          path: output/firmware/esphome-webserver
         
       - name: Download all firmware artifacts
         uses: actions/download-artifact@v4

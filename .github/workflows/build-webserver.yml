@@ -1,0 +1,30 @@
+name: Build custom webserver
+
+on:
+  workflow_call:
+
+jobs:
+  build-webserver:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup Node
+        uses: actions/setup-node@v4.0.2
+
+      - name: Install dependencies
+        run: npm install
+        working-directory: firmware/web-server
+
+      - name: Build Webserver Bundle
+        working-directory: firmware/web-server
+        run: npm run build
+
+      - name: Upload webserver artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: webserver-bundle
+          path: dist

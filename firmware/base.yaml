@@ -36,7 +36,7 @@ logger:
   level: ${log_level}
 
 web_server:
-  js_url: "https://dev.doorman.azon.ai/esphome-webserver/www.js"
+  js_url: "https://dev.doorman.azon.ai/firmware/esphome-webserver/www.js"
   version: 3
   sorting_groups:
     - id: sorting_group_controls

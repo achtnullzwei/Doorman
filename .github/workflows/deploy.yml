@@ -79,6 +79,10 @@ jobs:
           echo "$RELEASE_BLOCK" >> $GITHUB_OUTPUT
           echo "EOF" >> $GITHUB_OUTPUT
 
+  build-webserver:
+    name: Build Webserver JS Bundle
+    uses: ./.github/workflows/build-webserver.yml
+
   build-firmware:
     name: Build ${{ matrix.chip }} ${{ matrix.variant }} (${{ matrix.integration }})
     uses: ./.github/workflows/build-esphome.yml
@@ -106,7 +110,7 @@ jobs:
   bundle-assets:
     name: Create asset bundle
     uses: ./.github/workflows/bundle-assets.yml
-    needs: [build-docs, build-firmware]
+    needs: [build-docs, build-firmware, build-webserver]
 
   # Deployment job
   deploy-pages:
