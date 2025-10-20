@@ -31,7 +31,7 @@ binary_sensor:
       sorting_weight: 1
 
   - platform: template
-    id: setup_status_second_entrance_door_address
+    id: setup_status_indoor_station_model
     name: "Status: Indoor Station Model"
     icon: "mdi:list-status"
     lambda: |-
