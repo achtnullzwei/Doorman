@@ -85,11 +85,24 @@
 }
 
 /* ESP Web Tools */
-:root {
-    --md-dialog-container-shape-start-start: 8px;
-    --md-dialog-container-shape-start-end: 8px;
-    --md-dialog-container-shape-end-end: 8px;
-    --md-dialog-container-shape-end-start: 8px;
+:root, md-dialog, md-list-item, ew-dialog, ewt-no-port-picked-dialog, ewt-install-dialog, improv-wifi-serial-provision-dialog, is-dialog, ib-button, improv-wifi-provision-dialog  {
+    --md-dialog-container-shape: 12px !important;
+    --md-dialog-supporting-text-color: var(--vp-c-text-2);
+    --md-sys-color-on-surface: var(--vp-c-text-1) !important;
+    --md-sys-color-primary: var(--vp-c-brand-3) !important;
+    --md-sys-color-surface: var(--vp-c-bg-elv) !important;
+    --md-sys-color-surface-container-high: var(--vp-c-bg-elv) !important;
+    --md-sys-color-surface-container-highest: var(--vp-c-bg-elv) !important;
+    --md-list-item-leading-icon-color: var(--vp-c-brand) !important;
+    --md-list-item-supporting-text-color: var(--vp-c-text-2);
+    --text-color: var(--vp-c-brand) !important;
+
+    --mdc-theme-primary: var(--vp-c-brand-3) !important;
+    --mdc-theme-surface: var(--vp-c-bg-elv) !important;
+    --mdc-shape-medium: 12px !important;
+    --mdc-theme-primary: var(--vp-c-brand-3) !important;
+    --mdc-dialog-heading-ink-color: var(--vp-c-text-1) !important;
+    --mdc-dialog-content-ink-color: var(--vp-c-text-2) !important;
 }
 
 
