@@ -97,7 +97,7 @@ export default class EspApp extends LitElement {
     const esphomeRequest = await fetch(`${getBasePath()}/text_sensor/esphome_version`);
     const esphomeValue = await esphomeRequest.json();
 
-    this.firmwareVersion = firmwareValue.value + '(ESPHome ' + esphomeValue.value + ')';
+    this.firmwareVersion = firmwareValue.value + ' (ESPHome ' + esphomeValue.value + ')';
   }
 
   async getHardwareVersion() {

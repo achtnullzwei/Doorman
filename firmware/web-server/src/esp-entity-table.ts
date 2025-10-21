@@ -73,6 +73,7 @@ export class EntityTable extends LitElement implements RestAction {
   @state() entities: entityConfig[] = [];
   @state() has_controls: boolean = false;
   @state() show_all: boolean = false;
+  @state() show_setup: boolean = false;
 
   private _actionRenderer = new ActionRenderer();
   private _basePath = getBasePath();
@@ -98,6 +99,15 @@ export class EntityTable extends LitElement implements RestAction {
           let history = [...this.entities[idx].value_numeric_history];
           history.push(data.value);
           this.entities[idx].value_numeric_history = history.splice(-50);
+        }
+
+        if(data.id == 'switch-setup_mode') {
+          if(data.value) {
+            this.show_setup = true;
+          } else {
+            this.show_setup = false;
+          }
+          this.requestUpdate();
         }
 
         delete data.id;
@@ -208,6 +218,15 @@ export class EntityTable extends LitElement implements RestAction {
               : 1
           : 1
       });
+
+      if(data.id == 'switch-setup_mode') {
+        if(data.value) {
+          this.show_setup = true;
+        } else {
+          this.show_setup = false;
+        }
+      }
+
       this.requestUpdate();
     }
     
@@ -294,12 +313,23 @@ export class EntityTable extends LitElement implements RestAction {
               EntityTable.ENTITY_UNDEFINED}
             </div>
             <div class="tab-container">
-              ${group.name.toLowerCase().includes('setup') ? html`<div class="description-row">
+              ${this.show_setup && group.name.toLowerCase().includes('setup') ? html`<div class="description-row">
+                <div>
+                  <iconify-icon icon="mdi:step-forward" height="24px"></iconify-icon>
+                </div>
+                <div>
+                  The Setup Mode is currently active, please follow the steps below.<br>
+                  <b>Note:</b> Reading the indoor station memory may take up to 30 seconds.<br><br>
+                  You'll be able to setup the doorbells once the regular setup is complete.
+                </div>
+              </div>` : nothing}
+              ${!this.show_setup && group.name.toLowerCase().includes('setup') ? html`<div class="description-row">
                 <div>
                   <iconify-icon icon="mdi:file-link" height="24px"></iconify-icon>
                 </div>
                 <div>
-                  Learn more about the interactive setup process <a target="_blank" href="https://doorman.azon.ai/guide/getting-started#interactive-setup">in the guide</a>.
+                  Learn more about the interactive setup process <a target="_blank" href="https://doorman.azon.ai/guide/getting-started#interactive-setup">in the guide</a>.<br>
+                  Enabling Setup Mode will <u>erase all previously stored setup data</u>.
                 </div>
               </div>` : nothing}
               ${group.name.toLowerCase().includes('homekit') ? html`<div class="description-row">
@@ -333,7 +363,7 @@ export class EntityTable extends LitElement implements RestAction {
                           ></iconify-icon>`
                         : nothing}
                     </div>
-                    <div>${component.name.replace('RTO: ','')}</div>
+                    <div>${(group.name.toLowerCase().includes('setup') && idx != 0 ? idx + '. ' : '') + component.name.replace('RTO: ','')}</div>
                     <div>
                       ${this.has_controls && component.has_action
                         ? this.control(component)
@@ -573,6 +603,7 @@ class ActionRenderer {
   render_binary_sensor() {
     if (!this.entity) return;
     const isOn = this.entity.state == stateOn;
+
     return html`<iconify-icon
       class="binary_sensor_${this.entity.state?.toLowerCase()}"
       icon="mdi:checkbox-${isOn ? "marked-circle" : "blank-circle-outline"}"

@@ -55,7 +55,7 @@ text_sensor:
         }
         else
         {
-          return {"Unset"};
+          return {"Pending"};
         }
       }
     entity_category: DIAGNOSTIC
@@ -87,7 +87,7 @@ text_sensor:
         }
         else
         {
-          return {"Unset"};
+          return {"Pending"};
         }
       }
     entity_category: DIAGNOSTIC
@@ -119,7 +119,7 @@ text_sensor:
         }
         else
         {
-          return {"Not read yet"};
+          return {"Pending"};
         }
       }
     entity_category: DIAGNOSTIC
@@ -141,13 +141,13 @@ text_sensor:
       {
         if(id(doorman_setup_mode).state == true)
         {
-          return {"Waiting for Setup Mode to finish"};
+          return {"Pending"};
         }
         else
         {
           if(id(indoor_station_serial_number).state == 0)
           {
-            return {"Run setup first"};
+            return {"Pending"};
           }
           else
           {
@@ -173,13 +173,13 @@ text_sensor:
       {
         if(id(doorman_setup_mode).state == true)
         {
-          return {"Waiting for Setup Mode to finish"};
+          return {"Pending"};
         }
         else
         {
           if(id(indoor_station_serial_number).state == 0)
           {
-            return {"Run setup first"};
+            return {"Pending"};
           }
           else
           {
