@@ -1,5 +1,16 @@
 # Interactive Setup Addon
 
+esphome:
+  on_boot:
+    then:
+      # Turn on setup mode if serial number is 0 on boot
+      - if:
+          condition:
+            - lambda: return id(indoor_station_serial_number).state == 0;
+            - switch.is_off: doorman_setup_mode
+          then:
+            - switch.turn_on: doorman_setup_mode
+
 switch:
   - platform: template
     id: doorman_setup_mode
