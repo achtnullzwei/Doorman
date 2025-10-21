@@ -333,7 +333,7 @@ export class EntityTable extends LitElement implements RestAction {
                           ></iconify-icon>`
                         : nothing}
                     </div>
-                    <div>${component.name}</div>
+                    <div>${component.name.replace('RTO: ','')}</div>
                     <div>
                       ${this.has_controls && component.has_action
                         ? this.control(component)
