@@ -306,7 +306,7 @@ switch:
     name: "Relay"
     icon: mdi:electric-switch
     restore_mode: RESTORE_DEFAULT_OFF
-    #disabled_by_default: true
+    disabled_by_default: true
     pin: ${relay_pin}
     web_server:
       sorting_group_id: sorting_group_controls
@@ -691,6 +691,7 @@ select:
     initial_option: "Standalone"
     restore_value: true
     entity_category: CONFIG
+    disabled_by_default: true
     web_server:
       sorting_group_id: sorting_group_settings_advanced
       sorting_weight: -75
