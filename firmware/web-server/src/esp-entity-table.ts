@@ -716,7 +716,7 @@ class ActionRenderer {
     if (!this.entity) return;
     return html`${this._actionButton(this.entity, "🔐", "lock", this.entity.state === "LOCKED")}
     ${this._actionButton(this.entity, "🔓", "unlock", this.entity.state === "UNLOCKED")}
-    ${this._actionButton(this.entity, "OPN", "open")} `;
+    ${this._actionButton(this.entity, "Open", "open")} `;
   }
 
   render_cover() {
