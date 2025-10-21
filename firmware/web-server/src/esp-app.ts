@@ -68,8 +68,8 @@ export default class EspApp extends LitElement {
   version: String = import.meta.env.PACKAGE_VERSION;
   config: Config = { ota: false, log: true, title: "", comment: "" };
 
-  firmwareVersion: string = "Unknown Version";
-  hardwareVersion: string = "Generic ";
+  firmwareVersion: string = "";
+  hardwareVersion: string = "Generic ESP";
 
   darkQuery: MediaQueryList = window.matchMedia("(prefers-color-scheme: dark)");
 
@@ -92,15 +92,21 @@ export default class EspApp extends LitElement {
   }
 
   async getFirmwareVersion() {
-    const response = await fetch(`${getBasePath()}/text_sensor/doorman_firmware_version`);
-    const data = await response.json();
-    this.firmwareVersion = data.value;
+    const firmwareRequest = await fetch(`${getBasePath()}/text_sensor/doorman_firmware_version`);
+    const firmwareValue = await firmwareRequest.json();
+    const esphomeRequest = await fetch(`${getBasePath()}/text_sensor/esphome_version`);
+    const esphomeValue = await esphomeRequest.json();
+
+    this.firmwareVersion = firmwareValue.value + '(ESPHome ' + esphomeValue.value + ')';
   }
 
   async getHardwareVersion() {
     const response = await fetch(`${getBasePath()}/text_sensor/doorman_hardware`);
     const data = await response.json();
-    this.hardwareVersion = data.value.replace('Doorman-S3', 'Revision ');
+    if(data.value != 'Generic')
+    {
+      this.hardwareVersion = data.value.replace('Doorman-S3', 'Revision ');
+    }
   }
 
   firstUpdated(changedProperties: PropertyValues) {
@@ -193,15 +199,15 @@ export default class EspApp extends LitElement {
   }
 
   renderNotSupportedHardware() {
-    if (this.hardwareVersion == 'Generic') {
+    if (this.hardwareVersion.toLowerCase().includes('generic')) {
       return html`<infobox class="warning">
         <iconify-icon icon="mdi:warning" height="24px"></iconify-icon>
-        <span>You may be using unsupported hardware.<br>For best results, use the official <a target="_blank" href="https://github.com/AzonInc/doorman/">Doorman-S3</a> board.</span>
+        <span>It looks like you might be using unsupported hardware.<br>For optimal performance, we recommend the official <a target="_blank" href="https://github.com/AzonInc/doorman/">Doorman-S3</a> board.</span>
       </infobox>`;
     } else {
       return html`<infobox>
         <iconify-icon icon="mdi:file-link" height="24px"></iconify-icon>
-        <span>See the <a target="_blank" href="https://doorman.azon.ai/reference/entities">documentation</a> to learn about each entity and how to configure it.</span>
+        <span>See the <a target="_blank" href="https://doorman.azon.ai/reference/entities">documentation</a> to learn more about each entity and how to configure them. You can also join our <a target="_blank" href="https://discord.gg/t2d34dvmBf">Discord server</a> for assistance and community support.</span>
       </infobox>`;
     }
   }
@@ -219,7 +225,7 @@ export default class EspApp extends LitElement {
 
   renderTitle() {
     return html`
-      <h1>${this.config.title || html`&nbsp;`}</h1>
+      <h1>${this.config.title || html`Doorman`}</h1>
       <div>
         ${[this.hardwareVersion, this.firmwareVersion, `started ${this.uptime()}`]
           .filter((n) => n)
