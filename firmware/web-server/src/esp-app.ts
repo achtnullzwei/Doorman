@@ -170,7 +170,7 @@ export default class EspApp extends LitElement {
   }
 
   renderOta() {
-    if (!this.config.ota) {
+    if (this.config.ota) {
       let basePath = getBasePath();
       return html`<div class="tab-header">OTA Update</div>
         <div class="tab-container">
