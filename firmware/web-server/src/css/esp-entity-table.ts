@@ -86,7 +86,7 @@ export default css`
   }
   .entity-row > :nth-child(2) {
     flex: 1 1 40%;
-    margin-left: 16px;
+    margin-left: 8px;
     margin-right: 8px;
     /*text-wrap: nowrap;
     overflow: hidden;
@@ -128,6 +128,34 @@ export default css`
   .climate-row > label{
     align-content: center;
     width: 100px;
+  }
+
+  .description-row {
+    background-color: rgb(146 105 254 / 20%);
+    border-radius: 0px 10px 0 0;
+    display: flex;
+    align-items: center;
+    flex-direction: row;
+    transition: all 0.3s ease-out 0s;
+    min-height: 40px;
+    position: relative;
+    box-shadow: 0px 2px 3px -2px #000000ab;
+  }
+  .description-row > :nth-child(1) {
+    flex: 0 0 40px;
+    color: #9269fe;
+    line-height: 40px;
+    text-align: center;
+  }
+  .description-row > :nth-child(2) {
+    flex: 1 1 40%;
+    margin-left: 8px;
+    margin-right: 8px;
+    min-width: 100px;
+    padding: 15px 0px;
+  }
+  .description-row iconify-icon {
+    vertical-align: middle;
   }
     
   input[type="color"]::-webkit-color-swatch-wrapper {

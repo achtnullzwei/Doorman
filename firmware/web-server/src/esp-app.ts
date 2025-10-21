@@ -69,6 +69,7 @@ export default class EspApp extends LitElement {
   config: Config = { ota: false, log: true, title: "", comment: "" };
 
   firmwareVersion: string = "Unknown Version";
+  hardwareVersion: string = "";
 
   darkQuery: MediaQueryList = window.matchMedia("(prefers-color-scheme: dark)");
 
@@ -94,6 +95,14 @@ export default class EspApp extends LitElement {
     const response = await fetch(`${getBasePath()}/text_sensor/doorman_firmware_version`);
     const data = await response.json();
     this.firmwareVersion = data.value;
+  }
+
+  async getHardwareVersion() {
+    const response = await fetch(`${getBasePath()}/text_sensor/doorman_hardware`);
+    const data = await response.json();
+    if(data.value != 'Generic') {
+      this.hardwareVersion = data.value.replace('Doorman-S3', '');
+    }
   }
 
   firstUpdated(changedProperties: PropertyValues) {
@@ -138,6 +147,7 @@ export default class EspApp extends LitElement {
     });
 
     this.getFirmwareVersion();
+    this.getHardwareVersion();
   }
 
   schemeDefault() {
@@ -160,23 +170,41 @@ export default class EspApp extends LitElement {
   }
 
   renderOta() {
-    if (this.config.ota) {
+    if (!this.config.ota) {
       let basePath = getBasePath();
       return html`<div class="tab-header">OTA Update</div>
-        <form
-          method="POST"
-          action="${basePath}/update"
-          enctype="multipart/form-data"
-          class="tab-container"
-        >
-          <input class="btn" type="file" name="update" accept="application/octet-stream" />
-          <input class="btn" type="submit" value="Update" />
-        </form>
-        
-        <infobox style="margin: 0;">
-          <iconify-icon icon="mdi:update" height="24px"></iconify-icon>
-          <span>Learn how to update your firmware <a target="_blank" href="https://dev.doorman.azon.ai/guide/firmware/installation">here</a>.</span>
-        </infobox>`;
+        <div class="tab-container">
+          <div class="description-row">
+            <div>
+              <iconify-icon icon="mdi:update" height="24px"></iconify-icon>
+            </div>
+            <div>
+              Learn more about Doorman firmware updates <a target="_blank" href="https://dev.doorman.azon.ai/guide/firmware/installation">here</a>.
+            </div>
+          </div>
+          <form
+            method="POST"
+            action="${basePath}/update"
+            enctype="multipart/form-data"
+          >
+            <input class="btn" type="file" name="update" accept="application/octet-stream" />
+            <input class="btn" type="submit" value="Update" />
+          </form>
+        </div>`;
+    }
+  }
+
+  renderNotSupportedHardware() {
+    if (this.hardwareVersion == '') {
+      return html`<infobox class="warning">
+        <iconify-icon icon="mdi:warning" height="24px"></iconify-icon>
+        <span><b>HARDWARE DETECTION FAILED</b><br>You are possibly using an unsupported ESP or unofficial Doorman Board.<br>The Doorman firmware works best with the <a target="_blank" href="https://github.com/AzonInc/doorman/">Doorman-S3</a>.</span>
+      </infobox>`;
+    } else {
+      return html`<infobox>
+        <iconify-icon icon="mdi:file-link" height="24px"></iconify-icon>
+        <span>See the <a target="_blank" href="https://dev.doorman.azon.ai/reference/entities">documentation</a> to understand each entity and how to configure them.</span>
+      </infobox>`;
     }
   }
 
@@ -195,7 +223,7 @@ export default class EspApp extends LitElement {
     return html`
       <h1>${this.config.title || html`&nbsp;`}</h1>
       <div>
-        ${[this.config.comment, this.firmwareVersion, `started ${this.uptime()}`]
+        ${[this.hardwareVersion, this.firmwareVersion, `started ${this.uptime()}`]
           .filter((n) => n)
           .map((e) => `${e}`)
           .join(" · ")}
@@ -221,10 +249,7 @@ export default class EspApp extends LitElement {
           ></iconify-icon>
         </div>
       </header>
-      <infobox>
-        <iconify-icon icon="mdi:file-document-box-search" height="24px"></iconify-icon>
-        <span>See the <a target="_blank" href="https://dev.doorman.azon.ai/reference/entities">documentation</a> to understand each entity and how to configure them.</span>
-      </infobox>
+      ${this.renderNotSupportedHardware()}
       <main class="flex-grid-half" @toggle-layout="${this._handleLayoutToggle}">
         <section
           id="col_entities"

@@ -110,6 +110,7 @@ export class EspSwitch extends LitElement {
           border-radius: 15px;
           transition: background 0.3s ease;
           vertical-align: middle;
+          margin-top: -6px;
         }
 
         .lever:before,

@@ -1,6 +1,6 @@
 /* First, declare your dark mode colors */
 :root {
-  --c-bg: #fff;
+  --c-bg: #1b1b1f;
   --c-text: #000;
   --c-primary: #26a69a;
   --color:0, 100%;
@@ -25,7 +25,7 @@
 }
 @media (prefers-color-scheme: dark) {
   :root {
-    --c-bg: #1c1c1c;
+    --c-bg: #1b1b1f;
     --c-text: #fff;
   }
 }
@@ -65,7 +65,7 @@ html[color-scheme="dark"] img {
 }
 
 html {
-    color-scheme: light dark;
+    color-scheme: dark;
     font-family: ui-monospace, system-ui, "Helvetica", "Arial Narrow", "Roboto", "Oxygen", "Ubuntu", sans-serif;
 }
 

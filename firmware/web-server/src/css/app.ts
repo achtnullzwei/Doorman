@@ -66,9 +66,24 @@ export default css`
     align-items: center;
     gap: 15px;
   }
+  infobox.danger {
+    background-color: rgba(244, 63, 94, .16) !important;
+  }
+  infobox.warning {
+    background-color: rgba(234, 179, 8, .16) !important;
+  }
+
   infobox iconify-icon {
     color: #9269fe;
   }
+  infobox.danger iconify-icon {
+    color: #f14158 !important;
+  }
+  infobox.warning iconify-icon {
+    color: #da8b17 !important;
+  }
+
+
   a {
     color: #9269fe;
   }
@@ -100,12 +115,35 @@ export default css`
     display: flex;
     justify-content: space-between;
     background-color: rgba(127, 127, 127, 0.05);
-    border-radius: 12px;
-    border-width: 1px;
-    border-style: solid;
-    border-color: rgba(127, 127, 127, 0.12);
   }
   form .btn {
     margin-right: 6px;
+  }
+  .description-row {
+    background-color: rgb(146 105 254 / 20%);
+    border-radius: 0px 10px 0 0;
+    display: flex;
+    align-items: center;
+    flex-direction: row;
+    transition: all 0.3s ease-out 0s;
+    min-height: 40px;
+    position: relative;
+    box-shadow: 0px 2px 3px -2px #000000ab;
+  }
+  .description-row > :nth-child(1) {
+    flex: 0 0 40px;
+    color: #9269fe;
+    line-height: 40px;
+    text-align: center;
+  }
+  .description-row > :nth-child(2) {
+    flex: 1 1 40%;
+    margin-left: 8px;
+    margin-right: 8px;
+    min-width: 100px;
+    padding: 15px 0px;
+  }
+  .description-row iconify-icon {
+    vertical-align: middle;
   }
 `;

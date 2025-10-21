@@ -46,6 +46,8 @@ export class ChartElement extends LitElement {
         datasets: [
           {
             data: this.chartdata,
+            borderColor: '#9269fe',
+            backgroundColor: '#9269fe',
             borderWidth: 1,
             tension: 0.3,
           },

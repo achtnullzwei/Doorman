@@ -294,6 +294,30 @@ export class EntityTable extends LitElement implements RestAction {
               EntityTable.ENTITY_UNDEFINED}
             </div>
             <div class="tab-container">
+              ${group.name.toLowerCase().includes('setup') ? html`<div class="description-row">
+                <div>
+                  <iconify-icon icon="mdi:file-link" height="24px"></iconify-icon>
+                </div>
+                <div>
+                  Learn more about the interactive setup process <a target="_blank" href="https://dev.doorman.azon.ai/guide/getting-started#interactive-setup">in the guide</a>.
+                </div>
+              </div>` : nothing}
+              ${group.name.toLowerCase().includes('homekit') ? html`<div class="description-row">
+                <div>
+                  <iconify-icon icon="mdi:file-link" height="24px"></iconify-icon>
+                </div>
+                <div>
+                  Learn more about integrating with Apple HomeKit <a target="_blank" href="https://dev.doorman.azon.ai/guide/firmware/homekit">in the guide</a>.
+                </div>
+              </div>` : nothing}
+              ${group.name.toLowerCase().includes('mqtt') ? html`<div class="description-row">
+                <div>
+                  <iconify-icon icon="mdi:file-link" height="24px"></iconify-icon>
+                </div>
+                <div>
+                  Learn more about integrating with MQTT <a target="_blank" href="https://dev.doorman.azon.ai/guide/firmware/mqtt">in the guide</a>.
+                </div>
+              </div>` : nothing}
               ${group.value.map(
                 (component, idx) => html`
                   <div
