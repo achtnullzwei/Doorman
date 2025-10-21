@@ -104,7 +104,7 @@ export default css`
     display: flex;
   }
   .connected {
-    color: rgba(0, 157, 16, 0.75);
+    color: #9269fe;
   }
   esp-logo {
     float: left;

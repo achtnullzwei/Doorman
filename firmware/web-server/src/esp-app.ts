@@ -74,7 +74,7 @@ export default class EspApp extends LitElement {
 
   darkQuery: MediaQueryList = window.matchMedia("(prefers-color-scheme: dark)");
 
-  frames = [{}, { color: "rgba(0, 196, 21, 0.75)" }, {}];
+  frames = [{}, { color: "#9269feb5" }, {}];
 
   constructor() {
     super();
@@ -251,7 +251,7 @@ export default class EspApp extends LitElement {
         </div>
         <div class="status">
           <iconify-icon
-            .icon="${!!this.connected ? "mdi:circle" : "mdi:circle-off-outline"}"
+            .icon="${!!this.connected ? "mdi:wifi" : "mdi:wifi-off"}"
             .title="${this.uptime()}"
             class="top-icon ${!!this.connected ? "connected" : ""}"
             id="beat"
