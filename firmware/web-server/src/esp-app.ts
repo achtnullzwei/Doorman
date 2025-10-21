@@ -179,7 +179,7 @@ export default class EspApp extends LitElement {
               <iconify-icon icon="mdi:update" height="24px"></iconify-icon>
             </div>
             <div>
-              Learn more about Doorman firmware updates <a target="_blank" href="https://doorman.azon.ai/guide/firmware/installation">here</a>.
+              Learn more about Doorman firmware updates <a target="_blank" href="https://doorman.azon.ai/guide/firmware/installation">in the guide</a>.
             </div>
           </div>
           <form
@@ -198,12 +198,12 @@ export default class EspApp extends LitElement {
     if (this.hardwareVersion == '') {
       return html`<infobox class="warning">
         <iconify-icon icon="mdi:warning" height="24px"></iconify-icon>
-        <span><b>HARDWARE DETECTION FAILED</b><br>You are possibly using an unsupported ESP or unofficial Doorman Board.<br>The Doorman firmware works best with the <a target="_blank" href="https://github.com/AzonInc/doorman/">Doorman-S3</a>.</span>
+        <span>You may be using unsupported hardware.<br>For best results, use the official <a target="_blank" href="https://github.com/AzonInc/doorman/">Doorman-S3</a> board.</span>
       </infobox>`;
     } else {
       return html`<infobox>
         <iconify-icon icon="mdi:file-link" height="24px"></iconify-icon>
-        <span>See the <a target="_blank" href="https://doorman.azon.ai/reference/entities">documentation</a> to understand each entity and how to configure them.</span>
+        <span>See the <a target="_blank" href="https://doorman.azon.ai/reference/entities">documentation</a> to learn about each entity and how to configure it.</span>
       </infobox>`;
     }
   }
