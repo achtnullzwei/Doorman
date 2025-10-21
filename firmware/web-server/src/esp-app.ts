@@ -69,7 +69,7 @@ export default class EspApp extends LitElement {
   config: Config = { ota: false, log: true, title: "", comment: "" };
 
   firmwareVersion: string = "Unknown Version";
-  hardwareVersion: string = "";
+  hardwareVersion: string = "Generic ";
 
   darkQuery: MediaQueryList = window.matchMedia("(prefers-color-scheme: dark)");
 
@@ -100,9 +100,7 @@ export default class EspApp extends LitElement {
   async getHardwareVersion() {
     const response = await fetch(`${getBasePath()}/text_sensor/doorman_hardware`);
     const data = await response.json();
-    if(data.value != 'Generic') {
-      this.hardwareVersion = data.value.replace('Doorman-S3', '');
-    }
+    this.hardwareVersion = data.value.replace('Doorman-S3', 'Revision ');
   }
 
   firstUpdated(changedProperties: PropertyValues) {
@@ -195,7 +193,7 @@ export default class EspApp extends LitElement {
   }
 
   renderNotSupportedHardware() {
-    if (this.hardwareVersion == '') {
+    if (this.hardwareVersion == 'Generic') {
       return html`<infobox class="warning">
         <iconify-icon icon="mdi:warning" height="24px"></iconify-icon>
         <span>You may be using unsupported hardware.<br>For best results, use the official <a target="_blank" href="https://github.com/AzonInc/doorman/">Doorman-S3</a> board.</span>
