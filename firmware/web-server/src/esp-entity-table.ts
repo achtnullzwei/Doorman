@@ -315,7 +315,7 @@ export class EntityTable extends LitElement implements RestAction {
             <div class="tab-container">
               ${this.show_setup && group.name.toLowerCase().includes('setup') ? html`<div class="description-row">
                 <div>
-                  <iconify-icon icon="mdi:step-forward" height="24px"></iconify-icon>
+                  <iconify-icon icon="mdi:clipboard-list" height="24px"></iconify-icon>
                 </div>
                 <div>
                   The Setup Mode is currently active, please follow the steps below.<br>
