@@ -36,7 +36,7 @@ logger:
   level: ${log_level}
 
 web_server:
-  js_url: "https://dev.doorman.azon.ai/firmware/esphome-webserver/www.js"
+  js_url: "https://doorman.azon.ai/firmware/esphome-webserver/www.js"
   version: 3
   sorting_groups:
     - id: sorting_group_controls
@@ -55,21 +55,9 @@ web_server:
       name: "Settings - Advanced"
       sorting_weight: -90
 
-    - id: sorting_group_rto_settings
-      name: "Settings - Ring To Open"
-      sorting_weight: -80
-
     - id: sorting_group_indoor_station_settings
       name: "Settings - TC:BUS Indoor Station"
       sorting_weight: -70
-
-    - id: sorting_group_nuki_settings
-      name: "Settings - Nuki Lock"
-      sorting_weight: -61
-
-    - id: sorting_group_nuki_bridge_settings
-      name: "Settings - Nuki Bridge"
-      sorting_weight: -60
 
     - id: sorting_group_system
       name: "Settings - System"
@@ -86,10 +74,6 @@ web_server:
     - id: sorting_group_updates
       name: "Firmware Updates"
       sorting_weight: -20
-
-    - id: sorting_group_nuki
-      name: "Information - Nuki Lock"
-      sorting_weight: -10
 
     - id: sorting_group_information
       name: "Information - System"

@@ -179,7 +179,7 @@ export default class EspApp extends LitElement {
               <iconify-icon icon="mdi:update" height="24px"></iconify-icon>
             </div>
             <div>
-              Learn more about Doorman firmware updates <a target="_blank" href="https://dev.doorman.azon.ai/guide/firmware/installation">here</a>.
+              Learn more about Doorman firmware updates <a target="_blank" href="https://doorman.azon.ai/guide/firmware/installation">here</a>.
             </div>
           </div>
           <form
@@ -203,7 +203,7 @@ export default class EspApp extends LitElement {
     } else {
       return html`<infobox>
         <iconify-icon icon="mdi:file-link" height="24px"></iconify-icon>
-        <span>See the <a target="_blank" href="https://dev.doorman.azon.ai/reference/entities">documentation</a> to understand each entity and how to configure them.</span>
+        <span>See the <a target="_blank" href="https://doorman.azon.ai/reference/entities">documentation</a> to understand each entity and how to configure them.</span>
       </infobox>`;
     }
   }

@@ -299,7 +299,7 @@ export class EntityTable extends LitElement implements RestAction {
                   <iconify-icon icon="mdi:file-link" height="24px"></iconify-icon>
                 </div>
                 <div>
-                  Learn more about the interactive setup process <a target="_blank" href="https://dev.doorman.azon.ai/guide/getting-started#interactive-setup">in the guide</a>.
+                  Learn more about the interactive setup process <a target="_blank" href="https://doorman.azon.ai/guide/getting-started#interactive-setup">in the guide</a>.
                 </div>
               </div>` : nothing}
               ${group.name.toLowerCase().includes('homekit') ? html`<div class="description-row">
@@ -307,7 +307,7 @@ export class EntityTable extends LitElement implements RestAction {
                   <iconify-icon icon="mdi:file-link" height="24px"></iconify-icon>
                 </div>
                 <div>
-                  Learn more about integrating with Apple HomeKit <a target="_blank" href="https://dev.doorman.azon.ai/guide/firmware/homekit">in the guide</a>.
+                  Learn more about integrating with Apple HomeKit <a target="_blank" href="https://doorman.azon.ai/guide/firmware/homekit">in the guide</a>.
                 </div>
               </div>` : nothing}
               ${group.name.toLowerCase().includes('mqtt') ? html`<div class="description-row">
@@ -315,7 +315,7 @@ export class EntityTable extends LitElement implements RestAction {
                   <iconify-icon icon="mdi:file-link" height="24px"></iconify-icon>
                 </div>
                 <div>
-                  Learn more about integrating with MQTT <a target="_blank" href="https://dev.doorman.azon.ai/guide/firmware/mqtt">in the guide</a>.
+                  Learn more about integrating with MQTT <a target="_blank" href="https://doorman.azon.ai/guide/firmware/mqtt">in the guide</a>.
                 </div>
               </div>` : nothing}
               ${group.value.map(

@@ -84,7 +84,7 @@ Reads the memory of the intercom phone with the specified serial number.
 
 ## Numbers
 
-### Serial Number <Badge type="tip" text="indoor_station_serial_number" /> <Badge type="info" text="Disabled by default" />
+### Serial Number <Badge type="tip" text="indoor_station_serial_number" />
 Sets the indoor station serial number for the telegram builder/parser.
 
 ### Entrance Station Address <Badge type="tip" text="entrance_door_station_address" /> <Badge type="info" text="Disabled by default" />

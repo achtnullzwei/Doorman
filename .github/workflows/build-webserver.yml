@@ -23,6 +23,12 @@ jobs:
         run: npm install
         working-directory: firmware/web-server
 
+      - name: Use dev branch resources
+        if: startsWith(github.ref_name, 'dev')
+        working-directory: firmware/web-server
+        run: |
+          find . -type f -exec sed -i "s/doorman.azon.ai/dev.doorman.azon.ai/g" {} +
+
       - name: Build Webserver Bundle
         working-directory: firmware/web-server
         run: npm run xbuild

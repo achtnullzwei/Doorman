@@ -14,6 +14,20 @@ external_components:
   - source: github://uriyacovy/ESPHome_nuki_lock@fix/esphome-2025-10
     refresh: 60s
 
+web_server:
+  sorting_groups:
+    - id: sorting_group_nuki_settings
+      name: "Settings - Nuki Lock"
+      sorting_weight: -61
+
+    - id: sorting_group_nuki_bridge_settings
+      name: "Settings - Nuki Bridge"
+      sorting_weight: -60
+
+    - id: sorting_group_nuki
+      name: "Information - Nuki Lock"
+      sorting_weight: -10
+      
 # Pairing Mode
 event:
   - id: !extend doorman_boot_button_event

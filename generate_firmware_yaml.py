@@ -34,6 +34,8 @@ def get_packages(host, api_variant, firmware, branch):
         ('rgb_status_led_effects', '!include ../components/rgb-status-led.effects.yaml', True),
 
         ('base', '!include ../base.yaml', True),
+        ('webserver_dev', '!include ../components/web-server.dev.yaml', branch == 'dev'),
+        
         ('bluedroid_ble', '!include ../components/bluedroid-ble.yaml', is_esp32 and firmware != 'nuki-bridge'),
         
         ('ota_update_esphome', '!include ../components/ota-update.esphome.yaml', True),
