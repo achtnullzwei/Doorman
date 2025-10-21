@@ -48,7 +48,7 @@ web_server:
       sorting_weight: -99
 
     - id: sorting_group_settings
-      name: "Settings - General"
+      name: "Settings - TC:BUS General"
       sorting_weight: -91
 
     - id: sorting_group_settings_advanced
@@ -73,7 +73,7 @@ web_server:
 
     - id: sorting_group_updates
       name: "Firmware Updates"
-      sorting_weight: -20
+      sorting_weight: 0
 
     - id: sorting_group_information
       name: "Information - System"
@@ -142,8 +142,8 @@ number:
     disabled_by_default: true
     entity_category: CONFIG
     web_server:
-      sorting_group_id: sorting_group_settings_advanced
-      sorting_weight: -39
+      sorting_group_id: sorting_group_system
+      sorting_weight: -8
 
   - platform: tc_bus_device
     tc_bus_device_id: tc_bus_indoor_station
@@ -305,8 +305,8 @@ switch:
     disabled_by_default: true
     optimistic: true
     web_server:
-      sorting_group_id: sorting_group_settings_advanced
-      sorting_weight: -40
+      sorting_group_id: sorting_group_system
+      sorting_weight: -7
 
 
 button:

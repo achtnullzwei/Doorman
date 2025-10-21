@@ -69,7 +69,8 @@ export default class EspApp extends LitElement {
   config: Config = { ota: false, log: true, title: "", comment: "" };
 
   firmwareVersion: string = "";
-  hardwareVersion: string = "Generic ESP";
+  esphomeVersion: string = "";
+  hardwareVersion: string = "";
 
   darkQuery: MediaQueryList = window.matchMedia("(prefers-color-scheme: dark)");
 
@@ -94,10 +95,12 @@ export default class EspApp extends LitElement {
   async getFirmwareVersion() {
     const firmwareRequest = await fetch(`${getBasePath()}/text_sensor/doorman_firmware_version`);
     const firmwareValue = await firmwareRequest.json();
+
     const esphomeRequest = await fetch(`${getBasePath()}/text_sensor/esphome_version`);
     const esphomeValue = await esphomeRequest.json();
 
-    this.firmwareVersion = firmwareValue.value + ' (ESPHome ' + esphomeValue.value + ')';
+    this.firmwareVersion = firmwareValue.value;
+    this.esphomeVersion = 'ESPHome ' + esphomeValue.value;
   }
 
   async getHardwareVersion() {
@@ -106,6 +109,8 @@ export default class EspApp extends LitElement {
     if(data.value != 'Generic')
     {
       this.hardwareVersion = data.value.replace('Doorman-S3', 'Revision ');
+    } else {
+      this.hardwareVersion = 'Generic ESP';
     }
   }
 
@@ -227,7 +232,7 @@ export default class EspApp extends LitElement {
     return html`
       <h1>${this.config.title || html`Doorman`}</h1>
       <div>
-        ${[this.hardwareVersion, this.firmwareVersion, `started ${this.uptime()}`]
+        ${[this.hardwareVersion, this.firmwareVersion, this.esphomeVersion, `started ${this.uptime()}`]
           .filter((n) => n)
           .map((e) => `${e}`)
           .join(" · ")}
