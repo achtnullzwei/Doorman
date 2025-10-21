@@ -255,8 +255,14 @@ Du musst den Modus nicht manuell aktivieren; er wird bei jedem Neustart automati
 Öffne die Einstellungen entweder über die Weboberfläche deines Doormans oder besuche die [ESPHome Integrationsseite](https://my.home-assistant.io/redirect/integration/?domain=esphome) und wähle das Doorman S3-Gerät aus.
 
 ### 2. Aktiviere den Setup-Modus
-Geh zum Bereich `Konfiguration` und schalte den `Setup-Modus` ein, um mit der interaktiven Einrichtung zu beginnen.  
+Geh zum Bereich `Konfiguration` (Home Assistant) bzw. `Setup` (Doorman-Weboberfläche) und schalte den `Setup-Modus` ein, um mit der interaktiven Einrichtung zu beginnen.  
 Sobald der Setup-Prozess beginnt, wird die RGB-Status-LED grün-türkis pulsieren.
+
+::: tip
+Geh' auf die Doorman-Weboberfläche zu und navigiere zum Abschnitt `Setup`, um den aktuellen Einrichtungsstatus zu sehen.
+
+Folge den dort angezeigten Anweisungen, um die Einrichtung abzuschließen.
+:::
 
 ::: warning BEVOR DU WEITERMACHST
 Deine Innenstation **muss angeschlossen sein**, damit die Einrichtung abgeschlossen werden kann.

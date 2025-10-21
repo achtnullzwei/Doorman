@@ -252,11 +252,17 @@ You don't need to manually activate this mode; it will start automatically at ea
 :::
 
 ### 1. Access the Settings
-Open the settings either through your Doorman's Webinterface or visit the [ESPHome Integration page](https://my.home-assistant.io/redirect/integration/?domain=esphome) and select the Doorman S3 device.
+Open the settings either through your Doorman's web interface or visit the [ESPHome Integration page](https://my.home-assistant.io/redirect/integration/?domain=esphome) and select the Doorman S3 device.
 
 ### 2. Activate Setup Mode
-Go to the `Configuration` section and enable `Setup Mode` to begin the interactive setup.  
+Go to the `Configuration` (Home Assistant) or `Setup` (Doorman web interface) section and enable `Setup Mode` to begin the interactive setup.  
 Once the setup process begins, the RGB status LED will pulse green-turquoise.
+
+::: tip
+Access the Doorman web interface and navigate to the `Setup` section to see your current setup state.
+
+Follow the instructions there to complete the setup.
+:::
 
 ::: warning BEFORE YOU PROCEED
 The indoor station **must be connected**, to complete the setup process.
