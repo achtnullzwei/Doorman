@@ -69,7 +69,7 @@ select:
       name: "Ringtone: Second Entrance Door Call"
       icon: "mdi:music"
       entity_category: CONFIG
-      #disabled_by_default: true
+      disabled_by_default: true
       web_server:
         sorting_group_id: sorting_group_indoor_station_settings
         sorting_weight: -79
@@ -91,7 +91,7 @@ select:
       name: "Ringtone: Internal Call"
       icon: "mdi:music"
       entity_category: CONFIG
-      #disabled_by_default: true
+      disabled_by_default: true
       web_server:
         sorting_group_id: sorting_group_indoor_station_settings
         sorting_weight: -77
@@ -127,7 +127,7 @@ number:
       name: "Volume: Handset Internal Call"
       icon: "mdi:volume-high"
       entity_category: CONFIG
-      #disabled_by_default: true
+      disabled_by_default: true
       web_server:
         sorting_group_id: sorting_group_indoor_station_settings
         sorting_weight: -68

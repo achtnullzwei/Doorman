@@ -99,7 +99,7 @@ Sets the intercom phone ringtone volume.
 ### Volume: Handset Door Call <Badge type="tip" text="indoor_station_volume_handset_door_call" />
 Sets the intercom phone handset door call volume.
 
-### Volume: Handset Internal Call <Badge type="tip" text="indoor_station_volume_handset_internal_call" />
+### Volume: Handset Internal Call <Badge type="tip" text="indoor_station_volume_handset_internal_call" /> <Badge type="info" text="Disabled by default" />
 Sets the intercom phone handset internal call volume.
 
 
@@ -222,7 +222,7 @@ Sets the intercom phone ringtone for entrance door calls.
 ##### Options:
 - **Ringtone 1 ... 13**
 
-### Ringtone: Second Entrance Door Call <Badge type="tip" text="indoor_station_ringtone_second_entrance_door_call" />
+### Ringtone: Second Entrance Door Call <Badge type="tip" text="indoor_station_ringtone_second_entrance_door_call" /> <Badge type="info" text="Disabled by default" />
 Sets the intercom phone ringtone for second entrance door calls.
 
 ##### Options:
@@ -234,7 +234,7 @@ Sets the intercom phone ringtone for floor calls.
 ##### Options:
 - **Ringtone 1 ... 13**
 
-### Ringtone: Internal Call <Badge type="tip" text="indoor_station_ringtone_internal_call" />
+### Ringtone: Internal Call <Badge type="tip" text="indoor_station_ringtone_internal_call" /> <Badge type="info" text="Disabled by default" />
 Sets the intercom phone ringtone for internal calls.
 
 ##### Options:
@@ -261,7 +261,7 @@ Triggers each time a doorbell pattern is detected at the entrance. Learn more ab
 - **triple**
 - **quadruple**
 
-### Second Entrance Doorbell <Badge type="tip" text="second_entrance_doorbell_pattern" />
+### Second Entrance Doorbell <Badge type="tip" text="second_entrance_doorbell_pattern" /> <Badge type="info" text="Disabled by default" />
 Triggers each time a doorbell pattern is detected at the second entrance. Learn more about pattern events [here](../guide/features/pattern-events).
 
 ##### Event Types
@@ -279,7 +279,7 @@ Triggers each time a doorbell pattern is detected at the apartment. Learn more a
 - **triple**
 - **quadruple**
 
-### Phone pick up <Badge type="tip" text="phone_pick_up_pattern" />
+### Phone pick up <Badge type="tip" text="phone_pick_up_pattern" /> <Badge type="info" text="Disabled by default" />
 Triggers each time a phone pick up pattern is detected. Learn more about pattern events [here](../guide/features/pattern-events).
 
 ##### Event Types

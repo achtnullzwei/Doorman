@@ -261,7 +261,7 @@ Triggers each time a doorbell pattern is detected at the entrance. Learn more ab
 - **triple**
 - **quadruple**
 
-### Second Entrance Doorbell <Badge type="tip" text="second_entrance_doorbell_pattern" />
+### Second Entrance Doorbell <Badge type="tip" text="second_entrance_doorbell_pattern" /> <Badge type="info" text="Disabled by default" />
 Triggers each time a doorbell pattern is detected at the second entrance. Learn more about pattern events [here](../guide/features/pattern-events).
 
 ##### Event Types
@@ -279,7 +279,7 @@ Triggers each time a doorbell pattern is detected at the apartment. Learn more a
 - **triple**
 - **quadruple**
 
-### Phone pick up <Badge type="tip" text="phone_pick_up_pattern" />
+### Phone pick up <Badge type="tip" text="phone_pick_up_pattern" /> <Badge type="info" text="Disabled by default" />
 Triggers each time a phone pick up pattern is detected. Learn more about pattern events [here](../guide/features/pattern-events).
 
 ##### Event Types
