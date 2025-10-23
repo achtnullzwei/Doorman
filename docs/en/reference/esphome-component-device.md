@@ -375,7 +375,6 @@ Below is a list of available settings for specific indoor station models:
 | TCS TC2000                   | `ringtone_floor_call`, `ringtone_entrance_door_call`, `ringtone_internal_call` |
 | TCS TC20P                    | `ringtone_floor_call`, `ringtone_entrance_door_call`, `ringtone_second_entrance_door_call`, `ringtone_internal_call` |
 | TCS TC20F                    | `ringtone_floor_call`, `ringtone_entrance_door_call`, `ringtone_second_entrance_door_call`, `ringtone_internal_call` |
-| TCS ISH3022                  | None |
 | TCS IMM1000 / Koch TCH30     | `ringtone_floor_call`, `ringtone_entrance_door_call`, `ringtone_second_entrance_door_call`, `ringtone_internal_call`, `volume_ringtone`, `volume_handset_door_call`, `as_address_divider` |
 | TCS IMM1100 / Koch TCHE30    | `ringtone_floor_call`, `ringtone_entrance_door_call`, `ringtone_second_entrance_door_call`, `ringtone_internal_call`, `volume_ringtone`, `volume_handset_door_call`, `as_address_divider` |
 | TCS IMM1300 / Koch VTCH30    | `ringtone_floor_call`, `ringtone_entrance_door_call`, `ringtone_second_entrance_door_call`, `ringtone_internal_call`, `volume_ringtone`, `volume_handset_door_call`, `as_address_divider` |
@@ -394,6 +393,7 @@ Below is a list of available settings for specific indoor station models:
 | TCS CAIXXXX / Koch CAIXXXX   | `ringtone_floor_call`, `ringtone_entrance_door_call`, `ringtone_second_entrance_door_call`, `ringtone_internal_call`, `volume_ringtone`, `as_address_divider` |
 | TCS CAI2000 / Koch Carus     | `ringtone_floor_call`, `ringtone_entrance_door_call`, `ringtone_second_entrance_door_call`, `ringtone_internal_call`, `volume_ringtone`, `as_address_divider`, `vas_address_divider` |
 | TCS ISW42X0                  | `ringtone_floor_call`, `ringtone_entrance_door_call`, `ringtone_second_entrance_door_call`, `ringtone_internal_call`, `volume_ringtone`, `as_address_divider` |
+| TCS ISH3022                  | None |
 | TCS IVW9010 | None |
 | TCS IVW9011 / Koch VTP10 | None |
 | TCS IVW9110 | None |
@@ -405,12 +405,12 @@ Below is a list of available settings for specific outdoor station models:
 
 | Model     | Available settings |
 |-----------|--------------------|
-| TCS PAK   | `as_address`, `as_address_lock`, `door_opener_duration`, `talking_requires_door_readiness`, `door_readiness_duration`, `calling_duration` |
-| TCS PUK   | `as_address`, `as_address_lock`, `door_opener_duration`, `talking_requires_door_readiness`, `door_readiness_duration`, `calling_duration` |
-| TCS PxS   | `as_address`, `as_address_lock`, `door_opener_duration`, `talking_requires_door_readiness`, `door_readiness_duration`, `calling_duration` |
-| TCS TCU2  | `as_address`, `as_address_lock`, `door_opener_duration`, `talking_requires_door_readiness`, `door_readiness_duration`, `calling_duration` |
-| TCS TCU3  | `as_address`, `as_address_lock`, `door_opener_duration`, `talking_requires_door_readiness`, `door_readiness_duration`, `calling_duration` |
-| TCS TCU4  | `as_address`, `as_address_lock`, `door_opener_duration`, `talking_requires_door_readiness`, `door_readiness_duration`, `calling_duration` |
+| TCS PAK   | `as_address`, `as_address_lock`, `door_opener_duration`, `door_readiness_duration`, `calling_duration`, `talking_requires_door_readiness` |
+| TCS PUK   | `as_address`, `as_address_lock`, `door_opener_duration`, `door_readiness_duration`, `calling_duration`, `talking_requires_door_readiness` |
+| TCS PxS   | `as_address`, `as_address_lock`, `door_opener_duration`, `door_readiness_duration`, `calling_duration`, `talking_requires_door_readiness` |
+| TCS TCU2  | `as_address`, `as_address_lock`, `door_opener_duration`, `door_readiness_duration`, `calling_duration`, `talking_requires_door_readiness` |
+| TCS TCU3  | `as_address`, `as_address_lock`, `door_opener_duration`, `door_readiness_duration`, `calling_duration`, `talking_requires_door_readiness` |
+| TCS TCU4  | `as_address`, `as_address_lock`, `door_opener_duration`, `door_readiness_duration`, `calling_duration`, `talking_requires_door_readiness` |
 
 ### Controller
 Below is a list of available settings for specific controller models:

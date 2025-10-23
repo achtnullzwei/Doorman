@@ -8,7 +8,7 @@ This release **will impact your current setup** and **requires** you to go throu
 
 ### 🚀 What's New?
 - **Expanded Support for Model-Specific Settings**  
-   Settings compatibility has been added for TCS TASTA / Koch TC60 (`IVW5xxx`, `ISW5xxx`) and Ecoos (`IVW22xx`) models.
+   Settings compatibility has been added for most indoor station models and also for some outdoor station models.
 
 - **Added Support for Acknowledgment Messages**  
    Acknowledgment messages are now properly handled, following additional investigation into previously unsupported cases.
@@ -58,7 +58,7 @@ This release **will impact your current setup** and **requires** you to go throu
   A new quadruple-press pattern has been added, with slightly refined timing to improve reliability and avoid overlap with other patterns.
 
 - **Extended Model Detection Support**  
-   Detection capabilities now include additional older models like the `TTC-xx` and `TTS-xx`.
+   Detection capabilities now include additional older models like the `TTC-xx` and `TTS-xx` and common outdoor stations.
 
 - **Enhanced Reliability with Remote Peripheral**  
    Data reading is now based on RMT, providing more reliability compared to the previous interrupt-based method.
