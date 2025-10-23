@@ -422,11 +422,37 @@ namespace esphome
                 ESP_LOGD(TAG, "Address: %i", get_setting(SETTING_AS_ADDRESS));
                 ESP_LOGD(TAG, "Address Lock: %s", YESNO(get_setting(SETTING_AS_ADDRESS_LOCK)));
 
-                ESP_LOGD(TAG, "Door Opener Duration: %i", get_setting(SETTING_DOOR_OPENER_DURATION));
-                ESP_LOGD(TAG, "Calling Duration: %i", get_setting(SETTING_CALLING_DURATION));
-                ESP_LOGD(TAG, "Door Readiness Duration: %i", get_setting(SETTING_DOOR_READINESS_DURATION));
-
                 ESP_LOGD(TAG, "Talking requires door readiness: %s", YESNO(get_setting(SETTING_TALKING_REQUIRES_DOOR_READINESS)));
+                
+                uint8_t door_opener_dur = get_setting(SETTING_DOOR_OPENER_DURATION);
+                if(door_opener_dur == 0)
+                {
+                    ESP_LOGD(TAG, "Door Opener Duration: %s Unlimited");
+                }
+                else
+                {
+                    ESP_LOGD(TAG, "Door Opener Duration: %i sec.", door_opener_dur * 8);
+                }
+
+                uint8_t calling_dur = get_setting(SETTING_CALLING_DURATION);
+                if(calling_dur == 0)
+                {
+                    ESP_LOGD(TAG, "Calling Duration: Unlimited");
+                }
+                else
+                {
+                    ESP_LOGD(TAG, "Calling Duration: %i sec.", calling_dur * 8);
+                }
+
+                uint8_t door_readiness_dur = get_setting(SETTING_DOOR_READINESS_DURATION);
+                if(door_readiness_dur == 0)
+                {
+                    ESP_LOGD(TAG, "Door Readiness Duration: Unlimited");
+                }
+                else
+                {
+                    ESP_LOGD(TAG, "Door Readiness Duration: %i sec.", door_readiness_dur * 8);
+                }
             }
             else
             {
@@ -697,7 +723,8 @@ namespace esphome
             {
                 uint8_t shift = cellData.start_bit - cellData.length + 1;
                 uint8_t mask = (1 << cellData.length) - 1;
-                return (memory_buffer_[cellData.index] >> shift) & mask;
+                uint8_t value = (memory_buffer_[cellData.index] >> shift) & mask;
+                return value;
             }
             else
             {
