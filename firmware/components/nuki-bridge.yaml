@@ -11,7 +11,7 @@ esphome:
       
 # Add External Components
 external_components:
-  - source: github://uriyacovy/ESPHome_nuki_lock@fix/esphome-2025-10
+  - source: github://uriyacovy/ESPHome_nuki_lock@fix/esphome-2025-11
     refresh: 60s
 
 web_server:
@@ -27,7 +27,7 @@ web_server:
     - id: sorting_group_nuki
       name: "Information - Nuki Lock"
       sorting_weight: -10
-      
+
 # Pairing Mode
 event:
   - id: !extend doorman_boot_button_event
