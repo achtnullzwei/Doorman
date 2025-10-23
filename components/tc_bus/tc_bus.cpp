@@ -120,12 +120,6 @@ namespace esphome
 
         void TCBusComponent::received_telegram(TelegramData telegram_data, bool received)
         {
-            // Call remote listeners
-            for (auto *listener : this->remote_listeners_)
-            {
-                listener->on_receive(telegram_data, received);
-            }
-
             if (received)
             {
                 // From receiver
@@ -253,6 +247,12 @@ namespace esphome
                 mac[2] = telegram_data.payload & 0xFF;
 
                 ESP_LOGD(TAG, "Discovered Doorman with MAC: %02X:%02X:%02X", mac[0], mac[1], mac[2]);
+            }
+
+            // Call remote listeners
+            for (auto *listener : this->remote_listeners_)
+            {
+                listener->on_receive(telegram_data, received);
             }
 
             #ifdef USE_LOCK

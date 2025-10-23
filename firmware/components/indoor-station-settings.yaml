@@ -148,7 +148,7 @@ button:
         sorting_weight: -96
 
     read_memory:
-      id: read_memory
+      id: read_indoor_station_memory
       device_id: tc_bus_is
       name: "Read Memory"
       icon: "mdi:file-arrow-up-down"

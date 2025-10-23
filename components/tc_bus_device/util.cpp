@@ -15,7 +15,15 @@ namespace esphome
             {SETTING_RINGTONE_INTERNAL_CALL, "RINGTONE_INTERNAL_CALL"},
             {SETTING_VOLUME_RINGTONE, "VOLUME_RINGTONE"},
             {SETTING_VOLUME_HANDSET_DOOR_CALL, "VOLUME_HANDSET_DOOR_CALL"},
-            {SETTING_VOLUME_HANDSET_INTERNAL_CALL, "VOLUME_HANDSET_INTERNAL_CALL"}
+            {SETTING_VOLUME_HANDSET_INTERNAL_CALL, "VOLUME_HANDSET_INTERNAL_CALL"},
+            {SETTING_AS_ADDRESS_DIVIDER, "AS_ADDRESS_DIVIDER"},
+            {SETTING_VAS_ADDRESS_DIVIDER, "VAS_ADDRESS_DIVIDER"},
+            {SETTING_DOOR_OPENER_DURATION, "DOOR_OPENER_DURATION"},
+            {SETTING_AS_ADDRESS, "AS_ADDRESS"},
+            {SETTING_AS_ADDRESS_LOCK, "AS_ADDRESS_LOCK"},
+            {SETTING_TALKING_REQUIRES_DOOR_READINESS, "TALKING_REQUIRES_DOOR_READINESS"},
+            {SETTING_DOOR_READINESS_DURATION, "DOOR_READINESS_DURATION"},
+            {SETTING_CALLING_DURATION, "CALLING_DURATION"}
         };
 
         SettingType string_to_setting_type(const char* str)
@@ -139,6 +147,17 @@ namespace esphome
                 else if (strcmp(model_key, "1B3") == 0 || strcmp(model_key, "1B4") == 0 || strcmp(model_key, "1B5") == 0)
                     return MODEL_IS_IVE70;
             }
+            else if(device_group == 2)
+            {
+                if (strcmp(model_key, "4E0") == 0 || (strcmp(model_key, "420") == 0 && fw_version < 2624)) return MODEL_AS_PUK;
+                else if ((strcmp(model_key, "420") == 0 && fw_version >= 2624)) return MODEL_AS_PXS;
+                else if ((strcmp(model_key, "430") == 0 && fw_version >= 2656)) return MODEL_AS_PXS;
+                else if (strcmp(model_key, "280") == 0 || strcmp(model_key, "270") == 0 || strcmp(model_key, "400") == 0) return MODEL_AS_PAK;
+                else if (strcmp(model_key, "C00") == 0 || strcmp(model_key, "C00") == 0 || strcmp(model_key, "C01") == 0 || strcmp(model_key, "C02") == 0 || strcmp(model_key, "C03") == 0 || strcmp(model_key, "C04") == 0 || strcmp(model_key, "C05") == 0 || strcmp(model_key, "C06") == 0 || strcmp(model_key, "C09") == 0 || strcmp(model_key, "D09") == 0)
+                    return MODEL_AS_TCU3;
+                else if (strcmp(model_key, "C20") == 0 || strcmp(model_key, "C21") == 0 || strcmp(model_key, "C22") == 0 || strcmp(model_key, "C23") == 0 || strcmp(model_key, "C24") == 0 || strcmp(model_key, "C25") == 0 || strcmp(model_key, "C26") == 0)
+                    return MODEL_AS_TCU4;
+            }
             else if(device_group == 4)
             {
                 if (strcmp(model_key, "008") == 0) return MODEL_CTRL_BVS30;
@@ -224,6 +243,12 @@ namespace esphome
             {MODEL_IS_DEBUG_0, "DEBUG IS0"},
             {MODEL_IS_DEBUG_1, "DEBUG IS1"},
             {MODEL_AS_DEBUG, "DEBUG AS"},
+            {MODEL_AS_PUK, "TCS PUK"},
+            {MODEL_AS_PAK, "TCS PAK"},
+            {MODEL_AS_PXS, "TCS PxS"},
+            {MODEL_AS_TCU2, "TCS TCU2"},
+            {MODEL_AS_TCU3, "TCS TCU3"},
+            {MODEL_AS_TCU4, "TCS TCU4"},
             {MODEL_CTRL_BVS20, "TCS BVS20"},
             {MODEL_CTRL_BVS30, "TCS BVS30"},
             {MODEL_CTRL_NBV3210, "TCS NBV3210"},
@@ -269,8 +294,10 @@ namespace esphome
                     modelData.capabilities |= CAP_RINGTONE_ENTRANCE_DOOR_CALL;
                     modelData.capabilities |= CAP_RINGTONE_INTERNAL_CALL;
                     modelData.capabilities |= CAP_RINGTONE_FLOOR_CALL;
+                    modelData.capabilities |= CAP_RINGTONE_SECOND_ENTRANCE_DOOR_CALL;
                     modelData.capabilities |= CAP_VOLUME_RINGTONE;
                     modelData.capabilities |= CAP_VOLUME_HANDSET_DOOR_CALL;
+                    modelData.capabilities |= CAP_AS_ADDRESS_DIVIDER;
                     break;
                 case MODEL_IS_ISW3130: /* TC50P */
                     modelData.device_group = 1;
@@ -278,8 +305,10 @@ namespace esphome
                     modelData.capabilities |= CAP_RINGTONE_ENTRANCE_DOOR_CALL;
                     modelData.capabilities |= CAP_RINGTONE_INTERNAL_CALL;
                     modelData.capabilities |= CAP_RINGTONE_FLOOR_CALL;
+                    modelData.capabilities |= CAP_RINGTONE_SECOND_ENTRANCE_DOOR_CALL;
                     modelData.capabilities |= CAP_VOLUME_RINGTONE;
                     modelData.capabilities |= CAP_VOLUME_HANDSET_DOOR_CALL;
+                    modelData.capabilities |= CAP_AS_ADDRESS_DIVIDER;
                     break;
                 case MODEL_IS_ISW3230: /* TC50 GFA */
                     modelData.device_group = 1;
@@ -287,8 +316,10 @@ namespace esphome
                     modelData.capabilities |= CAP_RINGTONE_ENTRANCE_DOOR_CALL;
                     modelData.capabilities |= CAP_RINGTONE_INTERNAL_CALL;
                     modelData.capabilities |= CAP_RINGTONE_FLOOR_CALL;
+                    modelData.capabilities |= CAP_RINGTONE_SECOND_ENTRANCE_DOOR_CALL;
                     modelData.capabilities |= CAP_VOLUME_RINGTONE;
                     modelData.capabilities |= CAP_VOLUME_HANDSET_DOOR_CALL;
+                    modelData.capabilities |= CAP_AS_ADDRESS_DIVIDER;
                     break;
                 case MODEL_IS_ISW3330: /* TC50 BW */
                     modelData.device_group = 1;
@@ -296,8 +327,10 @@ namespace esphome
                     modelData.capabilities |= CAP_RINGTONE_ENTRANCE_DOOR_CALL;
                     modelData.capabilities |= CAP_RINGTONE_INTERNAL_CALL;
                     modelData.capabilities |= CAP_RINGTONE_FLOOR_CALL;
+                    modelData.capabilities |= CAP_RINGTONE_SECOND_ENTRANCE_DOOR_CALL;
                     modelData.capabilities |= CAP_VOLUME_RINGTONE;
                     modelData.capabilities |= CAP_VOLUME_HANDSET_DOOR_CALL;
+                    modelData.capabilities |= CAP_AS_ADDRESS_DIVIDER;
                     break;
                 case MODEL_IS_ISW3340:
                     modelData.device_group = 1;
@@ -305,8 +338,10 @@ namespace esphome
                     modelData.capabilities |= CAP_RINGTONE_ENTRANCE_DOOR_CALL;
                     modelData.capabilities |= CAP_RINGTONE_INTERNAL_CALL;
                     modelData.capabilities |= CAP_RINGTONE_FLOOR_CALL;
+                    modelData.capabilities |= CAP_RINGTONE_SECOND_ENTRANCE_DOOR_CALL;
                     modelData.capabilities |= CAP_VOLUME_RINGTONE;
                     modelData.capabilities |= CAP_VOLUME_HANDSET_DOOR_CALL;
+                    modelData.capabilities |= CAP_AS_ADDRESS_DIVIDER;
                     break;
                 case MODEL_IS_ISW5010: /* TC60 */
                     modelData.device_group = 1;
@@ -318,6 +353,7 @@ namespace esphome
                     modelData.capabilities |= CAP_VOLUME_RINGTONE;
                     modelData.capabilities |= CAP_VOLUME_HANDSET_DOOR_CALL;
                     modelData.capabilities |= CAP_VOLUME_HANDSET_INTERNAL_CALL;
+                    modelData.capabilities |= CAP_AS_ADDRESS_DIVIDER;
                     break;
                 case MODEL_IS_ISW5020:
                     modelData.device_group = 1;
@@ -329,6 +365,7 @@ namespace esphome
                     modelData.capabilities |= CAP_VOLUME_RINGTONE;
                     modelData.capabilities |= CAP_VOLUME_HANDSET_DOOR_CALL;
                     modelData.capabilities |= CAP_VOLUME_HANDSET_INTERNAL_CALL;
+                    modelData.capabilities |= CAP_AS_ADDRESS_DIVIDER;
                     break;
                 case MODEL_IS_ISW5030:
                     modelData.device_group = 1;
@@ -340,6 +377,7 @@ namespace esphome
                     modelData.capabilities |= CAP_VOLUME_RINGTONE;
                     modelData.capabilities |= CAP_VOLUME_HANDSET_DOOR_CALL;
                     modelData.capabilities |= CAP_VOLUME_HANDSET_INTERNAL_CALL;
+                    modelData.capabilities |= CAP_AS_ADDRESS_DIVIDER;
                     break;
                 case MODEL_IS_ISW5031:
                     modelData.device_group = 1;
@@ -351,6 +389,7 @@ namespace esphome
                     modelData.capabilities |= CAP_VOLUME_RINGTONE;
                     modelData.capabilities |= CAP_VOLUME_HANDSET_DOOR_CALL;
                     modelData.capabilities |= CAP_VOLUME_HANDSET_INTERNAL_CALL;
+                    modelData.capabilities |= CAP_AS_ADDRESS_DIVIDER;
                     break;
                 case MODEL_IS_ISW5033:
                     modelData.device_group = 1;
@@ -362,6 +401,7 @@ namespace esphome
                     modelData.capabilities |= CAP_VOLUME_RINGTONE;
                     modelData.capabilities |= CAP_VOLUME_HANDSET_DOOR_CALL;
                     modelData.capabilities |= CAP_VOLUME_HANDSET_INTERNAL_CALL;
+                    modelData.capabilities |= CAP_AS_ADDRESS_DIVIDER;
                     break;
                 case MODEL_IS_IVW511X: /* VTC60 */
                     modelData.device_group = 1;
@@ -373,6 +413,8 @@ namespace esphome
                     modelData.capabilities |= CAP_VOLUME_RINGTONE;
                     modelData.capabilities |= CAP_VOLUME_HANDSET_DOOR_CALL;
                     modelData.capabilities |= CAP_VOLUME_HANDSET_INTERNAL_CALL;
+                    modelData.capabilities |= CAP_AS_ADDRESS_DIVIDER;
+                    modelData.capabilities |= CAP_VAS_ADDRESS_DIVIDER;
                     break;
                 case MODEL_IS_IVW521X: /* VTC60/2D */
                     modelData.device_group = 1;
@@ -384,50 +426,138 @@ namespace esphome
                     modelData.capabilities |= CAP_VOLUME_RINGTONE;
                     modelData.capabilities |= CAP_VOLUME_HANDSET_DOOR_CALL;
                     modelData.capabilities |= CAP_VOLUME_HANDSET_INTERNAL_CALL;
+                    modelData.capabilities |= CAP_AS_ADDRESS_DIVIDER;
+                    modelData.capabilities |= CAP_VAS_ADDRESS_DIVIDER;
                     break;
                 case MODEL_IS_ISW6031:
                     modelData.device_group = 1;
                     modelData.memory_size = 32;
+                    modelData.capabilities |= CAP_RINGTONE_ENTRANCE_DOOR_CALL;
+                    modelData.capabilities |= CAP_RINGTONE_INTERNAL_CALL;
+                    modelData.capabilities |= CAP_RINGTONE_FLOOR_CALL;
+                    modelData.capabilities |= CAP_RINGTONE_SECOND_ENTRANCE_DOOR_CALL;
+                    modelData.capabilities |= CAP_VOLUME_RINGTONE;
+                    modelData.capabilities |= CAP_VOLUME_HANDSET_DOOR_CALL;
+                    modelData.capabilities |= CAP_VOLUME_HANDSET_INTERNAL_CALL;
+                    modelData.capabilities |= CAP_AS_ADDRESS_DIVIDER;
                     break;
                 case MODEL_IS_ISW7030: /* TC70 */
                     modelData.device_group = 1;
                     modelData.memory_size = 32;
+                    modelData.capabilities |= CAP_RINGTONE_ENTRANCE_DOOR_CALL;
+                    modelData.capabilities |= CAP_RINGTONE_INTERNAL_CALL;
+                    modelData.capabilities |= CAP_RINGTONE_FLOOR_CALL;
+                    modelData.capabilities |= CAP_RINGTONE_SECOND_ENTRANCE_DOOR_CALL;
+                    modelData.capabilities |= CAP_VOLUME_RINGTONE;
+                    modelData.capabilities |= CAP_VOLUME_HANDSET_DOOR_CALL;
+                    modelData.capabilities |= CAP_VOLUME_HANDSET_INTERNAL_CALL;
+                    modelData.capabilities |= CAP_AS_ADDRESS_DIVIDER;
                     break;
                 case MODEL_IS_IVW7510: /* VTC70 */
                     modelData.device_group = 1;
                     modelData.memory_size = 48;
+                    modelData.capabilities |= CAP_RINGTONE_ENTRANCE_DOOR_CALL;
+                    modelData.capabilities |= CAP_RINGTONE_INTERNAL_CALL;
+                    modelData.capabilities |= CAP_RINGTONE_FLOOR_CALL;
+                    modelData.capabilities |= CAP_RINGTONE_SECOND_ENTRANCE_DOOR_CALL;
+                    modelData.capabilities |= CAP_VOLUME_RINGTONE;
+                    modelData.capabilities |= CAP_VOLUME_HANDSET_DOOR_CALL;
+                    modelData.capabilities |= CAP_VOLUME_HANDSET_INTERNAL_CALL;
+                    modelData.capabilities |= CAP_AS_ADDRESS_DIVIDER;
+                    modelData.capabilities |= CAP_VAS_ADDRESS_DIVIDER;
                     break;
                 case MODEL_IS_ISH7030: /* TCH70 */
                     modelData.device_group = 1;
                     modelData.memory_size = 32;
+                    modelData.capabilities |= CAP_RINGTONE_ENTRANCE_DOOR_CALL;
+                    modelData.capabilities |= CAP_RINGTONE_INTERNAL_CALL;
+                    modelData.capabilities |= CAP_RINGTONE_FLOOR_CALL;
+                    modelData.capabilities |= CAP_RINGTONE_SECOND_ENTRANCE_DOOR_CALL;
+                    modelData.capabilities |= CAP_VOLUME_RINGTONE;
+                    modelData.capabilities |= CAP_VOLUME_HANDSET_DOOR_CALL;
+                    modelData.capabilities |= CAP_VOLUME_HANDSET_INTERNAL_CALL;
+                    modelData.capabilities |= CAP_AS_ADDRESS_DIVIDER;
                     break;
                 case MODEL_IS_IVH7510: /* VTCH70 */
                     modelData.device_group = 1;
                     modelData.memory_size = 48;
+                    modelData.capabilities |= CAP_RINGTONE_ENTRANCE_DOOR_CALL;
+                    modelData.capabilities |= CAP_RINGTONE_INTERNAL_CALL;
+                    modelData.capabilities |= CAP_RINGTONE_FLOOR_CALL;
+                    modelData.capabilities |= CAP_RINGTONE_SECOND_ENTRANCE_DOOR_CALL;
+                    modelData.capabilities |= CAP_VOLUME_RINGTONE;
+                    modelData.capabilities |= CAP_VOLUME_HANDSET_DOOR_CALL;
+                    modelData.capabilities |= CAP_VOLUME_HANDSET_INTERNAL_CALL;
+                    modelData.capabilities |= CAP_AS_ADDRESS_DIVIDER;
+                    modelData.capabilities |= CAP_VAS_ADDRESS_DIVIDER;
                     break;
                 case MODEL_IS_ISW6010:
                     modelData.device_group = 1;
                     modelData.memory_size = 32;
+                    modelData.capabilities |= CAP_RINGTONE_ENTRANCE_DOOR_CALL;
+                    modelData.capabilities |= CAP_RINGTONE_INTERNAL_CALL;
+                    modelData.capabilities |= CAP_RINGTONE_FLOOR_CALL;
+                    modelData.capabilities |= CAP_RINGTONE_SECOND_ENTRANCE_DOOR_CALL;
+                    modelData.capabilities |= CAP_VOLUME_RINGTONE;
+                    modelData.capabilities |= CAP_VOLUME_HANDSET_DOOR_CALL;
+                    modelData.capabilities |= CAP_VOLUME_HANDSET_INTERNAL_CALL;
+                    modelData.capabilities |= CAP_AS_ADDRESS_DIVIDER;
                     break;
                 case MODEL_IS_IVW6511:
                     modelData.device_group = 1;
                     modelData.memory_size = 48;
+                    modelData.capabilities |= CAP_RINGTONE_ENTRANCE_DOOR_CALL;
+                    modelData.capabilities |= CAP_RINGTONE_INTERNAL_CALL;
+                    modelData.capabilities |= CAP_RINGTONE_FLOOR_CALL;
+                    modelData.capabilities |= CAP_RINGTONE_SECOND_ENTRANCE_DOOR_CALL;
+                    modelData.capabilities |= CAP_VOLUME_RINGTONE;
+                    modelData.capabilities |= CAP_VOLUME_HANDSET_DOOR_CALL;
+                    modelData.capabilities |= CAP_VOLUME_HANDSET_INTERNAL_CALL;
+                    modelData.capabilities |= CAP_AS_ADDRESS_DIVIDER;
+                    modelData.capabilities |= CAP_VAS_ADDRESS_DIVIDER;
                     break;
                 case MODEL_IS_ISWM7000:
                     modelData.device_group = 1;
                     modelData.memory_size = 32;
+                    modelData.capabilities |= CAP_RINGTONE_ENTRANCE_DOOR_CALL;
+                    modelData.capabilities |= CAP_RINGTONE_INTERNAL_CALL;
+                    modelData.capabilities |= CAP_RINGTONE_FLOOR_CALL;
+                    modelData.capabilities |= CAP_RINGTONE_SECOND_ENTRANCE_DOOR_CALL;
+                    modelData.capabilities |= CAP_VOLUME_RINGTONE;
+                    modelData.capabilities |= CAP_VOLUME_HANDSET_DOOR_CALL;
+                    modelData.capabilities |= CAP_VOLUME_HANDSET_INTERNAL_CALL;
+                    modelData.capabilities |= CAP_AS_ADDRESS_DIVIDER;
                     break;
                 case MODEL_IS_IVWM7000:
                     modelData.device_group = 1;
                     modelData.memory_size = 48;
+                    modelData.capabilities |= CAP_RINGTONE_ENTRANCE_DOOR_CALL;
+                    modelData.capabilities |= CAP_RINGTONE_INTERNAL_CALL;
+                    modelData.capabilities |= CAP_RINGTONE_FLOOR_CALL;
+                    modelData.capabilities |= CAP_RINGTONE_SECOND_ENTRANCE_DOOR_CALL;
+                    modelData.capabilities |= CAP_VOLUME_RINGTONE;
+                    modelData.capabilities |= CAP_VOLUME_HANDSET_DOOR_CALL;
+                    modelData.capabilities |= CAP_VOLUME_HANDSET_INTERNAL_CALL;
+                    modelData.capabilities |= CAP_AS_ADDRESS_DIVIDER;
+                    modelData.capabilities |= CAP_VAS_ADDRESS_DIVIDER;
                     break;
                 case MODEL_IS_ISW4100: /* TC31 */
                     modelData.device_group = 1;
                     modelData.memory_size = 32;
+                    modelData.capabilities |= CAP_RINGTONE_ENTRANCE_DOOR_CALL;
+                    modelData.capabilities |= CAP_RINGTONE_INTERNAL_CALL;
+                    modelData.capabilities |= CAP_RINGTONE_FLOOR_CALL;
+                    modelData.capabilities |= CAP_RINGTONE_SECOND_ENTRANCE_DOOR_CALL;
+                    modelData.capabilities |= CAP_AS_ADDRESS_DIVIDER;
                     break;
                 case MODEL_IS_IMM2100: /* TCE31 */
                     modelData.device_group = 1;
                     modelData.memory_size = 32;
+                    modelData.capabilities |= CAP_RINGTONE_ENTRANCE_DOOR_CALL;
+                    modelData.capabilities |= CAP_RINGTONE_INTERNAL_CALL;
+                    modelData.capabilities |= CAP_RINGTONE_FLOOR_CALL;
+                    modelData.capabilities |= CAP_RINGTONE_SECOND_ENTRANCE_DOOR_CALL;
+                    modelData.capabilities |= CAP_AS_ADDRESS_DIVIDER;
                     break;
                 case MODEL_IS_IVW2210: /* Ecoos */
                     modelData.device_group = 1;
@@ -437,6 +567,8 @@ namespace esphome
                     modelData.capabilities |= CAP_RINGTONE_FLOOR_CALL;
                     modelData.capabilities |= CAP_RINGTONE_SECOND_ENTRANCE_DOOR_CALL;
                     modelData.capabilities |= CAP_VOLUME_RINGTONE;
+                    modelData.capabilities |= CAP_AS_ADDRESS_DIVIDER;
+                    modelData.capabilities |= CAP_VAS_ADDRESS_DIVIDER;
                     // Supported? Not documented
                     //modelData.capabilities |= CAP_VOLUME_HANDSET_DOOR_CALL;
                     break;
@@ -448,6 +580,8 @@ namespace esphome
                     modelData.capabilities |= CAP_RINGTONE_FLOOR_CALL;
                     modelData.capabilities |= CAP_RINGTONE_SECOND_ENTRANCE_DOOR_CALL;
                     modelData.capabilities |= CAP_VOLUME_RINGTONE;
+                    modelData.capabilities |= CAP_AS_ADDRESS_DIVIDER;
+                    modelData.capabilities |= CAP_VAS_ADDRESS_DIVIDER;
                     // Supported? Not documented
                     //modelData.capabilities |= CAP_VOLUME_HANDSET_DOOR_CALL;
                     break;
@@ -459,6 +593,8 @@ namespace esphome
                     modelData.capabilities |= CAP_RINGTONE_FLOOR_CALL;
                     modelData.capabilities |= CAP_RINGTONE_SECOND_ENTRANCE_DOOR_CALL;
                     modelData.capabilities |= CAP_VOLUME_RINGTONE;
+                    modelData.capabilities |= CAP_AS_ADDRESS_DIVIDER;
+                    modelData.capabilities |= CAP_VAS_ADDRESS_DIVIDER;
                     // Supported? Not documented
                     //modelData.capabilities |= CAP_VOLUME_HANDSET_DOOR_CALL;
                     break;
@@ -471,6 +607,8 @@ namespace esphome
                     modelData.capabilities |= CAP_RINGTONE_SECOND_ENTRANCE_DOOR_CALL;
                     modelData.capabilities |= CAP_VOLUME_RINGTONE;
                     modelData.capabilities |= CAP_VOLUME_HANDSET_DOOR_CALL;
+                    modelData.capabilities |= CAP_AS_ADDRESS_DIVIDER;
+                    modelData.capabilities |= CAP_VAS_ADDRESS_DIVIDER;
                     break;
                 case MODEL_IS_TC40V2:
                     modelData.device_group = 1;
@@ -481,6 +619,7 @@ namespace esphome
                     modelData.capabilities |= CAP_RINGTONE_SECOND_ENTRANCE_DOOR_CALL;
                     modelData.capabilities |= CAP_VOLUME_RINGTONE;
                     modelData.capabilities |= CAP_VOLUME_HANDSET_DOOR_CALL;
+                    modelData.capabilities |= CAP_AS_ADDRESS_DIVIDER;
                     break;
                 case MODEL_IS_VTC40:
                     modelData.device_group = 1;
@@ -491,6 +630,8 @@ namespace esphome
                     modelData.capabilities |= CAP_RINGTONE_SECOND_ENTRANCE_DOOR_CALL;
                     modelData.capabilities |= CAP_VOLUME_RINGTONE;
                     modelData.capabilities |= CAP_VOLUME_HANDSET_DOOR_CALL;
+                    modelData.capabilities |= CAP_AS_ADDRESS_DIVIDER;
+                    modelData.capabilities |= CAP_VAS_ADDRESS_DIVIDER;
                     break;
                 case MODEL_IS_TC40:
                     modelData.device_group = 1;
@@ -501,64 +642,146 @@ namespace esphome
                     modelData.capabilities |= CAP_RINGTONE_SECOND_ENTRANCE_DOOR_CALL;
                     modelData.capabilities |= CAP_VOLUME_RINGTONE;
                     modelData.capabilities |= CAP_VOLUME_HANDSET_DOOR_CALL;
+                    modelData.capabilities |= CAP_AS_ADDRESS_DIVIDER;
                     break;
                 case MODEL_IS_TC2000:
                     modelData.device_group = 1;
                     modelData.memory_size = 16;
+                    modelData.capabilities |= CAP_RINGTONE_ENTRANCE_DOOR_CALL;
+                    modelData.capabilities |= CAP_RINGTONE_INTERNAL_CALL;
+                    modelData.capabilities |= CAP_RINGTONE_FLOOR_CALL;
                     break;
                 case MODEL_IS_TC20P:
                     modelData.device_group = 1;
                     modelData.memory_size = 16;
+                    modelData.capabilities |= CAP_RINGTONE_ENTRANCE_DOOR_CALL;
+                    modelData.capabilities |= CAP_RINGTONE_INTERNAL_CALL;
+                    modelData.capabilities |= CAP_RINGTONE_FLOOR_CALL;
+                    modelData.capabilities |= CAP_RINGTONE_SECOND_ENTRANCE_DOOR_CALL;
                     break;
                 case MODEL_IS_TC20F:
                     modelData.device_group = 1;
                     modelData.memory_size = 16;
+                    modelData.capabilities |= CAP_RINGTONE_ENTRANCE_DOOR_CALL;
+                    modelData.capabilities |= CAP_RINGTONE_INTERNAL_CALL;
+                    modelData.capabilities |= CAP_RINGTONE_FLOOR_CALL;
+                    modelData.capabilities |= CAP_RINGTONE_SECOND_ENTRANCE_DOOR_CALL;
                     break;
                 case MODEL_IS_IVW2220:
                     modelData.device_group = 1;
                     modelData.memory_size = 64;
+                    modelData.capabilities |= CAP_RINGTONE_ENTRANCE_DOOR_CALL;
+                    modelData.capabilities |= CAP_RINGTONE_INTERNAL_CALL;
+                    modelData.capabilities |= CAP_RINGTONE_FLOOR_CALL;
+                    modelData.capabilities |= CAP_RINGTONE_SECOND_ENTRANCE_DOOR_CALL;
+                    modelData.capabilities |= CAP_VOLUME_RINGTONE;
+                    modelData.capabilities |= CAP_AS_ADDRESS_DIVIDER;
+                    modelData.capabilities |= CAP_VAS_ADDRESS_DIVIDER;
                     break;
                 case MODEL_IS_IVW2221:
                     modelData.device_group = 1;
                     modelData.memory_size = 64;
+                    modelData.capabilities |= CAP_RINGTONE_ENTRANCE_DOOR_CALL;
+                    modelData.capabilities |= CAP_RINGTONE_INTERNAL_CALL;
+                    modelData.capabilities |= CAP_RINGTONE_FLOOR_CALL;
+                    modelData.capabilities |= CAP_RINGTONE_SECOND_ENTRANCE_DOOR_CALL;
+                    modelData.capabilities |= CAP_VOLUME_RINGTONE;
+                    modelData.capabilities |= CAP_AS_ADDRESS_DIVIDER;
+                    modelData.capabilities |= CAP_VAS_ADDRESS_DIVIDER;
                     break;
                 case MODEL_IS_IVW3011:
                     modelData.device_group = 1;
                     modelData.memory_size = 64;
+                    modelData.capabilities |= CAP_RINGTONE_ENTRANCE_DOOR_CALL;
+                    modelData.capabilities |= CAP_RINGTONE_INTERNAL_CALL;
+                    modelData.capabilities |= CAP_RINGTONE_FLOOR_CALL;
+                    modelData.capabilities |= CAP_RINGTONE_SECOND_ENTRANCE_DOOR_CALL;
+                    modelData.capabilities |= CAP_VOLUME_RINGTONE;
+                    modelData.capabilities |= CAP_AS_ADDRESS_DIVIDER;
+                    modelData.capabilities |= CAP_VAS_ADDRESS_DIVIDER;
                     break;
                 case MODEL_IS_IVW3012:
                     modelData.device_group = 1;
                     modelData.memory_size = 64;
+                    modelData.capabilities |= CAP_RINGTONE_ENTRANCE_DOOR_CALL;
+                    modelData.capabilities |= CAP_RINGTONE_INTERNAL_CALL;
+                    modelData.capabilities |= CAP_RINGTONE_FLOOR_CALL;
+                    modelData.capabilities |= CAP_RINGTONE_SECOND_ENTRANCE_DOOR_CALL;
+                    modelData.capabilities |= CAP_VOLUME_RINGTONE;
+                    modelData.capabilities |= CAP_AS_ADDRESS_DIVIDER;
+                    modelData.capabilities |= CAP_VAS_ADDRESS_DIVIDER;
                     break;
                 case MODEL_IS_TKIS:
                     modelData.device_group = 1;
                     modelData.memory_size = 64;
+                    modelData.capabilities |= CAP_RINGTONE_ENTRANCE_DOOR_CALL;
+                    modelData.capabilities |= CAP_RINGTONE_INTERNAL_CALL;
+                    modelData.capabilities |= CAP_RINGTONE_FLOOR_CALL;
+                    modelData.capabilities |= CAP_RINGTONE_SECOND_ENTRANCE_DOOR_CALL;
+                    modelData.capabilities |= CAP_VOLUME_RINGTONE;
+                    modelData.capabilities |= CAP_VOLUME_HANDSET_DOOR_CALL;
+                    modelData.capabilities |= CAP_AS_ADDRESS_DIVIDER;
                     break;
                 case MODEL_IS_TKISV:
                     modelData.device_group = 1;
                     modelData.memory_size = 64;
+                    modelData.capabilities |= CAP_RINGTONE_ENTRANCE_DOOR_CALL;
+                    modelData.capabilities |= CAP_RINGTONE_INTERNAL_CALL;
+                    modelData.capabilities |= CAP_RINGTONE_FLOOR_CALL;
+                    modelData.capabilities |= CAP_RINGTONE_SECOND_ENTRANCE_DOOR_CALL;
+                    modelData.capabilities |= CAP_VOLUME_RINGTONE;
+                    modelData.capabilities |= CAP_VOLUME_HANDSET_DOOR_CALL;
+                    modelData.capabilities |= CAP_AS_ADDRESS_DIVIDER;
+                    modelData.capabilities |= CAP_VAS_ADDRESS_DIVIDER;
                     break;
                 case MODEL_IS_CAI2000:
                     modelData.device_group = 1;
                     modelData.memory_size = 64;
+                    modelData.capabilities |= CAP_RINGTONE_ENTRANCE_DOOR_CALL;
+                    modelData.capabilities |= CAP_RINGTONE_INTERNAL_CALL;
+                    modelData.capabilities |= CAP_RINGTONE_FLOOR_CALL;
+                    modelData.capabilities |= CAP_RINGTONE_SECOND_ENTRANCE_DOOR_CALL;
+                    modelData.capabilities |= CAP_VOLUME_RINGTONE;
+                    modelData.capabilities |= CAP_AS_ADDRESS_DIVIDER;
+                    modelData.capabilities |= CAP_VAS_ADDRESS_DIVIDER;
                     break;
                 case MODEL_IS_CAIXXXX:
                     modelData.device_group = 1;
                     modelData.memory_size = 32;
+                    modelData.capabilities |= CAP_RINGTONE_ENTRANCE_DOOR_CALL;
+                    modelData.capabilities |= CAP_RINGTONE_INTERNAL_CALL;
+                    modelData.capabilities |= CAP_RINGTONE_FLOOR_CALL;
+                    modelData.capabilities |= CAP_RINGTONE_SECOND_ENTRANCE_DOOR_CALL;
+                    modelData.capabilities |= CAP_VOLUME_RINGTONE;
+                    modelData.capabilities |= CAP_AS_ADDRESS_DIVIDER;
                     break;
                 case MODEL_IS_ISW42X0:
                     modelData.device_group = 1;
                     modelData.memory_size = 40;
+                    modelData.capabilities |= CAP_RINGTONE_ENTRANCE_DOOR_CALL;
+                    modelData.capabilities |= CAP_RINGTONE_INTERNAL_CALL;
+                    modelData.capabilities |= CAP_RINGTONE_FLOOR_CALL;
+                    modelData.capabilities |= CAP_RINGTONE_SECOND_ENTRANCE_DOOR_CALL;
+                    modelData.capabilities |= CAP_VOLUME_RINGTONE;
+                    modelData.capabilities |= CAP_AS_ADDRESS_DIVIDER;
                     break;
 
                 // Group 0
                 case MODEL_IS_ISH3022: /* TCH50P */
                     modelData.device_group = 0;
                     modelData.memory_size = 32;
+                    // Volume is set directly on hardware
                     break;
                 case MODEL_IS_ISH3130: /* TCH50P */
                     modelData.device_group = 0;
                     modelData.memory_size = 40;
+                    modelData.capabilities |= CAP_RINGTONE_ENTRANCE_DOOR_CALL;
+                    modelData.capabilities |= CAP_RINGTONE_INTERNAL_CALL;
+                    modelData.capabilities |= CAP_RINGTONE_FLOOR_CALL;
+                    modelData.capabilities |= CAP_RINGTONE_SECOND_ENTRANCE_DOOR_CALL;
+                    modelData.capabilities |= CAP_VOLUME_RINGTONE;
+                    modelData.capabilities |= CAP_VOLUME_HANDSET_DOOR_CALL;
+                    modelData.capabilities |= CAP_AS_ADDRESS_DIVIDER;
                     break;
                 case MODEL_IS_ISH3230: /* TCH50 GFA */
                     modelData.device_group = 0;
@@ -566,8 +789,10 @@ namespace esphome
                     modelData.capabilities |= CAP_RINGTONE_ENTRANCE_DOOR_CALL;
                     modelData.capabilities |= CAP_RINGTONE_INTERNAL_CALL;
                     modelData.capabilities |= CAP_RINGTONE_FLOOR_CALL;
+                    modelData.capabilities |= CAP_RINGTONE_SECOND_ENTRANCE_DOOR_CALL;
                     modelData.capabilities |= CAP_VOLUME_RINGTONE;
                     modelData.capabilities |= CAP_VOLUME_HANDSET_DOOR_CALL;
+                    modelData.capabilities |= CAP_AS_ADDRESS_DIVIDER;
                     break;
                 case MODEL_IS_ISH3030: /* TCH50 */
                     modelData.device_group = 0;
@@ -575,8 +800,10 @@ namespace esphome
                     modelData.capabilities |= CAP_RINGTONE_ENTRANCE_DOOR_CALL;
                     modelData.capabilities |= CAP_RINGTONE_INTERNAL_CALL;
                     modelData.capabilities |= CAP_RINGTONE_FLOOR_CALL;
+                    modelData.capabilities |= CAP_RINGTONE_SECOND_ENTRANCE_DOOR_CALL;
                     modelData.capabilities |= CAP_VOLUME_RINGTONE;
                     modelData.capabilities |= CAP_VOLUME_HANDSET_DOOR_CALL;
+                    modelData.capabilities |= CAP_AS_ADDRESS_DIVIDER;
                     break;
                 case MODEL_IS_ISH1030: /* TTS25 */
                     modelData.device_group = 0;
@@ -602,26 +829,68 @@ namespace esphome
                 case MODEL_IS_IMM1000: /* TCH30 */
                     modelData.device_group = 0;
                     modelData.memory_size = 32;
+                    modelData.capabilities |= CAP_RINGTONE_ENTRANCE_DOOR_CALL;
+                    modelData.capabilities |= CAP_RINGTONE_INTERNAL_CALL;
+                    modelData.capabilities |= CAP_RINGTONE_FLOOR_CALL;
+                    modelData.capabilities |= CAP_RINGTONE_SECOND_ENTRANCE_DOOR_CALL;
+                    modelData.capabilities |= CAP_VOLUME_RINGTONE;
+                    modelData.capabilities |= CAP_VOLUME_HANDSET_DOOR_CALL;
+                    modelData.capabilities |= CAP_AS_ADDRESS_DIVIDER;
                     break;
                 case MODEL_IS_IMM1100: /* TCHE30 */
                     modelData.device_group = 0;
                     modelData.memory_size = 32;
+                    modelData.capabilities |= CAP_RINGTONE_ENTRANCE_DOOR_CALL;
+                    modelData.capabilities |= CAP_RINGTONE_INTERNAL_CALL;
+                    modelData.capabilities |= CAP_RINGTONE_FLOOR_CALL;
+                    modelData.capabilities |= CAP_RINGTONE_SECOND_ENTRANCE_DOOR_CALL;
+                    modelData.capabilities |= CAP_VOLUME_RINGTONE;
+                    modelData.capabilities |= CAP_VOLUME_HANDSET_DOOR_CALL;
+                    modelData.capabilities |= CAP_AS_ADDRESS_DIVIDER;
                     break;
                 case MODEL_IS_IMM1300: /* VTCH30 */
                     modelData.device_group = 0;
                     modelData.memory_size = 32;
+                    modelData.capabilities |= CAP_RINGTONE_ENTRANCE_DOOR_CALL;
+                    modelData.capabilities |= CAP_RINGTONE_INTERNAL_CALL;
+                    modelData.capabilities |= CAP_RINGTONE_FLOOR_CALL;
+                    modelData.capabilities |= CAP_RINGTONE_SECOND_ENTRANCE_DOOR_CALL;
+                    modelData.capabilities |= CAP_VOLUME_RINGTONE;
+                    modelData.capabilities |= CAP_VOLUME_HANDSET_DOOR_CALL;
+                    modelData.capabilities |= CAP_AS_ADDRESS_DIVIDER;
                     break;
                 case MODEL_IS_IMM1500:
                     modelData.device_group = 0;
                     modelData.memory_size = 32;
+                    modelData.capabilities |= CAP_RINGTONE_ENTRANCE_DOOR_CALL;
+                    modelData.capabilities |= CAP_RINGTONE_INTERNAL_CALL;
+                    modelData.capabilities |= CAP_RINGTONE_FLOOR_CALL;
+                    modelData.capabilities |= CAP_RINGTONE_SECOND_ENTRANCE_DOOR_CALL;
+                    modelData.capabilities |= CAP_VOLUME_RINGTONE;
+                    modelData.capabilities |= CAP_VOLUME_HANDSET_DOOR_CALL;
+                    modelData.capabilities |= CAP_AS_ADDRESS_DIVIDER;
                     break;
                 case MODEL_IS_IMM1310: /* VTCHE30 */
                     modelData.device_group = 0;
                     modelData.memory_size = 32;
+                    modelData.capabilities |= CAP_RINGTONE_ENTRANCE_DOOR_CALL;
+                    modelData.capabilities |= CAP_RINGTONE_INTERNAL_CALL;
+                    modelData.capabilities |= CAP_RINGTONE_FLOOR_CALL;
+                    modelData.capabilities |= CAP_RINGTONE_SECOND_ENTRANCE_DOOR_CALL;
+                    modelData.capabilities |= CAP_VOLUME_RINGTONE;
+                    modelData.capabilities |= CAP_VOLUME_HANDSET_DOOR_CALL;
+                    modelData.capabilities |= CAP_AS_ADDRESS_DIVIDER;
                     break;
                 case MODEL_IS_IMM1110: /* TCHEE30 */
                     modelData.device_group = 0;
                     modelData.memory_size = 32;
+                    modelData.capabilities |= CAP_RINGTONE_ENTRANCE_DOOR_CALL;
+                    modelData.capabilities |= CAP_RINGTONE_INTERNAL_CALL;
+                    modelData.capabilities |= CAP_RINGTONE_FLOOR_CALL;
+                    modelData.capabilities |= CAP_RINGTONE_SECOND_ENTRANCE_DOOR_CALL;
+                    modelData.capabilities |= CAP_VOLUME_RINGTONE;
+                    modelData.capabilities |= CAP_VOLUME_HANDSET_DOOR_CALL;
+                    modelData.capabilities |= CAP_AS_ADDRESS_DIVIDER;
                     break;
                 case MODEL_IS_IVH3222: /* VTCH50 */
                     modelData.device_group = 0;
@@ -629,6 +898,9 @@ namespace esphome
                     modelData.capabilities |= CAP_RINGTONE_ENTRANCE_DOOR_CALL;
                     modelData.capabilities |= CAP_RINGTONE_INTERNAL_CALL;
                     modelData.capabilities |= CAP_RINGTONE_FLOOR_CALL;
+                    modelData.capabilities |= CAP_RINGTONE_SECOND_ENTRANCE_DOOR_CALL;
+                    modelData.capabilities |= CAP_VOLUME_RINGTONE;
+                    modelData.capabilities |= CAP_VOLUME_HANDSET_DOOR_CALL;
                     break;
                 case MODEL_IS_IVH4222: /* VTCH50/2D */
                     modelData.device_group = 0;
@@ -636,20 +908,45 @@ namespace esphome
                     modelData.capabilities |= CAP_RINGTONE_ENTRANCE_DOOR_CALL;
                     modelData.capabilities |= CAP_RINGTONE_INTERNAL_CALL;
                     modelData.capabilities |= CAP_RINGTONE_FLOOR_CALL;
+                    modelData.capabilities |= CAP_RINGTONE_SECOND_ENTRANCE_DOOR_CALL;
                     modelData.capabilities |= CAP_VOLUME_RINGTONE;
                     modelData.capabilities |= CAP_VOLUME_HANDSET_DOOR_CALL;
                     break;
                 case MODEL_IS_VMH:
                     modelData.device_group = 0;
                     modelData.memory_size = 24;
+                    modelData.capabilities |= CAP_RINGTONE_ENTRANCE_DOOR_CALL;
+                    modelData.capabilities |= CAP_RINGTONE_INTERNAL_CALL;
+                    modelData.capabilities |= CAP_RINGTONE_FLOOR_CALL;
+                    modelData.capabilities |= CAP_RINGTONE_SECOND_ENTRANCE_DOOR_CALL;
+                    modelData.capabilities |= CAP_VOLUME_RINGTONE;
+                    modelData.capabilities |= CAP_VOLUME_HANDSET_DOOR_CALL;
+                    modelData.capabilities |= CAP_AS_ADDRESS_DIVIDER;
+                    modelData.capabilities |= CAP_VAS_ADDRESS_DIVIDER;
                     break;
                 case MODEL_IS_VML:
                     modelData.device_group = 0;
                     modelData.memory_size = 24;
+                    modelData.capabilities |= CAP_RINGTONE_ENTRANCE_DOOR_CALL;
+                    modelData.capabilities |= CAP_RINGTONE_INTERNAL_CALL;
+                    modelData.capabilities |= CAP_RINGTONE_FLOOR_CALL;
+                    modelData.capabilities |= CAP_RINGTONE_SECOND_ENTRANCE_DOOR_CALL;
+                    modelData.capabilities |= CAP_VOLUME_RINGTONE;
+                    modelData.capabilities |= CAP_VOLUME_HANDSET_DOOR_CALL;
+                    modelData.capabilities |= CAP_AS_ADDRESS_DIVIDER;
+                    modelData.capabilities |= CAP_VAS_ADDRESS_DIVIDER;
                     break;
                 case MODEL_IS_VMF:
                     modelData.device_group = 0;
                     modelData.memory_size = 24;
+                    modelData.capabilities |= CAP_RINGTONE_ENTRANCE_DOOR_CALL;
+                    modelData.capabilities |= CAP_RINGTONE_INTERNAL_CALL;
+                    modelData.capabilities |= CAP_RINGTONE_FLOOR_CALL;
+                    modelData.capabilities |= CAP_RINGTONE_SECOND_ENTRANCE_DOOR_CALL;
+                    modelData.capabilities |= CAP_VOLUME_RINGTONE;
+                    modelData.capabilities |= CAP_VOLUME_HANDSET_DOOR_CALL;
+                    modelData.capabilities |= CAP_AS_ADDRESS_DIVIDER;
+                    modelData.capabilities |= CAP_VAS_ADDRESS_DIVIDER;
                     break;
 
                 case MODEL_IS_IVW9010:
@@ -674,6 +971,72 @@ namespace esphome
                 case MODEL_AS_DEBUG:
                     modelData.device_group = 2;
                     modelData.memory_size = 128;
+                    break;
+
+                case MODEL_AS_PAK:
+                    modelData.device_group = 2;
+                    modelData.memory_size = 128;
+                    modelData.capabilities |= CAP_DOOR_OPENER_DURATION;
+                    modelData.capabilities |= CAP_AS_ADDRESS;
+                    modelData.capabilities |= CAP_AS_ADDRESS_LOCK;
+                    modelData.capabilities |= CAP_TALKING_REQUIRES_DOOR_READINESS;
+                    modelData.capabilities |= CAP_DOOR_READINESS_DURATION;
+                    modelData.capabilities |= CAP_CALLING_DURATION;
+                    break;
+
+                case MODEL_AS_PUK:
+                    modelData.device_group = 2;
+                    modelData.memory_size = 128;
+                    modelData.capabilities |= CAP_DOOR_OPENER_DURATION;
+                    modelData.capabilities |= CAP_AS_ADDRESS;
+                    modelData.capabilities |= CAP_AS_ADDRESS_LOCK;
+                    modelData.capabilities |= CAP_TALKING_REQUIRES_DOOR_READINESS;
+                    modelData.capabilities |= CAP_DOOR_READINESS_DURATION;
+                    modelData.capabilities |= CAP_CALLING_DURATION;
+                    break;
+
+                case MODEL_AS_PXS:
+                    modelData.device_group = 2;
+                    modelData.memory_size = 128;
+                    modelData.capabilities |= CAP_DOOR_OPENER_DURATION;
+                    modelData.capabilities |= CAP_AS_ADDRESS;
+                    modelData.capabilities |= CAP_AS_ADDRESS_LOCK;
+                    modelData.capabilities |= CAP_TALKING_REQUIRES_DOOR_READINESS;
+                    modelData.capabilities |= CAP_DOOR_READINESS_DURATION;
+                    modelData.capabilities |= CAP_CALLING_DURATION;
+                    break;
+
+                case MODEL_AS_TCU2:
+                    modelData.device_group = 2;
+                    modelData.memory_size = 128;
+                    modelData.capabilities |= CAP_DOOR_OPENER_DURATION;
+                    modelData.capabilities |= CAP_AS_ADDRESS;
+                    modelData.capabilities |= CAP_AS_ADDRESS_LOCK;
+                    modelData.capabilities |= CAP_TALKING_REQUIRES_DOOR_READINESS;
+                    modelData.capabilities |= CAP_DOOR_READINESS_DURATION;
+                    modelData.capabilities |= CAP_CALLING_DURATION;
+                    break;
+
+                case MODEL_AS_TCU3:
+                    modelData.device_group = 2;
+                    modelData.memory_size = 128;
+                    modelData.capabilities |= CAP_DOOR_OPENER_DURATION;
+                    modelData.capabilities |= CAP_AS_ADDRESS;
+                    modelData.capabilities |= CAP_AS_ADDRESS_LOCK;
+                    modelData.capabilities |= CAP_TALKING_REQUIRES_DOOR_READINESS;
+                    modelData.capabilities |= CAP_DOOR_READINESS_DURATION;
+                    modelData.capabilities |= CAP_CALLING_DURATION;
+                    break;
+
+                case MODEL_AS_TCU4:
+                    modelData.device_group = 2;
+                    modelData.memory_size = 128;
+                    modelData.capabilities |= CAP_DOOR_OPENER_DURATION;
+                    modelData.capabilities |= CAP_AS_ADDRESS;
+                    modelData.capabilities |= CAP_AS_ADDRESS_LOCK;
+                    modelData.capabilities |= CAP_TALKING_REQUIRES_DOOR_READINESS;
+                    modelData.capabilities |= CAP_DOOR_READINESS_DURATION;
+                    modelData.capabilities |= CAP_CALLING_DURATION;
                     break;
 
                 // Group 3
@@ -719,41 +1082,103 @@ namespace esphome
             SettingCellData data{};
             ModelData model_data = getModelData(model);
 
-            // Only set data if model supports the capability
-            if (setting == SETTING_RINGTONE_ENTRANCE_DOOR_CALL && (model_data.capabilities & CAP_RINGTONE_ENTRANCE_DOOR_CALL))
+            if(model_data.device_group == 0 || model_data.device_group == 1)
             {
-                data.index = 3;
-                data.left_nibble = true;
+                // IS
+                if (setting == SETTING_RINGTONE_ENTRANCE_DOOR_CALL && (model_data.capabilities & CAP_RINGTONE_ENTRANCE_DOOR_CALL))
+                {
+                    data.index = 3;
+                    data.start_bit = 7;
+                    data.length = 4;
+                }
+                else if (setting == SETTING_RINGTONE_INTERNAL_CALL && (model_data.capabilities & CAP_RINGTONE_INTERNAL_CALL))
+                {
+                    data.index = 6;
+                    data.start_bit = 7;
+                    data.length = 4;
+                }
+                else if (setting == SETTING_RINGTONE_FLOOR_CALL && (model_data.capabilities & CAP_RINGTONE_FLOOR_CALL))
+                {
+                    data.index = 9;
+                    data.start_bit = 7;
+                    data.length = 4;
+                }
+                else if (setting == SETTING_RINGTONE_SECOND_ENTRANCE_DOOR_CALL && (model_data.capabilities & CAP_RINGTONE_SECOND_ENTRANCE_DOOR_CALL))
+                {
+                    data.index = 12;
+                    data.start_bit = 7;
+                    data.length = 4;
+                }
+                else if (setting == SETTING_VOLUME_RINGTONE && (model_data.capabilities & CAP_VOLUME_RINGTONE))
+                {
+                    data.index = 20;
+                    data.start_bit = 7;
+                    data.length = 8;
+                }
+                else if (setting == SETTING_VOLUME_HANDSET_DOOR_CALL && (model_data.capabilities & CAP_VOLUME_HANDSET_DOOR_CALL))
+                {
+                    data.index = 21;
+                    data.start_bit = 3;
+                    data.length = 4;
+                }
+                else if (setting == SETTING_VOLUME_HANDSET_INTERNAL_CALL && (model_data.capabilities & CAP_VOLUME_HANDSET_INTERNAL_CALL))
+                {
+                    data.index = 21;
+                    data.start_bit = 7;
+                    data.length = 4;
+                }
+                else if (setting == SETTING_AS_ADDRESS_DIVIDER && (model_data.capabilities & CAP_AS_ADDRESS_DIVIDER))
+                {
+                    data.index = 22;
+                    data.start_bit = 7;
+                    data.length = 8;
+                }
+                else if (setting == SETTING_VAS_ADDRESS_DIVIDER && (model_data.capabilities & CAP_VAS_ADDRESS_DIVIDER))
+                {
+                    data.index = 2;
+                    data.start_bit = 7;
+                    data.length = 8;
+                }
             }
-            else if (setting == SETTING_RINGTONE_INTERNAL_CALL && (model_data.capabilities & CAP_RINGTONE_INTERNAL_CALL))
+            else if(model_data.device_group == 2)
             {
-                data.index = 6;
-                data.left_nibble = true;
-            }
-            else if (setting == SETTING_RINGTONE_FLOOR_CALL && (model_data.capabilities & CAP_RINGTONE_FLOOR_CALL))
-            {
-                data.index = 9;
-                data.left_nibble = true;
-            }
-            else if (setting == SETTING_RINGTONE_SECOND_ENTRANCE_DOOR_CALL && (model_data.capabilities & CAP_RINGTONE_SECOND_ENTRANCE_DOOR_CALL))
-            {
-                data.index = 12;
-                data.left_nibble = true;
-            }
-            else if (setting == SETTING_VOLUME_RINGTONE && (model_data.capabilities & CAP_VOLUME_RINGTONE))
-            {
-                data.index = 20;
-                data.left_nibble = false;
-            }
-            else if (setting == SETTING_VOLUME_HANDSET_DOOR_CALL && (model_data.capabilities & CAP_VOLUME_HANDSET_DOOR_CALL))
-            {
-                data.index = 21;
-                data.left_nibble = false;
-            }
-            else if (setting == SETTING_VOLUME_HANDSET_INTERNAL_CALL && (model_data.capabilities & CAP_VOLUME_HANDSET_INTERNAL_CALL))
-            {
-                data.index = 21;
-                data.left_nibble = true;
+                // AS
+                if (setting == SETTING_AS_ADDRESS && (model_data.capabilities & CAP_AS_ADDRESS))
+                {
+                    data.index = 0;
+                    data.start_bit = 6;
+                    data.length = 7;
+                }
+                else if (setting == SETTING_AS_ADDRESS_LOCK && (model_data.capabilities & CAP_AS_ADDRESS_LOCK))
+                {
+                    data.index = 0;
+                    data.start_bit = 7;
+                    data.length = 1;
+                }
+                else if (setting == SETTING_DOOR_OPENER_DURATION && (model_data.capabilities & CAP_DOOR_OPENER_DURATION))
+                {
+                    data.index = 1;
+                    data.start_bit = 7;
+                    data.length = 4;
+                }
+                else if (setting == SETTING_TALKING_REQUIRES_DOOR_READINESS && (model_data.capabilities & CAP_TALKING_REQUIRES_DOOR_READINESS))
+                {
+                    data.index = 4;
+                    data.start_bit = 5;
+                    data.length = 1;
+                }
+                else if (setting == SETTING_CALLING_DURATION && (model_data.capabilities & CAP_CALLING_DURATION))
+                {
+                    data.index = 3;
+                    data.start_bit = 7;
+                    data.length = 4;
+                }
+                else if (setting == SETTING_DOOR_READINESS_DURATION && (model_data.capabilities & CAP_DOOR_READINESS_DURATION))
+                {
+                    data.index = 2;
+                    data.start_bit = 7;
+                    data.length = 4;
+                }
             }
 
             return data;
@@ -774,7 +1199,7 @@ namespace esphome
             "Ringtone 12",
             "Ringtone 13"
         };
-        
+
         uint8_t ringtone_to_int(const char* str)
         {
             for (uint8_t i = 0; i < sizeof(ringtones) / sizeof(ringtones[0]); ++i) {

@@ -112,6 +112,7 @@ namespace esphome
 
             // Memory reading
             void read_memory();
+            void read_memory_update(uint8_t index);
             void read_memory_block();
             bool write_memory();
             bool memory_buffer_empty() { return this->memory_buffer_.empty(); }
@@ -174,6 +175,7 @@ namespace esphome
 
             // Memory reading
             bool read_memory_flow_ = false;
+            bool read_memory_update_flow_ = false;
             std::vector<uint8_t> memory_buffer_;
             uint8_t reading_memory_count_ = 0;
             uint8_t reading_memory_max_ = 0;

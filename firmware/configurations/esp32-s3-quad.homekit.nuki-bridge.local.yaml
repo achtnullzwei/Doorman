@@ -24,3 +24,4 @@ packages:
   indoor_station_settings: !include ../components/indoor-station-settings.yaml
   addon_nuki_bridge: !include ../components/nuki-bridge.yaml
   interactive_setup: !include ../components/interactive-setup.yaml
+  outdoor_station: !include ../components/outdoor-station.yaml

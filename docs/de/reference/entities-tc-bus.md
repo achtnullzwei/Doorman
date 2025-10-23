@@ -78,7 +78,7 @@ Quickly identifies your indoor station model and saves it.
 Not all models are supported as old models might not support this feature.
 :::
 
-### Read Memory <Badge type="tip" text="read_memory" /> <Badge type="info" text="Disabled by default" />
+### Read Memory <Badge type="tip" text="read_indoor_station_memory" /> <Badge type="info" text="Disabled by default" />
 Reads the memory of the intercom phone with the specified serial number.
 
 

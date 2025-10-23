@@ -152,171 +152,196 @@ namespace esphome
 
         bool TCBusDeviceComponent::on_receive(tc_bus::TelegramData telegram_data, bool received)
         {
-            if(telegram_data.type == TELEGRAM_TYPE_ACK && (read_memory_flow_ || identify_model_flow_))
-            {
-                return true;
-            }
-
             if (received)
             {
                 // From receiver
-                if (read_memory_flow_)
+                if(telegram_data.type == TELEGRAM_TYPE_DATA)
                 {
-                    ESP_LOGD(TAG, "Received 4 memory blocks from %i to %i | Data: 0x%08X", (reading_memory_count_ * 4), (reading_memory_count_ * 4) + 4, telegram_data.raw);
-                        
-                    // Save Data to memory Store
-                    memory_buffer_.push_back((telegram_data.raw >> 24) & 0xFF);
-                    memory_buffer_.push_back((telegram_data.raw >> 16) & 0xFF);
-                    memory_buffer_.push_back((telegram_data.raw >> 8) & 0xFF);
-                    memory_buffer_.push_back(telegram_data.raw & 0xFF);
-
-                    // Next 4 Data Blocks
-                    reading_memory_count_++;
-
-                    // Memory reading complete
-                    if (reading_memory_count_ == reading_memory_max_)
+                    if (read_memory_flow_)
                     {
+                        ESP_LOGD(TAG, "Received 4 memory blocks from %i to %i | Data: 0x%08X", (reading_memory_count_ * 4), (reading_memory_count_ * 4) + 4, telegram_data.raw);
+                            
+                        // Save Data to memory Store
+                        memory_buffer_.push_back((telegram_data.raw >> 24) & 0xFF);
+                        memory_buffer_.push_back((telegram_data.raw >> 16) & 0xFF);
+                        memory_buffer_.push_back((telegram_data.raw >> 8) & 0xFF);
+                        memory_buffer_.push_back(telegram_data.raw & 0xFF);
+
+                        // Next 4 Data Blocks
+                        reading_memory_count_++;
+
+                        // Memory reading complete
+                        if (reading_memory_count_ == reading_memory_max_)
+                        {
+                            // Turn off
+                            this->cancel_timeout("wait_for_memory_reading");
+
+                            ESP_LOGD(TAG, "Reset read_memory_flow_");
+                            read_memory_flow_ = false;
+
+                            ESP_LOGD(TAG, "Reset running_flow_");
+                            running_flow_ = false;
+
+                            this->read_memory_complete_callback_.call(memory_buffer_);
+
+                            this->publish_settings();
+                        }
+                        else
+                        {
+                            read_memory_block();
+                        }
+
+                        // Do not proceed
+                        return true;
+                    }
+                    else if (read_memory_update_flow_)
+                    {
+                        ESP_LOGD(TAG, "Received 4 memory blocks from %i to %i | Data: 0x%08X", (reading_memory_count_ * 4), (reading_memory_count_ * 4) + 4, telegram_data.raw);
+                            
+                        // Save Data to memory Store
+                        memory_buffer_[reading_memory_count_]     = (telegram_data.raw >> 24) & 0xFF;
+                        memory_buffer_[reading_memory_count_ + 1] = (telegram_data.raw >> 16) & 0xFF;
+                        memory_buffer_[reading_memory_count_ + 2] = (telegram_data.raw >> 8) & 0xFF;
+                        memory_buffer_[reading_memory_count_ + 3] = telegram_data.raw & 0xFF;
+
                         // Turn off
                         this->cancel_timeout("wait_for_memory_reading");
 
-                        ESP_LOGD(TAG, "Reset read_memory_flow_");
-                        read_memory_flow_ = false;
+                        ESP_LOGD(TAG, "Reset read_memory_update_flow_");
+                        read_memory_update_flow_ = false;
 
                         ESP_LOGD(TAG, "Reset running_flow_");
                         running_flow_ = false;
 
-                        this->publish_settings();
                         this->read_memory_complete_callback_.call(memory_buffer_);
+
+                        this->publish_settings();
+
+                        // Do not proceed
+                        return true;
                     }
-                    else
+                    else if (identify_model_flow_)
                     {
-                        read_memory_block();
-                    }
+                        ESP_LOGD(TAG, "Received model identification | Data: %s", telegram_data.hex);
 
-                    // Do not proceed
-                    return true;
-                }
-                else if (identify_model_flow_)
-                {
-                    ESP_LOGD(TAG, "Received model identification | Data: %s", telegram_data.hex);
+                        ESP_LOGD(TAG, "Reset identify_model_flow_");
+                        identify_model_flow_ = false;
 
-                    ESP_LOGD(TAG, "Reset identify_model_flow_");
-                    identify_model_flow_ = false;
+                        ESP_LOGD(TAG, "Reset running_flow_");
+                        running_flow_ = false;
 
-                    ESP_LOGD(TAG, "Reset running_flow_");
-                    running_flow_ = false;
+                        this->cancel_timeout("wait_for_identification_group_0");
+                        this->cancel_timeout("wait_for_identification_group_1");
+                        this->cancel_timeout("wait_for_identification_other");
 
-                    this->cancel_timeout("wait_for_identification_group_0");
-                    this->cancel_timeout("wait_for_identification_group_1");
-                    this->cancel_timeout("wait_for_identification_other");
+                        ModelData device;
+                        device.device_group = this->tc_bus_->selected_device_group_;
+                        device.memory_size = 0;
+                        
+                        const char* hex = telegram_data.hex;
 
-                    ModelData device;
-                    device.device_group = this->tc_bus_->selected_device_group_;
-                    device.memory_size = 0;
-                    
-                    const char* hex = telegram_data.hex;
-
-                    if (hex[4] == 'D')
-                    {
-                        // New models
-
-                        // FW Version
-                        char fw_buf[4] = { hex[5], hex[6], hex[7], '\0' };
-                        device.firmware_version = strtol(fw_buf, nullptr, 16);
-
-                        // Firmware major, minor, patch (1 char each)
-                        char tmp[2] = {0};
-                        tmp[0] = hex[5];
-                        device.firmware_major = strtol(tmp, nullptr, 16);
-                        tmp[0] = hex[6];
-                        device.firmware_minor = strtol(tmp, nullptr, 16);
-                        tmp[0] = hex[7];
-                        device.firmware_patch = strtol(tmp, nullptr, 16);
-
-                        // Hardware version (first char, decimal)
-                        tmp[0] = hex[0];
-                        tmp[1] = '\0';
-                        device.hardware_version = strtol(tmp, nullptr, 10);
-
-                        // Model string (substring 1-3)
-                        char model_buf[4] = { hex[1], hex[2], hex[3], '\0' };
-                        device.model = identifier_string_to_model(device.device_group, model_buf, device.hardware_version, device.firmware_version);
-                    }
-                    else
-                    {
-                        if(device.device_group == 0 || device.device_group == 1)
+                        if (hex[4] == 'D')
                         {
-                            // Old indoor station models
-                            switch(telegram_data.raw)
-                            {
-                                // TTC-XX
-                                case 0x08000040:
-                                    device.model = MODEL_IS_TTCXX;
-                                    break;
+                            // New models
 
-                                // TTS-XX
-                                case 0x02010040:
-                                    device.model = MODEL_IS_TTSXX;
-                                    break;
+                            // FW Version
+                            char fw_buf[4] = { hex[5], hex[6], hex[7], '\0' };
+                            device.firmware_version = strtol(fw_buf, nullptr, 16);
 
-                                // ISH 1030
-                                case 0x08000048:
-                                case 0x08080048:
-                                    device.model = MODEL_IS_ISH1030;
-                                    break;
+                            // Firmware major, minor, patch (1 char each)
+                            char tmp[2] = {0};
+                            tmp[0] = hex[5];
+                            device.firmware_major = strtol(tmp, nullptr, 16);
+                            tmp[0] = hex[6];
+                            device.firmware_minor = strtol(tmp, nullptr, 16);
+                            tmp[0] = hex[7];
+                            device.firmware_patch = strtol(tmp, nullptr, 16);
 
-                                default:
-                                    break;
-                            }
-                        }
-                        else if(device.device_group == 4)
-                        {
-                            // Old controller models
-                            switch(telegram_data.raw)
-                            {
-                                case 0x877F5804:
-                                    device.model = MODEL_CTRL_BVS20;
-                                    break;
+                            // Hardware version (first char, decimal)
+                            tmp[0] = hex[0];
+                            tmp[1] = '\0';
+                            device.hardware_version = strtol(tmp, nullptr, 10);
 
-                                default:
-                                    break;
-                            }
+                            // Model string (substring 1-3)
+                            char model_buf[4] = { hex[1], hex[2], hex[3], '\0' };
+                            device.model = identifier_string_to_model(device.device_group, model_buf, device.hardware_version, device.firmware_version);
                         }
                         else
                         {
-                            // Old models of other groups
-                            // Not implemented
+                            if(device.device_group == 0 || device.device_group == 1)
+                            {
+                                // Old indoor station models
+                                switch(telegram_data.raw)
+                                {
+                                    // TTC-XX
+                                    case 0x08000040:
+                                        device.model = MODEL_IS_TTCXX;
+                                        break;
+
+                                    // TTS-XX
+                                    case 0x02010040:
+                                        device.model = MODEL_IS_TTSXX;
+                                        break;
+
+                                    // ISH 1030
+                                    case 0x08000048:
+                                    case 0x08080048:
+                                        device.model = MODEL_IS_ISH1030;
+                                        break;
+
+                                    default:
+                                        break;
+                                }
+                            }
+                            else if(device.device_group == 4)
+                            {
+                                // Old controller models
+                                switch(telegram_data.raw)
+                                {
+                                    case 0x877F5804:
+                                        device.model = MODEL_CTRL_BVS20;
+                                        break;
+
+                                    default:
+                                        break;
+                                }
+                            }
+                            else
+                            {
+                                // Old models of other groups
+                                // Not implemented
+                            }
                         }
-                    }
 
-                    if (device.model != MODEL_NONE)
-                    {
-                        // Add missing information
-                        device.memory_size = getModelData(device.model).memory_size;
-
-                        ESP_LOGD(TAG, "Identified Hardware: %s (v%i) | Firmware: %i.%i.%i",
-                                model_to_string(device.model),
-                                device.hardware_version,
-                                device.firmware_major,
-                                device.firmware_minor,
-                                device.firmware_patch);
-
-                        
-                        // Update Model
-                        if (device.model != this->model_)
+                        if (device.model != MODEL_NONE)
                         {
-                            this->set_model(device.model);
-                        }
-                        this->identify_complete_callback_.call(device);
-                    }
-                    else
-                    {
-                        ESP_LOGE(TAG, "Unable to identify Hardware! Unknown model. Data received: %s", telegram_data.hex);
-                        this->identify_unknown_callback_.call();
-                    }
+                            // Add missing information
+                            device.memory_size = getModelData(device.model).memory_size;
 
-                    // Do not proceed
-                    return true;
+                            ESP_LOGD(TAG, "Identified Hardware: %s (v%i) | Firmware: %i.%i.%i",
+                                    model_to_string(device.model),
+                                    device.hardware_version,
+                                    device.firmware_major,
+                                    device.firmware_minor,
+                                    device.firmware_patch);
+
+                            
+                            // Update Model
+                            if (device.model != this->model_)
+                            {
+                                this->set_model(device.model);
+                            }
+                            this->identify_complete_callback_.call(device);
+                        }
+                        else
+                        {
+                            ESP_LOGE(TAG, "Unable to identify Hardware! Unknown model. Data received: %s", telegram_data.hex);
+                            this->identify_unknown_callback_.call();
+                        }
+
+                        // Do not proceed
+                        return true;
+                    }
                 }
                 else
                 {
@@ -346,14 +371,17 @@ namespace esphome
         {
             if(this->device_group_ == DEVICE_GROUP_INDOOR_STATION)
             {
+                ESP_LOGD(TAG, "Ringtone volume: %i", get_setting(SETTING_VOLUME_RINGTONE));
                 ESP_LOGD(TAG, "Handset volume (Door Call): %i", get_setting(SETTING_VOLUME_HANDSET_DOOR_CALL));
                 ESP_LOGD(TAG, "Handset volume (Internal Call): %i", get_setting(SETTING_VOLUME_HANDSET_INTERNAL_CALL));
-                ESP_LOGD(TAG, "Ringtone volume: %i", get_setting(SETTING_VOLUME_RINGTONE));
 
                 ESP_LOGD(TAG, "Entrance Door Call Ringtone: %i", get_setting(SETTING_RINGTONE_ENTRANCE_DOOR_CALL));
                 ESP_LOGD(TAG, "Second Entrance Door Call Ringtone: %i", get_setting(SETTING_RINGTONE_SECOND_ENTRANCE_DOOR_CALL));
                 ESP_LOGD(TAG, "Floor Call Ringtone: %i", get_setting(SETTING_RINGTONE_FLOOR_CALL));
                 ESP_LOGD(TAG, "Internal Call Ringtone: %i", get_setting(SETTING_RINGTONE_INTERNAL_CALL));
+
+                ESP_LOGD(TAG, "Address Divider (AS): %i", get_setting(SETTING_AS_ADDRESS_DIVIDER));
+                ESP_LOGD(TAG, "Address Divider (VAS): %i", get_setting(SETTING_VAS_ADDRESS_DIVIDER));
 
                 #ifdef USE_SELECT
                     if (this->ringtone_entrance_door_call_select_)
@@ -389,10 +417,21 @@ namespace esphome
                     }
                 #endif
             }
+            else if(this->device_group_ == DEVICE_GROUP_OUTDOOR_STATION)
+            {
+                ESP_LOGD(TAG, "Address: %i", get_setting(SETTING_AS_ADDRESS));
+                ESP_LOGD(TAG, "Address Lock: %s", YESNO(get_setting(SETTING_AS_ADDRESS_LOCK)));
+
+                ESP_LOGD(TAG, "Door Opener Duration: %i", get_setting(SETTING_DOOR_OPENER_DURATION));
+                ESP_LOGD(TAG, "Calling Duration: %i", get_setting(SETTING_CALLING_DURATION));
+                ESP_LOGD(TAG, "Door Readiness Duration: %i", get_setting(SETTING_DOOR_READINESS_DURATION));
+
+                ESP_LOGD(TAG, "Talking requires door readiness: %s", YESNO(get_setting(SETTING_TALKING_REQUIRES_DOOR_READINESS)));
+            }
             else
             {
                 // Other devices
-                ESP_LOGD(TAG, "Can't publish settings for this device group - not implemented yet");
+                ESP_LOGW(TAG, "Can't publish settings for this device group - not implemented yet");
             }
         }
 
@@ -556,6 +595,64 @@ namespace esphome
             read_memory_block();
         }
 
+        void TCBusDeviceComponent::read_memory_update(uint8_t index)
+        {
+            if(running_flow_ || this->read_memory_update_flow_)
+            {
+                ESP_LOGE(TAG, "Another flow is already running");
+                return;
+            }
+
+            if (this->serial_number_ == 0)
+            {
+                ESP_LOGE(TAG, "Unable to read device memory without a serial number!");
+                return;
+            }
+
+            if (this->model_ == MODEL_NONE)
+            {
+                ESP_LOGE(TAG, "Unable to read device memory without a model!");
+                return;
+            }
+
+            if (this->model_data_.memory_size == 0)
+            {
+                ESP_LOGE(TAG, "This model %s (Serial: %i) does not support reading memory!", model_to_string(this->model_), this->serial_number_);
+                // Call timeout callback for unsupported models
+                this->read_memory_timeout_callback_.call();
+                return;
+            }
+            else
+            {
+                ESP_LOGD(TAG, "Reading EEPROM for model %s (Serial: %i)...", model_to_string(this->model_), this->serial_number_);
+            }
+
+            ESP_LOGD(TAG, "Set running_flow_");
+            running_flow_ = true;
+
+            send_telegram(TELEGRAM_TYPE_SELECT_DEVICE_GROUP, 0, this->model_data_.device_group);
+            send_telegram(TELEGRAM_TYPE_SELECT_MEMORY_PAGE, 0, 0);
+  
+            ESP_LOGD(TAG, "Set read_memory_flow_");
+            this->read_memory_update_flow_ = true;
+
+            reading_memory_count_ = (index / 4);
+
+            this->set_timeout("wait_for_memory_reading", 600, [this]()
+            {
+                reading_memory_count_ = 0;
+                reading_memory_max_ = 0;
+
+                ESP_LOGD(TAG, "Reset read_memory_update_flow_");
+                this->read_memory_update_flow_ = false;
+
+                ESP_LOGD(TAG, "Reset running_flow_");
+                running_flow_ = false;
+            });
+
+            read_memory_block();
+        }
+
         void TCBusDeviceComponent::read_memory_block()
         {
             ESP_LOGD(TAG, "Read 4 memory blocks, from %i to %i.", (reading_memory_count_ * 4), (reading_memory_count_ * 4) + 4);
@@ -564,19 +661,13 @@ namespace esphome
 
         bool TCBusDeviceComponent::supports_setting(SettingType type)
         {
-            if (memory_buffer_.size() == 0)
-            {
-                return false;
-            }
-
-            if (this->model_ == MODEL_NONE)
+            if (memory_buffer_.size() == 0 || this->model_ == MODEL_NONE)
             {
                 return false;
             }
 
             // Get Setting Cell Data by Model
             SettingCellData cellData = getSettingCellData(type, this->model_);
-
             if (cellData.index != 0)
             {
                 return true;
@@ -602,10 +693,11 @@ namespace esphome
 
             // Get Setting Cell Data by Model
             SettingCellData cellData = getSettingCellData(type, this->model_);
-
             if (cellData.index != 0)
             {
-                return cellData.left_nibble ? ((memory_buffer_[cellData.index] >> 4) & 0xF) : (memory_buffer_[cellData.index] & 0xF);
+                uint8_t shift = cellData.start_bit - cellData.length + 1;
+                uint8_t mask = (1 << cellData.length) - 1;
+                return (memory_buffer_[cellData.index] >> shift) & mask;
             }
             else
             {
@@ -643,9 +735,14 @@ namespace esphome
             }
 
             ESP_LOGD(TAG, "Writing setting %s (%X) to EEPROM of %s (%i)...", setting_type_to_string(type), new_value, model_to_string(this->model_), this->serial_number_);
-            // Apply new nibble and keep other nibble
-            uint8_t saved_nibble = (cellData.left_nibble ? memory_buffer_[cellData.index] : (memory_buffer_[cellData.index] >> 4)) & 0xF;
-            memory_buffer_[cellData.index] = cellData.left_nibble ? ((new_value << 4) | (saved_nibble & 0xF)) : ((saved_nibble << 4) | (new_value & 0xF));
+            
+            // Apply new data
+            uint8_t shift = cellData.start_bit - cellData.length + 1;
+            uint8_t mask = (1 << cellData.length) - 1;
+            uint8_t current_byte = memory_buffer_[cellData.index];
+            current_byte &= ~(mask << shift);
+            current_byte |= ((new_value & mask) << shift);
+            memory_buffer_[cellData.index] = current_byte;
 
             // Prepare Transmission
             // Select device group

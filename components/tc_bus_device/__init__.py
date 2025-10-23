@@ -49,8 +49,17 @@ SETTING_TYPES = {
     "ringtone_internal_call": SETTING_TYPE.SETTING_RINGTONE_INTERNAL_CALL,
     "volume_ringtone": SETTING_TYPE.SETTING_VOLUME_RINGTONE,
     "volume_handset_door": SETTING_TYPE.SETTING_VOLUME_HANDSET_DOOR,
-    "volume_handset_internal": SETTING_TYPE.SETTING_VOLUME_HANDSET_INTERNAL
+    "volume_handset_internal": SETTING_TYPE.SETTING_VOLUME_HANDSET_INTERNAL,
+    "as_address_divider": SETTING_TYPE.SETTING_AS_ADDRESS_DIVIDER,
+    "vas_address_divider": SETTING_TYPE.SETTING_VAS_ADDRESS_DIVIDER,
+    "door_opener_duration": SETTING_TYPE.SETTING_DOOR_OPENER_DURATION,
+    "as_address": SETTING_TYPE.SETTING_AS_ADDRESS,
+    "as_address_lock": SETTING_TYPE.SETTING_AS_ADDRESS_LOCK,
+    "talking_requires_door_readiness": SETTING_TYPE.SETTING_TALKING_REQUIRES_DOOR_READINESS,
+    "door_readiness_duration": SETTING_TYPE.SETTING_DOOR_READINESS_DURATION,
+    "calling_duration": SETTING_TYPE.SETTING_CALLING_DURATION,
 }
+
 
 DEVICE_GROUP = tc_bus_ns.enum("DeviceGroup")
 DEVICE_GROUPS = {
@@ -132,6 +141,12 @@ CONF_MODEL_IS = [
 
 CONF_MODEL_AS = [
     "DEBUG AS",
+    "TCS PUK",
+    "TCS PAK",
+    "TCS PxS",
+    "TCS TCU2",
+    "TCS TCU3",
+    "TCS TCU4",
 ]
 
 CONF_MODEL_CTRL = [

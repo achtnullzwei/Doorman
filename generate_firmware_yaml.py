@@ -64,6 +64,9 @@ def get_packages(host, api_variant, firmware, branch):
         ('indoor_station_settings', '!include ../components/indoor-station-settings.yaml', True),
         ('addon_nuki_bridge', '!include ../components/nuki-bridge.yaml', firmware == 'nuki-bridge'),
         ('interactive_setup', '!include ../components/interactive-setup.yaml', True),
+
+        # Add outdoor station for local tests
+        ('outdoor_station', '!include ../components/outdoor-station.yaml', branch == 'local'),
     ]
     
     return [(name, path) for name, path, condition in packages_config if condition]

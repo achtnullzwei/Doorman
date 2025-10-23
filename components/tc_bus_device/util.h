@@ -52,7 +52,6 @@ namespace esphome
             MODEL_IS_ISH3340,
             MODEL_IS_ISH3022,
             MODEL_IS_ISH3130,
-            MODEL_IS_ISW3022,
             MODEL_IS_ISH3230,
             MODEL_IS_ISH3030,
             MODEL_IS_ISH1030,
@@ -87,6 +86,12 @@ namespace esphome
             MODEL_IS_DEBUG_1,
 
             MODEL_AS_DEBUG,
+            MODEL_AS_PUK,
+            MODEL_AS_PAK,
+            MODEL_AS_PXS,
+            MODEL_AS_TCU2,
+            MODEL_AS_TCU3,
+            MODEL_AS_TCU4,
 
             MODEL_CTRL_BVS20,
             MODEL_CTRL_BVS30,
@@ -112,7 +117,15 @@ namespace esphome
             SETTING_RINGTONE_INTERNAL_CALL,
             SETTING_VOLUME_RINGTONE,
             SETTING_VOLUME_HANDSET_DOOR_CALL,
-            SETTING_VOLUME_HANDSET_INTERNAL_CALL
+            SETTING_VOLUME_HANDSET_INTERNAL_CALL,
+            SETTING_AS_ADDRESS_DIVIDER,
+            SETTING_VAS_ADDRESS_DIVIDER,
+            SETTING_DOOR_OPENER_DURATION,
+            SETTING_AS_ADDRESS,
+            SETTING_AS_ADDRESS_LOCK,
+            SETTING_TALKING_REQUIRES_DOOR_READINESS,
+            SETTING_DOOR_READINESS_DURATION,
+            SETTING_CALLING_DURATION
         };
 
         struct SettingMapping {
@@ -122,7 +135,8 @@ namespace esphome
 
         struct SettingCellData {
             uint8_t index = 0;
-            bool left_nibble = false;
+            uint8_t start_bit = 0;
+            uint8_t length = 0;
         };
 
         enum ModelCapabilities {
@@ -132,7 +146,15 @@ namespace esphome
             CAP_RINGTONE_SECOND_ENTRANCE_DOOR_CALL = (1 << 3),
             CAP_VOLUME_RINGTONE = (1 << 4),
             CAP_VOLUME_HANDSET_DOOR_CALL = (1 << 5),
-            CAP_VOLUME_HANDSET_INTERNAL_CALL = (1 << 6)
+            CAP_VOLUME_HANDSET_INTERNAL_CALL = (1 << 6),
+            CAP_AS_ADDRESS_DIVIDER = (1 << 7),
+            CAP_VAS_ADDRESS_DIVIDER = (1 << 8),
+            CAP_DOOR_OPENER_DURATION = (1 << 9),
+            CAP_AS_ADDRESS = (1 << 10),
+            CAP_AS_ADDRESS_LOCK = (1 << 11),
+            CAP_TALKING_REQUIRES_DOOR_READINESS = (1 << 12),
+            CAP_DOOR_READINESS_DURATION = (1 << 13),
+            CAP_CALLING_DURATION = (1 << 14),
         };
 
         struct ModelData {
