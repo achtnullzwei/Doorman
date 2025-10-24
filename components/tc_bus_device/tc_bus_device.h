@@ -123,6 +123,14 @@ namespace esphome
             bool update_setting(SettingType type, uint8_t new_value);
             void publish_settings();
 
+            uint8_t get_memory_byte(uint8_t index);
+
+            uint8_t get_doorbell_button_memory_index(uint8_t row, uint8_t col);
+            DoorbellButtonConfig get_doorbell_button(uint8_t row);
+            DoorbellButtonConfig get_doorbell_button(uint8_t row, uint8_t col);
+            bool update_doorbell_button(uint8_t row, DoorbellButtonConfig data);
+            bool update_doorbell_button(uint8_t row, uint8_t col, DoorbellButtonConfig data);
+
             // Identification
             void request_version();
 

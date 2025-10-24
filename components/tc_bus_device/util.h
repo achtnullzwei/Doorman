@@ -87,8 +87,12 @@ namespace esphome
 
             MODEL_AS_DEBUG,
             MODEL_AS_PUK,
-            MODEL_AS_PAK,
-            MODEL_AS_PXS,
+            MODEL_AS_PUK_DSP,
+            MODEL_AS_PAKV2,
+            MODEL_AS_PAKV3,
+            MODEL_AS_PDS0X04,
+            MODEL_AS_PDS0X,
+            MODEL_AS_PES,
             MODEL_AS_TCU2,
             MODEL_AS_TCU3,
             MODEL_AS_TCU4,
@@ -125,7 +129,9 @@ namespace esphome
             SETTING_AS_ADDRESS_LOCK,
             SETTING_TALKING_REQUIRES_DOOR_READINESS,
             SETTING_DOOR_READINESS_DURATION,
-            SETTING_CALLING_DURATION
+            SETTING_CALLING_DURATION,
+            SETTING_BUTTON_ROWS,
+            SETTING_HAS_CODE_LOCK
         };
 
         struct SettingMapping {
@@ -137,6 +143,22 @@ namespace esphome
             uint8_t index = 0;
             uint8_t start_bit = 0;
             uint8_t length = 0;
+        };
+
+        enum DoorbellButtonAction {
+            DOORBELL_BUTTON_ACTION_NONE = 0xF,
+            DOORBELL_BUTTON_ACTION_DOOR_CALL = 0x0,
+            DOORBELL_BUTTON_ACTION_LIGHT = 0x1,
+            DOORBELL_BUTTON_ACTION_CONTROL_FUNCTION = 0x2,
+        };
+
+        struct DoorbellButtonConfig {
+            static constexpr uint32_t DOORBELL_BUTTON_UNASSIGNED = 0xFFFFF;
+
+            DoorbellButtonAction primary_action = DOORBELL_BUTTON_ACTION_NONE;
+            uint32_t primary_payload = DOORBELL_BUTTON_UNASSIGNED;
+            DoorbellButtonAction secondary_action = DOORBELL_BUTTON_ACTION_NONE;
+            uint32_t secondary_payload = DOORBELL_BUTTON_UNASSIGNED;
         };
 
         enum ModelCapabilities {
@@ -155,6 +177,9 @@ namespace esphome
             CAP_TALKING_REQUIRES_DOOR_READINESS = (1 << 12),
             CAP_DOOR_READINESS_DURATION = (1 << 13),
             CAP_CALLING_DURATION = (1 << 14),
+            CAP_BUTTON_ROWS = (1 << 15),
+            CAP_HAS_CODE_LOCK = (1 << 16),
+            CAP_UPDATE_DOORBELL_BUTTON = (1 << 17),
         };
 
         struct ModelData {

@@ -422,27 +422,54 @@ namespace esphome
                 ESP_LOGD(TAG, "Address: %i", get_setting(SETTING_AS_ADDRESS));
                 ESP_LOGD(TAG, "Address Lock: %s", YESNO(get_setting(SETTING_AS_ADDRESS_LOCK)));
 
-                ESP_LOGD(TAG, "Talking requires door readiness: %s", YESNO(get_setting(SETTING_TALKING_REQUIRES_DOOR_READINESS)));
-                
-                uint8_t door_opener_dur = get_setting(SETTING_DOOR_OPENER_DURATION);
-                if(door_opener_dur == 0)
+                uint8_t button_rows = get_setting(SETTING_BUTTON_ROWS);
+                uint8_t button_cols = 1;
+                uint8_t col_offset = 0;
+
+                if(this->model_ == MODEL_AS_TCU2)
                 {
-                    ESP_LOGD(TAG, "Door Opener Duration: %s Unlimited");
+                    button_rows = 4;
+                    button_cols = 4;
+                    col_offset = 4;
                 }
-                else
+                else if (this->model_ == MODEL_AS_PES)
                 {
-                    ESP_LOGD(TAG, "Door Opener Duration: %i sec.", door_opener_dur * 8);
+                    button_cols = 2;
+                }
+                else if (this->model_ == MODEL_AS_PDS0X || this->model_ == MODEL_AS_PDS0X04)
+                {
+                    if(get_setting(SETTING_HAS_CODE_LOCK) == 254)
+                    {
+                        button_rows = 1;
+                    }
                 }
 
+                ESP_LOGD(TAG, "Physical Buttons: %i", button_rows * button_cols);
+
+                for (uint8_t row = 1; row <= button_rows; row++) {
+                    for (uint8_t col = 1; col <= button_cols; col++) {
+                        // For non-matrix models, col is ignored (pass 0)
+                        uint8_t col_param = (button_cols > 1) ? col + col_offset : 0;
+                        DoorbellButtonConfig btn = get_doorbell_button(row, col_param);
+                        
+                        if (button_cols > 1) {
+                            ESP_LOGD(TAG, " Button [%i,%i]:", row, col);
+                        } else {
+                            ESP_LOGD(TAG, " Button %i:", row);
+                        }
+                        
+                        ESP_LOGD(TAG, "   Primary Action: %x (%i)", btn.primary_action, btn.primary_payload);
+                        ESP_LOGD(TAG, "   Secondary Action: %x (%i)", btn.secondary_action, btn.secondary_payload);
+                    }
+                }
+
+                ESP_LOGD(TAG, "Talking requires door readiness: %s", YESNO(get_setting(SETTING_TALKING_REQUIRES_DOOR_READINESS)));
+
+                uint8_t door_opener_dur = get_setting(SETTING_DOOR_OPENER_DURATION);
+                ESP_LOGD(TAG, "Door Opener Duration: %i sec.", door_opener_dur);
+
                 uint8_t calling_dur = get_setting(SETTING_CALLING_DURATION);
-                if(calling_dur == 0)
-                {
-                    ESP_LOGD(TAG, "Calling Duration: Unlimited");
-                }
-                else
-                {
-                    ESP_LOGD(TAG, "Calling Duration: %i sec.", calling_dur * 8);
-                }
+                ESP_LOGD(TAG, "Calling Duration: %f sec.", calling_dur * 0.5);
 
                 uint8_t door_readiness_dur = get_setting(SETTING_DOOR_READINESS_DURATION);
                 if(door_readiness_dur == 0)
@@ -685,9 +712,271 @@ namespace esphome
             send_telegram(TELEGRAM_TYPE_READ_MEMORY_BLOCK, reading_memory_count_, 0, 300);
         }
 
+        uint8_t TCBusDeviceComponent::get_doorbell_button_memory_index(uint8_t row, uint8_t col)
+        {
+            // Model-specific button index mappings
+            static const uint8_t dsp_indices[][10] = {
+                {}, {20}, {20, 26}, {14, 20, 26}, {8, 14, 20, 26, 32, 38, 44, 50, 56, 62}
+            };
+
+            static const uint8_t puk_indices[][10] = {
+                {}, {20}, {20, 14}, {26, 20, 14}, {32, 26, 20, 14, 8, 38, 44, 50, 56, 62}
+            };
+
+            static const uint8_t pakv2_indices[][8] = {
+                {}, {20}, {20, 26}, {14, 20, 26}, {8, 14, 20, 26, 32, 38, 44, 50}
+            };
+
+            static const uint8_t pakv3_indices[][8] = {
+                {}, {14}, {14, 20}, {8, 14, 20}, {8, 14, 20, 26, 32, 38, 44, 50}
+            };
+
+            static const uint8_t pds0x_indices[][3] = {
+                {}, {104}, {98, 104}, {98, 104, 110}
+            };
+            static const uint8_t pds_indices[][3] = {
+                {}, {44}
+            };
+            static const uint8_t pds0x04_indices[][3] = {
+                {}, {86}, {92, 86}, {92, 86, 80}
+            };
+
+            // Matrix [row 1-4][col 5-8] -> values 98 down to 8
+            static const uint8_t tcu2_indices[][4] = {
+                {98, 92, 86, 80},
+                {74, 68, 62, 56},
+                {50, 44, 38, 32},
+                {26, 20, 14, 8}
+            };
+
+            static const uint8_t tcu34_indices[][4] = {
+                {8, 14, 20, 26},
+                {32, 38, 44, 50},
+                {56, 62, 68, 74},
+                {80, 86, 92, 98}
+            };
+
+            uint8_t button_rows = get_setting(SETTING_BUTTON_ROWS);
+
+            if (this->model_ == MODEL_AS_TCU2) {
+                if (row >= 1 && row <= 4 && col >= 5 && col <= 8) {
+                    return tcu2_indices[row - 1][col - 5];
+                }
+                return 0;
+            }
+            
+            if (this->model_ == MODEL_AS_TCU3 || this->model_ == MODEL_AS_TCU4) {
+                if (row >= 1 && row <= 4 && col >= 5 && col <= 8) {
+                    return tcu34_indices[row - 1][col - 5];
+                }
+                return 0;
+            }
+            
+            if (this->model_ == MODEL_AS_PES) {
+                if (col < 1 || col > 2 || row < 1) {
+                    return 0;
+                }
+
+                uint8_t offset = 0;
+                
+                // If button_rows <= 4, use offset to shift rows
+                if (button_rows <= 4) {
+                    offset = 4;
+                } else {
+                    // For button_rows > 4, manually map first 4 rows
+                    if (row <= 4) {
+                        static const uint8_t pes_first_4[][2] = {
+                            {92, 32}, {86, 26}, {80, 20}, {74, 14}
+                        };
+                        return pes_first_4[row - 1][col - 1];
+                    }
+                }
+
+                // Map remaining rows (5-10) or all rows (1-6) if offset=4
+                static const uint8_t pes_dynamic[][2] = {
+                    {68, 8}, {98, 38}, {104, 44}, {110, 50}, {116, 56}, {122, 62}
+                };
+
+                uint8_t dynamic_row = row + offset - 5;  // Convert to 0-based index
+                if (dynamic_row < 6) {
+                    return pes_dynamic[dynamic_row][col - 1];
+                }
+
+                return 0;
+            }
+
+            const uint8_t* indices = nullptr;
+            uint8_t max_buttons = 0;
+
+            switch(this->model_) {
+                case MODEL_AS_PUK_DSP:
+                    indices = &dsp_indices[0][0];
+                    max_buttons = 10;
+                    break;
+                case MODEL_AS_PUK:
+                    indices = &puk_indices[0][0];
+                    max_buttons = 10;
+                    break;
+                case MODEL_AS_PAKV2:
+                    indices = &pakv2_indices[0][0];
+                    max_buttons = 8;
+                    break;
+                case MODEL_AS_PAKV3:
+                    indices = &pakv3_indices[0][0];
+                    max_buttons = 8;
+                    break;
+                case MODEL_AS_PDS0X:
+                    if(get_setting(SETTING_HAS_CODE_LOCK) == 254) {
+                        indices = &pds_indices[0][0];
+                        max_buttons = 1;
+                    } else {
+                        indices = &pds0x04_indices[0][0];
+                        max_buttons = 3;
+                    }
+                    break;
+                case MODEL_AS_PDS0X04:
+                    if(get_setting(SETTING_HAS_CODE_LOCK) == 254) {
+                        indices = &pds_indices[0][0];
+                        max_buttons = 1;
+                    } else {
+                        indices = &pds0x04_indices[0][0];
+                        max_buttons = 3;
+                    }
+                    break;
+                default:
+                    return 0;
+            }
+
+            if (indices && row > 0 && row <= max_buttons) {
+                uint8_t config = (button_rows <= 3) ? button_rows : 4;
+                return indices[config * max_buttons + row - 1];
+            }
+
+            return 0;
+        }
+
+        DoorbellButtonConfig TCBusDeviceComponent::get_doorbell_button(uint8_t row)
+        {
+            return get_doorbell_button(row, 1);
+        }
+
+        DoorbellButtonConfig TCBusDeviceComponent::get_doorbell_button(uint8_t row, uint8_t col)
+        {
+            DoorbellButtonConfig button{};
+
+            if (memory_buffer_.empty())
+            {
+                ESP_LOGE(TAG, "Memory buffer is empty. Please read memory before proceeding!");
+                return button;
+            }
+
+            if (this->model_ == MODEL_NONE || this->model_data_.device_group != 2)
+            {
+                ESP_LOGE(TAG, "This model is not an outdoor station and unsupported!");
+                return button;
+            }
+
+            uint8_t base_index = get_doorbell_button_memory_index(row, col);
+            if (base_index == 0) {
+                return button;
+            }
+
+            // First action
+            uint8_t primary_action_value = (memory_buffer_[base_index] >> 4) & 0x0F;
+            if (primary_action_value == 0xF || primary_action_value == 0x0 || primary_action_value == 0x1 || primary_action_value == 0x2) {
+                button.primary_action = static_cast<DoorbellButtonAction>(primary_action_value);
+            } else {
+                button.primary_action = DOORBELL_BUTTON_ACTION_NONE;
+            }
+            button.primary_payload = ((memory_buffer_[base_index] & 0x0F) << 16) | (memory_buffer_[base_index + 1] << 8) | memory_buffer_[base_index + 2];
+
+            // Second action
+            uint8_t secondary_action_value = (memory_buffer_[base_index + 3] >> 4) & 0x0F;
+            if (secondary_action_value == 0xF || secondary_action_value == 0x0 || secondary_action_value == 0x1 || secondary_action_value == 0x2) {
+                button.secondary_action = static_cast<DoorbellButtonAction>(secondary_action_value);
+            } else {
+                button.secondary_action = DOORBELL_BUTTON_ACTION_NONE;
+            }
+            button.secondary_payload = ((memory_buffer_[base_index + 3] & 0x0F) << 16) | (memory_buffer_[base_index + 4] << 8) | memory_buffer_[base_index + 5];
+
+            return button;
+        }
+
+        bool TCBusDeviceComponent::update_doorbell_button(uint8_t row, DoorbellButtonConfig button)
+        {
+            return update_doorbell_button(row, 1, button);
+        }
+
+        bool TCBusDeviceComponent::update_doorbell_button(uint8_t row, uint8_t col, DoorbellButtonConfig button)
+        {
+            if (this->memory_buffer_.empty())
+            {
+                ESP_LOGE(TAG, "Memory buffer is empty. Please read memory before proceeding!");
+                return false;
+            }
+
+            if (this->model_ == MODEL_NONE || this->model_data_.device_group != 2)
+            {
+                ESP_LOGE(TAG, "This model is not an outdoor station!");
+                return false;
+            }
+
+            if (!(this->model_data_.capabilities & CAP_UPDATE_DOORBELL_BUTTON))
+            {
+                ESP_LOGE(TAG, "For your own safety, the feature is disabled on this model!");
+                return false;
+            }
+
+            uint8_t base_index = get_doorbell_button_memory_index(row, col);
+            if (base_index == 0)
+            {
+                return false;
+            }
+
+            // First action (bytes 0-2)
+            memory_buffer_[base_index] = (button.primary_action << 4) | ((button.primary_payload >> 16) & 0x0F);
+            memory_buffer_[base_index + 1] = (button.primary_payload >> 8) & 0xFF;
+            memory_buffer_[base_index + 2] = button.primary_payload & 0xFF;
+
+            // Second action (bytes 3-5)
+            memory_buffer_[base_index + 3] = (button.secondary_action << 4) | ((button.secondary_payload >> 16) & 0x0F);
+            memory_buffer_[base_index + 4] = (button.secondary_payload >> 8) & 0xFF;
+            memory_buffer_[base_index + 5] = button.secondary_payload & 0xFF;
+
+            // Prepare Transmission
+            // Select device group
+            send_telegram(TELEGRAM_TYPE_SELECT_DEVICE_GROUP, 0, this->model_data_.device_group);
+
+            // Select memory page %i of serial number %i
+            send_telegram(TELEGRAM_TYPE_SELECT_MEMORY_PAGE, 0, 0);
+
+            // Transfer new button assignments (2 bytes per transmission)
+            uint16_t value1 = (memory_buffer_[base_index] << 8) | memory_buffer_[base_index + 1];
+            uint16_t value2 = (memory_buffer_[base_index + 2] << 8) | memory_buffer_[base_index + 3];
+            uint16_t value3 = (memory_buffer_[base_index + 4] << 8) | memory_buffer_[base_index + 5];
+
+            send_telegram(TELEGRAM_TYPE_WRITE_MEMORY, base_index, value1);
+            send_telegram(TELEGRAM_TYPE_WRITE_MEMORY, base_index + 2, value2);
+            send_telegram(TELEGRAM_TYPE_WRITE_MEMORY, base_index + 4, value3);
+
+            // Reset
+            send_telegram(TELEGRAM_TYPE_RESET);
+
+            return true;
+        }
+
+        uint8_t TCBusDeviceComponent::get_memory_byte(uint8_t index)
+        {
+            if (memory_buffer_.empty() || index >= memory_buffer_.size())
+            {
+                return 0xFF;
+            }
+            return memory_buffer_[index];
+        }
+
         bool TCBusDeviceComponent::supports_setting(SettingType type)
         {
-            if (memory_buffer_.size() == 0 || this->model_ == MODEL_NONE)
+            if (memory_buffer_.empty() || this->model_ == MODEL_NONE)
             {
                 return false;
             }
@@ -706,7 +995,7 @@ namespace esphome
 
         uint8_t TCBusDeviceComponent::get_setting(SettingType type)
         {
-            if (memory_buffer_.size() == 0)
+            if (memory_buffer_.empty())
             {
                 return 0;
             }
@@ -735,7 +1024,7 @@ namespace esphome
 
         bool TCBusDeviceComponent::update_setting(SettingType type, uint8_t new_value)
         {
-            if (this->memory_buffer_.size() == 0)
+            if (this->memory_buffer_.empty())
             {
                 ESP_LOGE(TAG, "Memory buffer is empty. Please read memory before proceeding!");
                 return false;
@@ -790,7 +1079,7 @@ namespace esphome
 
         bool TCBusDeviceComponent::write_memory()
         {
-            if (this->memory_buffer_.size() == 0)
+            if (this->memory_buffer_.empty())
             {
                 ESP_LOGE(TAG, "Memory buffer is empty! Please read memory first before proceeding.");
                 return false;

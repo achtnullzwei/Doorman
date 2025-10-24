@@ -21,6 +21,10 @@ TCBusDeviceUpdateSettingAction = tc_bus_ns.class_(
     "TCBusDeviceUpdateSettingAction", automation.Action
 )
 
+TCBusDeviceUpdateDoorbellButtonAction = tc_bus_ns.class_(
+    "TCBusDeviceUpdateDoorbellButtonAction", automation.Action
+)
+
 TCBusDeviceReadMemoryAction = tc_bus_ns.class_(
     "TCBusDeviceReadMemoryAction", automation.Action
 )
@@ -58,8 +62,17 @@ SETTING_TYPES = {
     "talking_requires_door_readiness": SETTING_TYPE.SETTING_TALKING_REQUIRES_DOOR_READINESS,
     "door_readiness_duration": SETTING_TYPE.SETTING_DOOR_READINESS_DURATION,
     "calling_duration": SETTING_TYPE.SETTING_CALLING_DURATION,
+    "button_rows": SETTING_TYPE.SETTING_BUTTON_ROWS,
+    "has_code_lock": SETTING_TYPE.SETTING_HAS_CODE_LOCK,
 }
 
+DOORBELL_BUTTON_ACTION = tc_bus_ns.enum("DoorbellButtonAction")
+DOORBELL_BUTTON_ACTIONS = {
+    "none": DOORBELL_BUTTON_ACTION.DOORBELL_BUTTON_ACTION_NONE,
+    "light": DOORBELL_BUTTON_ACTION.DOORBELL_BUTTON_ACTION_LIGHT,
+    "door_call": DOORBELL_BUTTON_ACTION.DOORBELL_BUTTON_ACTION_DOOR_CALL,
+    "control_function": DOORBELL_BUTTON_ACTION.DOORBELL_BUTTON_ACTION_CONTROL_FUNCTION,
+}
 
 DEVICE_GROUP = tc_bus_ns.enum("DeviceGroup")
 DEVICE_GROUPS = {
@@ -142,8 +155,12 @@ CONF_MODEL_IS = [
 CONF_MODEL_AS = [
     "DEBUG AS",
     "TCS PUK",
-    "TCS PAK",
-    "TCS PxS",
+    "TCS PUK-DSP",
+    "TCS PAKV2",
+    "TCS PAKV3",
+    "TCS PDS0X",
+    "TCS PDS0X/04",
+    "TCS PES",
     "TCS TCU2",
     "TCS TCU3",
     "TCS TCU4",
@@ -186,6 +203,13 @@ CONF_TELEGRAM = "telegram"
 CONF_IS_LONG = "is_long"
 CONF_ADDRESS = "address"
 CONF_PAYLOAD = "payload"
+
+CONF_BUTTON_ROW = "button_row"
+CONF_BUTTON_COL = "button_col"
+CONF_PRIMARY_ACTION = "primary_action"
+CONF_PRIMARY_PAYLOAD = "primary_payload"
+CONF_SECONDARY_ACTION = "secondary_action"
+CONF_SECONDARY_PAYLOAD = "secondary_payload"
 
 CONF_ON_READ_MEMORY_COMPLETE = "on_read_memory_complete"
 CONF_ON_READ_MEMORY_TIMEOUT = "on_read_memory_timeout"
@@ -263,7 +287,6 @@ async def to_code(config):
         trigger = cg.new_Pvariable(conf[CONF_TRIGGER_ID], var)
         await automation.build_automation(trigger, [], conf)
 
-
 TC_BUS_DEVICE_SEND_SCHEMA = cv.All(
     cv.Schema(
     {
@@ -294,8 +317,6 @@ async def tc_bus_device_send_to_code(config, action_id, template_args, args):
 
     return var
 
-
-
 TC_BUS_DEVICE_UPDATE_SETTING_SCHEMA = cv.All(
     cv.Schema(
     {
@@ -322,7 +343,51 @@ async def tc_bus_device_update_setting_to_code(config, action_id, template_args,
 
     return var
 
+TC_BUS_DEVICE_UPDATE_DOORBELL_BUTTON_SCHEMA = cv.All(
+    cv.Schema(
+    {
+        cv.GenerateID(CONF_ID): cv.use_id(TCBusDeviceComponent),
+        cv.Required(CONF_BUTTON_ROW): cv.templatable(cv.hex_uint8_t),
+        cv.Optional(CONF_BUTTON_COL, default="1"): cv.templatable(cv.hex_uint8_t),
+        cv.Optional(CONF_PRIMARY_ACTION): cv.templatable(cv.enum(DOORBELL_BUTTON_ACTIONS, upper=False)),
+        cv.Optional(CONF_PRIMARY_PAYLOAD): cv.templatable(cv.hex_uint32_t),
+        cv.Optional(CONF_SECONDARY_ACTION): cv.templatable(cv.enum(DOORBELL_BUTTON_ACTIONS, upper=False)),
+        cv.Optional(CONF_SECONDARY_PAYLOAD): cv.templatable(cv.hex_uint32_t),
+    })
+)
 
+@automation.register_action(
+    "tc_bus_device.update_doorbell_button",
+    TCBusDeviceUpdateDoorbellButtonAction,
+    TC_BUS_DEVICE_UPDATE_DOORBELL_BUTTON_SCHEMA
+)
+async def tc_bus_device_update_doorbell_button_to_code(config, action_id, template_args, args):
+    parent = await cg.get_variable(config[CONF_ID])
+    var = cg.new_Pvariable(action_id, template_args, parent)
+
+    button_row_template = await cg.templatable(config[CONF_BUTTON_ROW], args, cg.uint8)
+    cg.add(var.set_button_row(button_row_template))
+
+    button_col_template = await cg.templatable(config[CONF_BUTTON_COL], args, cg.uint8)
+    cg.add(var.set_button_col(button_col_template))
+
+    if CONF_PRIMARY_ACTION in config:
+        primary_action_template = await cg.templatable(config[CONF_PRIMARY_ACTION], args, DOORBELL_BUTTON_ACTION)
+        cg.add(var.set_primary_action(primary_action_template))
+
+    if CONF_PRIMARY_PAYLOAD in config:
+        primary_payload_template = await cg.templatable(config[CONF_PRIMARY_PAYLOAD], args, cg.uint32)
+        cg.add(var.set_primary_payload(primary_payload_template))
+
+    if CONF_SECONDARY_ACTION in config:
+        secondary_action_template = await cg.templatable(config[CONF_SECONDARY_ACTION], args, DOORBELL_BUTTON_ACTION)
+        cg.add(var.set_secondary_action(secondary_action_template))
+
+    if CONF_SECONDARY_PAYLOAD in config:
+        secondary_payload_template = await cg.templatable(config[CONF_SECONDARY_PAYLOAD], args, cg.uint32)
+        cg.add(var.set_secondary_payload(secondary_payload_template))
+
+    return var
 
 @automation.register_action(
     "tc_bus_device.read_memory",
@@ -338,8 +403,6 @@ async def tc_bus_device_read_memory_to_code(config, action_id, template_args, ar
     var = cg.new_Pvariable(action_id, template_args, parent)
     
     return var
-
-
 
 @automation.register_action(
     "tc_bus_device.identify",

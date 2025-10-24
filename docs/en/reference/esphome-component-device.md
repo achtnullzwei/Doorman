@@ -153,6 +153,37 @@ on_...:
       value: 7
 ```
 
+### Update Doorbell Buttons <Badge type="tip" text="tc_bus_device.update_doorbell_button" />
+This action allows you to configure the physical doorbell buttons of an outdoor station device.
+
+::: warning EXPERIMENTAL
+This feature is experimental, use with caution.
+:::
+
+#### Supported actions:
+
+- `none` — No action is assigned.
+- `door_call` — Triggers a door call.
+- `light` — Controls the light function.
+- `control_function` — Executes a custom control function.
+
+If no action is specified, the default value is `none`.
+If no payload is provided, it remains unset.
+
+For matrix systems, you can use the `button_col` parameter. For other systems, this parameter is not required.
+
+```yaml
+on_...:
+  - tc_bus_device.update_doorbell_button:
+      id: my_tc_bus_outdoor_station_device
+      button_row: 1
+      button_col: 1
+      primary_action: door_call
+      primary_payload: 798906
+      secondary_action: control_function
+      secondary_payload: 8
+```
+
 ### Sending Telegrams <Badge type="tip" text="tc_bus_device.send" />
 You can send device related telegrams on the bus using this action.
 
@@ -266,8 +297,7 @@ binary_sensor:
 ## Advanced Configuration
 
 ### Accessing device settings
-If you need to access the supported settings in the memory buffer you can use the `get_setting` and `update_setting` methods of the `tc_bus_device` instance.
-Take a look at the [setting types](#setting-types).
+If you need to access the supported settings in the memory buffer you can use the `get_setting` and `update_setting` methods of the `tc_bus_device` instance. Take a look at the [setting types](#setting-types).
 
 Example (read and write setting):
 ```yaml
@@ -293,6 +323,72 @@ button:
           value: 7
 ```
 
+### Accessing outdoor station doorbell button configuration
+If you need to access the doorbell button configuration of an outdoor station in the memory buffer you can use the `get_doorbell_button` and `update_doorbell_button` methods of the `tc_bus_device` instance. Take a look at the [doorbell button actions](#doorbell-button-actions).
+
+Example (read and write doorbell button actions):
+```yaml
+button:
+  - platform: template
+    name: "Read Actions of Doorbell Button 1 via lambda"
+    on_press:
+      - lambda: |-
+          DoorbellButtonAction button = id(my_tc_bus_outdoor_station_device)->get_doorbell_button(1);
+          ESP_LOGD("TAG", "Primary Action: %x", button.primary_action);
+          ESP_LOGD("TAG", "Primary Payload: %x", button.primary_payload);
+          ESP_LOGD("TAG", "Secondary Action: %x", button.secondary_action);
+          ESP_LOGD("TAG", "Secondary Payload: %x", button.secondary_payload);
+
+  - platform: template
+    name: "Set Doorbell Button 1 via lambda"
+    on_press:
+      - lambda: |-
+          DoorbellButtonAction button;
+          button.primary_action = DOORBELL_BUTTON_ACTION_DOOR_CALL;
+          button.primary_payload = 123456;
+
+          id(my_tc_bus_outdoor_station_device)->update_doorbell_button(1, button);
+
+  - platform: template
+    name: "Set Doorbell Button 1 via action"
+    on_press:
+      - tc_bus_device.update_doorbell_button:
+          id: my_tc_bus_outdoor_station_device
+          button_row: 1
+          primary_action: door_call
+          primary_payload: 123456
+
+  - platform: template
+    name: "Set Matrix Button 1;5 via action"
+    on_press:
+      - tc_bus_device.update_doorbell_button:
+          id: my_tc_bus_outdoor_station_device
+          button_row: 1
+          button_col: 5
+          primary_action: door_call
+          primary_payload: 123456
+
+  - platform: template
+    name: "Reset Doorbell Button 1 via action"
+    on_press:
+      - tc_bus_device.update_doorbell_button:
+          id: my_tc_bus_outdoor_station_device
+          button_row: 1
+```
+
+## Doorbell Button Data
+The `DoorbellButtonConfig` struct is used internally.
+
+```c++
+struct DoorbellButtonConfig
+ {
+    DoorbellButtonAction primary_action = DOORBELL_BUTTON_ACTION_NONE;
+    uint32_t primary_payload = DOORBELL_BUTTON_UNASSIGNED;
+    DoorbellButtonAction secondary_action = DOORBELL_BUTTON_ACTION_NONE;
+    uint32_t secondary_payload = DOORBELL_BUTTON_UNASSIGNED;
+};
+```
+
 ## Model Data
 The `ModelData` struct is used internally in the identification process.
 
@@ -312,9 +408,18 @@ struct ModelData {
 };
 ```
 
-## Setting Types
-Here are the available setting types you can use to update the settings of your indoor station:
+## Doorbell Button Actions
+Here are the available doorbell button actions you can use to update the doorbell button configuration of your outdoor station:
 
+- none <Badge type="tip" text="DOORBELL_BUTTON_ACTION_NONE" />
+- light <Badge type="tip" text="DOORBELL_BUTTON_ACTION_LIGHT" />
+- door_call <Badge type="tip" text="DOORBELL_BUTTON_ACTION_DOOR_CALL" />
+- control_function <Badge type="tip" text="DOORBELL_BUTTON_ACTION_CONTROL_FUNCTION" />
+
+## Setting Types
+Here are the available setting types you can use to update the settings of your bus devices.
+
+### Indoor Station
 - ringtone_floor_call <Badge type="tip" text="SETTING_RINGTONE_FLOOR_CALL" />
 - ringtone_entrance_door_call <Badge type="tip" text="SETTING_RINGTONE_ENTRANCE_DOOR_CALL" />
 - ringtone_second_entrance_door_call <Badge type="tip" text="SETTING_RINGTONE_SECOND_ENTRANCE_DOOR_CALL" />
@@ -322,7 +427,18 @@ Here are the available setting types you can use to update the settings of your 
 - volume_ringtone <Badge type="tip" text="SETTING_VOLUME_RINGTONE" />
 - volume_handset_door_call <Badge type="tip" text="SETTING_VOLUME_HANDSET_DOOR_CALL" />
 - volume_handset_internal_call <Badge type="tip" text="SETTING_VOLUME_HANDSET_INTERNAL_CALL" />
+- volume_handset_internal_call <Badge type="tip" text="SETTING_AS_ADDRESS_DIVIDER" />
+- volume_handset_internal_call <Badge type="tip" text="SETTING_VAS_ADDRESS_DIVIDER" />
 
+### Outdoor Station
+- as_address <Badge type="tip" text="SETTING_AS_ADDRESS" />
+- as_address_lock <Badge type="tip" text="SETTING_AS_ADDRESS_LOCK" />
+- button_rows <Badge type="tip" text="SETTING_BUTTON_ROWS" />
+- talking_requires_door_readiness <Badge type="tip" text="SETTING_TALKING_REQUIRES_DOOR_READINESS" />
+- door_opener_duration <Badge type="tip" text="SETTING_DOOR_OPENER_DURATION" />
+- door_readiness_duration <Badge type="tip" text="SETTING_DOOR_READINESS_DURATION" />
+- calling_duration <Badge type="tip" text="SETTING_CALLING_DURATION" />
+- has_code_lock <Badge type="tip" text="SETTING_HAS_CODE_LOCK" />
 
 ## Model Setting Availability
 In general, **all listed models** are supported.
@@ -405,12 +521,16 @@ Below is a list of available settings for specific outdoor station models:
 
 | Model     | Available settings |
 |-----------|--------------------|
-| TCS PAK   | `as_address`, `as_address_lock`, `door_opener_duration`, `door_readiness_duration`, `calling_duration`, `talking_requires_door_readiness` |
-| TCS PUK   | `as_address`, `as_address_lock`, `door_opener_duration`, `door_readiness_duration`, `calling_duration`, `talking_requires_door_readiness` |
-| TCS PxS   | `as_address`, `as_address_lock`, `door_opener_duration`, `door_readiness_duration`, `calling_duration`, `talking_requires_door_readiness` |
-| TCS TCU2  | `as_address`, `as_address_lock`, `door_opener_duration`, `door_readiness_duration`, `calling_duration`, `talking_requires_door_readiness` |
-| TCS TCU3  | `as_address`, `as_address_lock`, `door_opener_duration`, `door_readiness_duration`, `calling_duration`, `talking_requires_door_readiness` |
-| TCS TCU4  | `as_address`, `as_address_lock`, `door_opener_duration`, `door_readiness_duration`, `calling_duration`, `talking_requires_door_readiness` |
+| TCS PAKV2    | `as_address`, `as_address_lock`, `door_opener_duration`, `door_readiness_duration`, `calling_duration`, `talking_requires_door_readiness`, `button_rows` |
+| TCS PAKV3    | `as_address`, `as_address_lock`, `door_opener_duration`, `door_readiness_duration`, `calling_duration`, `talking_requires_door_readiness`, `button_rows` |
+| TCS PUK      | `as_address`, `as_address_lock`, `door_opener_duration`, `door_readiness_duration`, `calling_duration`, `talking_requires_door_readiness`, `button_rows` |
+| TCS PUK-DSP  | `as_address`, `as_address_lock`, `door_opener_duration`, `door_readiness_duration`, `calling_duration`, `talking_requires_door_readiness`, `button_rows` |
+| TCS PES      | `as_address`, `as_address_lock`, `door_opener_duration`, `door_readiness_duration`, `calling_duration`, `talking_requires_door_readiness`, `button_rows` |
+| TCS PDS0X    | `as_address`, `as_address_lock`, `door_opener_duration`, `door_readiness_duration`, `calling_duration`, `talking_requires_door_readiness`, `button_rows`, `has_code_lock` |
+| TCS PDS0X/04 | `as_address`, `as_address_lock`, `door_opener_duration`, `door_readiness_duration`, `calling_duration`, `talking_requires_door_readiness`, `button_rows`, `has_code_lock` |
+| TCS TCU2     | `as_address`, `as_address_lock`, `door_opener_duration`, `door_readiness_duration`, `calling_duration`, `talking_requires_door_readiness` |
+| TCS TCU3     | `as_address`, `as_address_lock`, `door_opener_duration`, `door_readiness_duration`, `calling_duration`, `talking_requires_door_readiness` |
+| TCS TCU4     | `as_address`, `as_address_lock`, `door_opener_duration`, `door_readiness_duration`, `calling_duration`, `talking_requires_door_readiness` |
 
 ### Controller
 Below is a list of available settings for specific controller models:

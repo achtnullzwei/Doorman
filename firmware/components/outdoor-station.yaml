@@ -103,3 +103,21 @@ button:
       web_server:
         sorting_group_id: sorting_group_outdoor_station_settings
         sorting_weight: -95
+
+  - platform: template
+    id: test_doorbell_button_assign
+    name: "Test Assignment"
+    on_press:
+      - tc_bus_device.update_doorbell_button:
+          id: tc_bus_outdoor_station
+          button_row: 1
+
+  - platform: template
+    name: "Read Actions of Doorbell Button 1 via lambda"
+    on_press:
+      - lambda: |-
+          DoorbellButtonConfig button = id(tc_bus_outdoor_station)->get_doorbell_button(1);
+          ESP_LOGD("TAG", "Primary Action: %x", button.primary_action);
+          ESP_LOGD("TAG", "Primary Payload: %x", button.primary_payload);
+          ESP_LOGD("TAG", "Secondary Action: %x", button.secondary_action);
+          ESP_LOGD("TAG", "Secondary Payload: %x", button.secondary_payload);

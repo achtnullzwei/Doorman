@@ -47,6 +47,48 @@ namespace esphome
                 TCBusDeviceComponent *parent_;
         };
 
+        template<typename... Ts> class TCBusDeviceUpdateDoorbellButtonAction : public Action<Ts...>
+        {
+            public:
+                TCBusDeviceUpdateDoorbellButtonAction(TCBusDeviceComponent *parent) : parent_(parent) {}
+                TEMPLATABLE_VALUE(uint8_t, button_row)
+                TEMPLATABLE_VALUE(uint8_t, button_col)
+                TEMPLATABLE_VALUE(DoorbellButtonAction, primary_action)
+                TEMPLATABLE_VALUE(uint32_t, primary_payload)
+                TEMPLATABLE_VALUE(DoorbellButtonAction, secondary_action)
+                TEMPLATABLE_VALUE(uint32_t, secondary_payload)
+
+                void play(Ts... x)
+                {
+                    DoorbellButtonConfig button;
+
+                    if (this->primary_action_.has_value())
+                    {
+                        button.primary_action = this->primary_action_.value(x...);
+                    }
+
+                    if (this->primary_payload_.has_value())
+                    {
+                        button.primary_payload = this->primary_payload_.value(x...);
+                    }
+
+                    if (this->secondary_action_.has_value())
+                    {
+                        button.secondary_action = this->secondary_action_.value(x...);
+                    }
+
+                    if (this->secondary_payload_.has_value())
+                    {
+                        button.secondary_payload = this->secondary_payload_.value(x...);
+                    }
+
+                    this->parent_->update_doorbell_button(this->button_row_.value(x...), this->button_col_.value(x...), button);
+                }
+
+            protected:
+                TCBusDeviceComponent *parent_;
+        };
+
         template<typename... Ts> class TCBusDeviceReadMemoryAction : public Action<Ts...>
         {
             public:

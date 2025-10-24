@@ -23,7 +23,9 @@ namespace esphome
             {SETTING_AS_ADDRESS_LOCK, "AS_ADDRESS_LOCK"},
             {SETTING_TALKING_REQUIRES_DOOR_READINESS, "TALKING_REQUIRES_DOOR_READINESS"},
             {SETTING_DOOR_READINESS_DURATION, "DOOR_READINESS_DURATION"},
-            {SETTING_CALLING_DURATION, "CALLING_DURATION"}
+            {SETTING_CALLING_DURATION, "CALLING_DURATION"},
+            {SETTING_BUTTON_ROWS, "BUTTON_ROWS"},
+            {SETTING_HAS_CODE_LOCK, "HAS_CODE_LOCK"},
         };
 
         SettingType string_to_setting_type(const char* str)
@@ -149,10 +151,14 @@ namespace esphome
             }
             else if(device_group == 2)
             {
-                if (strcmp(model_key, "4E0") == 0 || (strcmp(model_key, "420") == 0 && fw_version < 2624)) return MODEL_AS_PUK;
-                else if ((strcmp(model_key, "420") == 0 && fw_version >= 2624)) return MODEL_AS_PXS;
-                else if ((strcmp(model_key, "430") == 0 && fw_version >= 2656)) return MODEL_AS_PXS;
-                else if (strcmp(model_key, "280") == 0 || strcmp(model_key, "270") == 0 || strcmp(model_key, "400") == 0) return MODEL_AS_PAK;
+                if (strcmp(model_key, "420") == 0 && fw_version < 2624) return MODEL_AS_PUK;
+                else if (strcmp(model_key, "4E0") == 0) return MODEL_AS_PUK_DSP;
+
+                else if ((strcmp(model_key, "420") == 0 && fw_version >= 2624)) return MODEL_AS_PDS0X;
+                else if ((strcmp(model_key, "430") == 0 && fw_version >= 2656)) return MODEL_AS_PES;
+
+                else if (strcmp(model_key, "400") == 0) return MODEL_AS_PAKV2;
+                else if (strcmp(model_key, "280") == 0 || strcmp(model_key, "270") == 0) return MODEL_AS_PAKV3;
                 else if (strcmp(model_key, "C00") == 0 || strcmp(model_key, "C00") == 0 || strcmp(model_key, "C01") == 0 || strcmp(model_key, "C02") == 0 || strcmp(model_key, "C03") == 0 || strcmp(model_key, "C04") == 0 || strcmp(model_key, "C05") == 0 || strcmp(model_key, "C06") == 0 || strcmp(model_key, "C09") == 0 || strcmp(model_key, "D09") == 0)
                     return MODEL_AS_TCU3;
                 else if (strcmp(model_key, "C20") == 0 || strcmp(model_key, "C21") == 0 || strcmp(model_key, "C22") == 0 || strcmp(model_key, "C23") == 0 || strcmp(model_key, "C24") == 0 || strcmp(model_key, "C25") == 0 || strcmp(model_key, "C26") == 0)
@@ -244,8 +250,12 @@ namespace esphome
             {MODEL_IS_DEBUG_1, "DEBUG IS1"},
             {MODEL_AS_DEBUG, "DEBUG AS"},
             {MODEL_AS_PUK, "TCS PUK"},
-            {MODEL_AS_PAK, "TCS PAK"},
-            {MODEL_AS_PXS, "TCS PxS"},
+            {MODEL_AS_PUK_DSP, "TCS PUK-DSP"},
+            {MODEL_AS_PAKV2, "TCS PAKV2"},
+            {MODEL_AS_PAKV3, "TCS PAKV3"},
+            {MODEL_AS_PDS0X, "TCS PDS0X"},
+            {MODEL_AS_PDS0X04, "TCS PDS0X/04"},
+            {MODEL_AS_PES, "TCS PES"},
             {MODEL_AS_TCU2, "TCS TCU2"},
             {MODEL_AS_TCU3, "TCS TCU3"},
             {MODEL_AS_TCU4, "TCS TCU4"},
@@ -973,7 +983,8 @@ namespace esphome
                     modelData.memory_size = 128;
                     break;
 
-                case MODEL_AS_PAK:
+                case MODEL_AS_PAKV2:
+                case MODEL_AS_PAKV3:
                     modelData.device_group = 2;
                     modelData.memory_size = 128;
                     modelData.capabilities |= CAP_DOOR_OPENER_DURATION;
@@ -982,9 +993,12 @@ namespace esphome
                     modelData.capabilities |= CAP_TALKING_REQUIRES_DOOR_READINESS;
                     modelData.capabilities |= CAP_DOOR_READINESS_DURATION;
                     modelData.capabilities |= CAP_CALLING_DURATION;
+                    modelData.capabilities |= CAP_BUTTON_ROWS;
+                    modelData.capabilities |= CAP_UPDATE_DOORBELL_BUTTON;
                     break;
 
                 case MODEL_AS_PUK:
+                case MODEL_AS_PUK_DSP:
                     modelData.device_group = 2;
                     modelData.memory_size = 128;
                     modelData.capabilities |= CAP_DOOR_OPENER_DURATION;
@@ -993,9 +1007,13 @@ namespace esphome
                     modelData.capabilities |= CAP_TALKING_REQUIRES_DOOR_READINESS;
                     modelData.capabilities |= CAP_DOOR_READINESS_DURATION;
                     modelData.capabilities |= CAP_CALLING_DURATION;
+                    modelData.capabilities |= CAP_BUTTON_ROWS;
+                    modelData.capabilities |= CAP_UPDATE_DOORBELL_BUTTON;
                     break;
 
-                case MODEL_AS_PXS:
+                case MODEL_AS_PDS0X:
+                case MODEL_AS_PDS0X04:
+                case MODEL_AS_PES:
                     modelData.device_group = 2;
                     modelData.memory_size = 128;
                     modelData.capabilities |= CAP_DOOR_OPENER_DURATION;
@@ -1004,6 +1022,9 @@ namespace esphome
                     modelData.capabilities |= CAP_TALKING_REQUIRES_DOOR_READINESS;
                     modelData.capabilities |= CAP_DOOR_READINESS_DURATION;
                     modelData.capabilities |= CAP_CALLING_DURATION;
+                    modelData.capabilities |= CAP_BUTTON_ROWS;
+                    modelData.capabilities |= CAP_HAS_CODE_LOCK;
+                    modelData.capabilities |= CAP_UPDATE_DOORBELL_BUTTON;
                     break;
 
                 case MODEL_AS_TCU2:
@@ -1015,6 +1036,7 @@ namespace esphome
                     modelData.capabilities |= CAP_TALKING_REQUIRES_DOOR_READINESS;
                     modelData.capabilities |= CAP_DOOR_READINESS_DURATION;
                     modelData.capabilities |= CAP_CALLING_DURATION;
+                    modelData.capabilities |= CAP_UPDATE_DOORBELL_BUTTON;
                     break;
 
                 case MODEL_AS_TCU3:
@@ -1026,6 +1048,7 @@ namespace esphome
                     modelData.capabilities |= CAP_TALKING_REQUIRES_DOOR_READINESS;
                     modelData.capabilities |= CAP_DOOR_READINESS_DURATION;
                     modelData.capabilities |= CAP_CALLING_DURATION;
+                    modelData.capabilities |= CAP_UPDATE_DOORBELL_BUTTON;
                     break;
 
                 case MODEL_AS_TCU4:
@@ -1037,6 +1060,7 @@ namespace esphome
                     modelData.capabilities |= CAP_TALKING_REQUIRES_DOOR_READINESS;
                     modelData.capabilities |= CAP_DOOR_READINESS_DURATION;
                     modelData.capabilities |= CAP_CALLING_DURATION;
+                    modelData.capabilities |= CAP_UPDATE_DOORBELL_BUTTON;
                     break;
 
                 // Group 3
@@ -1178,6 +1202,18 @@ namespace esphome
                     data.index = 2;
                     data.start_bit = 7;
                     data.length = 4;
+                }
+                else if (setting == SETTING_BUTTON_ROWS && (model_data.capabilities & CAP_BUTTON_ROWS))
+                {
+                    data.index = 124;
+                    data.start_bit = 7;
+                    data.length = 8;
+                }
+                else if (setting == SETTING_HAS_CODE_LOCK && (model_data.capabilities & CAP_HAS_CODE_LOCK))
+                {
+                    data.index = 125;
+                    data.start_bit = 7;
+                    data.length = 8;
                 }
             }
 
