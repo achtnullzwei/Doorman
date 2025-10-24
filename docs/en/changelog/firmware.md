@@ -7,12 +7,6 @@ Please carefully review the breaking changes listed below before updating!
 This release **will impact your current setup** and **requires** you to go through the **setup process again**.
 
 ### 🚀 What's New?
-- **Expanded Support for Model-Specific Settings**  
-   Settings compatibility has been added for most indoor station models and also for some outdoor station models.
-
-- **Added Support for Acknowledgment Messages**  
-   Acknowledgment messages are now properly handled, following additional investigation into previously unsupported cases.
-
 - **Streamlined Door Control with Unified Lock Entities**  
   The `Open Door` buttons have been replaced by new, standardized lock entities.  
   You can now use the `lock.unlock` action in Home Assistant for seamless door control.  
@@ -57,15 +51,6 @@ This release **will impact your current setup** and **requires** you to go throu
 - **Quadruple Doorbell Pattern**  
   A new quadruple-press pattern has been added, with slightly refined timing to improve reliability and avoid overlap with other patterns.
 
-- **Extended Model Detection Support**  
-   Detection capabilities now include additional older models like the `TTC-xx` and `TTS-xx` and common outdoor stations.
-
-- **Enhanced Reliability with Remote Peripheral**  
-   Data reading is now based on RMT, providing more reliability compared to the previous interrupt-based method.
-
-- **Telegram Queue**  
-   Outgoing telegrams are now queued to prevent data loss.
-
 - **Install Update Button**  
    A new button lets you install the latest available Doorman firmware version directly from the web interface.
 
@@ -77,6 +62,24 @@ This release **will impact your current setup** and **requires** you to go throu
 
 - **TC:BUS Serial Component**
   The `tc_bus_serial` ESPHome component is now available, enabling serial communication with the TC:BUS via USB.
+
+- **Extended Model Detection Support**  
+   Detection capabilities now include additional older models like the `TTC-xx` and `TTS-xx` and common outdoor stations.
+
+- **Expanded Support for Model-Specific Settings**  
+   Settings compatibility has been added for most indoor station models and also for some outdoor station models.
+
+- **Enhanced Reliability with Remote Peripheral**  
+   Data reading is now based on RMT, providing more reliability compared to the previous interrupt-based method.
+
+- **Telegram Queue**  
+   Outgoing telegrams are now queued to prevent data loss.
+
+- **Outdoor Station Button Configuration**  
+   Added methods to read and write the doorbell button configuration of the outdoor station.
+
+- **Added Support for Acknowledgment Messages**  
+   Acknowledgment messages are now properly handled, following additional investigation into previously unsupported cases.
 
 ### 📝 Other Updates
 - **Firmware Configuration Assistant**  
