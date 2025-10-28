@@ -11,7 +11,7 @@ esphome:
       
 # Add External Components
 external_components:
-  - source: github://uriyacovy/ESPHome_nuki_lock@fix/esphome-2025-11
+  - source: github://uriyacovy/ESPHome_nuki_lock
     refresh: 60s
 
 web_server:
@@ -80,6 +80,7 @@ lock:
       sorting_weight: 3
 
     security_pin: 1234
+    event: nuki
 
     # Optional:
     is_connected: 
