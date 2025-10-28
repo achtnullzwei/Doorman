@@ -34,6 +34,8 @@ esphome:
 
 api:
   batch_delay: 0ms
+  custom_services: true
+  homeassistant_services: true
   actions:
     - action: send_tc_telegram_raw
       variables:
