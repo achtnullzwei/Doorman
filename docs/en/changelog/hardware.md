@@ -1,11 +1,15 @@
 # PCB Revision History & Changelog
 Welcome to the complete history of all PCB updates! This page highlights the new features, improvements, and changes made in each revision.
 
-## 1.6.0 <Badge type="warning" text="Next - Fail" />
+## 1.6.0 <Badge type="warning" text="Next" />
+- Replace Terminal Pin 5 with 3.3V
+- Replace Terminal Pin 6 with GPIO40
+- Replace Terminal Pin 7 with GPIO41
+- Remove BTN resistor  from GPIO41 (use internal ESP resistor)
 - Extend ground plane around power supply section
-- Low impedance voltage divider
-- Power supply redesign
-- Add more filter capacitors to for noise on the bus
+- Change Voltage Divider to 1M + 147K (allow up to 28V Bus signals)
+- Move diode after the resistor of BUSPWR jumper
+- Improved Schematics
 
 ## 1.5.0 <Badge type="tip" text="Current" />
 - Power supply redesign based on the reference design
