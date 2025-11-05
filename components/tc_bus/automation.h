@@ -9,10 +9,11 @@ namespace esphome
 {
     namespace tc_bus
     {
-        template<typename... Ts> class TCBusSendAction : public Action<Ts...>
+        // Actions
+        template<typename... Ts>
+        class TCBusSendAction : public Action<Ts...>, public Parented<TCBusComponent>
         {
             public:
-                TCBusSendAction(TCBusComponent *parent) : parent_(parent) {}
                 TEMPLATABLE_VALUE(uint32_t, telegram)
                 TEMPLATABLE_VALUE(bool, is_long)
                 TEMPLATABLE_VALUE(TelegramType, type)
@@ -20,7 +21,7 @@ namespace esphome
                 TEMPLATABLE_VALUE(uint32_t, payload)
                 TEMPLATABLE_VALUE(uint32_t, serial_number)
 
-                void play(const Ts&... x)
+                void play(const Ts&... x) override
                 {
                     if(this->telegram_.value(x...) == 0)
                     {
@@ -38,23 +39,21 @@ namespace esphome
                         }
                     }
                 }
-
-            protected:
-                TCBusComponent *parent_;
         };
 
-        template<typename... Ts> class TCBusProgrammingModeAction : public Action<Ts...>
+        template<typename... Ts>
+        class TCBusProgrammingModeAction : public Action<Ts...>, public Parented<TCBusComponent>
         {
             public:
-                TCBusProgrammingModeAction(TCBusComponent *parent) : parent_(parent) {}
                 TEMPLATABLE_VALUE(bool, programming_mode)
 
-                void play(const Ts&... x) { this->parent_->set_programming_mode(this->programming_mode_.value(x...)); }
-
-            protected:
-                TCBusComponent *parent_;
+                void play(const Ts&... x) override
+                {
+                    this->parent_->set_programming_mode(this->programming_mode_.value(x...));
+                }
         };
 
+        // Callbacks
         class ReceivedTelegramTrigger : public Trigger<TelegramData> {
             public:
                 explicit ReceivedTelegramTrigger(TCBusComponent *parent) {

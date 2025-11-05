@@ -58,14 +58,22 @@ namespace esphome
                 }
         };
 
-        template<typename... Ts> class PairedCondition : public Condition<Ts...> {
+        template<typename... Ts>
+        class PairedCondition : public Condition<Ts...> {
             public:
-             bool check(const Ts&... x) override { return global_homekit_bridge->is_paired(); }
+                bool check(const Ts&... x) override
+                {
+                    return global_homekit_bridge->is_paired();
+                }
         };
 
-        template<typename... Ts> class ConnectedCondition : public Condition<Ts...> {
+        template<typename... Ts>
+        class ConnectedCondition : public Condition<Ts...> {
             public:
-             bool check(const Ts&... x) override { return global_homekit_bridge->is_connected(); }
+                bool check(const Ts&... x) override
+                {
+                    return global_homekit_bridge->is_connected();
+                }
         };
 
     }  // namespace tc_bus

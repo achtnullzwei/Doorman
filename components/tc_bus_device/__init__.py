@@ -303,8 +303,8 @@ TC_BUS_DEVICE_SEND_SCHEMA = cv.All(
     TC_BUS_DEVICE_SEND_SCHEMA
 )
 async def tc_bus_device_send_to_code(config, action_id, template_args, args):
-    parent = await cg.get_variable(config[CONF_ID])
-    var = cg.new_Pvariable(action_id, template_args, parent)
+    var = cg.new_Pvariable(action_id, template_args)
+    await cg.register_parented(var, config[CONF_ID])
 
     type_template = await cg.templatable(config[CONF_TYPE], args, TELEGRAM_TYPE)
     cg.add(var.set_type(type_template))
@@ -332,8 +332,8 @@ TC_BUS_DEVICE_UPDATE_SETTING_SCHEMA = cv.All(
     TC_BUS_DEVICE_UPDATE_SETTING_SCHEMA
 )
 async def tc_bus_device_update_setting_to_code(config, action_id, template_args, args):
-    parent = await cg.get_variable(config[CONF_ID])
-    var = cg.new_Pvariable(action_id, template_args, parent)
+    var = cg.new_Pvariable(action_id, template_args)
+    await cg.register_parented(var, config[CONF_ID])
 
     type_template = await cg.templatable(config[CONF_TYPE], args, SETTING_TYPE)
     cg.add(var.set_type(type_template))
@@ -362,8 +362,8 @@ TC_BUS_DEVICE_UPDATE_DOORBELL_BUTTON_SCHEMA = cv.All(
     TC_BUS_DEVICE_UPDATE_DOORBELL_BUTTON_SCHEMA
 )
 async def tc_bus_device_update_doorbell_button_to_code(config, action_id, template_args, args):
-    parent = await cg.get_variable(config[CONF_ID])
-    var = cg.new_Pvariable(action_id, template_args, parent)
+    var = cg.new_Pvariable(action_id, template_args)
+    await cg.register_parented(var, config[CONF_ID])
 
     button_row_template = await cg.templatable(config[CONF_BUTTON_ROW], args, cg.uint8)
     cg.add(var.set_button_row(button_row_template))
@@ -399,8 +399,8 @@ async def tc_bus_device_update_doorbell_button_to_code(config, action_id, templa
     ),
 )
 async def tc_bus_device_read_memory_to_code(config, action_id, template_args, args):
-    parent = await cg.get_variable(config[CONF_ID])
-    var = cg.new_Pvariable(action_id, template_args, parent)
+    var = cg.new_Pvariable(action_id, template_args)
+    await cg.register_parented(var, config[CONF_ID])
     
     return var
 
@@ -414,7 +414,7 @@ async def tc_bus_device_read_memory_to_code(config, action_id, template_args, ar
     ),
 )
 async def tc_bus_device_request_version_to_code(config, action_id, template_args, args):
-    parent = await cg.get_variable(config[CONF_ID])
-    var = cg.new_Pvariable(action_id, template_args, parent)
+    var = cg.new_Pvariable(action_id, template_args)
+    await cg.register_parented(var, config[CONF_ID])
     
     return var
