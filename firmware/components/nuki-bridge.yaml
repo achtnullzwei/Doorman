@@ -11,7 +11,7 @@ esphome:
       
 # Add External Components
 external_components:
-  - source: github://uriyacovy/ESPHome_nuki_lock
+  - source: github://uriyacovy/ESPHome_nuki_lock@fix/esphome-2025-11
     refresh: 60s
 
 web_server:
