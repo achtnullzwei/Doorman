@@ -7,8 +7,10 @@ lastUpdated: false
 import type { DefaultTheme } from 'vitepress/theme'
 import { VPButton } from 'vitepress/theme'
 
-import moment from 'moment';
-moment.locale('en');
+import dayjs from 'dayjs';
+import relativeTime from 'dayjs/plugin/relativeTime';
+dayjs.extend(relativeTime);
+dayjs.locale('en');
 
 import IconFluentEmojiRocket from '~icons/fluent-emoji/rocket'
 import IconNotoPackage from '~icons/noto/package'
@@ -349,11 +351,12 @@ export default {
             return 'Currently unavailable';
         },
         availability_time_text() {
-            if(this.available_timestamp > moment().unix()) {
-                return 'New Doormans are on their way! They are expected to be available <b>' + moment.unix(this.available_timestamp).fromNow() + '</b>.';
-            } else if(this.available_timestamp < moment().unix()) {
+            const now = dayjs().unix();
+            if(this.available_timestamp > now) {
+                return 'New Doormans are on their way! They are expected to be available <b>' + dayjs.unix(this.available_timestamp).fromNow() + '</b>.';
+            } else if(this.available_timestamp < now) {
                 if(this.available_units == 0) {
-                    return 'Looks like there is a delay - the new Doormans were expected <b>' + moment.unix(this.available_timestamp).fromNow() + '</b>.';
+                    return 'Looks like there is a delay - the new Doormans were expected <b>' + dayjs.unix(this.available_timestamp).fromNow() + '</b>.';
                 }
             }
             return '';
@@ -378,7 +381,7 @@ export default {
             return (productPrice + shippingPrice);
         },
         last_update() {
-            return moment.unix(this.status.updated_timestamp).fromNow();
+            return dayjs.unix(this.status.updated_timestamp).fromNow();
         }
     },
     methods: {

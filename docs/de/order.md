@@ -7,9 +7,12 @@ lastUpdated: false
 import type { DefaultTheme } from 'vitepress/theme'
 import { VPButton } from 'vitepress/theme'
 
-import moment from 'moment';
-import 'moment/dist/locale/de';
-moment.locale('de');
+import dayjs from 'dayjs';
+import relativeTime from 'dayjs/plugin/relativeTime';
+dayjs.extend(relativeTime);
+
+import 'dayjs/locale/de';
+dayjs.locale('de');
 
 import IconFluentEmojiRocket from '~icons/fluent-emoji/rocket'
 import IconNotoPackage from '~icons/noto/package'
@@ -349,11 +352,12 @@ export default {
             return 'Derzeit nicht verfügbar';
         },
         availability_time_text() {
-            if(this.available_timestamp > moment().unix()) {
-                return 'Kein Grund zur Sorge - neue Doormans sind unterwegs und werden ungefähr <b>' + moment.unix(this.available_timestamp).fromNow() + '</b> verfügbar sein.';
-            } else if(this.available_timestamp < moment().unix()) {
+            const now = dayjs().unix();
+            if(this.available_timestamp > now) {
+                return 'Kein Grund zur Sorge - neue Doormans sind unterwegs und werden ungefähr <b>' + dayjs.unix(this.available_timestamp).fromNow() + '</b> verfügbar sein.';
+            } else if(this.available_timestamp < now) {
                 if(this.available_units == 0) {
-                    return 'Es scheint derzeit eine Verzögerung zu geben – die neuen Doormans hätten bereits <b>' + moment.unix(this.available_timestamp).fromNow() + '</b> verfügbar sein sollen.';
+                    return 'Es scheint derzeit eine Verzögerung zu geben – die neuen Doormans hätten bereits <b>' + dayjs.unix(this.available_timestamp).fromNow() + '</b> verfügbar sein sollen.';
                 }
             }
             return '';
@@ -378,7 +382,7 @@ export default {
             return (productPrice + shippingPrice);
         },
         last_update() {
-            return moment.unix(this.status.updated_timestamp).fromNow();
+            return dayjs.unix(this.status.updated_timestamp).fromNow();
         }
     },
     methods: {

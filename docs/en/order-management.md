@@ -31,7 +31,11 @@ import {
 
 <script lang="ts">
 import axios from 'axios'
-import moment from 'moment';
+
+import dayjs from 'dayjs';
+import relativeTime from 'dayjs/plugin/relativeTime';
+dayjs.extend(relativeTime);
+dayjs.locale('en');
 
 const api = axios.create({
    withCredentials: true,
@@ -46,7 +50,7 @@ export default {
             password: '',
             
             stock_add_amount: 0,
-            availability_date: moment().format('YYYY-MM-DD'),
+            availability_date: dayjs().format('YYYY-MM-DD'),
 
             product_data: null,
 
@@ -292,7 +296,7 @@ export default {
             });
         },
         async updateAvailabilityDate() {
-            const ts = moment(this.availability_date).unix();
+            const ts = dayjs(this.availability_date).unix();
 
             api.post('/update_availability', { product: 'doorman', timestamp: ts }, { 
                 withCredentials: true 
@@ -1078,7 +1082,7 @@ canvas {
                 <div class="title">
                     <div class="name">ORDER FROM {{ order.fullname.split(' ')[0].toUpperCase() }} <Badge :type="statusLabelColor(order.status)">{{ statusLabel(order.status) }}</Badge></div>
                     <div class="meta">
-                        <span><MingcuteTimeFill /> {{ moment.unix(order.timestamp).format('DD.MM.YYYY') }}</span>
+                        <span><MingcuteTimeFill /> {{ dayjs.unix(order.timestamp).format('DD.MM.YYYY') }}</span>
                         <span v-if="order.email"><IonMail /> {{ order.email }}</span>
                         <span v-if="order.discord"><IcBaselineDiscord /> {{ order.discord }}</span>
                         <span v-if="order.model"><PhCpuBold /> {{ order.model }}</span>
