@@ -46,6 +46,7 @@ export default {
             password: '',
             
             stock_add_amount: 0,
+            availability_date: moment().format('YYYY-MM-DD'),
 
             product_data: null,
 
@@ -62,11 +63,17 @@ export default {
             result_text: '',
 
             settingsOpen: false,
+            notifyOpen: false,
 
             printerClient: null,
             printerClientIsConnecting: false,
             printerClientIsConnected: false,
-            printerDebug: false
+            printerDebug: false,
+
+            notifyStatus: 'pending_review',
+            notifyTitle: 'Doorman',
+            notifyMessageDE: '',
+            notifyMessageEN: '',
         }
     },
     created() {
@@ -89,6 +96,7 @@ export default {
                 if(!this.orderFilter) return x.status != 'closed' && x.status != 'cancelled';
 
                 return x.name.toLowerCase().includes(this.orderFilter.toLowerCase()) || 
+                    x.fullname.toLowerCase().includes(this.orderFilter.toLowerCase()) || 
                     x.hash.toLowerCase() == this.orderFilter.toLowerCase().trim() || 
                     x.status.toLowerCase() == this.orderFilter.toLowerCase().trim() || 
                     x.message.toLowerCase().includes(this.orderFilter.toLowerCase()) ||
@@ -115,6 +123,9 @@ export default {
         },
         openOrderCount() {
             return this.orders.filter(x => { return x.status == 'pending_review'; }).length;
+        },
+        openOrderItemCount() {
+            return this.orders.filter(x => { return x.status == 'pending_review'; }).reduce((sum, order) => sum + order.amount, 0);
         },
         orderTotal() {
             return (order) => {
@@ -257,6 +268,17 @@ export default {
                 this.showModal("Oops!", this.getErrorMessage(error, 'Failed to logout!'));
             });
         },
+        async sendNotification() {
+            api.post('/notify', { status: this.notifyStatus, title: this.notifyTitle, message_de: this.notifyMessageDE, message_en: this.notifyMessageEN }, { 
+                withCredentials: true 
+            })
+            .then(response => {
+                this.showModal("Sent!", "Notification sent successfully!");
+            })
+            .catch(error => {
+                this.showModal("Oops!", this.getErrorMessage(error, 'Failed to send notification!'));
+            });
+        },
         async addStock() {
             api.post('/add_stock', { product: 'doorman', amount: this.stock_add_amount }, { 
                 withCredentials: true 
@@ -267,6 +289,19 @@ export default {
             })
             .catch(error => {
                 this.showModal("Oops!", this.getErrorMessage(error, 'Failed to update stock!'));
+            });
+        },
+        async updateAvailabilityDate() {
+            const ts = moment(this.availability_date).unix();
+
+            api.post('/update_availability', { product: 'doorman', timestamp: ts }, { 
+                withCredentials: true 
+            })
+            .then(response => {
+                this.showModal("Updated!", "Availability date updated successfully!");
+            })
+            .catch(error => {
+                this.showModal("Oops!", this.getErrorMessage(error, 'Failed to update availability date!'));
             });
         },
         async updateOrderStatus(order) {
@@ -566,7 +601,7 @@ export default {
 
             } else if (type === "quickstart") {
                 y = this.drawWrappedText(ctx, "Thank you", normalFont, normalFont, x, y, lineHeight, 0, "", 260);
-                y = this.drawWrappedText(ctx, `for supporting the Doorman project, ${order.name.split(" ")[0]}.`, "20px Inter", "20px Inter", x, y, lineHeight, 0, "", 270);
+                y = this.drawWrappedText(ctx, `for supporting the Doorman project, ${order.fullname.split(" ")[0]}.`, "20px Inter", "20px Inter", x, y, lineHeight, 0, "", 270);
                 await drawQRCodeAndLogo(order.hash);
 
             } else if (type === "standard_receiver") {
@@ -635,7 +670,7 @@ export default {
 </style>
 
 <style scoped>
-textarea,input[type=text],input[type=email],input[type=number],input[type=password],select {
+textarea,input,select {
     background-color: var(--vp-c-bg);
     width: 100%;
     font-size: 14px;
@@ -647,9 +682,13 @@ textarea,input[type=text],input[type=email],input[type=number],input[type=passwo
     font-family: inherit;
 }
 
-textarea:hover,input[type=text]:hover,input[type=email]:hover,input[type=number]:hover,input[type=password]:hover,select:hover {
+textarea:hover,input:hover,select:hover {
     border: 1px solid var(--vp-button-brand-active-bg);
     transition: color .1s,border-color .1s,background-color .1s
+}
+
+textarea {
+    height: 100px
 }
 
 .order_list {
@@ -863,6 +902,102 @@ canvas {
                 <VPButton type="button" text="Add" :disabled="stock_add_amount == 0" @click="addStock" />
             </div>
         </div>
+        <hr />
+        <div style="
+            margin-top: 25px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 15px 0;
+        ">
+            <div style="flex: 1 0 60%; min-width: 250px;">
+                <h5 class="firmware_title_row" style="margin-bottom: 5px;margin-top: 0;">Availability</h5>
+                <div>Set availability date.</div>
+            </div>
+            <div style="
+                flex: 0 0 40%;
+                min-width: 250px;
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                gap: 15px;
+                flex-grow: 1;
+            ">
+                <input type="date" id="availability_date" v-model="availability_date">
+                <VPButton type="button" text="Update" @click="updateAvailabilityDate" />
+            </div>
+        </div>
+        <hr />
+        <div style="
+            margin-top: 25px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 15px 0;
+        ">
+            <div style="flex: 1 0 60%; min-width: 250px;">
+                <h5 class="firmware_title_row" style="margin-bottom: 5px;margin-top: 0;">Notifications</h5>
+                <div>Send notifications to customers.</div>
+            </div>
+            <div style="
+                flex: 0 0 40%;
+                min-width: 250px;
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                gap: 15px;
+                flex-grow: 1;
+            ">
+                <VPButton style="width: 100%;" type="button" @click="notifyOpen = true" text="Send Notification" />
+            </div>
+        </div>
+    </template>
+</ContactModal>
+
+<ContactModal :show="notifyOpen" @close="notifyOpen = false">
+    <template #header>
+        <h3>Customer Notification</h3>
+    </template>
+    <template #body>
+        <div style="
+            margin-bottom: 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 15px 0;
+        ">
+            <div style="flex: 1 0 60%; min-width: 250px;">
+                <h5 class="firmware_title_row" style="margin-bottom: 5px;margin-top: 0;">Notify</h5>
+                <div>Send notification to customers.</div>
+            </div>
+            <div style="
+                flex: 0 0 40%;
+                min-width: 250px;
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                gap: 15px;
+                flex-grow: 1;
+            ">
+                <input type="text" id="notify_status" v-model="notifyStatus" />
+                <VPButton type="button" text="Send" :disabled="!notifyMessageDE || !notifyMessageEN" @click="sendNotification" />
+            </div>
+        </div>
+        <div style="display: flex; flex-direction: column; gap: 10px;">
+            <label for="notifyTitle">Subject</label>
+            <input type="text" id="notifyTitle" name="notifyTitle" v-model="notifyTitle" placeholder="Doorman" />
+        </div>
+        <div style="display: flex; flex-direction: column; gap: 10px;">
+            <label for="notifyMessageDE">German Message</label>
+            <textarea id="notifyMessageDE" name="notifyMessageDE" v-model="notifyMessageDE" placeholder="Message"></textarea>
+        </div>
+        <div style="display: flex; flex-direction: column; gap: 10px;">
+            <label for="notifyMessageEN">English Message</label>
+            <textarea id="notifyMessageEN" name="notifyMessageEN" v-model="notifyMessageEN" placeholder="Message"></textarea>
+        </div>
     </template>
 </ContactModal>
 
@@ -883,7 +1018,7 @@ canvas {
     </div>
 </div>
 <div style="margin-bottom: 25px;">
-    <span v-if="user">There are currently <b>{{ openOrderCount }}</b> open {{ openOrderCount == 1 ? 'order' : 'orders' }} and <b>{{ product_data?.available_units }}</b> {{ product_data?.available_units == 1 ? 'item' : 'items' }} available.</span>
+    <span v-if="user">There are currently <b>{{ openOrderCount }}</b> open {{ openOrderCount == 1 ? 'order' : 'orders' }} containing <b>{{ openOrderItemCount }}</b> {{ openOrderItemCount == 1 ? 'item' : 'items' }}. <b>{{ product_data?.available_units }}</b> {{ product_data?.available_units == 1 ? 'item' : 'items' }} are available.</span>
     <span v-else>Welcome to the Order Management Service! Please login to manage the orders.</span>
 </div>
 <hr>
@@ -941,7 +1076,7 @@ canvas {
         <div v-for="order in paginatedOrders" :key="order.id" class="order_row" @click="generateLabel(order, 'quickstart')">
             <div class="header">
                 <div class="title">
-                    <div class="name">ORDER FROM {{ order.name.split(' ')[0].toUpperCase() }} <Badge :type="statusLabelColor(order.status)">{{ statusLabel(order.status) }}</Badge></div>
+                    <div class="name">ORDER FROM {{ order.fullname.split(' ')[0].toUpperCase() }} <Badge :type="statusLabelColor(order.status)">{{ statusLabel(order.status) }}</Badge></div>
                     <div class="meta">
                         <span><MingcuteTimeFill /> {{ moment.unix(order.timestamp).format('DD.MM.YYYY') }}</span>
                         <span v-if="order.email"><IonMail /> {{ order.email }}</span>

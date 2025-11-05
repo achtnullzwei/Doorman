@@ -7,6 +7,10 @@ lastUpdated: false
 import type { DefaultTheme } from 'vitepress/theme'
 import { VPButton } from 'vitepress/theme'
 
+import moment from 'moment';
+import 'moment/dist/locale/de';
+moment.locale('de');
+
 import IconFluentEmojiRocket from '~icons/fluent-emoji/rocket'
 import IconNotoPackage from '~icons/noto/package'
 import IconTwemojiFlagGermany from '~icons/twemoji/flag-germany'
@@ -19,7 +23,6 @@ import IconSimpleIconsSepa from '~icons/simple-icons/sepa';
 
 <script lang="ts">
 import axios from 'axios'
-import moment from 'moment';
 
 const api = axios.create({
    withCredentials: true,
@@ -66,6 +69,7 @@ export default {
 
         return {
             errors: {
+                fullname: false,
                 name: false,
                 email: false,
                 street: false,
@@ -77,7 +81,9 @@ export default {
             user: null,
             status: {},
             orderHash: '',
+            processing: false,
             form: {
+                fullname: '',
                 name: '',
                 email: '',
                 discord: '',
@@ -235,7 +241,8 @@ export default {
             modalOpen: false,
             result_title: '',
             result_text: '',
-            available_units: -1
+            available_units: -1,
+            available_timestamp: 0
         }
     },
     created() {
@@ -264,6 +271,7 @@ export default {
         })
         .then(res => {
             this.available_units = res.data.available_units;
+            this.available_timestamp = res.data.available_timestamp;
             
             // merge into products
             if (res.data.products) {
@@ -297,6 +305,9 @@ export default {
             const destination = this.shipping_regions.find(d => d.key === new_value);
             if (!destination) return [];
             this.form.country = destination.defaultCountry;
+        },
+        'form.fullname'(val) {
+            this.errors.fullname = !val;
         },
         'form.name'(val) {
             this.errors.name = !val;
@@ -337,6 +348,16 @@ export default {
             }
             return 'Derzeit nicht verfügbar';
         },
+        availability_time_text() {
+            if(this.available_timestamp > moment().unix()) {
+                return 'Kein Grund zur Sorge - neue Doormans sind unterwegs und werden ungefähr <b>' + moment.unix(this.available_timestamp).fromNow() + '</b> verfügbar sein.';
+            } else if(this.available_timestamp < moment().unix()) {
+                if(this.available_units == 0) {
+                    return 'Es scheint derzeit eine Verzögerung zu geben – die neuen Doormans hätten bereits <b>' + moment.unix(this.available_timestamp).fromNow() + '</b> verfügbar sein sollen.';
+                }
+            }
+            return '';
+        },
         available_shipping_options() {
             return this.shipping_regions.find(dest => dest.key === this.form.shipping_region)?.options || [];
         },
@@ -357,7 +378,7 @@ export default {
             return (productPrice + shippingPrice);
         },
         last_update() {
-            return moment.unix(this.status.updated_timestamp).format('DD.MM.YYYY');
+            return moment.unix(this.status.updated_timestamp).fromNow();
         }
     },
     methods: {
@@ -370,13 +391,14 @@ export default {
             this.result_text = text;
         },
         validate() {
-            const { name, email, street, zip, city, country, model } = this.form;
+            const { fullname, name, email, street, zip, city, country, model } = this.form;
 
             // Reset errors
             for (const key in this.errors) this.errors[key] = false;
 
             let valid = true;
 
+            if (!fullname) { this.errors.fullname = true; valid = false; }
             if (!name) { this.errors.name = true; valid = false; }
             if (!email) { this.errors.email = true; valid = false; }
 
@@ -402,14 +424,18 @@ export default {
             this.step--;
         },
         async submit() {
+            this.processing = true;
+
             api.post('/submit', this.form, { 
                 withCredentials: true 
             })
             .then(response => {
+                this.processing = false;
                 this.showModal("Erhalten!", "Vielen Dank. Ich melde mich so schnell wie möglich bei dir.");
                 this.status = response.data;
             })
             .catch(error => {
+                this.processing = false;
                 this.showModal("Entschuldigung!", this.getErrorMessage(error, 'Etwas ist schiefgelaufen. Bitte versuche es später erneut.'));
             });
         },
@@ -616,7 +642,8 @@ Sobald ich deine Nachricht erhalte, melde ich mich schnellstmöglich bei dir. Di
 
 <div v-if="status.status == 'none' && available_units === 0" class="warning custom-block">
     <p class="custom-block-title">ACHTUNG</p>
-    <p>Alle Doormans sind gerade ausverkauft. Aber kein Grund zur Sorge - bald kommen neue!<br>Du kannst deine Anfrage trotzdem schonmal senden, dann reserviere ich dir einen.</p>
+    <p>Alle Doormans sind gerade ausverkauft. Du kannst deine Anfrage trotzdem schonmal senden, dann reserviere ich dir einen.</p>
+    <p v-html="availability_time_text"></p>
 </div>
 
 <hr />
@@ -654,7 +681,7 @@ Sobald ich deine Nachricht erhalte, melde ich mich schnellstmöglich bei dir. Di
 <div v-else-if="status.status == 'shipped'" class="tip custom-block">
     <p class="custom-block-title">BESTELLUNG VERSCHICKT</p>
     <p>
-        Gute Nachrichten! Deine Bestellung wurde am {{last_update}} versandt und sollte normalerweise innerhalb einer Woche eintreffen.
+        Gute Nachrichten! Deine Bestellung wurde {{last_update}} versandt und sollte normalerweise innerhalb einer Woche eintreffen.
         <br>
         Bitte beachte, dass der Zoll gelegentlich zu leichten Verzögerungen führen kann.
         <br><br>Sobald die Lieferung erfolgt ist, informiere mich bitte hier. Vielen Dank!
@@ -773,6 +800,10 @@ Sobald ich deine Nachricht erhalte, melde ich mich schnellstmöglich bei dir. Di
             </select>
         </div>
         <h5 class="firmware_title_row">Wie kann ich dich erreichen?</h5>
+        <div class="form-element">
+            <label for="fullname">Name</label>
+            <input type="text" name="fullname" id="fullname" placeholder="Max" v-model="form.fullname" :class="{ 'invalid': errors.fullname }" required />
+        </div>
         <div class="form-element top name-container">
             <label for="email">E-Mail</label>
             <input type="email" name="email" id="email" placeholder="max@mustermann.net" v-model="form.email" :class="{ 'invalid': errors.email }" required />
@@ -847,7 +878,7 @@ Sobald ich deine Nachricht erhalte, melde ich mich schnellstmöglich bei dir. Di
         </div>
         <div class="submit">
             <VPButton type="button" text="Zurück" @click="previousStep" />
-            <VPButton type="submit" text="Anfrage absenden" />
+            <VPButton type="submit" text="Anfrage absenden" :disabled="processing" />
         </div>
     </div>
 </form>

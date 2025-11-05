@@ -7,6 +7,9 @@ lastUpdated: false
 import type { DefaultTheme } from 'vitepress/theme'
 import { VPButton } from 'vitepress/theme'
 
+import moment from 'moment';
+moment.locale('en');
+
 import IconFluentEmojiRocket from '~icons/fluent-emoji/rocket'
 import IconNotoPackage from '~icons/noto/package'
 import IconTwemojiFlagGermany from '~icons/twemoji/flag-germany'
@@ -19,7 +22,6 @@ import IconSimpleIconsSepa from '~icons/simple-icons/sepa';
 
 <script lang="ts">
 import axios from 'axios'
-import moment from 'moment';
 
 const api = axios.create({
    withCredentials: true,
@@ -67,6 +69,7 @@ export default {
 
         return {
             errors: {
+                fullname: false,
                 name: false,
                 email: false,
                 street: false,
@@ -78,7 +81,9 @@ export default {
             user: null,
             status: {},
             orderHash: '',
+            processing: false,
             form: {
+                fullname: '',
                 name: '',
                 email: '',
                 discord: '',
@@ -236,7 +241,8 @@ export default {
             modalOpen: false,
             result_title: '',
             result_text: '',
-            available_units: -1
+            available_units: -1,
+            available_timestamp: 0
         }
     },
     created() {
@@ -265,6 +271,7 @@ export default {
         })
         .then(res => {
             this.available_units = res.data.available_units;
+            this.available_timestamp = res.data.available_timestamp;
             
             // merge into products
             if (res.data.products) {
@@ -302,6 +309,9 @@ export default {
         'form.name'(val) {
             this.errors.name = !val;
         },
+        'form.fullname'(val) {
+            this.errors.fullname = !val;
+        },
         'form.email'(val) {
             // Simple email regex validation
             const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -338,6 +348,16 @@ export default {
             }
             return 'Currently unavailable';
         },
+        availability_time_text() {
+            if(this.available_timestamp > moment().unix()) {
+                return 'New Doormans are on their way! They are expected to be available <b>' + moment.unix(this.available_timestamp).fromNow() + '</b>.';
+            } else if(this.available_timestamp < moment().unix()) {
+                if(this.available_units == 0) {
+                    return 'Looks like there is a delay - the new Doormans were expected <b>' + moment.unix(this.available_timestamp).fromNow() + '</b>.';
+                }
+            }
+            return '';
+        },
         available_shipping_options() {
             return this.shipping_regions.find(dest => dest.key === this.form.shipping_region)?.options || [];
         },
@@ -358,7 +378,7 @@ export default {
             return (productPrice + shippingPrice);
         },
         last_update() {
-            return moment.unix(this.status.updated_timestamp).format('DD.MM.YYYY');
+            return moment.unix(this.status.updated_timestamp).fromNow();
         }
     },
     methods: {
@@ -371,13 +391,14 @@ export default {
             this.result_text = text;
         },
         validate() {
-            const { name, email, street, zip, city, country, model } = this.form;
+            const { fullname, name, email, street, zip, city, country, model } = this.form;
 
             // Reset errors
             for (const key in this.errors) this.errors[key] = false;
 
             let valid = true;
 
+            if (!fullname) { this.errors.fullname = true; valid = false; }
             if (!name) { this.errors.name = true; valid = false; }
             if (!email) { this.errors.email = true; valid = false; }
 
@@ -403,14 +424,18 @@ export default {
             this.step--;
         },
         async submit() {
+            this.processing = true;
+
             api.post('/submit', this.form, { 
                 withCredentials: true 
             })
             .then(response => {
+                this.processing = false;
                 this.showModal("Received!", "Thank you. I will reach out to you as soon as possible.");
                 this.status = response.data;
             })
             .catch(error => {
+                this.processing = false;
                 this.showModal("Sorry!", this.getErrorMessage(error, 'Something went wrong. Please try again later.'));
             });
         },
@@ -617,7 +642,8 @@ Once I receive your message, I'll get back to you as soon as possible. The statu
 
 <div v-if="status.status == 'none' && available_units === 0" class="warning custom-block">
     <p class="custom-block-title">HEADS UP</p>
-    <p>All Doorman devices are currently out of stock. More units are on the way! You can still send your inquiry, and I'll make sure to reserve one for you as soon as they arrive.</p>
+    <p>All Doorman devices are currently out of stock. You can still send your inquiry, and I'll make sure to reserve one for you as soon as they arrive.</p>
+    <p v-html="availability_time_text"></p>
 </div>
 
 <hr />
@@ -655,7 +681,7 @@ Once I receive your message, I'll get back to you as soon as possible. The statu
 <div v-else-if="status.status == 'shipped'" class="tip custom-block">
     <p class="custom-block-title">ORDER SHIPPED</p>
     <p>
-        Good news! Your order was shipped on {{last_update}} and should normally arrive within a week.
+        Good news! Your order was shipped {{last_update}} and should normally arrive within a week.
         <br>
         Please note that customs may occasionally cause slight delays.
         <br><br>Once it's delivered, kindly let me know here. Thank you!
@@ -774,6 +800,10 @@ Once I receive your message, I'll get back to you as soon as possible. The statu
             </select>
         </div>
         <h5 class="firmware_title_row">How can I reach you?</h5>
+        <div class="form-element">
+            <label for="fullname">Name</label>
+            <input type="text" name="fullname" id="fullname" placeholder="Max" v-model="form.fullname" :class="{ 'invalid': errors.fullname }" required />
+        </div>
         <div class="form-element top name-container">
             <label for="email">Email</label>
             <input type="email" name="email" id="email" placeholder="max@mustermann.net" v-model="form.email" :class="{ 'invalid': errors.email }" required />
@@ -848,7 +878,7 @@ Once I receive your message, I'll get back to you as soon as possible. The statu
         </div>
         <div class="submit">
             <VPButton type="button" text="Back" @click="previousStep" />
-            <VPButton type="submit" text="Submit Inquiry" />
+            <VPButton type="submit" text="Submit Inquiry" :disabled="processing" />
         </div>
     </div>
 </form>
