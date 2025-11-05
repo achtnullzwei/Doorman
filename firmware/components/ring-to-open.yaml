@@ -12,23 +12,23 @@ binary_sensor:
       - if:
           condition:
             - switch.is_on: rto_entrance_door
-            - lambda: !lambda 'return id(rto_entrance_door_pattern_condition).state == "single";'
+            - lambda: !lambda 'return id(rto_entrance_door_pattern_condition).current_option() == "single";'
           then:
             # Deactivate Ring To Open when Ring once is selected
             - if:
                 condition:
-                  - lambda: !lambda 'return id(rto_entrance_door_timeout_mode).state == "Ring once";'
+                  - lambda: !lambda 'return id(rto_entrance_door_timeout_mode).current_option() == "Ring once";'
                 then:
                   - switch.turn_off: rto_entrance_door
 
             - if:
                 condition:
-                  - lambda: !lambda 'return id(rto_entrance_door_delay).state == "Random";'
+                  - lambda: !lambda 'return id(rto_entrance_door_delay).current_option() == "Random";'
                 then:
                   - delay: !lambda "return 5000 + (rand() % 10000);"
                 else:
                   - delay: !lambda |-
-                      std::string str = id(rto_entrance_door_delay).state;
+                      std::string str = id(rto_entrance_door_delay).current_option();
                       size_t pos = str.find(' ');
                       std::string first_token = (pos != std::string::npos) ? str.substr(0, pos) : str;
                       int value = std::stoi(first_token) * 1000;
@@ -45,23 +45,23 @@ binary_sensor:
       - if:
           condition:
             - switch.is_on: rto_second_entrance_door
-            - lambda: !lambda 'return id(rto_second_entrance_door_pattern_condition).state == "single";'
+            - lambda: !lambda 'return id(rto_second_entrance_door_pattern_condition).current_option() == "single";'
           then:
             # Deactivate Ring To Open when Ring once is selected
             - if:
                 condition:
-                  - lambda: !lambda 'return id(rto_second_entrance_door_timeout_mode).state == "Ring once";'
+                  - lambda: !lambda 'return id(rto_second_entrance_door_timeout_mode).current_option() == "Ring once";'
                 then:
                   - switch.turn_off: rto_second_entrance_door
 
             - if:
                 condition:
-                  - lambda: !lambda 'return id(rto_second_entrance_door_delay).state == "Random";'
+                  - lambda: !lambda 'return id(rto_second_entrance_door_delay).current_option() == "Random";'
                 then:
                   - delay: !lambda "return 5000 + (rand() % 10000);"
                 else:
                   - delay: !lambda |-
-                      std::string str = id(rto_second_entrance_door_delay).state;
+                      std::string str = id(rto_second_entrance_door_delay).current_option();
                       size_t pos = str.find(' ');
                       std::string first_token = (pos != std::string::npos) ? str.substr(0, pos) : str;
                       int value = std::stoi(first_token) * 1000;
@@ -78,23 +78,23 @@ binary_sensor:
       - if:
           condition:
             - switch.is_on: rto_apartment_door
-            - lambda: !lambda 'return id(rto_apartment_door_pattern_condition).state == "single";'
+            - lambda: !lambda 'return id(rto_apartment_door_pattern_condition).current_option() == "single";'
           then:
             # Deactivate Ring To Open when Ring once is selected
             - if:
                 condition:
-                  - lambda: !lambda 'return id(rto_apartment_door_timeout_mode).state == "Ring once";'
+                  - lambda: !lambda 'return id(rto_apartment_door_timeout_mode).current_option() == "Ring once";'
                 then:
                   - switch.turn_off: rto_apartment_door
 
             - if:
                 condition:
-                  - lambda: !lambda 'return id(rto_apartment_door_delay).state == "Random";'
+                  - lambda: !lambda 'return id(rto_apartment_door_delay).current_option() == "Random";'
                 then:
                   - delay: !lambda "return 5000 + (rand() % 10000);"
                 else:
                   - delay: !lambda |-
-                      std::string str = id(rto_apartment_door_delay).state;
+                      std::string str = id(rto_apartment_door_delay).current_option();
                       size_t pos = str.find(' ');
                       std::string first_token = (pos != std::string::npos) ? str.substr(0, pos) : str;
                       int value = std::stoi(first_token) * 1000;
@@ -106,7 +106,7 @@ binary_sensor:
     on_press:
       - if:
           condition:
-            - lambda: !lambda 'return id(rto_toggle_trigger).state == "External Button";'
+            - lambda: !lambda 'return id(rto_toggle_trigger).current_option() == "External Button";'
           then:
             - switch.toggle: rto_central
             - delay: 300ms
@@ -130,7 +130,7 @@ binary_sensor:
     on_press:
       - if:
           condition:
-            - lambda: !lambda 'return id(rto_toggle_trigger).state == "Function Button";'
+            - lambda: !lambda 'return id(rto_toggle_trigger).current_option() == "Function Button";'
           then:
             - switch.toggle: rto_central
             - delay: 300ms
@@ -159,23 +159,23 @@ event:
           condition:
             - switch.is_on: rto_entrance_door
             - lambda: !lambda 'return event_type.c_str() != "single";'
-            - lambda: !lambda 'return event_type.c_str() == id(rto_entrance_door_pattern_condition).state;'
+            - lambda: !lambda 'return event_type.c_str() == id(rto_entrance_door_pattern_condition).current_option();'
           then:
             # Deactivate Ring To Open when Ring once is selected
             - if:
                 condition:
-                  - lambda: !lambda 'return id(rto_entrance_door_timeout_mode).state == "Ring once";'
+                  - lambda: !lambda 'return id(rto_entrance_door_timeout_mode).current_option() == "Ring once";'
                 then:
                   - switch.turn_off: rto_entrance_door
 
             - if:
                 condition:
-                  - lambda: !lambda 'return id(rto_entrance_door_delay).state == "Random";'
+                  - lambda: !lambda 'return id(rto_entrance_door_delay).current_option() == "Random";'
                 then:
                   - delay: !lambda "return 5000 + (rand() % 10000);"
                 else:
                   - delay: !lambda |-
-                      std::string str = id(rto_entrance_door_delay).state;
+                      std::string str = id(rto_entrance_door_delay).current_option();
                       size_t pos = str.find(' ');
                       std::string first_token = (pos != std::string::npos) ? str.substr(0, pos) : str;
                       int value = std::stoi(first_token);
@@ -197,23 +197,23 @@ event:
           condition:
             - switch.is_on: rto_second_entrance_door
             - lambda: !lambda 'return event_type.c_str() != "single";'
-            - lambda: !lambda 'return event_type.c_str() == id(rto_second_entrance_door_pattern_condition).state;'
+            - lambda: !lambda 'return event_type.c_str() == id(rto_second_entrance_door_pattern_condition).current_option();'
           then:
             # Deactivate Ring To Open when Ring once is selected
             - if:
                 condition:
-                  - lambda: !lambda 'return id(rto_second_entrance_door_timeout_mode).state == "Ring once";'
+                  - lambda: !lambda 'return id(rto_second_entrance_door_timeout_mode).current_option() == "Ring once";'
                 then:
                   - switch.turn_off: rto_second_entrance_door
 
             - if:
                 condition:
-                  - lambda: !lambda 'return id(rto_second_entrance_door_delay).state == "Random";'
+                  - lambda: !lambda 'return id(rto_second_entrance_door_delay).current_option() == "Random";'
                 then:
                   - delay: !lambda "return 5000 + (rand() % 10000);"
                 else:
                   - delay: !lambda |-
-                      std::string str = id(rto_second_entrance_door_delay).state;
+                      std::string str = id(rto_second_entrance_door_delay).current_option();
                       size_t pos = str.find(' ');
                       std::string first_token = (pos != std::string::npos) ? str.substr(0, pos) : str;
                       int value = std::stoi(first_token);
@@ -234,23 +234,23 @@ event:
           condition:
             - switch.is_on: rto_apartment_door
             - lambda: !lambda 'return event_type.c_str() != "single";'
-            - lambda: !lambda 'return event_type.c_str() == id(rto_apartment_door_pattern_condition).state;'
+            - lambda: !lambda 'return event_type.c_str() == id(rto_apartment_door_pattern_condition).current_option();'
           then:
             # Deactivate Ring To Open when Ring once is selected
             - if:
                 condition:
-                  - lambda: !lambda 'return id(rto_apartment_door_timeout_mode).state == "Ring once";'
+                  - lambda: !lambda 'return id(rto_apartment_door_timeout_mode).current_option() == "Ring once";'
                 then:
                   - switch.turn_off: rto_apartment_door
 
             - if:
                 condition:
-                  - lambda: !lambda 'return id(rto_apartment_door_delay).state == "Random";'
+                  - lambda: !lambda 'return id(rto_apartment_door_delay).current_option() == "Random";'
                 then:
                   - delay: !lambda "return 5000 + (rand() % 10000);"
                 else:
                   - delay: !lambda |-
-                      std::string str = id(rto_apartment_door_delay).state;
+                      std::string str = id(rto_apartment_door_delay).current_option();
                       size_t pos = str.find(' ');
                       std::string first_token = (pos != std::string::npos) ? str.substr(0, pos) : str;
                       int value = std::stoi(first_token);
@@ -273,46 +273,46 @@ switch:
     icon: "mdi:checkbox-marked-circle-auto-outline"
     restore_mode: RESTORE_DEFAULT_OFF
     lambda: |-
-      if(id(rto_central_doors).state == "Entrance") {
+      if(id(rto_central_doors).current_option() == "Entrance") {
         return id(rto_entrance_door).state;
-      } else if(id(rto_central_doors).state == "Second Entrance") {
+      } else if(id(rto_central_doors).current_option() == "Second Entrance") {
         return id(rto_second_entrance_door).state;
-      } else if(id(rto_central_doors).state == "Any Entrance") {
+      } else if(id(rto_central_doors).current_option() == "Any Entrance") {
         return id(rto_entrance_door).state || id(rto_second_entrance_door).state;
-      } else if(id(rto_central_doors).state == "Apartment") {
+      } else if(id(rto_central_doors).current_option() == "Apartment") {
         return id(rto_apartment_door).state;
-      } else if(id(rto_central_doors).state == "Any Entrance & Apartment") {
+      } else if(id(rto_central_doors).current_option() == "Any Entrance & Apartment") {
         return id(rto_entrance_door).state || id(rto_second_entrance_door).state || id(rto_apartment_door).state;
       }
       return false;
     turn_on_action:
       - lambda: |-
-          if(id(rto_central_doors).state == "Entrance") {
+          if(id(rto_central_doors).current_option() == "Entrance") {
             id(rto_entrance_door).turn_on();
-          } else if(id(rto_central_doors).state == "Second Entrance") {
+          } else if(id(rto_central_doors).current_option() == "Second Entrance") {
             id(rto_second_entrance_door).turn_on();
-          } else if(id(rto_central_doors).state == "Any Entrance") {
+          } else if(id(rto_central_doors).current_option() == "Any Entrance") {
             id(rto_entrance_door).turn_on();
             id(rto_second_entrance_door).turn_on();
-          } else if(id(rto_central_doors).state == "Apartment") {
+          } else if(id(rto_central_doors).current_option() == "Apartment") {
             id(rto_apartment_door).turn_on();
-          } else if(id(rto_central_doors).state == "Any Entrance & Apartment") {
+          } else if(id(rto_central_doors).current_option() == "Any Entrance & Apartment") {
             id(rto_entrance_door).turn_on();
             id(rto_second_entrance_door).turn_on();
             id(rto_apartment_door).turn_on();
           }
     turn_off_action:
       - lambda: |-
-          if(id(rto_central_doors).state == "Entrance") {
+          if(id(rto_central_doors).current_option() == "Entrance") {
             id(rto_entrance_door).turn_off();
-          } else if(id(rto_central_doors).state == "Second Entrance") {
+          } else if(id(rto_central_doors).current_option() == "Second Entrance") {
             id(rto_second_entrance_door).turn_off();
-          } else if(id(rto_central_doors).state == "Any Entrance") {
+          } else if(id(rto_central_doors).current_option() == "Any Entrance") {
             id(rto_entrance_door).turn_off();
             id(rto_second_entrance_door).turn_off();
-          } else if(id(rto_central_doors).state == "Apartment") {
+          } else if(id(rto_central_doors).current_option() == "Apartment") {
             id(rto_apartment_door).turn_off();
-          } else if(id(rto_central_doors).state == "Any Entrance & Apartment") {
+          } else if(id(rto_central_doors).current_option() == "Any Entrance & Apartment") {
             id(rto_entrance_door).turn_off();
             id(rto_second_entrance_door).turn_off();
             id(rto_apartment_door).turn_off();
@@ -689,11 +689,11 @@ script:
       - if:
           condition:
             - lambda: |-
-                return id(rto_entrance_door_timeout_mode).state != "Never" && 
-                       id(rto_entrance_door_timeout_mode).state != "Ring once";
+                return id(rto_entrance_door_timeout_mode).current_option() != "Never" && 
+                       id(rto_entrance_door_timeout_mode).current_option() != "Ring once";
           then:
             - delay: !lambda |-
-                std::string str = id(rto_entrance_door_timeout_mode).state;
+                std::string str = id(rto_entrance_door_timeout_mode).current_option();
                 size_t pos = str.find(' ');
                 std::string first_token = (pos != std::string::npos) ? str.substr(0, pos) : str;
                 int value = std::stoi(first_token);
@@ -708,11 +708,11 @@ script:
       - if:
           condition:
             - lambda: |-
-                return id(rto_second_entrance_door_timeout_mode).state != "Never" &&
-                       id(rto_second_entrance_door_timeout_mode).state != "Ring once";
+                return id(rto_second_entrance_door_timeout_mode).current_option() != "Never" &&
+                       id(rto_second_entrance_door_timeout_mode).current_option() != "Ring once";
           then:
             - delay: !lambda |-
-                std::string str = id(rto_second_entrance_door_timeout_mode).state;
+                std::string str = id(rto_second_entrance_door_timeout_mode).current_option();
                 size_t pos = str.find(' ');
                 std::string first_token = (pos != std::string::npos) ? str.substr(0, pos) : str;
                 int value = std::stoi(first_token);
@@ -727,11 +727,11 @@ script:
       - if:
           condition:
             - lambda: |-
-                return id(rto_apartment_door_timeout_mode).state != "Never" && 
-                       id(rto_apartment_door_timeout_mode).state != "Ring once";
+                return id(rto_apartment_door_timeout_mode).current_option() != "Never" && 
+                       id(rto_apartment_door_timeout_mode).current_option() != "Ring once";
           then:
             - delay: !lambda |-
-                std::string str = id(rto_apartment_door_timeout_mode).state;
+                std::string str = id(rto_apartment_door_timeout_mode).current_option();
                 size_t pos = str.find(' ');
                 std::string first_token = (pos != std::string::npos) ? str.substr(0, pos) : str;
                 int value = std::stoi(first_token);

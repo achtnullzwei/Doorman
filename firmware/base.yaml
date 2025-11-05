@@ -19,7 +19,7 @@ esphome:
       # Always turn off relay on boot if not used standalone
       - if:
           condition:
-            - lambda: return id(relay_mode).state != "Standalone";
+            - lambda: return id(relay_mode).current_option() != "Standalone";
           then:
             - switch.turn_off: doorman_relay
 
@@ -605,7 +605,7 @@ lock:
     before_unlock_action:
       - if:
           condition:
-            - lambda: return id(relay_mode).state == "Standalone";
+            - lambda: return id(relay_mode).current_option() == "Standalone";
           then:
             - script.execute:
                 id: send_telegram_chain
@@ -614,14 +614,14 @@ lock:
       # Turn on internal relay
       - if:
           condition:
-            - lambda: return id(relay_mode).state == "Any Door Opener" || id(relay_mode).state == "Entrance Door Opener";
+            - lambda: return id(relay_mode).current_option() == "Any Door Opener" || id(relay_mode).current_option() == "Entrance Door Opener";
           then:
             - switch.turn_on: doorman_relay
     lock_action:
       # Turn off internal relay
       - if:
           condition:
-            - lambda: return id(relay_mode).state == "Any Door Opener" || id(relay_mode).state == "Entrance Door Opener";
+            - lambda: return id(relay_mode).current_option() == "Any Door Opener" || id(relay_mode).current_option() == "Entrance Door Opener";
           then:
             - switch.turn_off: doorman_relay
     web_server:
@@ -638,7 +638,7 @@ lock:
     before_unlock_action:
       - if:
           condition:
-            - lambda: return id(relay_mode).state == "Standalone";
+            - lambda: return id(relay_mode).current_option() == "Standalone";
           then:
             - script.execute:
                 id: send_telegram_chain
@@ -647,14 +647,14 @@ lock:
       # Turn on internal relay
       - if:
           condition:
-            - lambda: return id(relay_mode).state == "Any Door Opener" || id(relay_mode).state == "Second Entrance Door Opener";
+            - lambda: return id(relay_mode).current_option() == "Any Door Opener" || id(relay_mode).current_option() == "Second Entrance Door Opener";
           then:
             - switch.turn_on: doorman_relay
     lock_action:
       # Turn off internal relay
       - if:
           condition:
-            - lambda: return id(relay_mode).state == "Any Door Opener" || id(relay_mode).state == "Second Entrance Door Opener";
+            - lambda: return id(relay_mode).current_option() == "Any Door Opener" || id(relay_mode).current_option() == "Second Entrance Door Opener";
           then:
             - switch.turn_off: doorman_relay
     disabled_by_default: true

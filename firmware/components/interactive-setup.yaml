@@ -79,7 +79,7 @@ text_sensor:
     name: "Indoor Station Model"
     icon: "mdi:doorbell-video"
     lambda: |-
-      if(id(indoor_station_model).state != "None")
+      if(id(indoor_station_model).current_option() != "None")
       {
         return {"Complete"};
       }
@@ -119,7 +119,7 @@ text_sensor:
       {
         if(id(doorman_setup_mode).state == true)
         {
-          if(id(indoor_station_model).state != "None")
+          if(id(indoor_station_model).current_option() != "None")
           {
             return {"Reading memory..."};
           }

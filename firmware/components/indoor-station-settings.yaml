@@ -5,7 +5,7 @@ esphome:
     then:
       - if:
           condition:
-             - lambda: return id(indoor_station_serial_number).state != 0 && id(indoor_station_model).state != "None";
+             - lambda: return id(indoor_station_serial_number).state != 0 && id(indoor_station_model).current_option() != "None";
           then:
             - tc_bus_device.read_memory:
                 id: tc_bus_indoor_station
