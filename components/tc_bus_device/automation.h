@@ -15,7 +15,7 @@ namespace esphome
     {
         // Actions
         template<typename... Ts>
-        class TCBusDeviceSendAction : public Action<Ts...>, public Parented<TCBusComponent>
+        class TCBusDeviceSendAction : public Action<Ts...>, public Parented<TCBusDeviceComponent>
         {
             public:
                 TEMPLATABLE_VALUE(TelegramType, type)
@@ -29,7 +29,7 @@ namespace esphome
         };
 
         template<typename... Ts>
-        class TCBusDeviceUpdateSettingAction : public Action<Ts...>, public Parented<TCBusComponent>
+        class TCBusDeviceUpdateSettingAction : public Action<Ts...>, public Parented<TCBusDeviceComponent>
         {
             public:
                 TEMPLATABLE_VALUE(SettingType, type)
@@ -42,7 +42,7 @@ namespace esphome
         };
 
         template<typename... Ts>
-        class TCBusDeviceUpdateDoorbellButtonAction : public Action<Ts...>, public Parented<TCBusComponent>
+        class TCBusDeviceUpdateDoorbellButtonAction : public Action<Ts...>, public Parented<TCBusDeviceComponent>
         {
             public:
                 TEMPLATABLE_VALUE(uint8_t, button_row)
@@ -81,7 +81,7 @@ namespace esphome
         };
 
         template<typename... Ts>
-        class TCBusDeviceReadMemoryAction : public Action<Ts...>, public Parented<TCBusComponent>
+        class TCBusDeviceReadMemoryAction : public Action<Ts...>, public Parented<TCBusDeviceComponent>
         {
             public:
                 void play(const Ts&... x) override
@@ -91,7 +91,7 @@ namespace esphome
         };
 
         template<typename... Ts>
-        class TCBusDeviceIdentifyAction : public Action<Ts...>, public Parented<TCBusComponent>
+        class TCBusDeviceIdentifyAction : public Action<Ts...>, public Parented<TCBusDeviceComponent>
         {
             public:
                 void play(const Ts&... x) override
