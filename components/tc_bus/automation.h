@@ -20,7 +20,7 @@ namespace esphome
                 TEMPLATABLE_VALUE(uint32_t, payload)
                 TEMPLATABLE_VALUE(uint32_t, serial_number)
 
-                void play(Ts... x)
+                void play(const Ts&... x)
                 {
                     if(this->telegram_.value(x...) == 0)
                     {
@@ -49,7 +49,7 @@ namespace esphome
                 TCBusProgrammingModeAction(TCBusComponent *parent) : parent_(parent) {}
                 TEMPLATABLE_VALUE(bool, programming_mode)
 
-                void play(Ts... x) { this->parent_->set_programming_mode(this->programming_mode_.value(x...)); }
+                void play(const Ts&... x) { this->parent_->set_programming_mode(this->programming_mode_.value(x...)); }
 
             protected:
                 TCBusComponent *parent_;

@@ -22,7 +22,7 @@ namespace esphome
                 TEMPLATABLE_VALUE(uint8_t, address)
                 TEMPLATABLE_VALUE(uint32_t, payload)
 
-                void play(Ts... x)
+                void play(const Ts&... x)
                 {
                     this->parent_->send_telegram(this->type_.value(x...), this->address_.value(x...), this->payload_.value(x...));
                 }
@@ -38,7 +38,7 @@ namespace esphome
                 TEMPLATABLE_VALUE(SettingType, type)
                 TEMPLATABLE_VALUE(uint8_t, value)
 
-                void play(Ts... x)
+                void play(const Ts&... x)
                 {
                     this->parent_->update_setting(this->type_.value(x...), this->value_.value(x...));
                 }
@@ -58,7 +58,7 @@ namespace esphome
                 TEMPLATABLE_VALUE(DoorbellButtonAction, secondary_action)
                 TEMPLATABLE_VALUE(uint32_t, secondary_payload)
 
-                void play(Ts... x)
+                void play(const Ts&... x)
                 {
                     DoorbellButtonConfig button;
 
@@ -94,7 +94,7 @@ namespace esphome
             public:
                 TCBusDeviceReadMemoryAction(TCBusDeviceComponent *parent) : parent_(parent) {}
 
-                void play(Ts... x) { this->parent_->read_memory(); }
+                void play(const Ts&... x) { this->parent_->read_memory(); }
 
             protected:
                 TCBusDeviceComponent *parent_;
@@ -105,7 +105,7 @@ namespace esphome
             public:
                 TCBusDeviceIdentifyAction(TCBusDeviceComponent *parent) : parent_(parent) {}
 
-                void play(Ts... x) { this->parent_->request_version(); }
+                void play(const Ts&... x) { this->parent_->request_version(); }
 
             protected:
                 TCBusDeviceComponent *parent_;
