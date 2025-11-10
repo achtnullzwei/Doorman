@@ -8,7 +8,7 @@ esphome:
   #  then:
   #    - if:
   #        condition:
-  #           - lambda: return id(outdoor_station_serial_number).state != 0 && id(outdoor_station_model).current_option() != "None";
+  #           - lambda: return id(outdoor_station_serial_number).state != 0 && id(outdoor_station_model)->current_option() != "None";
   #        then:
   #          - tc_bus_device.read_memory:
   #              id: tc_bus_outdoor_station
