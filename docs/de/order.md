@@ -249,7 +249,7 @@ export default {
         }
     },
     created() {
-        api.get('/status', { 
+        api.get('/order', { 
             withCredentials: true 
         })
         .then(res => {
@@ -269,7 +269,7 @@ export default {
             this.user = null;
         });
 
-        api.get('/product_data', { 
+        api.get('/products', { 
             withCredentials: true 
         })
         .then(res => {
@@ -430,7 +430,7 @@ export default {
         async submit() {
             this.processing = true;
 
-            api.post('/submit', this.form, { 
+            api.post('/order', this.form, { 
                 withCredentials: true 
             })
             .then(response => {
@@ -445,7 +445,7 @@ export default {
         },
         async closeOrder() {
             if (!confirm('Bist du dir sicher dass du die Bestellung abschließen möchtest?')) return;
-            api.post('/close', {}, { 
+            api.post('/order/close', {}, { 
                 withCredentials: true 
             })
             .then(response => {
@@ -469,25 +469,25 @@ export default {
                     alert('Keine Trackingdaten angegeben! Wird abgebrochen!');
                     return;
                 }
-                this.setNextStep(this.status.id, trackingUrl);
+                this.setNextStep(trackingUrl);
             } else {
-                this.setNextStep(this.status.id, '');
+                this.setNextStep('');
             }
         },
-        async setNextStep(id, tracking) {
-            api.post('/orders/' + id + '/next', { tracking }, { 
+        async setNextStep(tracking) {
+            api.post('/order/next', { tracking }, { 
                 withCredentials: true 
             })
             .then(response => {
                 this.showModal("Aktualisiert!", "Der Bestellstatus wurde erfolgreich aktualisiert!");
-                this.refreshOrderStatus();
+                this.fetchOrderStatus();
             })
             .catch(error => {
                 this.showModal("Entschuldigung!", this.getErrorMessage(error, 'Der Bestellstatus konnte nicht aktualisiert werden!'));
             });
         },
         async resetOrder() {
-            api.post('/reset', {}, { 
+            api.post('/order/reset', {}, { 
                 withCredentials: true 
             })
             .then(response => {
@@ -497,24 +497,19 @@ export default {
                 this.showModal("Entschuldigung!", this.getErrorMessage(error, 'Etwas ist schiefgelaufen. Bitte versuche es später erneut.'));
             });
         },
-        async refreshOrderStatus() {
-            try {
-                const { data: statusData } = await api.get('/status', { withCredentials: true });
-                this.status = statusData;
-            } catch (error) {
-
-            }
+        async fetchOrderStatus() {
+            const { data: statusData } = await api.get('/order', { withCredentials: true });
+            this.status = statusData;
+            return statusData;
         },
         async checkOrder() {
             if (!this.orderHash) return;
 
             try {
                 await api.get(`/order/${this.orderHash}/details`, { withCredentials: true });
+                const status = await this.fetchOrderStatus();
 
-                const { data: statusData } = await api.get('/status', { withCredentials: true });
-                this.status = statusData;
-
-                if (this.status.status === 'none') {
+                if (status.status === 'none') {
                     this.showModal("Entschuldigung!", "Diese Bestellung existiert nicht! Bitte überprüfe die Bestellnummer.");
                 }
             } catch (error) {

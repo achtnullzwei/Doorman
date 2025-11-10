@@ -131,6 +131,12 @@ export default {
         openOrderItemCount() {
             return this.orders.filter(x => { return x.status == 'pending_review' || x.status == 'reserved'; }).reduce((sum, order) => sum + order.amount, 0);
         },
+        reservedOrderCount() {
+            return this.orders.filter(x => { return x.status == 'reserved'; }).length;
+        },
+        reservedOrderItemCount() {
+            return this.orders.filter(x => { return x.status == 'reserved'; }).reduce((sum, order) => sum + order.amount, 0);
+        },
         orderTotal() {
             return (order) => {
                 const productPrice = (order.product_details ? order.product_details.price : 0) * order.amount;
@@ -231,7 +237,7 @@ export default {
             });
         },
         async updateAvailability() {
-            api.get('/product_data', { 
+            api.get('/products', { 
                 withCredentials: true 
             })
             .then(response => {
@@ -239,7 +245,7 @@ export default {
             });
         },
         async loadOrders() {
-            api.get('/orders', { 
+            api.get('/order/list', { 
                 withCredentials: true 
             })
             .then(response => {
@@ -250,7 +256,7 @@ export default {
             });
         },
         async login() {
-            api.post('/login', { username: this.username, password: this.password }, { 
+            api.post('/user/login', { username: this.username, password: this.password }, { 
                 withCredentials: true 
             })
             .then(response => {
@@ -267,7 +273,7 @@ export default {
             });
         },
         async logout() {
-            api.post('/logout', { 
+            api.post('/user/logout', { 
                 withCredentials: true 
             })
             .then(response => {
@@ -290,7 +296,7 @@ export default {
             });
         },
         async addStock() {
-            api.post('/add_stock', { product: 'doorman', amount: this.stock_add_amount }, { 
+            api.post('/product/doorman/increase', { amount: this.stock_add_amount }, { 
                 withCredentials: true 
             })
             .then(response => {
@@ -304,7 +310,7 @@ export default {
         async updateAvailabilityDate() {
             const ts = dayjs(this.availability_date).unix();
 
-            api.post('/update_availability', { product: 'doorman', timestamp: ts }, { 
+            api.post('/product/doorman/availability', { timestamp: ts }, { 
                 withCredentials: true 
             })
             .then(response => {
@@ -353,7 +359,7 @@ export default {
             }
         },
         async nextStep(id, tracking) {
-            api.post('/orders/' + id + '/next', { tracking }, { 
+            api.post('/order/' + id + '/next', { tracking }, { 
                 withCredentials: true 
             })
             .then(response => {
@@ -368,7 +374,7 @@ export default {
         async cancelOrder(id) {
             if (!confirm('Are you sure you want to cancel the order?')) return;
 
-            api.post('/orders/' + id + '/cancel', { 
+            api.post('/order/' + id + '/cancel', { 
                 withCredentials: true 
             })
             .then(response => {
@@ -383,7 +389,7 @@ export default {
         async deleteOrder(id) {
             if (!confirm('Are you sure you want to delete the order?')) return;
 
-            api.post('/orders/' + id + '/delete', { 
+            api.post('/order/' + id + '/delete', { 
                 withCredentials: true 
             })
             .then(response => {
@@ -1028,7 +1034,7 @@ canvas {
     </div>
 </div>
 <div style="margin-bottom: 25px;">
-    <span v-if="user">There are currently <b>{{ openOrderCount }}</b> open {{ openOrderCount == 1 ? 'order' : 'orders' }} containing <b>{{ openOrderItemCount }}</b> {{ openOrderItemCount == 1 ? 'item' : 'items' }}. <b>{{ product_data?.available_units }}</b> {{ product_data?.available_units == 1 ? 'item' : 'items' }} are available.</span>
+    <span v-if="user">There are currently <b>{{ openOrderCount }}</b> open {{ openOrderCount == 1 ? 'order' : 'orders' }} containing <b>{{ openOrderItemCount }}</b> {{ openOrderItemCount == 1 ? 'item' : 'items' }}. <b>{{ reservedOrderItemCount }}</b> {{ reservedOrderItemCount == 1 ? 'item' : 'items' }} are reserved, <b>{{ product_data?.available_units }}</b> {{ product_data?.available_units == 1 ? 'item' : 'items' }} are available.</span>
     <span v-else>Welcome to the Order Management Service! Please login to manage the orders.</span>
 </div>
 <hr>
