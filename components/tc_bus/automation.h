@@ -1,9 +1,7 @@
 #pragma once
 
-#include "tc_bus.h"
-
 #include "esphome/core/automation.h"
-#include "esphome/core/component.h"
+#include "tc_bus.h"
 
 namespace esphome
 {
@@ -11,18 +9,16 @@ namespace esphome
     {
         // Actions
         template<typename... Ts>
-        class TCBusSendAction : public Action<Ts...>, public Parented<TCBusComponent>
-        {
-            public:
-                TEMPLATABLE_VALUE(uint32_t, telegram)
-                TEMPLATABLE_VALUE(bool, is_long)
-                TEMPLATABLE_VALUE(TelegramType, type)
-                TEMPLATABLE_VALUE(uint8_t, address)
-                TEMPLATABLE_VALUE(uint32_t, payload)
-                TEMPLATABLE_VALUE(uint32_t, serial_number)
+        class TCBusSendAction : public Action<Ts...>, public Parented<TCBusComponent> {
+            TEMPLATABLE_VALUE(uint32_t, telegram)
+            TEMPLATABLE_VALUE(bool, is_long)
+            TEMPLATABLE_VALUE(TelegramType, type)
+            TEMPLATABLE_VALUE(uint8_t, address)
+            TEMPLATABLE_VALUE(uint32_t, payload)
+            TEMPLATABLE_VALUE(uint32_t, serial_number)
 
-                void play(const Ts&... x) override
-                {
+            public:
+                void play(const Ts &...x) override {
                     if(this->telegram_.value(x...) == 0)
                     {
                         this->parent_->send_telegram(this->type_.value(x...), this->address_.value(x...), this->payload_.value(x...), this->serial_number_.value(x...));
@@ -42,15 +38,11 @@ namespace esphome
         };
 
         template<typename... Ts>
-        class TCBusProgrammingModeAction : public Action<Ts...>, public Parented<TCBusComponent>
-        {
-            public:
-                TEMPLATABLE_VALUE(bool, programming_mode)
+        class TCBusProgrammingModeAction : public Action<Ts...>, public Parented<TCBusComponent> {
+            TEMPLATABLE_VALUE(bool, programming_mode)
 
-                void play(const Ts&... x) override
-                {
-                    this->parent_->set_programming_mode(this->programming_mode_.value(x...));
-                }
+            public:
+                void play(const Ts &...x) override { this->parent_->set_programming_mode(this->programming_mode_.value(x...)); }
         };
 
         // Callbacks

@@ -13,37 +13,70 @@ MULTI_CONF = True
 
 TCBusDeviceComponent = tc_bus_ns.class_('TCBusDeviceComponent', cg.Component)
 
-TCBusDeviceSendAction = tc_bus_ns.class_(
-    "TCBusDeviceSendAction", automation.Action
-)
-
-TCBusDeviceUpdateSettingAction = tc_bus_ns.class_(
-    "TCBusDeviceUpdateSettingAction", automation.Action
-)
-
-TCBusDeviceUpdateDoorbellButtonAction = tc_bus_ns.class_(
-    "TCBusDeviceUpdateDoorbellButtonAction", automation.Action
-)
-
-TCBusDeviceReadMemoryAction = tc_bus_ns.class_(
-    "TCBusDeviceReadMemoryAction", automation.Action
-)
-
-TCBusDeviceIdentifyAction = tc_bus_ns.class_(
-    "TCBusDeviceIdentifyAction", automation.Action
-)
-
 TelegramData = tc_bus_ns.struct("TelegramData")
 SettingData = tc_bus_ns.struct("SettingData")
 ModelData = tc_bus_ns.struct("ModelData")
 
-IdentifyCompleteTrigger = tc_bus_ns.class_("IdentifyCompleteTrigger", automation.Trigger.template())
-IdentifyUnknownTrigger = tc_bus_ns.class_("IdentifyUnknownTrigger", automation.Trigger.template())
-IdentifyTimeoutTrigger = tc_bus_ns.class_("IdentifyTimeoutTrigger", automation.Trigger.template())
-ReadMemoryCompleteTrigger = tc_bus_ns.class_("ReadMemoryCompleteTrigger", automation.Trigger.template())
-ReadMemoryTimeoutTrigger = tc_bus_ns.class_("ReadMemoryTimeoutTrigger", automation.Trigger.template())
+TCBusDeviceSendAction = tc_bus_ns.class_(
+    "TCBusDeviceSendAction",
+    automation.Action,
+    cg.Parented.template(TCBusDeviceComponent)
+)
 
-ReceivedDeviceTelegramTrigger = tc_bus_ns.class_("ReceivedDeviceTelegramTrigger", automation.Trigger.template())
+TCBusDeviceUpdateSettingAction = tc_bus_ns.class_(
+    "TCBusDeviceUpdateSettingAction",
+    automation.Action,
+    cg.Parented.template(TCBusDeviceComponent)
+)
+
+TCBusDeviceUpdateDoorbellButtonAction = tc_bus_ns.class_(
+    "TCBusDeviceUpdateDoorbellButtonAction",
+    automation.Action,
+    cg.Parented.template(TCBusDeviceComponent)
+)
+
+TCBusDeviceReadMemoryAction = tc_bus_ns.class_(
+    "TCBusDeviceReadMemoryAction",
+    automation.Action,
+    cg.Parented.template(TCBusDeviceComponent)
+)
+
+TCBusDeviceIdentifyAction = tc_bus_ns.class_(
+    "TCBusDeviceIdentifyAction",
+    automation.Action,
+    cg.Parented.template(TCBusDeviceComponent)
+)
+
+
+IdentifyCompleteTrigger = tc_bus_ns.class_(
+    "IdentifyCompleteTrigger",
+    automation.Trigger.template()
+)
+
+IdentifyUnknownTrigger = tc_bus_ns.class_(
+    "IdentifyUnknownTrigger", 
+    automation.Trigger.template()
+)
+
+IdentifyTimeoutTrigger = tc_bus_ns.class_(
+    "IdentifyTimeoutTrigger", 
+    automation.Trigger.template()
+)
+
+ReadMemoryCompleteTrigger = tc_bus_ns.class_(
+    "ReadMemoryCompleteTrigger", 
+    automation.Trigger.template()
+)
+
+ReadMemoryTimeoutTrigger = tc_bus_ns.class_(
+    "ReadMemoryTimeoutTrigger", 
+    automation.Trigger.template()
+)
+
+ReceivedDeviceTelegramTrigger = tc_bus_ns.class_(
+    "ReceivedDeviceTelegramTrigger", 
+    automation.Trigger.template()
+)
 
 SETTING_TYPE = tc_bus_ns.enum("SettingType")
 SETTING_TYPES = {

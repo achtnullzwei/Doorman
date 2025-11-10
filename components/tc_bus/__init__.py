@@ -2,7 +2,7 @@ import esphome.codegen as cg
 import esphome.config_validation as cv
 from esphome.components import remote_transmitter, remote_receiver
 from esphome import automation
-from esphome.const import CONF_ID, CONF_TRIGGER_ID, CONF_TYPE, CONF_VALUE
+from esphome.const import CONF_ID, CONF_TRIGGER_ID, CONF_TYPE
 
 CODEOWNERS = ["@azoninc"]
 
@@ -13,11 +13,11 @@ tc_bus_ns = cg.esphome_ns.namespace("tc_bus")
 TCBusComponent = tc_bus_ns.class_("TCBusComponent", cg.Component)
 
 TCBusSendAction = tc_bus_ns.class_(
-    "TCBusSendAction", automation.Action
+    "TCBusSendAction", automation.Action, cg.Parented.template(TCBusComponent)
 )
 
 TCBusProgrammingModeAction = tc_bus_ns.class_(
-    "TCBusProgrammingModeAction", automation.Action
+    "TCBusProgrammingModeAction", automation.Action, cg.Parented.template(TCBusComponent)
 )
 
 TelegramData = tc_bus_ns.struct("TelegramData")
@@ -181,7 +181,7 @@ async def tc_bus_send_to_code(config, action_id, template_args, args):
     automation.maybe_simple_id(
         {
             cv.GenerateID(): cv.use_id(TCBusComponent),
-            cv.Required(CONF_PROGRAMMING_MODE): cv.templatable(cv.boolean)
+            cv.Optional(CONF_PROGRAMMING_MODE, default=False): cv.templatable(cv.boolean)
         }
     ),
 )

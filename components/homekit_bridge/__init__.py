@@ -1,7 +1,6 @@
 import esphome.codegen as cg
 import esphome.config_validation as cv
 from esphome import automation
-from esphome.automation import Condition
 from esphome.const import CONF_PORT, PLATFORM_ESP32, CONF_ID, CONF_TRIGGER_ID
 from esphome.components.esp32 import add_idf_component, add_idf_sdkconfig_option
 import re
@@ -22,8 +21,9 @@ PairingCompletedTrigger = homekit_ns.class_("PairingCompletedTrigger", automatio
 IdentifyTrigger = homekit_ns.class_("IdentifyTrigger", automation.Trigger.template())
 ControllerConnectedTrigger = homekit_ns.class_("ControllerConnectedTrigger", automation.Trigger.template(cg.std_string))
 ControllerDisconnectedTrigger = homekit_ns.class_("ControllerDisconnectedTrigger", automation.Trigger.template(cg.std_string))
-PairedCondition = homekit_ns.class_("PairedCondition", Condition)
-ConnectedCondition = homekit_ns.class_("ConnectedCondition", Condition)
+
+PairedCondition = homekit_ns.class_("PairedCondition", automation.Condition, cg.Parented.template(HomeKitBridgeComponent))
+ConnectedCondition = homekit_ns.class_("ConnectedCondition", automation.Condition, cg.Parented.template(HomeKitBridgeComponent))
 
 CONF_HAP_ID = "hap_id"
 CONF_TASK_STACK_SIZE = "task_stack_size"
@@ -204,10 +204,16 @@ async def to_code(config):
         await automation.build_automation(trigger, [(cg.std_string, "x")], conf)
 
 
-@automation.register_condition("homekit.paired", PairedCondition, cv.Schema({}))
-async def homekit_paired_to_code(config, condition_id, template_arg, args):
-    return cg.new_Pvariable(condition_id, template_arg)
+HOMEKIT_BRIDGE_ACTION_SCHEMA = cv.Schema({cv.GenerateID(): cv.use_id(HomeKitBridgeComponent)})
 
-@automation.register_condition("homekit.connected", ConnectedCondition, cv.Schema({}))
+@automation.register_condition("homekit.paired", PairedCondition, HOMEKIT_BRIDGE_ACTION_SCHEMA)
+async def homekit_paired_to_code(config, condition_id, template_arg, args):
+    var = cg.new_Pvariable(condition_id, template_arg)
+    await cg.register_parented(var, config[CONF_ID])
+    return var
+
+@automation.register_condition("homekit.connected", ConnectedCondition, HOMEKIT_BRIDGE_ACTION_SCHEMA)
 async def homekit_connected_to_code(config, condition_id, template_arg, args):
-    return cg.new_Pvariable(condition_id, template_arg)
+    var = cg.new_Pvariable(condition_id, template_arg)
+    await cg.register_parented(var, config[CONF_ID])
+    return var

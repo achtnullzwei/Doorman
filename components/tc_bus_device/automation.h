@@ -17,13 +17,12 @@ namespace esphome
         template<typename... Ts>
         class TCBusDeviceSendAction : public Action<Ts...>, public Parented<TCBusDeviceComponent>
         {
-            public:
-                TEMPLATABLE_VALUE(TelegramType, type)
-                TEMPLATABLE_VALUE(uint8_t, address)
-                TEMPLATABLE_VALUE(uint32_t, payload)
+            TEMPLATABLE_VALUE(TelegramType, type)
+            TEMPLATABLE_VALUE(uint8_t, address)
+            TEMPLATABLE_VALUE(uint32_t, payload)
 
-                void play(const Ts&... x) override
-                {
+            public:
+                void play(const Ts &...x) override {
                     this->parent_->send_telegram(this->type_.value(x...), this->address_.value(x...), this->payload_.value(x...));
                 }
         };
@@ -31,12 +30,11 @@ namespace esphome
         template<typename... Ts>
         class TCBusDeviceUpdateSettingAction : public Action<Ts...>, public Parented<TCBusDeviceComponent>
         {
-            public:
-                TEMPLATABLE_VALUE(SettingType, type)
-                TEMPLATABLE_VALUE(uint8_t, value)
+            TEMPLATABLE_VALUE(SettingType, type)
+            TEMPLATABLE_VALUE(uint8_t, value)
 
-                void play(const Ts&... x) override
-                {
+            public:
+                void play(const Ts &...x) override {
                     this->parent_->update_setting(this->type_.value(x...), this->value_.value(x...));
                 }
         };
@@ -44,16 +42,15 @@ namespace esphome
         template<typename... Ts>
         class TCBusDeviceUpdateDoorbellButtonAction : public Action<Ts...>, public Parented<TCBusDeviceComponent>
         {
-            public:
-                TEMPLATABLE_VALUE(uint8_t, button_row)
-                TEMPLATABLE_VALUE(uint8_t, button_col)
-                TEMPLATABLE_VALUE(DoorbellButtonAction, primary_action)
-                TEMPLATABLE_VALUE(uint32_t, primary_payload)
-                TEMPLATABLE_VALUE(DoorbellButtonAction, secondary_action)
-                TEMPLATABLE_VALUE(uint32_t, secondary_payload)
+            TEMPLATABLE_VALUE(uint8_t, button_row)
+            TEMPLATABLE_VALUE(uint8_t, button_col)
+            TEMPLATABLE_VALUE(DoorbellButtonAction, primary_action)
+            TEMPLATABLE_VALUE(uint32_t, primary_payload)
+            TEMPLATABLE_VALUE(DoorbellButtonAction, secondary_action)
+            TEMPLATABLE_VALUE(uint32_t, secondary_payload)
 
-                void play(const Ts&... x) override
-                {
+            public:
+                void play(const Ts &...x) override {
                     DoorbellButtonConfig button;
 
                     if (this->primary_action_.has_value())
@@ -84,8 +81,7 @@ namespace esphome
         class TCBusDeviceReadMemoryAction : public Action<Ts...>, public Parented<TCBusDeviceComponent>
         {
             public:
-                void play(const Ts&... x) override
-                {
+                void play(const Ts &...x) override {
                     this->parent_->read_memory();
                 }
         };
@@ -94,8 +90,7 @@ namespace esphome
         class TCBusDeviceIdentifyAction : public Action<Ts...>, public Parented<TCBusDeviceComponent>
         {
             public:
-                void play(const Ts&... x) override
-                {
+                void play(const Ts &...x) override {
                     this->parent_->request_version();
                 }
         };

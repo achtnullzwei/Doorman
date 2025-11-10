@@ -59,20 +59,20 @@ namespace esphome
         };
 
         template<typename... Ts>
-        class PairedCondition : public Condition<Ts...> {
+        class PairedCondition : public Condition<Ts...>, public Parented<HomeKitBridgeComponent> {
             public:
-                bool check(const Ts&... x) override
+                bool check(const Ts &...x) override
                 {
-                    return global_homekit_bridge->is_paired();
+                    return this->parent_->is_paired();
                 }
         };
 
         template<typename... Ts>
-        class ConnectedCondition : public Condition<Ts...> {
+        class ConnectedCondition : public Condition<Ts...>, public Parented<HomeKitBridgeComponent> {
             public:
-                bool check(const Ts&... x) override
+                bool check(const Ts &...x) override
                 {
-                    return global_homekit_bridge->is_connected();
+                    return this->parent_->is_connected();
                 }
         };
 
