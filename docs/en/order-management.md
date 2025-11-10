@@ -122,8 +122,13 @@ export default {
 
                 if (priorityA !== priorityB) return priorityA - priorityB;
 
-                // Then sort by id descending
-                return b.id - a.id;
+                if (priorityA === 3) {
+                    // reserved: ascend
+                    return a.id - b.id;
+                } else {
+                    // descend
+                    return b.id - a.id;
+                }
             });
         },
         paginatedOrders() {

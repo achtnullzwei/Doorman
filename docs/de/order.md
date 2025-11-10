@@ -86,6 +86,7 @@ export default {
             orderHash: '',
             processing: false,
             form: {
+                language: 'de',
                 fullname: '',
                 name: '',
                 email: '',
