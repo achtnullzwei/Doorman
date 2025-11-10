@@ -126,10 +126,10 @@ export default {
             return Math.ceil(this.filteredOrders.length / this.ordersPerPage) || 1;
         },
         openOrderCount() {
-            return this.orders.filter(x => { return x.status == 'pending_review'; }).length;
+            return this.orders.filter(x => { return x.status == 'pending_review' || x.status == 'reserved'; }).length;
         },
         openOrderItemCount() {
-            return this.orders.filter(x => { return x.status == 'pending_review'; }).reduce((sum, order) => sum + order.amount, 0);
+            return this.orders.filter(x => { return x.status == 'pending_review' || x.status == 'reserved'; }).reduce((sum, order) => sum + order.amount, 0);
         },
         orderTotal() {
             return (order) => {
@@ -144,6 +144,8 @@ export default {
             return (status) => {
                 if(status == 'pending_review') {
                     return 'New';
+                } else if(status == 'reserved') {
+                    return 'Reserved';
                 } else if(status == 'pending_payment') {
                     return 'Pending payment';
                 } else if(status == 'pending_shipment') {
@@ -163,6 +165,8 @@ export default {
             return (status) => {
                 if(status == 'pending_review') {
                     return 'warning';
+                } else if(status == 'reserved') {
+                    return 'warning';
                 } else if(status == 'pending_payment') {
                     return 'warning';
                 } else if(status == 'pending_shipment') {
@@ -181,7 +185,9 @@ export default {
         nextStepButtonText(){
             return (status) => {
                 if(status == 'pending_review') {
-                    return 'Accept';
+                    return 'Reserve';
+                } else if(status == 'reserved') {
+                    return 'Ready';
                 } else if(status == 'pending_payment') {
                     return 'Paid';
                 } else if(status == 'pending_shipment') {

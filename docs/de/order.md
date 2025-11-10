@@ -648,8 +648,8 @@ Sobald ich deine Anfrage erhalten habe, melde ich mich bei Rückfragen. Ansonste
 
 <div v-if="status.status == 'none' && available_units === 0" class="danger custom-block">
     <p class="custom-block-title">AUSVERKAUFT</p>
-    <p>Du kannst deine Anfrage trotzdem schonmal senden, dann reserviere ich dir einen.</p>
     <p v-html="availability_time_text"></p>
+    <p>Du kannst deine Anfrage trotzdem schonmal senden, dann reserviere ich dir einen.</p>
 </div>
 
 <hr />
@@ -670,6 +670,10 @@ Sobald ich deine Anfrage erhalten habe, melde ich mich bei Rückfragen. Ansonste
 <div v-else-if="status.status == 'pending_review'" class="warning custom-block">
     <p class="custom-block-title">ÜBERPRÜFUNG AUSSTEHEND</p>
     <p>Ich habe deine Bestellung erhalten und werde diese mit dir prüfen, um die Kompatibilität abzuklären. Du wirst benachrichtigt, sobald die Überprüfung abgeschlossen ist.</p>
+</div>
+<div v-else-if="status.status == 'reserved'" class="warning custom-block">
+    <p class="custom-block-title">RESERVIERT</p>
+    <p>Dein(e) Doorman(s) sind reserviert! Du bekommst die Zahlungsinformationen, sobald alles vorbereitet ist.</p>
 </div>
 <div v-else-if="status.status == 'pending_payment'" class="warning custom-block">
     <p class="custom-block-title">ZAHLUNG AUSSTEHEND</p>

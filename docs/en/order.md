@@ -647,8 +647,8 @@ Otherwise, you'll only be notified when your Doorman is ready for shipment. Stat
 
 <div v-if="status.status == 'none' && available_units === 0" class="danger custom-block">
     <p class="custom-block-title">OUT OF STOCK</p>
-    <p>You can still send your inquiry, and I'll make sure to reserve one for you as soon as they arrive.</p>
     <p v-html="availability_time_text"></p>
+    <p>You can send your inquiry anyway, and I'll make sure to reserve one for you as soon as they arrive.</p>
 </div>
 
 <hr />
@@ -669,6 +669,10 @@ Otherwise, you'll only be notified when your Doorman is ready for shipment. Stat
 <div v-else-if="status.status == 'pending_review'" class="warning custom-block">
     <p class="custom-block-title">REVIEW PENDING</p>
     <p>I have received your order and will now review your inquiry to confirm compatibility. You'll be notified as soon as the review is complete.</p>
+</div>
+<div v-else-if="status.status == 'reserved'" class="warning custom-block">
+    <p class="custom-block-title">RESERVED</p>
+    <p>Your Doorman(s) are reserved! You'll receive payment instructions as soon as everything is prepared.</p>
 </div>
 <div v-else-if="status.status == 'pending_payment'" class="warning custom-block">
     <p class="custom-block-title">PAYMENT PENDING</p>
