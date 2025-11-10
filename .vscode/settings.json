@@ -84,5 +84,8 @@
         "unordered_set": "cpp",
         "ranges": "cpp",
         "span": "cpp"
-    }
+    },
+    "conventionalCommits.scopes": [
+        "order"
+    ]
 }
