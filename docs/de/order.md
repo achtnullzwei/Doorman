@@ -121,17 +121,17 @@ export default {
             products: [
                 {
                     key: 'pcb',
-                    name: 'Doorman-S3',
+                    name: 'Doorman S3',
                     image: '/pcb.png',
                     details: 'Nur die Platine – ideal, wenn du sie in eine bestehende Wandbox oder deine Innenstation einbauen kannst.',
                     price: 35
                 },
                 {
                     key: 'bundle',
-                    name: 'Doorman-S3 Bundle',
+                    name: 'Doorman S3 - Bundle',
                     image: '/enclosure.png',
                     details: 'Beinhaltet Platine und Gehäuse – perfekt, wenn du deinen Doorman sichtbar anbringen möchtest.',
-                    price: 37.5
+                    price: 38
                 }
             ],
             shipping_regions: [
@@ -634,7 +634,7 @@ textarea {
 
 # Hol dir deinen Doorman <Badge v-if="status.status !== 'error' && available_units >= 0" :type="availability_class" :text="availability_text" @click="openManagement" />
 
-Du suchst eine einfache Lösung? Ich hab einen einsatzbereiten Doorman-S3 für dich, schon mit der [Doorman-Firmware](guide/firmware/installation) geflasht. Den kannst du direkt in dein Home Assistant Setup einbinden – ganz ohne Stress.
+Du suchst eine einfache Lösung? Ich hab einen einsatzbereiten Doorman S3 für dich, schon mit der [Doorman-Firmware](guide/firmware/installation) geflasht. Den kannst du direkt in dein Home Assistant Setup einbinden – ganz ohne Stress.
 
 :::tip BITTE BEACHTE
 Dies ist **kein offizielles oder zertifiziertes Produkt**. Es basiert auf Reverse Engineering und wird **ohne Garantie auf Kompatibilität, Sicherheit oder Funktionalität** bereitgestellt.

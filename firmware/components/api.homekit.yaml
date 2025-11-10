@@ -80,7 +80,7 @@ web_server:
 homekit_bridge:
   name: "Doorman"
   manufacturer: "AzonInc"
-  model: "Doorman-S3"
+  model: "Doorman S3"
   setup_code: '291-21-998'
   setup_id: DMS3
   task_stack_size: 3072

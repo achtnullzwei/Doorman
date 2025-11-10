@@ -17,14 +17,14 @@ export default {
                     name: 'ESP32-S3 <span class="VPBadge tip">Octal</span>',
                     icon: '',
                     iconColor: '',
-                    details: 'Recommended for the <b>Doorman-S3</b> and all ESP32-S3 boards with at least 8&nbsp;MB PSRAM.',
+                    details: 'Recommended for the <b>Doorman S3</b> and all ESP32-S3 boards with at least 8&nbsp;MB PSRAM.',
                 },
                 {
                     key: 'esp32-s3-quad',
                     name: 'ESP32-S3 <span class="VPBadge tip">Quad</span>',
                     icon: '',
                     iconColor: '',
-                    details: 'Recommended for <b>Doorman-S3 (Revision 1.4)</b> and all ESP32-S3 boards with up to 4&nbsp;MB PSRAM.',
+                    details: 'Recommended for <b>Doorman S3 (Revision 1.4)</b> and all ESP32-S3 boards with up to 4&nbsp;MB PSRAM.',
                 },
                 {
                     key: 'esp32',
@@ -159,7 +159,7 @@ Be aware that some **updates may introduce breaking changes** — always review 
 :::
 
 ## Web Serial <Badge type="tip" text="Latest release build, no customization" />
-Connect your **Doorman-S3** via USB-C and use the configuration assistant below to install the latest firmware directly via Web Serial — perfect for first-time setup.
+Connect your **Doorman S3** via USB-C and use the configuration assistant below to install the latest firmware directly via Web Serial — perfect for first-time setup.
 
 This guided process ensures seamless integration with the Home Assistant API and makes future community-driven updates easy to apply.
 
@@ -276,7 +276,7 @@ esphome run <yamlfile.yaml>
 | ADC Input      | GPIO 10  | GPIO 36  |
 
 ### Stock Firmware
-::: details ESP32-S3 (Octal PSRAM) / Doorman-S3 (1.5)
+::: details ESP32-S3 (Octal PSRAM) / Doorman S3 (1.5)
 ::: code-group
 ```yaml [Home Assistant]
 <!--@include: ../../../../firmware/examples/esp32-s3.ha.stock.master.example.yaml-->
@@ -292,7 +292,7 @@ esphome run <yamlfile.yaml>
 ```
 :::
 
-::: details ESP32-S3 (Quad PSRAM) / Doorman-S3 (1.4)
+::: details ESP32-S3 (Quad PSRAM) / Doorman S3 (1.4)
 ::: code-group
 ```yaml [Home Assistant]
 <!--@include: ../../../../firmware/examples/esp32-s3-quad.ha.stock.master.example.yaml-->
@@ -325,7 +325,7 @@ esphome run <yamlfile.yaml>
 :::
 
 ### Nuki Bridge Firmware
-::: details ESP32-S3 (Octal PSRAM) / Doorman-S3 (1.5)
+::: details ESP32-S3 (Octal PSRAM) / Doorman S3 (1.5)
 ::: code-group
 ```yaml [Home Assistant]
 <!--@include: ../../../../firmware/examples/esp32-s3.ha.nuki-bridge.master.example.yaml-->
@@ -335,7 +335,7 @@ esphome run <yamlfile.yaml>
 ```
 :::
 
-::: details ESP32-S3 (Quad PSRAM) / Doorman-S3 (1.4)
+::: details ESP32-S3 (Quad PSRAM) / Doorman S3 (1.4)
 ::: code-group
 ```yaml [Home Assistant]
 <!--@include: ../../../../firmware/examples/esp32-s3-quad.ha.nuki-bridge.master.example.yaml-->

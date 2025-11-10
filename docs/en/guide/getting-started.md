@@ -46,7 +46,7 @@ Always double-check all connections carefully before plugging anything in.
 > **Please remove the jumper cap on `BUS PWR` before you proceed!**
 > 
 > The intercom's power supply must provide **at least 60 mA**, which is usually the case.  
-> However, since the available power is limited, **connecting additional devices like the Doorman-S3 directly to the bus may cause instability** in the system.
+> However, since the available power is limited, **connecting additional devices like the Doorman S3 directly to the bus may cause instability** in the system.
 
 Connect the `b` line (Ground) and the `a` line (24V Bus) to the TC:BUS terminals on your Doorman—one line per terminal.
 
@@ -64,7 +64,7 @@ Example:
 
 > [!DANGER] IMPORTANT
 > The intercom's power supply must provide **at least 60 mA**, which is usually the case.  
-> However, since the available power is limited, **connecting additional devices like the Doorman-S3 directly to the bus may cause instability** in the system.
+> However, since the available power is limited, **connecting additional devices like the Doorman S3 directly to the bus may cause instability** in the system.
 
 Connect the `b` line (Ground) and the `a` line (24V Bus) to the TC:BUS terminals on your Doorman—one line per terminal.
 
@@ -108,7 +108,7 @@ Example:
 
 
 ## Connect to Wi-Fi
-When you power on your **Doorman-S3** for the first time, it will start **blinking rapidly in orange** — that means it's ready for Wi-Fi setup!
+When you power on your **Doorman S3** for the first time, it will start **blinking rapidly in orange** — that means it's ready for Wi-Fi setup!
 
 You can connect it to Wi-Fi using one of three methods:  
 **Access Point**, **Improv Serial (USB)**, or **Improv Bluetooth**.
@@ -118,7 +118,7 @@ You can connect it to Wi-Fi using one of three methods:
 <div style="display: flex; flex-direction: row; flex-wrap: wrap; justify-content: space-between; gap: 20px;align-items: center;" markdown>
    <div style="min-width:260px;flex: 1 1 260px;" markdown>
 
-   1. **Connect to the Wi-Fi network** named `Doorman-S3 Setup`.
+   1. **Connect to the Wi-Fi network** named `Doorman S3 Setup`.
       Use the password: `Op3n-Sesame!`
 
    2. Once connected, the **setup page should open automatically**.

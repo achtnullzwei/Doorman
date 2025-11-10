@@ -6,7 +6,7 @@ This component can trigger automations based on specific telegrams received from
 ::: tip NOTE
 This is the only component required for communication on the bus. However, it can be extended with additional components, such as [TC:BUS Device](./esphome-component-device) and [TC:BUS Serial](./esphome-component-serial).
 
-**Note:** This component requires hardware like the Doorman-S3 or a [DIY solution](https://github.com/peteh/doorman) to communicate on the bus.
+**Note:** This component requires hardware like the Doorman S3 or a [DIY solution](https://github.com/peteh/doorman) to communicate on the bus.
 :::
 
 ## Configuration

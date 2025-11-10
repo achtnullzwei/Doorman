@@ -1,6 +1,6 @@
 # GPIO Pinbelegung
 
-Der Doorman-S3 nutzt bestimmte GPIO-Pins für spezielle Funktionen und bietet zusätzliche GPIO-Pins für deine eigenen Sensoren und Geräte.
+Der Doorman S3 nutzt bestimmte GPIO-Pins für spezielle Funktionen und bietet zusätzliche GPIO-Pins für deine eigenen Sensoren und Geräte.
 
 | GPIO  | Verwensungszweck |
 | :---  | :---  |

@@ -34,7 +34,7 @@ namespace esphome
                 ESP_LOGI(TAG, "Detected Doorman Hardware: Revision %i.%i.%i.", ver[0], ver[1], ver[2]);
 
                 static char hw_version_str[32];
-                int len = snprintf(hw_version_str, sizeof(hw_version_str), "Doorman-S3 %u.%u.%u", ver[0], ver[1], ver[2]);
+                int len = snprintf(hw_version_str, sizeof(hw_version_str), "Doorman S3 %u.%u.%u", ver[0], ver[1], ver[2]);
                 if (len < 0 || len >= static_cast<int>(sizeof(hw_version_str)))
                 {
                     hw_version_str[sizeof(hw_version_str) - 1] = '\0';

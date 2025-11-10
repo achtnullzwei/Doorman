@@ -108,7 +108,7 @@ export default class EspApp extends LitElement {
     const data = await response.json();
     if(data.value != 'Generic')
     {
-      this.hardwareVersion = data.value.replace('Doorman-S3', 'Revision ');
+      this.hardwareVersion = data.value.replace('Doorman S3', 'Revision ');
     } else {
       this.hardwareVersion = 'Generic ESP';
     }
@@ -207,7 +207,7 @@ export default class EspApp extends LitElement {
     if (this.hardwareVersion.toLowerCase().includes('generic')) {
       return html`<infobox class="warning">
         <iconify-icon icon="mdi:warning" height="24px"></iconify-icon>
-        <span>For optimal performance, we recommend the official <a target="_blank" href="https://doorman.azon.ai/guide/what-is-doorman">Doorman-S3</a> board.</span>
+        <span>For optimal performance, we recommend the official <a target="_blank" href="https://doorman.azon.ai/guide/what-is-doorman">Doorman S3</a> board.</span>
       </infobox>`;
     } else {
       return html`<infobox>

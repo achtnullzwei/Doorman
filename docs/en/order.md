@@ -120,17 +120,17 @@ export default {
             products: [
                 {
                     key: 'pcb',
-                    name: 'Doorman-S3',
+                    name: 'Doorman S3',
                     image: '/pcb.png',
                     details: 'PCB only – ideal if you can mount it inside a wallbox or the indoor station enclosure.',
                     price: 35
                 },
                 {
                     key: 'bundle',
-                    name: 'Doorman-S3 Bundle',
+                    name: 'Doorman S3 - Bundle',
                     image: '/enclosure.png',
                     details: 'Includes PCB and case – perfect when the device is installed in a visible spot.',
-                    price: 37.5
+                    price: 38
                 }
             ],
             shipping_regions: [
@@ -632,7 +632,7 @@ textarea {
 
 # Get your own Doorman <Badge v-if="status.status !== 'error' && available_units >= 0" :type="availability_class" :text="availability_text" @click="openManagement" />
 
-Interested in a ready-to-use solution? I offer fully assembled Doorman-S3 units with the [Doorman Firmware](guide/firmware/installation) pre-installed — ready for seamless integration with Home Assistant.
+Interested in a ready-to-use solution? I offer fully assembled Doorman S3 units with the [Doorman Firmware](guide/firmware/installation) pre-installed — ready for seamless integration with Home Assistant.
 
 :::tip PLEASE NOTE
 This is **not an official or certified product**. It is the result of a reverse engineering effort and is provided **as-is**, with **no guarantee of compatibility, safety, or functionality**.

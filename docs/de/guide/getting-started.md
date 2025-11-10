@@ -46,7 +46,7 @@ Bitte überprüfe alle Verbindungen stets sorgfältig und mehrmals, bevor du etw
 > **Bitte entferne die Jumper-Kappe auf `BUS PWR`, bevor du fortfährst!**
 >
 > Die Stromversorgung der Türsprechanlage muss **mindestens 60 mA** liefern können – das ist in der Regel der Fall.
-> Da die verfügbare Leistung jedoch begrenzt ist, kann das **direkte Anschließen zusätzlicher Geräte wie des Doorman-S3 an den Bus zu Instabilitäten im System führen**.
+> Da die verfügbare Leistung jedoch begrenzt ist, kann das **direkte Anschließen zusätzlicher Geräte wie des Doorman S3 an den Bus zu Instabilitäten im System führen**.
 
 Schließe die `b`-Leitung (Ground) an einen der TC:BUS-Anschlüsse deines Doorman und die `a`-Leitung (24V Bus) an den anderen TC:BUS-Anschluss an.
 
@@ -64,7 +64,7 @@ Beispiel:
 
 > [!DANGER] WICHTIG
 > Die Stromversorgung der Türsprechanlage muss **mindestens 60 mA** liefern können – das ist in der Regel der Fall.
-> Da die verfügbare Leistung jedoch begrenzt ist, kann das **direkte Anschließen zusätzlicher Geräte wie des Doorman-S3 an den Bus zu Instabilitäten im System führen**.
+> Da die verfügbare Leistung jedoch begrenzt ist, kann das **direkte Anschließen zusätzlicher Geräte wie des Doorman S3 an den Bus zu Instabilitäten im System führen**.
 
 Schließe die `b`-Leitung (Ground) an einen der TC:BUS-Anschlüsse deines Doorman und die `a`-Leitung (24V Bus) an den anderen TC:BUS-Anschluss an.
 
@@ -108,7 +108,7 @@ Beispiel:
 
 
 ## Mit WLAN verbinden
-Wenn du deinen **Doorman-S3** zum ersten Mal einschaltest, beginnt er **schnell orange zu blinken** — das bedeutet, er ist bereit für die WLAN-Einrichtung!
+Wenn du deinen **Doorman S3** zum ersten Mal einschaltest, beginnt er **schnell orange zu blinken** — das bedeutet, er ist bereit für die WLAN-Einrichtung!
 
 Du kannst ihn auf eine von drei Arten mit dem WLAN verbinden:  
 **Access Point**, **Improv Serial (USB)** oder **Improv Bluetooth**.
@@ -118,7 +118,7 @@ Du kannst ihn auf eine von drei Arten mit dem WLAN verbinden:
 <div style="display: flex; flex-direction: row; flex-wrap: wrap; justify-content: space-between; gap: 20px;align-items: center;" markdown>
    <div style="min-width:260px;flex: 1 1 260px;" markdown>
 
-   1. **Verbinde dich mit dem WLAN-Netzwerk** namens `Doorman-S3 Setup`.
+   1. **Verbinde dich mit dem WLAN-Netzwerk** namens `Doorman S3 Setup`.
       Verwende das Passwort: `Op3n-Sesame!`
 
    2. Sobald die Verbindung steht, sollte sich die **Einrichtungsseite automatisch öffnen**.

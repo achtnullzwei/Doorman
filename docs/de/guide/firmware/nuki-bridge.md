@@ -11,14 +11,14 @@ Mit der offiziellen Nuki-App kannst du dein Smart Lock zwar steuern, jedoch nich
 Wenn dein Smart Lock bereits gekoppelt ist, wird es durch diesen Vorgang entkoppelt!
 :::
 
-Drücke je nach PCB-Revision entweder die FLASH- oder PRG-Taste auf der Doorman-S3 Platine für 5 Sekunden, bis die Status-LED lila zu blinken beginnt, oder aktiviere den Nuki Bridge Pairing Mode-Schalter in Home Assistant / ESPHome Weboberfläche. Drücke dann die Taste an deinem Smart Lock für 5 Sekunden, bis der Leuchtring aufleuchtet.
+Drücke je nach PCB-Revision entweder die FLASH- oder PRG-Taste auf der Doorman S3 Platine für 5 Sekunden, bis die Status-LED lila zu blinken beginnt, oder aktiviere den Nuki Bridge Pairing Mode-Schalter in Home Assistant / ESPHome Weboberfläche. Drücke dann die Taste an deinem Smart Lock für 5 Sekunden, bis der Leuchtring aufleuchtet.
 
 Nach erfolgreicher Kopplung bleibt die Status-LED für 3 Sekunden konstant an und schaltet sich dann aus.
 
 ## Smart Lock entkoppeln
 
-Du kannst dein Smart Lock entweder über den Button `Unpair Device` in der Home Assistant- oder Doorman-Weboberfläche oder über die physische `FLASH`- bzw. `PRG`-Taste auf der Doorman-S3 Platine entkoppeln.
+Du kannst dein Smart Lock entweder über den Button `Unpair Device` in der Home Assistant- oder Doorman-Weboberfläche oder über die physische `FLASH`- bzw. `PRG`-Taste auf der Doorman S3 Platine entkoppeln.
 
 ::: info Physische Taste
-Falls dein Smart Lock bereits mit Doorman gekoppelt ist, drücke die `FLASH`- oder `PRG`-Taste auf der Doorman-S3 Platine für 5 Sekunden, bis die RGB-Status-LED lila zu blinken beginnt. Dein Smart Lock wird dann entkoppelt. Beachte, dass der Pairing-Modus nach 30 Sekunden abläuft.
+Falls dein Smart Lock bereits mit Doorman gekoppelt ist, drücke die `FLASH`- oder `PRG`-Taste auf der Doorman S3 Platine für 5 Sekunden, bis die RGB-Status-LED lila zu blinken beginnt. Dein Smart Lock wird dann entkoppelt. Beachte, dass der Pairing-Modus nach 30 Sekunden abläuft.
 :::

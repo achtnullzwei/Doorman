@@ -1,11 +1,11 @@
 # Doorman Hardware Component <Badge type="tip" text="doorman_hardware" />
-The Doorman Hardware component is a custom ESPHome text sensor designed specifically for Doorman-S3 boards shipped by me.
+The Doorman Hardware component is a custom ESPHome text sensor designed specifically for Doorman S3 boards shipped by me.
 Each board has its PCB hardware revision burned into the ESP32's EFuse memory, allowing firmware to automatically identify the correct hardware version at runtime.
 
 This component reads that EFuse value and publishes it as a text sensor.
 
 ## How does it work?
-Each shipped Doorman-S3 board has its PCB revision encoded in EFuse Block 3 using three bytes:
+Each shipped Doorman S3 board has its PCB revision encoded in EFuse Block 3 using three bytes:
 
 | Byte | Meaning       |
 | ---- | ------------- |

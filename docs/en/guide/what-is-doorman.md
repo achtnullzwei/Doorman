@@ -33,7 +33,7 @@ Just received your Doorman? Jump to the [Quickstart](getting-started) guide.
 
 ## Interested in Buying One?
 
-If you're interested in a Doorman-S3 unit, simply use the button below to send an inquiry.  
+If you're interested in a Doorman S3 unit, simply use the button below to send an inquiry.  
 
 You can also reach out on [Discord](https://discord.gg/t2d34dvmBf) or via [E-Mail](mailto:flo@azon.ai?subject=Doorman) if you have any questions and prefer direct contact first.
 

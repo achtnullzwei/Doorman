@@ -13,7 +13,7 @@ Welcome to the complete history of all PCB updates! This page highlights the new
 
 ## 1.5.0 <Badge type="tip" text="Current" />
 - Power supply redesign based on the reference design
-- New method to power the Doorman-S3 via TC:BUS using a jumper cap
+- New method to power the Doorman S3 via TC:BUS using a jumper cap
 - Connected GPIO10 to the BUS line, thus it's not needed to change the firmware to work with the voltage anymore
 - Removed copper around the wifi antenna to improve signal strength
 - New ESPHome Logo

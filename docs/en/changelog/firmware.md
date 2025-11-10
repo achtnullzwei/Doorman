@@ -192,7 +192,7 @@ This release **will impact your current setup** and **requires** you to go throu
 
 ### 📝 Other Updates
 - **Nuki Component**  
-   The [ESPHome_nuki_lock](https://github.com/uriyacovy/ESPHome_nuki_lock) component now leverages Doorman-S3's PSRAM, potentially enhancing the overall performance.
+   The [ESPHome_nuki_lock](https://github.com/uriyacovy/ESPHome_nuki_lock) component now leverages Doorman S3's PSRAM, potentially enhancing the overall performance.
 
 ### 🚨 Breaking Changes
 - **PSRAM Compatibility**  

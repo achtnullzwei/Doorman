@@ -105,7 +105,7 @@ A huge thanks to [PCBX](https://www.pcbx.com/?mtm_campaign=review&mtm_kwd=BD&mtm
 
 If you're looking for a reliable PCB manufacturer for your own project, definitely check out [PCBX](https://www.pcbx.com/?mtm_campaign=review&mtm_kwd=BD&mtm_source=flo). While their production might take a little longer than some others, the unbeatable prices and super-easy part sourcing make it absolutely worth it. They handle everything for you!  
 
-You can find all the necessary files for manufacturing the **Doorman-S3** [here](https://github.com/azoninc/doorman/tree/master/pcb).
+You can find all the necessary files for manufacturing the **Doorman S3** [here](https://github.com/azoninc/doorman/tree/master/pcb).
 
 ---
 

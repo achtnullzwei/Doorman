@@ -5,7 +5,7 @@ const members = [
   {
     avatar: 'https://www.github.com/azoninc.png',
     name: 'AzonInc',
-    title: 'Creator of the Doorman-S3 PCB and ESPHome-based firmware',
+    title: 'Creator of the Doorman S3 PCB and ESPHome-based firmware',
     links: [
       { icon: 'github', link: 'https://github.com/azoninc' },
     ],
