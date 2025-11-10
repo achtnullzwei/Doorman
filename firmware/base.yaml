@@ -105,6 +105,7 @@ remote_transmitter:
     mode: OUTPUT
   carrier_duty_percent: 100%
   eot_level: false
+  non_blocking: true
   on_complete:
     - if:
         condition:
