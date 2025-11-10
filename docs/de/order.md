@@ -269,39 +269,7 @@ export default {
             this.user = null;
         });
 
-        api.get('/products', { 
-            withCredentials: true 
-        })
-        .then(res => {
-            this.available_units = res.data.available_units;
-            this.available_timestamp = res.data.available_timestamp;
-            
-            // merge into products
-            if (res.data.products) {
-                this.products = this.products.map(p => {
-                    const override = res.data.products.find(x => { return x.key == p.key });
-                    return override ? { ...p, price: override.price } : p;
-                });
-            }
-
-            if (res.data.shipping_regions) {
-                this.shipping_regions = this.shipping_regions.map(r => {
-                    const override = res.data.shipping_regions.find(x => x.key === r.key);
-                    if (!override) return r;
-
-                    // merge options inside region
-                    const mergedOptions = r.options.map(opt => {
-                        const optOverride = override.options?.find(o => o.key === opt.key);
-                        return optOverride ? { ...opt, ...optOverride } : opt;
-                    });
-
-                    return { ...r, ...override, options: mergedOptions };
-                });
-            }
-        })
-        .catch(() => {
-            
-        })
+        this.fetchProductData();
     },
     watch: {
         'form.shipping_region'(new_value) {
@@ -427,6 +395,39 @@ export default {
         previousStep() {
             this.step--;
         },
+        async fetchProductData() {
+            try {
+                const res = await api.get('/products', { withCredentials: true });
+
+                this.available_units = res.data.available_units;
+                this.available_timestamp = res.data.available_timestamp;
+
+                // merge into products
+                if (res.data.products) {
+                    this.products = this.products.map(p => {
+                        const override = res.data.products.find(x => x.key === p.key);
+                        return override ? { ...p, price: override.price } : p;
+                    });
+                }
+
+                // merge shipping regions
+                if (res.data.shipping_regions) {
+                    this.shipping_regions = this.shipping_regions.map(r => {
+                        const override = res.data.shipping_regions.find(x => x.key === r.key);
+                        if (!override) return r;
+
+                        const mergedOptions = r.options.map(opt => {
+                            const optOverride = override.options?.find(o => o.key === opt.key);
+                            return optOverride ? { ...opt, ...optOverride } : opt;
+                        });
+
+                        return { ...r, ...override, options: mergedOptions };
+                    });
+                }
+            } catch (err) {
+                console.error('Failed to fetch product data:', err);
+            }
+        },
         async submit() {
             this.processing = true;
 
@@ -437,6 +438,8 @@ export default {
                 this.processing = false;
                 this.showModal("Erhalten!", "Vielen Dank. Ich melde mich so schnell wie möglich bei dir.");
                 this.status = response.data;
+
+                this.fetchProductData();
             })
             .catch(error => {
                 this.processing = false;
@@ -454,6 +457,14 @@ export default {
             .catch(error => {
                 this.showModal("Entschuldigung!", this.getErrorMessage(error, 'Etwas ist schiefgelaufen. Bitte versuche es später erneut.'));
             });
+        },
+        async openTracking() {
+            if(!this.status) {
+                alert('Missing order data!');
+                return;
+            }
+
+            window.open('https://www.dhl.de/de/privatkunden/dhl-sendungsverfolgung.html?piececode=' + this.status.tracking);
         },
         async updateOrderStatus() {
             if(!this.status) {
@@ -480,7 +491,7 @@ export default {
             })
             .then(response => {
                 this.showModal("Aktualisiert!", "Der Bestellstatus wurde erfolgreich aktualisiert!");
-                this.fetchOrderStatus();
+                this.status = response.data;
             })
             .catch(error => {
                 this.showModal("Entschuldigung!", this.getErrorMessage(error, 'Der Bestellstatus konnte nicht aktualisiert werden!'));
@@ -497,19 +508,28 @@ export default {
                 this.showModal("Entschuldigung!", this.getErrorMessage(error, 'Etwas ist schiefgelaufen. Bitte versuche es später erneut.'));
             });
         },
-        async fetchOrderStatus() {
-            const { data: statusData } = await api.get('/order', { withCredentials: true });
-            this.status = statusData;
-            return statusData;
+        async cancelOrder() {
+            if (!confirm('Bist du dir sicher dass du die Bestellung stornieren möchtest?')) return;
+            api.post('/order/cancel', {}, { 
+                withCredentials: true 
+            })
+            .then(response => {
+                this.status = response.data;
+            })
+            .catch(error => {
+                this.showModal("Entschuldigung!", this.getErrorMessage(error, 'Etwas ist schiefgelaufen. Bitte versuche es später erneut.'));
+            });
         },
         async checkOrder() {
             if (!this.orderHash) return;
 
             try {
                 await api.get(`/order/${this.orderHash}/details`, { withCredentials: true });
-                const status = await this.fetchOrderStatus();
 
-                if (status.status === 'none') {
+                const { data: statusData } = await api.get('/order', { withCredentials: true });
+                this.status = statusData;
+
+                if (this.status.status === 'none') {
                     this.showModal("Entschuldigung!", "Diese Bestellung existiert nicht! Bitte überprüfe die Bestellnummer.");
                 }
             } catch (error) {
@@ -665,10 +685,16 @@ Sobald ich deine Anfrage erhalten habe, melde ich mich bei Rückfragen. Ansonste
 <div v-else-if="status.status == 'pending_review'" class="warning custom-block">
     <p class="custom-block-title">ÜBERPRÜFUNG AUSSTEHEND</p>
     <p>Ich habe deine Bestellung erhalten und werde diese mit dir prüfen, um die Kompatibilität abzuklären. Du wirst benachrichtigt, sobald die Überprüfung abgeschlossen ist.</p>
+    <p>
+        <VPButton text="Bestellung stornieren" @click="cancelOrder" />
+    </p>
 </div>
 <div v-else-if="status.status == 'reserved'" class="warning custom-block">
     <p class="custom-block-title">RESERVIERT</p>
     <p>Dein(e) Doorman(s) sind reserviert! Du bekommst die Zahlungsinformationen, sobald alles vorbereitet ist.</p>
+    <p>
+        <VPButton text="Bestellung stornieren" @click="cancelOrder" />
+    </p>
 </div>
 <div v-else-if="status.status == 'pending_payment'" class="warning custom-block">
     <p class="custom-block-title">ZAHLUNG AUSSTEHEND</p>
@@ -691,10 +717,12 @@ Sobald ich deine Anfrage erhalten habe, melde ich mich bei Rückfragen. Ansonste
         Bitte beachte, dass der Zoll gelegentlich zu leichten Verzögerungen führen kann.
         <br><br>Sobald die Lieferung erfolgt ist, informiere mich bitte hier. Vielen Dank!
     </p>
-    <p v-if="user">
+    <p v-if="user" style="display:flex;gap: 10px;">
+        <VPButton v-if="status.tracking" text="Tracking" @click="openTracking" />
         <VPButton text="Bestellung abschließen" @click="closeOrder" />
     </p>
-    <p v-else>
+    <p v-else style="display:flex;gap: 10px;">
+        <VPButton v-if="status.tracking" text="Tracking" @click="openTracking" />
         <VPButton text="Ich habe meinen Doorman erhalten" @click="closeOrder" />
     </p>
 </div>

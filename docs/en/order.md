@@ -268,39 +268,7 @@ export default {
             this.user = null;
         });
 
-        api.get('/products', { 
-            withCredentials: true 
-        })
-        .then(res => {
-            this.available_units = res.data.available_units;
-            this.available_timestamp = res.data.available_timestamp;
-            
-            // merge into products
-            if (res.data.products) {
-                this.products = this.products.map(p => {
-                    const override = res.data.products.find(x => { return x.key == p.key });
-                    return override ? { ...p, price: override.price } : p;
-                });
-            }
-
-            if (res.data.shipping_regions) {
-                this.shipping_regions = this.shipping_regions.map(r => {
-                    const override = res.data.shipping_regions.find(x => x.key === r.key);
-                    if (!override) return r;
-
-                    // merge options inside region
-                    const mergedOptions = r.options.map(opt => {
-                        const optOverride = override.options?.find(o => o.key === opt.key);
-                        return optOverride ? { ...opt, ...optOverride } : opt;
-                    });
-
-                    return { ...r, ...override, options: mergedOptions };
-                });
-            }
-        })
-        .catch(() => {
-            
-        })
+        this.fetchProductData();
     },
     watch: {
         'form.shipping_region'(new_value) {
@@ -426,6 +394,39 @@ export default {
         previousStep() {
             this.step--;
         },
+        async fetchProductData() {
+            try {
+                const res = await api.get('/products', { withCredentials: true });
+
+                this.available_units = res.data.available_units;
+                this.available_timestamp = res.data.available_timestamp;
+
+                // merge into products
+                if (res.data.products) {
+                    this.products = this.products.map(p => {
+                        const override = res.data.products.find(x => x.key === p.key);
+                        return override ? { ...p, price: override.price } : p;
+                    });
+                }
+
+                // merge shipping regions
+                if (res.data.shipping_regions) {
+                    this.shipping_regions = this.shipping_regions.map(r => {
+                        const override = res.data.shipping_regions.find(x => x.key === r.key);
+                        if (!override) return r;
+
+                        const mergedOptions = r.options.map(opt => {
+                            const optOverride = override.options?.find(o => o.key === opt.key);
+                            return optOverride ? { ...opt, ...optOverride } : opt;
+                        });
+
+                        return { ...r, ...override, options: mergedOptions };
+                    });
+                }
+            } catch (err) {
+                console.error('Failed to fetch product data:', err);
+            }
+        },
         async submit() {
             this.processing = true;
 
@@ -436,6 +437,8 @@ export default {
                 this.processing = false;
                 this.showModal("Received!", "Thank you. I will reach out to you as soon as possible.");
                 this.status = response.data;
+
+                this.fetchProductData();
             })
             .catch(error => {
                 this.processing = false;
@@ -453,6 +456,14 @@ export default {
             .catch(error => {
                 this.showModal("Sorry!", this.getErrorMessage(error, 'Something went wrong. Please try again later.'));
             });
+        },
+        async openTracking() {
+            if(!this.status) {
+                alert('Missing order data!');
+                return;
+            }
+
+            window.open('https://www.dhl.de/en/privatkunden/dhl-sendungsverfolgung.html?piececode=' + this.status.tracking);
         },
         async updateOrderStatus() {
             if(!this.status) {
@@ -479,7 +490,7 @@ export default {
             })
             .then(response => {
                 this.showModal("Updated!", "The order status was updated successfully.");
-                this.fetchOrderStatus();
+                this.status = response.data;
             })
             .catch(error => {
                 this.showModal("Oops!", this.getErrorMessage(error, 'Failed to update order status!'));
@@ -496,19 +507,28 @@ export default {
                 this.showModal("Oops!", this.getErrorMessage(error, 'Failed to reset order!'));
             });
         },
-        async fetchOrderStatus() {
-            const { data: statusData } = await api.get('/order', { withCredentials: true });
-            this.status = statusData;
-            return statusData;
+        async cancelOrder() {
+            if (!confirm('Are you sure you want to cancel the order?')) return;
+            api.post('/order/cancel', {}, { 
+                withCredentials: true 
+            })
+            .then(response => {
+                this.status = response.data;
+            })
+            .catch(error => {
+                this.showModal("Oops!", this.getErrorMessage(error, 'Failed to cancel order!'));
+            });
         },
         async checkOrder() {
             if (!this.orderHash) return;
 
             try {
                 await api.get(`/order/${this.orderHash}/details`, { withCredentials: true });
-                const status = await this.fetchOrderStatus();
+                
+                const { data: statusData } = await api.get('/order', { withCredentials: true });
+                this.status = statusData;
 
-                if (status.status === 'none') {
+                if (this.status.status === 'none') {
                     this.showModal("Sorry!", "This order does not exist! Please check the order number.");
                 }
             } catch (error) {
@@ -664,10 +684,16 @@ Otherwise, you'll only be notified when your Doorman is ready for shipment. Stat
 <div v-else-if="status.status == 'pending_review'" class="warning custom-block">
     <p class="custom-block-title">REVIEW PENDING</p>
     <p>I have received your order and will now review your inquiry to confirm compatibility. You'll be notified as soon as the review is complete.</p>
+    <p>
+        <VPButton text="Cancel Order" @click="cancelOrder" />
+    </p>
 </div>
 <div v-else-if="status.status == 'reserved'" class="warning custom-block">
     <p class="custom-block-title">RESERVED</p>
     <p>Your Doorman(s) are reserved! You'll receive payment instructions as soon as everything is prepared.</p>
+    <p>
+        <VPButton text="Cancel Order" @click="cancelOrder" />
+    </p>
 </div>
 <div v-else-if="status.status == 'pending_payment'" class="warning custom-block">
     <p class="custom-block-title">PAYMENT PENDING</p>
@@ -690,10 +716,12 @@ Otherwise, you'll only be notified when your Doorman is ready for shipment. Stat
         Please note that customs may occasionally cause slight delays.
         <br><br>Once it's delivered, kindly let me know here. Thank you!
     </p>
-    <p v-if="user">
+    <p v-if="user" style="display:flex;gap: 10px;">
+        <VPButton v-if="status.tracking" text="Tracking" @click="openTracking" />
         <VPButton text="Close order" @click="closeOrder" />
     </p>
-    <p v-else>
+    <p v-else style="display:flex;gap: 10px;">
+        <VPButton v-if="status.tracking" text="Tracking" @click="openTracking" />
         <VPButton text="I received my Doorman" @click="closeOrder" />
     </p>
 </div>

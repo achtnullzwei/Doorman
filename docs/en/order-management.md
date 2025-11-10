@@ -110,9 +110,18 @@ export default {
                     x.street.toLowerCase().includes(this.orderFilter.toLowerCase()) ||
                     x.address_extra.toLowerCase().includes(this.orderFilter.toLowerCase());
             }).sort((a, b) => {
-                // Put pending_review first
-                if (a.status === 'pending_review' && b.status !== 'pending_review') return -1;
-                if (a.status !== 'pending_review' && b.status === 'pending_review') return 1;
+                const getPriority = (status) => {
+                    if (status === 'pending_review') return 1;
+                    if (status === 'pending_payment') return 2;
+                    if (status === 'reserved') return 3;
+                    return 4;
+                };
+
+                const priorityA = getPriority(a.status);
+                const priorityB = getPriority(b.status);
+
+                if (priorityA !== priorityB) return priorityA - priorityB;
+
                 // Then sort by id descending
                 return b.id - a.id;
             });
