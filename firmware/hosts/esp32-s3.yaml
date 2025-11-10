@@ -48,6 +48,10 @@ wifi:
   enable_btm: true
   enable_rrm: true
 
+tinyusb:
+  usb_manufacturer_str: "AzonInc"
+  usb_product_str: "Doorman S3"
+
 substitutions:
   rx_pin: "GPIO9"
   tx_pin: "GPIO8"
