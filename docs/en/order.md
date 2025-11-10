@@ -214,7 +214,7 @@ export default {
                 },
                 {
                     key: 'INT',
-                    name: 'Other',
+                    name: 'Somewhere else',
                     details: '',
                     icon: EmojioneV1GlobeShowingAmericas,
                     options: [
@@ -353,7 +353,7 @@ export default {
         availability_time_text() {
             const now = dayjs().unix();
             if(this.available_timestamp > now) {
-                return 'New Doormans are on their way! They are expected to be available <b>' + dayjs.unix(this.available_timestamp).fromNow() + '</b>.';
+                return 'Don\'t worry - new Doormans are on their way and are expected to be available <b>' + dayjs.unix(this.available_timestamp).fromNow() + '</b>.';
             } else if(this.available_timestamp < now) {
                 if(this.available_units == 0) {
                     return 'Looks like there is a delay - the new Doormans were expected <b>' + dayjs.unix(this.available_timestamp).fromNow() + '</b>.';
@@ -632,20 +632,22 @@ textarea {
 
 # Get your own Doorman <Badge v-if="status.status !== 'error' && available_units >= 0" :type="availability_class" :text="availability_text" @click="openManagement" />
 
-Interested in a ready-to-use solution? I offer fully assembled and tested Doorman-S3 units with the [Doorman Firmware](guide/firmware/installation) pre-installed — ready for seamless integration with Home Assistant.
+Interested in a ready-to-use solution? I offer fully assembled Doorman-S3 units with the [Doorman Firmware](guide/firmware/installation) pre-installed — ready for seamless integration with Home Assistant.
 
 :::tip PLEASE NOTE
 This is **not an official or certified product**. It is the result of a reverse engineering effort and is provided **as-is**, with **no guarantee of compatibility, safety, or functionality**.
+
+**This is not a purchase or checkout** — it's a non-binding inquiry to help me gauge interest and manage requests efficiently.
 :::
 
-To request one, simply fill out the form below.
-**This is not a purchase or checkout** — it's just a non-binding inquiry to help me gauge interest and manage requests privately.
+To request a Doorman, simply fill out the form below.
 
-Once I receive your message, I'll get back to you as soon as possible. The status updates are automated, **please also check your spam folder.**
+Once I receive your inquiry, I'll contact you if I have any questions.
+Otherwise, you'll only be notified when your Doorman is ready for shipment. Status updates are automated, so **please check your spam folder** if you don't hear from me within a month.
 
-<div v-if="status.status == 'none' && available_units === 0" class="warning custom-block">
-    <p class="custom-block-title">HEADS UP</p>
-    <p>All Doorman devices are currently out of stock. You can still send your inquiry, and I'll make sure to reserve one for you as soon as they arrive.</p>
+<div v-if="status.status == 'none' && available_units === 0" class="danger custom-block">
+    <p class="custom-block-title">OUT OF STOCK</p>
+    <p>You can still send your inquiry, and I'll make sure to reserve one for you as soon as they arrive.</p>
     <p v-html="availability_time_text"></p>
 </div>
 

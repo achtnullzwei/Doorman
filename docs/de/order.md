@@ -215,7 +215,7 @@ export default {
                 },
                 {
                     key: 'INT',
-                    name: 'Other',
+                    name: 'Irgendwo anders',
                     details: '',
                     icon: EmojioneV1GlobeShowingAmericas,
                     options: [
@@ -638,15 +638,17 @@ Du suchst eine einfache Lösung? Ich hab einen einsatzbereiten Doorman-S3 für d
 
 :::tip BITTE BEACHTE
 Dies ist **kein offizielles oder zertifiziertes Produkt**. Es basiert auf Reverse Engineering und wird **ohne Garantie auf Kompatibilität, Sicherheit oder Funktionalität** bereitgestellt.
+
+**Dies ist kein Kauf oder Checkout** — nur eine unverbindliche Anfrage, damit ich das Interesse einschätzen und Bestellungen effizient koordinieren kann.
 :::
 
-Um eine Anfrage zu stellen, fülle einfach das untenstehende Formular aus. **Dies ist kein Kauf oder Checkout** — nur eine unverbindliche Anfrage, damit ich das Interesse einschätzen und Bestellungen privat koordinieren kann.
+Um eine Anfrage zu stellen, fülle einfach das untenstehende Formular aus.
 
-Sobald ich deine Nachricht erhalte, melde ich mich schnellstmöglich bei dir. Die Status Updates sind automatisiert, **bitte prüfe auch deinen Spam Ordner.**
+Sobald ich deine Anfrage erhalten habe, melde ich mich bei Rückfragen. Ansonsten wirst du nur benachrichtigt, wenn dein Doorman versandbereit ist. Die Statusaktualisierungen erfolgen automatisiert – **überprüfe bitte auch deinen Spam-Ordner**, falls du innerhalb eines Monats nichts von mir hörst.
 
-<div v-if="status.status == 'none' && available_units === 0" class="warning custom-block">
-    <p class="custom-block-title">ACHTUNG</p>
-    <p>Alle Doormans sind gerade ausverkauft. Du kannst deine Anfrage trotzdem schonmal senden, dann reserviere ich dir einen.</p>
+<div v-if="status.status == 'none' && available_units === 0" class="danger custom-block">
+    <p class="custom-block-title">AUSVERKAUFT</p>
+    <p>Du kannst deine Anfrage trotzdem schonmal senden, dann reserviere ich dir einen.</p>
     <p v-html="availability_time_text"></p>
 </div>
 
