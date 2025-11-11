@@ -86,6 +86,7 @@
         "span": "cpp"
     },
     "conventionalCommits.scopes": [
-        "order"
+        "order",
+        "changelog"
     ]
 }
