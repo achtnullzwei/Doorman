@@ -48,6 +48,8 @@ export default {
             user: null,
             username: '',
             password: '',
+
+            processing: false,
             
             stock_add_amount: 0,
             availability_date: dayjs().format('YYYY-MM-DD'),
@@ -299,29 +301,34 @@ export default {
             });
         },
         async sendNotification() {
+            this.processing = true;
             api.post('/notify', { status: this.notifyStatus, title: this.notifyTitle, message_de: this.notifyMessageDE, message_en: this.notifyMessageEN }, { 
                 withCredentials: true 
             })
             .then(response => {
                 this.showModal("Sent!", "Notification sent successfully!");
+                this.processing = false;
             })
             .catch(error => {
                 this.showModal("Oops!", this.getErrorMessage(error, 'Failed to send notification!'));
             });
         },
         async addStock() {
+            this.processing = true;
             api.post('/product/doorman/increase', { amount: this.stock_add_amount }, { 
                 withCredentials: true 
             })
             .then(response => {
                 this.updateAvailability();
                 this.showModal("Updated!", "Stock updated successfully!");
+                this.processing = false;
             })
             .catch(error => {
                 this.showModal("Oops!", this.getErrorMessage(error, 'Failed to update stock!'));
             });
         },
         async updateAvailabilityDate() {
+            this.processing = true;
             const ts = dayjs(this.availability_date).unix();
 
             api.post('/product/doorman/availability', { timestamp: ts }, { 
@@ -329,6 +336,7 @@ export default {
             })
             .then(response => {
                 this.showModal("Updated!", "Availability date updated successfully!");
+                this.processing = false;
             })
             .catch(error => {
                 this.showModal("Oops!", this.getErrorMessage(error, 'Failed to update availability date!'));
@@ -337,9 +345,12 @@ export default {
         async updateOrderStatus(order) {
             if (!confirm('Are you sure you want update the order status?')) return;
 
+            this.processing = true;
+
             if(order.status == 'pending_payment') {
                 if (!this.printerClientIsConnected) {
                     this.showModal('Warning!', 'Please connect the label printer first!');
+                    this.processing = false;
                     return;
                 }
 
@@ -357,6 +368,7 @@ export default {
                 } catch (e) {
                     console.log(e);
                     this.showModal('Print Error!', e.message);
+                    this.processing = false;
                     return;
                 }
             }
@@ -365,6 +377,7 @@ export default {
                 const trackingUrl = prompt('Provide the Tracking ID:');
                 if (!trackingUrl) {
                     this.showModal('Aborted!', 'No tracking provided!');
+                    this.processing = false;
                     return;
                 }
                 this.nextStep(order.id, trackingUrl);
@@ -373,6 +386,8 @@ export default {
             }
         },
         async nextStep(id, tracking) {
+            this.processing = true;
+
             api.post('/order/' + id + '/next', { tracking }, { 
                 withCredentials: true 
             })
@@ -380,6 +395,7 @@ export default {
                 this.updateAvailability();
                 this.loadOrders();
                 this.showModal("Updated!", "The order status was updated successfully.");
+                this.processing = false;
             })
             .catch(error => {
                 this.showModal("Oops!", this.getErrorMessage(error, 'Failed to update order status!'));
@@ -388,6 +404,8 @@ export default {
         async cancelOrder(id) {
             if (!confirm('Are you sure you want to cancel the order?')) return;
 
+            this.processing = true;
+
             api.post('/order/' + id + '/cancel', { 
                 withCredentials: true 
             })
@@ -395,6 +413,7 @@ export default {
                 this.updateAvailability();
                 this.loadOrders();
                 this.showModal("Cancelled!", "The order was cancelled successfully!");
+                this.processing = false;
             })
             .catch(error => {
                 this.showModal("Oops!", this.getErrorMessage(error, 'Failed to cancel order!'));
@@ -403,6 +422,8 @@ export default {
         async deleteOrder(id) {
             if (!confirm('Are you sure you want to delete the order?')) return;
 
+            this.processing = true;
+
             api.post('/order/' + id + '/delete', { 
                 withCredentials: true 
             })
@@ -410,6 +431,7 @@ export default {
                 this.updateAvailability();
                 this.loadOrders();
                 this.showModal("Deleted!", "The order was deleted successfully!");
+                this.processing = false;
             })
             .catch(error => {
                 this.showModal("Oops!", this.getErrorMessage(error, 'Failed to delete order!'));
@@ -552,6 +574,8 @@ export default {
             });
         },
         async generateLabel(order, type) {
+            console.log("label: " + type);
+
             const canvas = this.$refs.labelCanvas;
 
             if (!canvas) {
@@ -929,7 +953,7 @@ canvas {
                 flex-grow: 1;
             ">
                 <input type="number" id="stock_add_amount" v-model="stock_add_amount" min="1">
-                <VPButton type="button" text="Add" :disabled="stock_add_amount == 0" @click="addStock" />
+                <VPButton type="button" text="Add" :disabled="stock_add_amount == 0 || processing" @click="addStock" />
             </div>
         </div>
         <hr />
@@ -955,7 +979,7 @@ canvas {
                 flex-grow: 1;
             ">
                 <input type="date" id="availability_date" v-model="availability_date">
-                <VPButton type="button" text="Update" @click="updateAvailabilityDate" />
+                <VPButton type="button" text="Update" :disabled="processing" @click="updateAvailabilityDate" />
             </div>
         </div>
         <hr />
@@ -1013,7 +1037,7 @@ canvas {
                 flex-grow: 1;
             ">
                 <input type="text" id="notify_status" v-model="notifyStatus" />
-                <VPButton type="button" text="Send" :disabled="!notifyMessageDE || !notifyMessageEN" @click="sendNotification" />
+                <VPButton type="button" text="Send" :disabled="!notifyMessageDE || !notifyMessageEN || processing" @click="sendNotification" />
             </div>
         </div>
         <div style="display: flex; flex-direction: column; gap: 10px;">
@@ -1103,7 +1127,7 @@ canvas {
             <p class="custom-block-title">SORRY</p>
             <p>No order matches your filter!</p>
         </div>
-        <div v-for="order in paginatedOrders" :key="order.id" class="order_row" @click="generateLabel(order, 'quickstart')">
+        <div v-for="order in paginatedOrders" :key="order.id" class="order_row">
             <div class="header">
                 <div class="title">
                     <div class="name">ORDER FROM {{ order.fullname.split(' ')[0].toUpperCase() }} <Badge :type="statusLabelColor(order.status)">{{ statusLabel(order.status) }}</Badge></div>
@@ -1116,9 +1140,9 @@ canvas {
                     </div>
                 </div>
                 <div class="actions">
-                    <VPButton v-if="nextStepButtonText(order.status)" type="button" :text="nextStepButtonText(order.status)" @click="updateOrderStatus(order)" />
-                    <VPButton v-if="order.status != 'closed' && order.status != 'cancelled' && order.status != 'shipped'" theme="alt" type="button" text="Cancel" @click="cancelOrder(order.id)" />
-                    <VPButton v-if="order.status == 'cancelled'" theme="alt" type="button" text="Delete" @click="deleteOrder(order.id)" />
+                    <VPButton v-if="nextStepButtonText(order.status)" :disabled="processing" type="button" :text="nextStepButtonText(order.status)" @click="updateOrderStatus(order)" />
+                    <VPButton v-if="order.status != 'closed' && order.status != 'cancelled' && order.status != 'shipped'" theme="alt" :disabled="processing" type="button" text="Cancel" @click="cancelOrder(order.id)" />
+                    <VPButton v-if="order.status == 'cancelled'" theme="alt" :disabled="processing" type="button" text="Delete" @click="deleteOrder(order.id)" />
                 </div>
             </div>
             <div class="details">
