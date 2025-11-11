@@ -1,5 +1,6 @@
 <script setup>
 import { VPTeamMembers } from 'vitepress/theme'
+import { data } from '../contributors.data.js'
 
 const members = [
   {
@@ -54,15 +55,24 @@ const members = [
     ]
   }
 ]
+
+data.map((x) => {
+  x.title = 'Contributed ' + x.contributions + ' Commit' + (x.contributions != 1 ? 's' : '');
+  return x;
+});
+
+const mergedMembers = [
+  ...members,
+  ...data.filter(d => !members.some(m => m.name === d.name))
+];
 </script>
 
 # Thank you ❤️
-
 Doorman is built upon the code and information from the following projects and individuals. This project would not have been possible without their contributions.
 
 ### Amazing People
 
-<VPTeamMembers size="small" :members="members" />
+<VPTeamMembers size="small" :members="mergedMembers" />
 
 
 ### Projects
