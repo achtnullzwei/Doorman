@@ -254,7 +254,7 @@ The adopted configuration could look like this:
 ```
 
 ### ESPHome CLI
-If you choose this option, you likely know what you're doing — just run the following telegram with your YAML configuration file.
+If you choose this option, you likely know what you're doing — just run the following command with your YAML configuration file.
 
 If you prefer using the MQTT-only firmware, simply apply the provided MQTT example YAML tailored for your board below.
 
