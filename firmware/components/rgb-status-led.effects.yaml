@@ -10,7 +10,9 @@ light:
             static bool on_ = false;
 
             auto call = id(doorman_rgb_status_led).make_call();
+            
             call.set_state(true);
+            call.set_color_mode_if_supported(light::ColorMode::RGB);
 
             float out = on_ ? (id(doorman_rgb_status_led_brightness).state / 100.0) : 0;
             call.set_brightness_if_supported(out);
@@ -30,7 +32,9 @@ light:
             static bool on_ = false;
 
             auto call = id(doorman_rgb_status_led).make_call();
+            
             call.set_state(true);
+            call.set_color_mode_if_supported(light::ColorMode::RGB);
 
             float out = on_ ? (id(doorman_rgb_status_led_brightness).state / 100.0) : 0;
             call.set_brightness_if_supported(out);
@@ -50,7 +54,9 @@ light:
             static bool on_ = false;
 
             auto call = id(doorman_rgb_status_led).make_call();
+            
             call.set_state(true);
+            call.set_color_mode_if_supported(light::ColorMode::RGB);
             
             float out = on_ ? (id(doorman_rgb_status_led_brightness).state / 100.0) : 0;
             call.set_brightness_if_supported(out);
@@ -72,6 +78,7 @@ light:
             auto call = id(doorman_rgb_status_led).make_call();
 
             call.set_state(true);
+            call.set_color_mode_if_supported(light::ColorMode::RGB);
             call.set_brightness_if_supported(id(doorman_rgb_status_led_brightness).state / 100.0);
 
             call.set_transition_length(1000);
