@@ -3,6 +3,7 @@
 esphome:
   on_boot:
     then:
+      - logger.log: "LED: Waiting for WiFi"
       - light.turn_on:
           id: doorman_rgb_status_led
           effect: pulse
@@ -12,6 +13,7 @@ esphome:
       - wait_until:
           condition:
             wifi.connected:
+      - logger.log: "LED: WiFi connected, waiting for API"
       - light.turn_on:
           id: doorman_rgb_status_led
           effect: slow_pulse
@@ -21,6 +23,7 @@ esphome:
       - wait_until:
           condition:
             api.connected:
+      - logger.log: "LED: API connected"
       - light.turn_on:
           id: doorman_rgb_status_led
           effect: none

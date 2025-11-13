@@ -3,6 +3,7 @@
 esphome:
   on_boot:
     then:
+      - logger.log: "LED: Waiting for WiFi"
       - light.turn_on:
           id: doorman_rgb_status_led
           effect: pulse
@@ -12,6 +13,7 @@ esphome:
       - wait_until:
           condition:
             wifi.connected:
+      - logger.log: "LED: WiFi connected, waiting for HomeKit"
       - delay: 2s
       - script.execute: homekit_connect
 
