@@ -85,12 +85,12 @@ jobs:
       - name: Update manifest
         run: |
           MANIFEST="output/${{ inputs.directory_name }}/manifest.json"
-          # Enable new install prompt erase
-          sed -i 's/"new_install_prompt_erase": false/"new_install_prompt_erase": true/' "$MANIFEST"
-          # Update firmware name
-          sed -i 's/Doorman S3/${{ inputs.name }}/g' "$MANIFEST"
-          # Add funding URL
-          sed -i '/"builds"/i \  "funding_url": "https://github.com/sponsors/AzonInc",' "$MANIFEST"
+
+          # Update JSON values with jq
+          jq '.new_install_prompt_erase = true |
+              .name = "${{ inputs.name }}" |
+              .funding_url = "https://github.com/sponsors/AzonInc"' \
+            "$MANIFEST" > "${MANIFEST}.tmp" && mv "${MANIFEST}.tmp" "$MANIFEST"
     
       - name: Upload firmware artifact
         uses: actions/upload-artifact@v5
