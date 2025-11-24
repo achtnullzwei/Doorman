@@ -5,7 +5,7 @@ substitutions:
 
 # Import Doorman Standard Firmware Config
 packages:
-  AzonInc.Doorman: github://azoninc/doorman/firmware/configurations/esp32-s3.ha.standard.master.yaml@master
+  AzonInc.Doorman-Standard: github://azoninc/doorman/firmware/configurations/esp32-s3.ha.standard.master.yaml@master
 
 wifi:
   ssid: !secret wifi_ssid
