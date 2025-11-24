@@ -3,7 +3,7 @@
     Doorman S3
     <br>
     <br>
-    <img src=".github/images/title_dark.png" alt="Doorman S3" height="275">
+    <img src=".github/images/enclosure.png" alt="Doorman S3" height="275">
     <br>
 </h1>
 
