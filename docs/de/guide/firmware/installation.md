@@ -65,7 +65,7 @@ export default {
             ],
             variant_options: [
                 {
-                    key: 'stock',
+                    key: 'standard',
                     name: 'Standard',
                     icon: '',
                     iconColor: '',
@@ -88,7 +88,7 @@ export default {
         integration(newIntegration, oldIntegration) {
             localStorage.setItem("fw_integration", newIntegration);
             if (!this.is_variant_allowed(this.variant)) {
-                this.variant = 'stock';
+                this.variant = 'standard';
             }
         },
         variant(newVariant, oldVariant) {
@@ -274,52 +274,52 @@ esphome run <yamlfile.yaml>
 | External Button| GPIO 41  | GPIO 20  |
 | ADC Input      | GPIO 10  | GPIO 36  |
 
-### Stock Firmware
+### Standard Firmware
 ::: details ESP32-S3 (Octal PSRAM) / Doorman S3 (1.5)
 ::: code-group
 ```yaml [Home Assistant]
-<!--@include: ../../../../firmware/examples/esp32-s3.ha.stock.master.example.yaml-->
+<!--@include: ../../../../firmware/examples/esp32-s3.ha.standard.master.example.yaml-->
 ```
 ```yaml [MQTT]
-<!--@include: ../../../../firmware/examples/esp32-s3.mqtt.stock.master.example.yaml-->
+<!--@include: ../../../../firmware/examples/esp32-s3.mqtt.standard.master.example.yaml-->
 ```
 ```yaml [HomeKit]
-<!--@include: ../../../../firmware/examples/esp32-s3.homekit.stock.master.example.yaml-->
+<!--@include: ../../../../firmware/examples/esp32-s3.homekit.standard.master.example.yaml-->
 ```
 ```yaml [Custom]
-<!--@include: ../../../../firmware/examples/esp32-s3.custom.stock.master.example.yaml-->
+<!--@include: ../../../../firmware/examples/esp32-s3.custom.standard.master.example.yaml-->
 ```
 :::
 
 ::: details ESP32-S3 (Quad PSRAM) / Doorman S3 (1.4)
 ::: code-group
 ```yaml [Home Assistant]
-<!--@include: ../../../../firmware/examples/esp32-s3-quad.ha.stock.master.example.yaml-->
+<!--@include: ../../../../firmware/examples/esp32-s3-quad.ha.standard.master.example.yaml-->
 ```
 ```yaml [MQTT]
-<!--@include: ../../../../firmware/examples/esp32-s3-quad.mqtt.stock.master.example.yaml-->
+<!--@include: ../../../../firmware/examples/esp32-s3-quad.mqtt.standard.master.example.yaml-->
 ```
 ```yaml [HomeKit]
-<!--@include: ../../../../firmware/examples/esp32-s3-quad.homekit.stock.master.example.yaml-->
+<!--@include: ../../../../firmware/examples/esp32-s3-quad.homekit.standard.master.example.yaml-->
 ```
 ```yaml [Custom]
-<!--@include: ../../../../firmware/examples/esp32-s3-quad.custom.stock.master.example.yaml-->
+<!--@include: ../../../../firmware/examples/esp32-s3-quad.custom.standard.master.example.yaml-->
 ```
 :::
 
 ::: details Generic ESP32
 ::: code-group
 ```yaml [Home Assistant]
-<!--@include: ../../../../firmware/examples/esp32.ha.stock.master.example.yaml-->
+<!--@include: ../../../../firmware/examples/esp32.ha.standard.master.example.yaml-->
 ```
 ```yaml [MQTT]
-<!--@include: ../../../../firmware/examples/esp32.mqtt.stock.master.example.yaml-->
+<!--@include: ../../../../firmware/examples/esp32.mqtt.standard.master.example.yaml-->
 ```
 ```yaml [HomeKit]
-<!--@include: ../../../../firmware/examples/esp32.homekit.stock.master.example.yaml-->
+<!--@include: ../../../../firmware/examples/esp32.homekit.standard.master.example.yaml-->
 ```
 ```yaml [Custom]
-<!--@include: ../../../../firmware/examples/esp32.custom.stock.master.example.yaml-->
+<!--@include: ../../../../firmware/examples/esp32.custom.standard.master.example.yaml-->
 ```
 :::
 

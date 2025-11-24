@@ -179,7 +179,7 @@ This release **will impact your current setup** and **requires** you to go throu
    It is now feasible to replace the entrance outdoor station in the exceptional instances where non-default addresses are utilized. The setup mode will also set the entrance outdoor station address.
 
 - **Automatically Disable BLE Server When Not Needed**  
-   The BLE Server is now automatically disabled once Wi-Fi is connected. Note: This behavior applies exclusively to the Stock Firmware.
+   The BLE Server is now automatically disabled once Wi-Fi is connected. Note: This behavior applies exclusively to the Standard Firmware.
 
 - **Fixed Memory Reading for Some Intercom Models**  
    The memory will now be correctly read from your indoor station.
@@ -347,8 +347,8 @@ This release **will impact your current setup** and **requires** you to go throu
    Seamlessly upgrade to the latest Doorman firmware via **Home Assistant**—no need for ESPHome Dashboard!
 
 ### ✨ Improvements
-- **Direct Stock Firmware Updates**  
-   Now you can **install or update** the stock firmware directly from the documentation page. No need to compile it separately!
+- **Direct Standard Firmware Updates**  
+   Now you can **install or update** the standard firmware directly from the documentation page. No need to compile it separately!
 
 - **General Tweaks**  
    Several small but useful improvements for a smoother experience.

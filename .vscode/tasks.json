@@ -2,11 +2,11 @@
     "version": "2.0.0",
     "tasks": [
         {
-            "label": "ESPHome: Compile & Upload - ESP32-S3 HA Stock",
+            "label": "ESPHome: Compile & Upload - ESP32-S3 HA Standard",
             "command": "esphome",
             "args": [
                 "run",
-                "esp32-s3.ha.stock.local.example.yaml"
+                "esp32-s3.ha.standard.local.example.yaml"
             ],
             "type": "shell",
             "options": {
@@ -27,11 +27,11 @@
             }
         },
         {
-            "label": "ESPHome: Compile & Upload - ESP32-S3 MQTT Stock",
+            "label": "ESPHome: Compile & Upload - ESP32-S3 MQTT Standard",
             "command": "esphome",
             "args": [
                 "run",
-                "esp32-s3.mqtt.stock.local.example.yaml"
+                "esp32-s3.mqtt.standard.local.example.yaml"
             ],
             "type": "shell",
             "options": {
@@ -51,11 +51,11 @@
             }
         },
         {
-            "label": "ESPHome: Compile & Upload - ESP32-S3 HomeKit Stock",
+            "label": "ESPHome: Compile & Upload - ESP32-S3 HomeKit Standard",
             "command": "esphome",
             "args": [
                 "run",
-                "esp32-s3.homekit.stock.local.example.yaml"
+                "esp32-s3.homekit.standard.local.example.yaml"
             ],
             "type": "shell",
             "options": {
@@ -75,11 +75,11 @@
             }
         },
         {
-            "label": "ESPHome: Compile & Upload - ESP32-S3 Custom Stock",
+            "label": "ESPHome: Compile & Upload - ESP32-S3 Custom Standard",
             "command": "esphome",
             "args": [
                 "run",
-                "esp32-s3.custom.stock.local.example.yaml"
+                "esp32-s3.custom.standard.local.example.yaml"
             ],
             "type": "shell",
             "options": {
@@ -99,11 +99,11 @@
             }
         },
         {
-            "label": "ESPHome: Compile & Upload - ESP32-S3 HomeKit Stock",
+            "label": "ESPHome: Compile & Upload - ESP32-S3 HomeKit Standard",
             "command": "esphome",
             "args": [
                 "run",
-                "esp32-s3.homekit.stock.local.example.yaml"
+                "esp32-s3.homekit.standard.local.example.yaml"
             ],
             "type": "shell",
             "options": {

@@ -2,7 +2,7 @@
 
 esphome:
   project:
-    name: "AzonInc.Doorman-Nuki-Bridge"
+    name: "AzonInc.Doorman Nuki-Bridge"
   devices:
     - id: nuki_smart_lock
       name: "Nuki Lock"
@@ -11,7 +11,7 @@ esphome:
       
 # Add External Components
 external_components:
-  - source: github://uriyacovy/ESPHome_nuki_lock@fix/esphome-2025-11
+  - source: github://uriyacovy/ESPHome_nuki_lock@pairing-issue
     refresh: 60s
 
 web_server:

@@ -16,7 +16,7 @@ jobs:
       fail-fast: false
       matrix:
         chip: [esp32, esp32-s3, esp32-s3-quad]
-        variant: [stock, nuki-bridge]
+        variant: [standard, nuki-bridge]
         integration: [ha, mqtt, homekit, custom]
         exclude:
           - variant: nuki-bridge

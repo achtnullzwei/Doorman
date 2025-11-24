@@ -11,7 +11,7 @@ The following tables outline the power consumption of different firmware variant
 The integrated RGB status LED draws approximately **4 mA** when active. This is in addition to the values shown below.
 :::
 
-### Stock Firmware
+### Standard Firmware
 | Integration | Power Consumption |
 | :----- | :-----: |
 | Home Assistant | TBD |

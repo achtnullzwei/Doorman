@@ -90,7 +90,7 @@ jobs:
     strategy:
       matrix:
         chip: [esp32, esp32-s3, esp32-s3-quad]
-        variant: [stock, nuki-bridge]
+        variant: [standard, nuki-bridge]
         integration: [ha, mqtt, homekit, custom]
         exclude:
           # MQTT and HomeKit are incompatible with Nuki Bridge
@@ -100,7 +100,7 @@ jobs:
             integration: homekit
     with:
       files: firmware/configurations/${{ matrix.chip }}.${{ matrix.integration }}.${{ matrix.variant }}.${{ github.ref_name == 'master' && 'master' || 'dev' }}.yaml
-      name: ${{ matrix.variant == 'nuki-bridge' && 'AzonInc.Doorman-Nuki-Bridge' || 'AzonInc.Doorman' }}
+      name: Doorman ${{ matrix.variant == 'nuki-bridge' && 'Nuki-Bridge' || 'Standard' }}
       esphome_version: ${{ github.ref_name == 'master' && 'latest' || 'dev' }}
       directory_name: ${{ matrix.chip }}.${{ matrix.integration }}.${{ matrix.variant }}
       summary: ${{ needs.prepare-release.outputs.release_summary }}

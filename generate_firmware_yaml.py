@@ -112,7 +112,7 @@ def generate_example_yaml(host, api_variant, firmware, branch):
         device_friendly_name = "Doorman S3"
 
     content = [
-        f'# Doorman {"Nuki Bridge" if firmware == "nuki-bridge" else "Stock"} Firmware ({api_variant_desc})',
+        f'# Doorman {"Nuki Bridge" if firmware == "nuki-bridge" else "Standard"} Firmware ({api_variant_desc})',
         f'# Base Board {host.upper()}',
         '',
         '# You can change a few options here.',
@@ -128,7 +128,7 @@ def generate_example_yaml(host, api_variant, firmware, branch):
         '',
         '# Import Doorman Firmware Config',
         'packages:',
-        f'  AzonInc.Doorman{"-Nuki-Bridge" if firmware == "nuki-bridge" else ""}: ' +
+        f'  AzonInc.Doorman-{"Nuki-Bridge" if firmware == "nuki-bridge" else "Standard"}: ' +
         f'{filename}',
         '',
         'wifi:',
@@ -152,7 +152,7 @@ def generate_example_yaml(host, api_variant, firmware, branch):
 HOST_ARCHITECTURES = get_host_architectures()
 
 API_VARIANTS = ['ha', 'mqtt', 'homekit', 'custom']
-FIRMWARES = ['stock', 'nuki-bridge']
+FIRMWARES = ['standard', 'nuki-bridge']
 BRANCHES = ['master', 'dev', 'local']
 
 
