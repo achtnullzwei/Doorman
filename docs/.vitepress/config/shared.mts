@@ -13,6 +13,8 @@ function href(path = "") {
 const require = createRequire(import.meta.url)
 const pkg = require('../../package.json')
 
+const branch = pkg.version.includes('dev') ? 'dev' : 'master';
+
 export const shared = defineConfig({
   title: "Doorman",
 
@@ -30,7 +32,7 @@ export const shared = defineConfig({
   ],
 
   sitemap: {
-    hostname: pkg.version.includes('dev') ? 'https://dev.doorman.azon.ai' : 'https://doorman.azon.ai',
+    hostname: branch == 'dev' ? 'https://dev.doorman.azon.ai' : 'https://doorman.azon.ai',
     transformItems(items) {
       return items.filter((item) => !item.url.includes('migration'))
     }
@@ -141,13 +143,6 @@ export const shared = defineConfig({
         [
           "meta",
           {
-            property: "og:description",
-            content: pageDescription,
-          },
-        ],
-        [
-          "meta",
-          {
             name: "twitter:description",
             content: pageDescription,
           },
@@ -170,11 +165,11 @@ export const shared = defineConfig({
     },
 
     editLink: {
-        pattern: 'https://github.com/azoninc/doorman/edit/master/docs/:path',
+        pattern: 'https://github.com/azoninc/doorman/edit/' + branch  + '/docs/:path',
     },
 
     socialLinks: [
-      { icon: 'github', link: 'https://github.com/azoninc/doorman' },
+      { icon: 'github', link: 'https://github.com/azoninc/doorman/tree/' + branch },
       { icon: 'discord', link: 'https://discord.gg/t2d34dvmBf' }
     ],
 
