@@ -148,8 +148,6 @@ async def to_code(config):
         path="components/homekit/mu_srp"
     )
 
-    # cg.add_define("CONFIG_ESP_MFI_DEBUG_ENABLE")
-
     if CONF_PORT in config:
         add_idf_sdkconfig_option("CONFIG_HAP_HTTP_SERVER_PORT", config[CONF_PORT])
 
@@ -204,15 +202,15 @@ async def to_code(config):
         await automation.build_automation(trigger, [(cg.std_string, "x")], conf)
 
 
-HOMEKIT_BRIDGE_ACTION_SCHEMA = cv.Schema({cv.GenerateID(): cv.use_id(HomeKitBridgeComponent)})
+HOMEKIT_BRIDGE_CONDITION_SCHEMA = cv.Schema({cv.GenerateID(): cv.use_id(HomeKitBridgeComponent)})
 
-@automation.register_condition("homekit.paired", PairedCondition, HOMEKIT_BRIDGE_ACTION_SCHEMA)
+@automation.register_condition("homekit.paired", PairedCondition, HOMEKIT_BRIDGE_CONDITION_SCHEMA)
 async def homekit_paired_to_code(config, condition_id, template_arg, args):
     var = cg.new_Pvariable(condition_id, template_arg)
     await cg.register_parented(var, config[CONF_ID])
     return var
 
-@automation.register_condition("homekit.connected", ConnectedCondition, HOMEKIT_BRIDGE_ACTION_SCHEMA)
+@automation.register_condition("homekit.connected", ConnectedCondition, HOMEKIT_BRIDGE_CONDITION_SCHEMA)
 async def homekit_connected_to_code(config, condition_id, template_arg, args):
     var = cg.new_Pvariable(condition_id, template_arg)
     await cg.register_parented(var, config[CONF_ID])
