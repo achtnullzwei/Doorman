@@ -29,8 +29,8 @@ Alle weiteren Ereignisse werden aufgrund dieser Einschränkung ebenfalls auf `LO
 ## Accessory-Bundles
 Zur Verbesserung der Benutzerfreundlichkeit und zur Optimierung des internen Speicherverbrauchs bieten wir folgende vordefinierte Accessory-Bundles an:
 
-- **Entrance Doorbell** → *Entrance Door*, *Hallway Light*
-- **Second Entrance Doorbell** → *Second Entrance Door*, *Hallway Light*
+- **Entrance Doorbell** → *Entrance Doorbell*, *Entrance Door*
+- **Second Entrance Doorbell** → *Second Entrance Doorbell*, *Second Entrance Door*
 
 ## Koppeln
 <!--@include: ./instructions/homekit.md-->

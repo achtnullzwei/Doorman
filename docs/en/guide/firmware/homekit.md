@@ -29,8 +29,8 @@ All other events will default to `LONG_PRESS` due to limitations:
 ## Accessory Bundles
 To improve usability and optimize internal memory usage, we offer the following predefined accessory bundles:
 
-- **Entrance Doorbell** → *Entrance Door*, *Hallway Light*
-- **Second Entrance Doorbell** → *Second Entrance Door*, *Hallway Light*
+- **Entrance Doorbell** → *Entrance Doorbell*, *Entrance Door*
+- **Second Entrance Doorbell** → *Second Entrance Doorbell*, *Second Entrance Door*
 
 ## Pairing
 <!--@include: ./instructions/homekit.md-->

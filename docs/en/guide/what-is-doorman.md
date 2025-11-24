@@ -1,16 +1,24 @@
-![PCB front and back](./images/title_dark.png){width=500px}
-
 # What is Doorman?
 
 Doorman allows you to connect your [TCS](https://www.tcsag.de/) or [Koch](https://www.kochag.ch/) intercom to any home automation system. Additionally, some rebranded [Niko](https://www.niko.eu/), [Scantron](https://scantron.dk/) and older [Jung](https://www.jung-group.com/) intercoms are counterparts to the TCS and Koch models.
 
+<div style="display: flex; flex-direction: row; flex-wrap: wrap; justify-content: space-between; gap: 20px;align-items: center;" markdown>
+   <div style="min-width:260px;flex: 1 1 260px;" markdown>
+
 ### What about other intercoms?
-Doorman isn't limited to TCS or Koch intercoms.\
+    
+Doorman isn't limited to TCS or Koch intercoms.
+
 You can use it to simulate a button press to trigger a door opener or light with the integrated solid-state relay (up to 40V, max 2.5A).
 
 If your intercom operates on a 2-wire bus within the 14-24V DC range, it might be possible to implement other protocols as well.
-
 You can also monitor the voltage level on older intercoms (14-24V DC) using the internal ADC and trigger specific actions based on the readings.
+
+   </div>
+   <div style="min-width: 185px;max-width:200px;flex: 1 1 185px;" markdown>
+        <img style="" src="/enclosure.png">
+   </div>
+</div>
 
 <div class="tip custom-block" style="padding-top: 8px">
 
