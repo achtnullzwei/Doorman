@@ -284,6 +284,8 @@ To enable detection of the **doorbell(s)** and allow unlocking of the **door(s)*
 ⚠️ **Order matters:** Start with the main entrance doorbell, then proceed to the second entrance. This ensures the stations are detected correctly.
 
 🕒 Wait about **one minute after setup finishes** before doing this, so the system can correctly store the second door's address.
+
+⚠️ Entities related to the second entrance door won't appear until you configure its address. If you've already set it up but these entities are still unavailable, restart Doorman or reload the device in Home Assistant to refresh the integration.
 :::
 
 ### 4. Setup complete

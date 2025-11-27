@@ -284,6 +284,8 @@ Damit die **Türklingel(n)** erkannt werden und du die **Tür(en) öffnen** kann
 ⚠️ **Die Reihenfolge ist wichtig:** Fang mit der Klingel am Haupteingang an und dann die zweite. So erkennt das System alles richtig.
 
 🕒 Warte etwa **eine Minute nach der Einrichtung**, bevor du das machst, damit die Adresse der zweiten Tür korrekt gespeichert wird.
+
+⚠️ Entitäten für die zweite Eingangstür werden erst angezeigt, nachdem Du deren Adresse konfiguriert hast. Falls die zweite Einganstür bereits eingerichtet ist, aber diese Entitäten noch nicht verfügbar sind, starte Doorman neu oder lade das Gerät in Home Assistant neu, um die Integration zu aktualisieren.
 :::
 
 ### 4. Einrichtung abgeschlossen

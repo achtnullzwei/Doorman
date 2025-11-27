@@ -51,7 +51,7 @@ switch:
 text_sensor:
   - platform: template
     id: setup_status_serial_number
-    name: "Serial Number"
+    name: "Setup: Serial Number"
     icon: "mdi:numeric"
     lambda: |-
       if(id(indoor_station_serial_number).state != 0)
@@ -76,7 +76,7 @@ text_sensor:
 
   - platform: template
     id: setup_status_indoor_station_model
-    name: "Indoor Station Model"
+    name: "Setup: Indoor Station Model"
     icon: "mdi:doorbell-video"
     lambda: |-
       if(id(indoor_station_model)->current_option() != "None")
@@ -108,7 +108,7 @@ text_sensor:
 
   - platform: template
     id: setup_status_indoor_station_memory
-    name: "Indoor Station Memory"
+    name: "Setup: Indoor Station Memory"
     icon: "mdi:database"
     lambda: |-
       if(id(tc_bus_indoor_station).memory_buffer_empty() != true)
@@ -141,7 +141,7 @@ text_sensor:
 
   - platform: template
     id: setup_status_entrance_door_address
-    name: "Entrance Doorbell"
+    name: "Setup: Entrance Doorbell"
     icon: "mdi:doorbell"
     lambda: |-
       if(id(entrance_door_station_address).state != 63)
@@ -173,7 +173,7 @@ text_sensor:
 
   - platform: template
     id: setup_status_second_entrance_door_address
-    name: "Second Entrance Doorbell"
+    name: "Setup: Second Entrance Doorbell"
     icon: "mdi:doorbell"
     lambda: |-
       if(id(second_entrance_door_station_address).state != 63)
