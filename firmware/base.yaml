@@ -22,6 +22,9 @@ esphome:
             - lambda: return id(relay_mode)->current_option() != "Standalone";
           then:
             - switch.turn_off: doorman_relay
+      - lambda: |-
+          uint8_t x = id(second_entrance_door_station_address).state;
+          id(second_entrance_door)->set_internal(x == 63 || x == id(entrance_door_station_address).state ? true : false);
 
   devices:
     - id: tc_bus_general
@@ -190,6 +193,9 @@ number:
     optimistic: true
     disabled_by_default: true
     entity_category: CONFIG
+    on_value:
+      - lambda: |-
+          id(second_entrance_door)->set_internal(x == 63 || x == id(entrance_door_station_address).state ? true : false);
     web_server:
       sorting_group_id: sorting_group_settings
       sorting_weight: -98
