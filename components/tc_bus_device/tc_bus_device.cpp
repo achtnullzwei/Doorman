@@ -159,7 +159,7 @@ namespace esphome
                 {
                     if (read_memory_flow_)
                     {
-                        ESP_LOGD(TAG, "Received 4 memory blocks from %i to %i | Data: 0x%08X", (reading_memory_count_ * 4), (reading_memory_count_ * 4) + 4, telegram_data.raw);
+                        ESP_LOGI(TAG, "Received 4 memory blocks from %i to %i | Data: 0x%08X", (reading_memory_count_ * 4), (reading_memory_count_ * 4) + 4, telegram_data.raw);
                             
                         // Save Data to memory Store
                         memory_buffer_.push_back((telegram_data.raw >> 24) & 0xFF);
@@ -196,7 +196,7 @@ namespace esphome
                     }
                     else if (read_memory_update_flow_)
                     {
-                        ESP_LOGD(TAG, "Received 4 memory blocks from %i to %i | Data: 0x%08X", (reading_memory_count_ * 4), (reading_memory_count_ * 4) + 4, telegram_data.raw);
+                        ESP_LOGI(TAG, "Received 4 memory blocks from %i to %i | Data: 0x%08X", (reading_memory_count_ * 4), (reading_memory_count_ * 4) + 4, telegram_data.raw);
                             
                         // Save Data to memory Store
                         memory_buffer_[reading_memory_count_]     = (telegram_data.raw >> 24) & 0xFF;
@@ -222,7 +222,7 @@ namespace esphome
                     }
                     else if (identify_model_flow_)
                     {
-                        ESP_LOGD(TAG, "Received model identification | Data: %s", telegram_data.hex);
+                        ESP_LOGI(TAG, "Received model identification | Data: %s", telegram_data.hex);
 
                         ESP_LOGD(TAG, "Reset identify_model_flow_");
                         identify_model_flow_ = false;
@@ -318,7 +318,7 @@ namespace esphome
                             // Add missing information
                             device.memory_size = getModelData(device.model).memory_size;
 
-                            ESP_LOGD(TAG, "Identified Hardware: %s (v%i) | Firmware: %i.%i.%i",
+                            ESP_LOGI(TAG, "Identified Hardware: %s (v%i) | Firmware: %i.%i.%i",
                                     model_to_string(device.model),
                                     device.hardware_version,
                                     device.firmware_major,
@@ -371,17 +371,19 @@ namespace esphome
         {
             if(this->device_group_ == DEVICE_GROUP_INDOOR_STATION)
             {
-                ESP_LOGD(TAG, "Ringtone volume: %i", get_setting(SETTING_VOLUME_RINGTONE));
-                ESP_LOGD(TAG, "Handset volume (Door Call): %i", get_setting(SETTING_VOLUME_HANDSET_DOOR_CALL));
-                ESP_LOGD(TAG, "Handset volume (Internal Call): %i", get_setting(SETTING_VOLUME_HANDSET_INTERNAL_CALL));
+                ESP_LOGI(TAG, "Device Settings:");
 
-                ESP_LOGD(TAG, "Entrance Door Call Ringtone: %i", get_setting(SETTING_RINGTONE_ENTRANCE_DOOR_CALL));
-                ESP_LOGD(TAG, "Second Entrance Door Call Ringtone: %i", get_setting(SETTING_RINGTONE_SECOND_ENTRANCE_DOOR_CALL));
-                ESP_LOGD(TAG, "Floor Call Ringtone: %i", get_setting(SETTING_RINGTONE_FLOOR_CALL));
-                ESP_LOGD(TAG, "Internal Call Ringtone: %i", get_setting(SETTING_RINGTONE_INTERNAL_CALL));
+                ESP_LOGI(TAG, "  Ringtone volume: %i", get_setting(SETTING_VOLUME_RINGTONE));
+                ESP_LOGI(TAG, "  Handset volume (Door Call): %i", get_setting(SETTING_VOLUME_HANDSET_DOOR_CALL));
+                ESP_LOGI(TAG, "  Handset volume (Internal Call): %i", get_setting(SETTING_VOLUME_HANDSET_INTERNAL_CALL));
 
-                ESP_LOGD(TAG, "Address Divider (AS): %i", get_setting(SETTING_AS_ADDRESS_DIVIDER));
-                ESP_LOGD(TAG, "Address Divider (VAS): %i", get_setting(SETTING_VAS_ADDRESS_DIVIDER));
+                ESP_LOGI(TAG, "  Entrance Door Call Ringtone: %i", get_setting(SETTING_RINGTONE_ENTRANCE_DOOR_CALL));
+                ESP_LOGI(TAG, "  Second Entrance Door Call Ringtone: %i", get_setting(SETTING_RINGTONE_SECOND_ENTRANCE_DOOR_CALL));
+                ESP_LOGI(TAG, "  Floor Call Ringtone: %i", get_setting(SETTING_RINGTONE_FLOOR_CALL));
+                ESP_LOGI(TAG, "  Internal Call Ringtone: %i", get_setting(SETTING_RINGTONE_INTERNAL_CALL));
+
+                ESP_LOGI(TAG, "  Address Divider (AS): %i", get_setting(SETTING_AS_ADDRESS_DIVIDER));
+                ESP_LOGI(TAG, "  Address Divider (VAS): %i", get_setting(SETTING_VAS_ADDRESS_DIVIDER));
 
                 #ifdef USE_SELECT
                     if (this->ringtone_entrance_door_call_select_)
@@ -419,8 +421,8 @@ namespace esphome
             }
             else if(this->device_group_ == DEVICE_GROUP_OUTDOOR_STATION)
             {
-                ESP_LOGD(TAG, "Address: %i", get_setting(SETTING_AS_ADDRESS));
-                ESP_LOGD(TAG, "Address Lock: %s", YESNO(get_setting(SETTING_AS_ADDRESS_LOCK)));
+                ESP_LOGI(TAG, "  Address: %i", get_setting(SETTING_AS_ADDRESS));
+                ESP_LOGI(TAG, "  Address Lock: %s", YESNO(get_setting(SETTING_AS_ADDRESS_LOCK)));
 
                 uint8_t button_rows = get_setting(SETTING_BUTTON_ROWS);
                 uint8_t button_cols = 1;
@@ -444,7 +446,7 @@ namespace esphome
                     }
                 }
 
-                ESP_LOGD(TAG, "Physical Buttons: %i", button_rows * button_cols);
+                ESP_LOGI(TAG, "  Physical Buttons: %i", button_rows * button_cols);
 
                 for (uint8_t row = 1; row <= button_rows; row++) {
                     for (uint8_t col = 1; col <= button_cols; col++) {
@@ -453,32 +455,32 @@ namespace esphome
                         DoorbellButtonConfig btn = get_doorbell_button(row, col_param);
                         
                         if (button_cols > 1) {
-                            ESP_LOGD(TAG, " Button [%i,%i]:", row, col);
+                            ESP_LOGI(TAG, "   Button [%i,%i]:", row, col);
                         } else {
-                            ESP_LOGD(TAG, " Button %i:", row);
+                            ESP_LOGI(TAG, "   Button %i:", row);
                         }
                         
-                        ESP_LOGD(TAG, "   Primary Action: %x (%i)", btn.primary_action, btn.primary_payload);
-                        ESP_LOGD(TAG, "   Secondary Action: %x (%i)", btn.secondary_action, btn.secondary_payload);
+                        ESP_LOGI(TAG, "     Primary Action: %x (%i)", btn.primary_action, btn.primary_payload);
+                        ESP_LOGI(TAG, "     Secondary Action: %x (%i)", btn.secondary_action, btn.secondary_payload);
                     }
                 }
 
-                ESP_LOGD(TAG, "Talking requires door readiness: %s", YESNO(get_setting(SETTING_TALKING_REQUIRES_DOOR_READINESS)));
+                ESP_LOGI(TAG, "  Talking requires door readiness: %s", YESNO(get_setting(SETTING_TALKING_REQUIRES_DOOR_READINESS)));
 
                 uint8_t door_opener_dur = get_setting(SETTING_DOOR_OPENER_DURATION);
-                ESP_LOGD(TAG, "Door Opener Duration: %i sec.", door_opener_dur);
+                ESP_LOGI(TAG, "  Door Opener Duration: %i sec.", door_opener_dur);
 
                 uint8_t calling_dur = get_setting(SETTING_CALLING_DURATION);
-                ESP_LOGD(TAG, "Calling Duration: %f sec.", calling_dur * 0.5);
+                ESP_LOGI(TAG, "  Calling Duration: %f sec.", calling_dur * 0.5);
 
                 uint8_t door_readiness_dur = get_setting(SETTING_DOOR_READINESS_DURATION);
                 if(door_readiness_dur == 0)
                 {
-                    ESP_LOGD(TAG, "Door Readiness Duration: Unlimited");
+                    ESP_LOGI(TAG, "  Door Readiness Duration: Unlimited");
                 }
                 else
                 {
-                    ESP_LOGD(TAG, "Door Readiness Duration: %i sec.", door_readiness_dur * 8);
+                    ESP_LOGI(TAG, "  Door Readiness Duration: %i sec.", door_readiness_dur * 8);
                 }
             }
             else
@@ -536,7 +538,7 @@ namespace esphome
                 // Indoor Stations
 
                 // First try with group 0
-                ESP_LOGD(TAG, "Identifying device model (Group %i) using serial number: %i...", 0, this->serial_number_);
+                ESP_LOGI(TAG, "Identifying device model (Group %i) using serial number: %i...", 0, this->serial_number_);
                 send_telegram(TELEGRAM_TYPE_SELECT_DEVICE_GROUP, 0, 0, 400); // group 0
                 send_telegram(TELEGRAM_TYPE_REQUEST_VERSION, 0, 0, 400);
 
@@ -544,7 +546,7 @@ namespace esphome
                 {
                     // Didn't receive identify result of group 0
                     // Second try with group 1
-                    ESP_LOGD(TAG, "Identifying device model (Group %i) using serial number: %i...", 1, this->serial_number_);
+                    ESP_LOGI(TAG, "Identifying device model (Group %i) using serial number: %i...", 1, this->serial_number_);
                     send_telegram(TELEGRAM_TYPE_SELECT_DEVICE_GROUP, 0, 1, 400); // group 1
                     send_telegram(TELEGRAM_TYPE_REQUEST_VERSION, 0, 0, 400);
 
@@ -568,7 +570,7 @@ namespace esphome
                 // Other Devices
 
                 // Use device group if not 0 and 1
-                ESP_LOGD(TAG, "Identifying device model (group %i) using serial number: %i...", (uint8_t)this->device_group_, this->serial_number_);
+                ESP_LOGI(TAG, "Identifying device model (group %i) using serial number: %i...", (uint8_t)this->device_group_, this->serial_number_);
                 send_telegram(TELEGRAM_TYPE_SELECT_DEVICE_GROUP, 0, (uint8_t)this->device_group_, 400);
                 send_telegram(TELEGRAM_TYPE_REQUEST_VERSION, 0, 0, 400);
 
@@ -614,7 +616,7 @@ namespace esphome
             }
             else
             {
-                ESP_LOGD(TAG, "Reading EEPROM for model %s (Serial: %i)...", model_to_string(this->model_), this->serial_number_);
+                ESP_LOGI(TAG, "Reading EEPROM for model %s (Serial: %i)...", model_to_string(this->model_), this->serial_number_);
             }
 
             ESP_LOGD(TAG, "Set running_flow_");
@@ -679,7 +681,7 @@ namespace esphome
             }
             else
             {
-                ESP_LOGD(TAG, "Reading EEPROM for model %s (Serial: %i)...", model_to_string(this->model_), this->serial_number_);
+                ESP_LOGI(TAG, "Reading EEPROM for model %s (Serial: %i)...", model_to_string(this->model_), this->serial_number_);
             }
 
             ESP_LOGD(TAG, "Set running_flow_");
@@ -710,7 +712,7 @@ namespace esphome
 
         void TCBusDeviceComponent::read_memory_block()
         {
-            ESP_LOGD(TAG, "Read 4 memory blocks, from %i to %i.", (reading_memory_count_ * 4), (reading_memory_count_ * 4) + 4);
+            ESP_LOGI(TAG, "Read 4 memory blocks, from %i to %i.", (reading_memory_count_ * 4), (reading_memory_count_ * 4) + 4);
             send_telegram(TELEGRAM_TYPE_READ_MEMORY_BLOCK, reading_memory_count_, 0, 300);
         }
 
@@ -1052,7 +1054,7 @@ namespace esphome
                 return false;
             }
 
-            ESP_LOGD(TAG, "Writing setting %s (%X) to EEPROM of %s (%i)...", setting_type_to_string(type), new_value, model_to_string(this->model_), this->serial_number_);
+            ESP_LOGI(TAG, "Writing setting %s (%X) to EEPROM of %s (%i)...", setting_type_to_string(type), new_value, model_to_string(this->model_), this->serial_number_);
             
             // Apply new data
             uint8_t shift = cellData.start_bit - cellData.length + 1;
@@ -1099,7 +1101,7 @@ namespace esphome
                 return false;
             }
 
-            ESP_LOGD(TAG, "Write memory buffer to EEPROM of %s (%i)...", model_to_string(this->model_), this->serial_number_);
+            ESP_LOGI(TAG, "Write memory buffer to EEPROM of %s (%i)...", model_to_string(this->model_), this->serial_number_);
 
             // Prepare Transmission
             send_telegram(TELEGRAM_TYPE_SELECT_DEVICE_GROUP, 0, this->model_data_.device_group);
