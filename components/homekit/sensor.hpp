@@ -99,7 +99,7 @@ namespace esphome
 
         hap_serv_t* service = nullptr;
 
-        const char* device_class = entityPtr->get_device_class().c_str();
+        const char* device_class = entityPtr->get_device_class_ref().c_str();
         if (device_class == nullptr) {
             service = hap_serv_temperature_sensor_create(entityPtr->state);
         } 

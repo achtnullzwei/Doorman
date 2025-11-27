@@ -85,7 +85,7 @@ namespace esphome
 
         hap_serv_t* service = nullptr;
         
-        const char* device_class = entityPtr->get_device_class().c_str();
+        const char* device_class = entityPtr->get_device_class_ref().c_str();
         if (strcmp(device_class, "doorbell") == 0) {
           service = hap_serv_create("121");
           hap_serv_add_char(service, hap_char_programmable_switch_event_create(0));
