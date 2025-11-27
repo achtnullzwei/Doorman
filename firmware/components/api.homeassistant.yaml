@@ -37,7 +37,8 @@ esphome:
 
 api:
   # Allow to set key via HA
-  encryption:
+  # HA wants the key when adding - doesn't work as expected
+  #encryption:
   batch_delay: 0ms
   custom_services: true
   homeassistant_services: true
