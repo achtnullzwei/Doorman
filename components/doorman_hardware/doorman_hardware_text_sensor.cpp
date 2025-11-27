@@ -1,7 +1,7 @@
 #include "esphome/core/log.h"
 #include "doorman_hardware_text_sensor.h"
 
-#if defined(USE_ESP_IDF) || (defined(USE_ARDUINO) && defined(ESP32))
+#if defined(USE_ESP_IDF) || (defined(USE_ARDUINO) && defined(USE_ESP32))
 #include "soc/efuse_reg.h"
 #include "soc/efuse_periph.h"
 #include "esp_efuse.h"
@@ -18,9 +18,9 @@ namespace esphome
         {
             ESP_LOGCONFIG(TAG, "Running setup");
 
-            #ifdef ESP32
-            ESP_LOGD(TAG, "Checking for Doorman hardware");
+            ESP_LOGI(TAG, "Checking Doorman hardware version...");
 
+            #ifdef USE_ESP32
             // Doorman Hardware Revision
             uint8_t ver[3];
             uint32_t value;
@@ -33,16 +33,18 @@ namespace esphome
             {
                 ESP_LOGI(TAG, "Detected Doorman Hardware: Revision %i.%i.%i.", ver[0], ver[1], ver[2]);
 
-                static char hw_version_str[32];
-                int len = snprintf(hw_version_str, sizeof(hw_version_str), "Doorman S3 %u.%u.%u", ver[0], ver[1], ver[2]);
-                if (len < 0 || len >= static_cast<int>(sizeof(hw_version_str)))
+                int len = snprintf(this->hardware_version_str_, sizeof(this->hardware_version_str_), "Doorman S3 %u.%u.%u", ver[0], ver[1], ver[2]);
+                if (len < 0 || len >= static_cast<int>(sizeof(this->hardware_version_str_)))
                 {
-                    hw_version_str[sizeof(hw_version_str) - 1] = '\0';
+                    this->hardware_version_str_[sizeof(this->hardware_version_str_) - 1] = '\0';
                 }
-                this->hardware_version_str_ = hw_version_str;
+            }
+            else
+            {
+                ESP_LOGI(TAG, "No Doorman hardware detected, assuming Generic");
             }
             #else
-            ESP_LOGD(TAG, "Not running on ESP32, assuming Generic hardware.");
+            ESP_LOGI(TAG, "Not running on ESP32, assuming Generic hardware");
             #endif
 
             this->publish_state(this->hardware_version_str_);
@@ -50,7 +52,7 @@ namespace esphome
 
         void DoormanHardwareTextSensor::dump_config()
         {
-            ESP_LOGCONFIG(TAG, "Doorman Hardware");
+            ESP_LOGCONFIG(TAG, "Doorman Hardware:");
         }
 
     }  // namespace doorman_hardware_text_sensor
