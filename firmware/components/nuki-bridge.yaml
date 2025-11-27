@@ -79,7 +79,7 @@ lock:
       sorting_group_id: sorting_group_controls
       sorting_weight: 3
 
-    security_pin: 1234
+    security_pin: 0
     event: nuki
 
     # Optional:
