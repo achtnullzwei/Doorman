@@ -38,7 +38,7 @@ event:
           then:
             - if:
                 condition:
-                  binary_sensor.is_on: nuki_paired
+                  nuki_lock.paired:
                 then:
                   - nuki_lock.unpair:
                       id: apartment_door
@@ -59,7 +59,7 @@ number:
     mode: box
     step: 1
     min_value: 0
-    max_value: 65535
+    max_value: 999999
     set_action:
       - nuki_lock.set_security_pin:
           security_pin: !lambda return x;
@@ -83,7 +83,7 @@ lock:
     event: nuki
 
     # Optional:
-    is_connected: 
+    connected: 
       id: nuki_connected
       device_id: nuki_bridge
       name: "Connected"
@@ -91,7 +91,7 @@ lock:
         sorting_group_id: sorting_group_nuki_bridge_settings
         sorting_weight: -30
 
-    is_paired:
+    paired:
       id: nuki_paired
       device_id: nuki_bridge
       name: "Paired"
