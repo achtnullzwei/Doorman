@@ -156,8 +156,6 @@ namespace esphome
                 report_heap();
             } else {
                 hap_acc_delete(accessory);
-
-                std::string hap_start_fail_msg = ;
                 this->mark_failed(LOG_STR("hap_start() failed with status " + std::to_string(start_status)));
             }
         }
