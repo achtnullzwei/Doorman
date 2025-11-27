@@ -521,10 +521,12 @@ namespace esphome
                 return;
             }
 
+            this->cancel_timeout("wait_for_identification_group_0");
+            this->cancel_timeout("wait_for_identification_group_1");
+            this->cancel_timeout("wait_for_identification_other");
+
             ESP_LOGD(TAG, "Set running_flow_");
             running_flow_ = true;
-
-            this->cancel_timeout("wait_for_identification_other");
 
             ESP_LOGD(TAG, "Set identify_model_flow_");
             this->identify_model_flow_ = true;
