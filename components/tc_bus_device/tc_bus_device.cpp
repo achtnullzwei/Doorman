@@ -33,12 +33,12 @@ namespace esphome
             ESP_LOGCONFIG(TAG, "Running setup");
 
             if(this->tc_bus_->is_failed()) {
-                this->mark_failed("TC:BUS failed to setup!");
+                this->mark_failed(LOG_STR("TC:BUS failed to setup!"));
                 return;
             }
         
             if(!this->tc_bus_->is_ready()) {
-                this->mark_failed("TC:BUS is not setup yet!");
+                this->mark_failed(LOG_STR("TC:BUS is not setup yet!"));
                 return;
             }
 

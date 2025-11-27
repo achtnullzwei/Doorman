@@ -41,6 +41,8 @@ namespace esphome
                 }
                 this->hardware_version_str_ = hw_version_str;
             }
+            #else
+            ESP_LOGD(TAG, "Not running on ESP32, assuming Generic hardware.");
             #endif
 
             this->publish_state(this->hardware_version_str_);

@@ -23,13 +23,13 @@ namespace esphome
 
       if(this->base_component_->is_failed())
       {
-        this->mark_failed("TC:BUS is not setup yet!");
+        this->mark_failed(LOG_STR("TC:BUS is not setup yet!"));
         return;
       }
 
       if(!this->base_component_->is_ready())
       {
-        this->mark_failed("TC:BUS is not setup yet!");
+        this->mark_failed(LOG_STR("TC:BUS is not setup yet!"));
         return;
       }
 

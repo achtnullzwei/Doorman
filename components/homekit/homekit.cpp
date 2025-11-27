@@ -11,12 +11,12 @@ namespace esphome
       ESP_LOGCONFIG(TAG, "Running setup");
 
       if(this->base_component_->is_failed()) { 
-        this->mark_failed("HomeKit Base failed to setup!");
+        this->mark_failed(LOG_STR("HomeKit Base failed to setup!"));
         return;
       }
 
       if(!this->base_component_->is_ready()) {
-        this->mark_failed("HomeKit Base is not setup yet!");
+        this->mark_failed(LOG_STR("HomeKit Base is not setup yet!"));
         return;
       }
 
