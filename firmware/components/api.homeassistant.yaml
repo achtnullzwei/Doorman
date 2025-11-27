@@ -23,6 +23,7 @@ esphome:
       - wait_until:
           condition:
             api.connected:
+              state_subscription_only: true
       - logger.log: "LED: API connected"
       - light.turn_on:
           id: doorman_rgb_status_led
