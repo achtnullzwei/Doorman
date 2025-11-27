@@ -1,11 +1,32 @@
 # Ring To Open Addon
 
+esphome:
+  on_boot:
+    priority: 600
+    then:
+      - lambda: |-
+          bool internal = id(second_entrance_door_station_address).state == 63 || id(second_entrance_door_station_address).state == id(entrance_door_station_address).state;
+          id(rto_second_entrance_door)->set_internal(internal);
+          id(rto_second_entrance_door_delay)->set_internal(internal);
+          id(rto_second_entrance_door_timeout_mode)->set_internal(internal);
+          id(rto_second_entrance_door_pattern_condition)->set_internal(internal);
+
 web_server:
   sorting_groups:
     - id: sorting_group_rto_settings
       name: "Settings - Ring To Open"
       sorting_weight: -80
-      
+
+number:
+  - id: !extend second_entrance_door_station_address
+    on_value:
+      - lambda: |-
+          bool internal = (x == 63 || x == id(entrance_door_station_address).state);
+          id(rto_second_entrance_door)->set_internal(internal);
+          id(rto_second_entrance_door_delay)->set_internal(internal);
+          id(rto_second_entrance_door_timeout_mode)->set_internal(internal);
+          id(rto_second_entrance_door_pattern_condition)->set_internal(internal);
+
 binary_sensor:
   - id: !extend entrance_doorbell
     on_press:
