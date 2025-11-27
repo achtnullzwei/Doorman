@@ -75,7 +75,7 @@ api:
 tc_bus:
   on_telegram:
     - homeassistant.event:
-        event: esphome.doorman_test
+        event: esphome.doorman
         data_template:
           telegram: "{{ telegram }}"
           type: "{{ type }}"
