@@ -154,7 +154,7 @@ export default {
 Auf dieser Seite findest du alle verfügbaren Methoden, um die Doorman-Firmware zu installieren oder zu aktualisieren. Egal, ob du die Firmware zum ersten Mal flashst oder ein Update einspielst – die Anleitungen führen dich Schritt für Schritt durch den Prozess. Dazu gehören die direkte Installation per Web Serial, Updates über die Web-Oberfläche der Firmware und die Integration in das Update-System von Home Assistant.
 
 ::: tip WICHTIG
-Manche **Updates können Breaking Changes mit sich bringen** — lies dir die Changelogs immer genau durch, damit dein System auch in wichtigen Situationen zuverlässig funktioniert.  
+Manche **Updates können Breaking Changes mit sich bringen** — lies dir die [Changelogs](../../../en/changelog/firmware.md) immer genau durch, damit dein System auch in wichtigen Situationen zuverlässig funktioniert.  
 :::
 
 ## Web Serial <Badge type="tip" text="Neueste Release-Version, keine Anpassungen" />

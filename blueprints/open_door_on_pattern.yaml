@@ -36,7 +36,7 @@ blueprint:
       default:
         - action: lock.unlock
           target:
-            entity_id: lock.doorman_s3_entrance_door
+            entity_id: lock.tc_bus_entrance_door
       selector:
         action:
 

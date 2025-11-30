@@ -47,9 +47,10 @@ button: # [!code ++] [!code focus]
 ```
 
 ## Verwende den externen Hardware-Button
-Wenn du den externen Button verwenden möchtest, um Automatisierungen auszulösen, erweitere den Block `on_press` und füge deine eigenen Aktionen hinzu.
+Wenn du den externen Button zur Auslösung von Automationen verwenden möchtest, erweitere entweder den Binären Sensor oder das Ereignis (das bereits mehrere Event-Typen bereitstellt) um eigene Aktionen.
 
-```yaml
+::: code-group
+```yaml [Binärer Sensor]
 <!--@include: minimal.example.yaml-->
 
 binary_sensor: # [!code ++] [!code focus]
@@ -57,11 +58,22 @@ binary_sensor: # [!code ++] [!code focus]
     on_press: # [!code ++] [!code focus]
       - logger.log: "External button pressed!" # [!code ++] [!code focus]
 ```
+```yaml [Ereignis]
+<!--@include: minimal.example.yaml-->
+
+event: # [!code ++] [!code focus]
+  - id: !extend doorman_external_button_event # [!code ++] [!code focus]
+    on_event: # [!code ++] [!code focus]
+      - lambda: |- # [!code ++] [!code focus]
+          ESP_LOGD("main", "External Button Event %s triggered.", event_type.c_str()); # [!code ++] [!code focus]
+```
+:::
 
 ## Verwende I²C-Sensoren
 Falls du Sensoren über den I²C-Bus hinzufügen möchtest, kannst du die beiden verfügbaren GPIO-Pins verwenden und die I²C-Komponente zu deiner Konfiguration hinzufügen. Du kannst dann deine Sensoren an diese beiden I²C-GPIO-Pins anschließen.
 
-```yaml
+::: code-group
+```yaml [Doorman bis rev. 1.5]
 <!--@include: minimal.example.yaml-->
 
 i2c: # [!code ++] [!code focus]
@@ -70,7 +82,16 @@ i2c: # [!code ++] [!code focus]
   scan: true # [!code ++] [!code focus]
   id: i2c_bus # [!code ++] [!code focus]
 ```
+```yaml [Doorman ab rev. 1.6]
+<!--@include: minimal.example.yaml-->
 
+i2c: # [!code ++] [!code focus]
+  sda: GPIO40 # [!code ++] [!code focus]
+  scl: GPIO41 # [!code ++] [!code focus]
+  scan: true # [!code ++] [!code focus]
+  id: i2c_bus # [!code ++] [!code focus]
+```
+:::
 
 ## Erstelle dein eigenes Klingelmuster
 Wenn du ein benutzerdefiniertes Klingelmuster erstellen möchtest, kannst du die vorhandenen Klingel-Entities ganz einfach erweitern. Weitere Informationen zu Mustern findest du in der [ESPHome-Dokumentation](https://esphome.io/components/binary_sensor/index.html#on-multi-click).

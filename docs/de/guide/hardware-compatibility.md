@@ -3,6 +3,10 @@ Wenn deine [TCS](https://www.tcsag.de/), [Koch](https://www.kochag.ch/) oder [Sc
 
 Einige umgelabelte [Niko](https://www.niko.eu/) und ältere [Jung](https://www.jung-group.com/) Innenstationen, die den TCS- und Koch-Modellen entsprechen, könnten ebenfalls passen.
 
+:::warning TCS:IP
+Die TCS:IP Serie wird nicht unterstützt! Bitte prüfe ob dein System ein Bus-System ist.
+:::
+
 :::danger WICHTIG - BEVOR DU BESTELLST
 Da dieses Produkt durch Reverse Engineering entwickelt wurde, gibt es keine Garantie, dass deine Sprechanlage ohne Tests funktioniert.
 

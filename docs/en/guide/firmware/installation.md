@@ -155,7 +155,7 @@ export default {
 On this page, you'll find all available methods to install or update the Doorman firmware. Whether you're flashing the firmware for the first time or applying the latest update, the instructions here will guide you step-by-step — including direct installation via Web Serial, updates through the firmware web interface, and integration with Home Assistant's update system.
 
 ::: tip IMPORTANT
-Be aware that some **updates may introduce breaking changes** — always review the changelogs carefully to ensure your system functions reliably in critical situations.
+Be aware that some **updates may introduce breaking changes** — always review the [changelogs](../../changelog/firmware.md) carefully to ensure your system functions reliably in critical situations.
 :::
 
 ## Web Serial <Badge type="tip" text="Latest release build, no customization" />

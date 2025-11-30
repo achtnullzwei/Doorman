@@ -46,9 +46,10 @@ button: # [!code ++] [!code focus]
 ```
 
 ## Use the External Hardware Button
-If you want to use the external button to trigger automations, extend the `on_press` block and add your own actions.
+If you want to use the external button to trigger automations, extend either the binary sensor or the event entity (which already provides several event types) with your own custom actions.
 
-```yaml
+::: code-group
+```yaml [Binary Sensor]
 <!--@include: minimal.example.yaml-->
 
 binary_sensor: # [!code ++] [!code focus]
@@ -56,11 +57,22 @@ binary_sensor: # [!code ++] [!code focus]
     on_press: # [!code ++] [!code focus]
       - logger.log: "External button pressed!" # [!code ++] [!code focus]
 ```
+```yaml [Event]
+<!--@include: minimal.example.yaml-->
+
+event: # [!code ++] [!code focus]
+  - id: !extend doorman_external_button_event # [!code ++] [!code focus]
+    on_event: # [!code ++] [!code focus]
+      - lambda: |- # [!code ++] [!code focus]
+          ESP_LOGD("main", "External Button Event %s triggered.", event_type.c_str()); # [!code ++] [!code focus]
+```
+:::
 
 ## Use I²C Sensors
 If you want to add sensors via the I²C bus, you can use the two available GPIO pins and add the I²C component to your configuration. You can then attach your sensors to these two I²C GPIO pins.
 
-```yaml
+::: code-group
+```yaml [Doorman up to rev. 1.5]
 <!--@include: minimal.example.yaml-->
 
 i2c: # [!code ++] [!code focus]
@@ -69,6 +81,16 @@ i2c: # [!code ++] [!code focus]
   scan: true # [!code ++] [!code focus]
   id: i2c_bus # [!code ++] [!code focus]
 ```
+```yaml [Doorman rev. 1.6 and newer]
+<!--@include: minimal.example.yaml-->
+
+i2c: # [!code ++] [!code focus]
+  sda: GPIO40 # [!code ++] [!code focus]
+  scl: GPIO41 # [!code ++] [!code focus]
+  scan: true # [!code ++] [!code focus]
+  id: i2c_bus # [!code ++] [!code focus]
+```
+:::
 
 ## Create Your Own Doorbell Pattern
 If you want to create a custom doorbell pattern, you can easily extend the existing doorbell entities. For more information about patterns, refer to the [ESPHome Docs](https://esphome.io/components/binary_sensor/index.html#on-multi-click).

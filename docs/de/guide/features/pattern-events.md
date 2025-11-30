@@ -31,14 +31,14 @@ description: "Öffne die Eingangstür, nachdem die Eingangsklingel zweimal gedr�
 trigger:
   - platform: state
     entity_id:
-      - event.doorman_s3_entrance_doorbell
+      - event.tc_bus_indoor_station_entrance_doorbell
     attribute: event_type
     to: double
 condition: []
 action:
   - service: lock.unlock
     target:
-        entity_id: lock.doorman_s3_entrance_door
+        entity_id: lock.tc_bus_entrance_door
 mode: single
 ```
 :::
@@ -60,7 +60,7 @@ description: "Schalte den Ring-To-Open-Modus um, wenn du schnell dreimal den Tel
 trigger:
   - platform: state
     entity_id:
-      - event.doorman_s3_phone_pick_up
+      - event.tc_bus_indoor_station_phone_pick_up
     attribute: event_type
     to: triple
 condition: []
@@ -69,7 +69,7 @@ action:
     metadata: {}
     data: {}
     target:
-        entity_id: switch.doorman_s3_rto_entrance_door
+        entity_id: switch.tc_bus_indoor_station_rto_entrance_door
 mode: single
 ```
 :::

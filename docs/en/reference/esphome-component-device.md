@@ -442,7 +442,7 @@ Here are the available setting types you can use to update the settings of your 
 
 ## Model Setting Availability
 In general, **all listed models** are supported.
-However, some support configuration directly via Doorman, while others still require verification.
+However, some support configuration directly via Doorman, while others don't.
 
 ### Indoor Stations
 Below is a list of available settings for specific indoor station models:

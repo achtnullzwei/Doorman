@@ -3,7 +3,7 @@
 Diese Seite bietet dir alle Informationen, die du brauchst, um dein Doorman-Gerät mit Apple HomeKit einzurichten und zu steuern.
 
 ## Einschränkungen
-Die HomeKit-Integration unterstützt derzeit nur die wichtigsten und grundlegendsten Funktionen deines Doormans. Erweiterte Einstellungen und weniger häufig genutzte Funktionen stehen über HomeKit nicht zur Verfügung und müssen weiterhin über Home Assistant oder die Weboberfläche gesteuert werden.
+Die HomeKit-Integration unterstützt derzeit nur die wichtigsten und grundlegendsten Funktionen deines Doormans. Erweiterte Einstellungen und weniger häufig genutzte Funktionen stehen über HomeKit nicht zur Verfügung und müssen weiterhin über die Weboberfläche gesteuert werden.
 
 ### Unterstützte Entitäten
 - **Ereignis:** Entrance Doorbell

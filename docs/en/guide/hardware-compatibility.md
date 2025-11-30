@@ -3,6 +3,10 @@ If your [TCS](https://www.tcsag.de/), [Koch](https://www.kochag.ch/) or [Scantro
 
 Some rebranded [Niko](https://www.niko.eu/) and older [Jung](https://www.jung-group.com/) indoor stations, which are counterparts to the TCS and Koch models, may also be compatible.
 
+:::warning TCS:IP
+The TCS:IP series is not supported! Please make sure your system is a bus-system.
+:::
+
 :::danger READ - BEFORE YOU ORDER
 Since this product is the result of reverse engineering, there is no guarantee that your indoor station will work without testing it yourself.
 
