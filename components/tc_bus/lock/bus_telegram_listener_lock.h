@@ -10,8 +10,11 @@ namespace esphome
         class BusTelegramListenerLock final : public lock::Lock, public TCBusLockListener, public Parented<TCBusComponent>
         {
             public:
+                void setup() override;
+                
                 void unlock(uint32_t *timer, uint16_t auto_lock) override;
                 void lock(uint32_t *timer) override;
+                void open() override;
 
                 void control(const esphome::lock::LockCall &call) override;
 

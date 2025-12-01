@@ -63,6 +63,8 @@ async def to_code(config):
     var = cg.new_Pvariable(config[CONF_ID])
     await lock.register_lock(var, config)
 
+    cg.add(var.traits.set_supports_open(True))
+
     if CONF_ADDRESS in config:
         telegram_address = await cg.templatable(config[CONF_ADDRESS], [], cg.uint8)
         cg.add(var.set_address(telegram_address))

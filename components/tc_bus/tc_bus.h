@@ -87,10 +87,12 @@ namespace esphome
                 template<typename T> void set_address(T address) { this->address_ = address; }
                 void set_auto_lock(uint16_t auto_lock) { this->auto_lock_ = auto_lock; }
 
+                virtual void setup() {};
                 virtual void control(const lock::LockCall& call) {};
 
                 virtual void unlock(uint32_t *timer, uint16_t auto_lock) {};
                 virtual void lock(uint32_t *timer) {};
+                virtual void open() {};
 
                 uint32_t timer_;
                 uint16_t auto_lock_;

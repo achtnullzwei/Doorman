@@ -4,6 +4,11 @@ namespace esphome
 {
     namespace tc_bus
     {
+        void BusTelegramListenerLock::setup()
+        {
+            ESP_LOGCONFIG(TAG, "Running setup");
+        }
+
         // lock & unlock called by telegram receiver function
         void BusTelegramListenerLock::unlock(uint32_t *timer, uint16_t auto_lock)
         {
@@ -19,9 +24,16 @@ namespace esphome
             this->lock_callback_.call();
         }
 
-        void BusTelegramListenerLock::control(const esphome::lock::LockCall &call)
+        void BusTelegramListenerLock::open()
         {
-            if (call.get_state() == esphome::lock::LOCK_STATE_UNLOCKED)
+            auto call = this->make_call();
+            call.set_state(lock::LOCK_STATE_UNLOCKED);
+            this->control(call);
+        }
+
+        void BusTelegramListenerLock::control(const lock::LockCall &call)
+        {
+            if (call.get_state() == lock::LOCK_STATE_UNLOCKED)
             {
                 this->before_unlock_callback_.call();
 
