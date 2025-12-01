@@ -200,6 +200,15 @@ text_sensor:
       sorting_group_id: sorting_group_setup_status
       sorting_weight: 5
 
+# Update setup state on changes
+number:
+  - id: !extend entrance_door_station_address
+    on_value:
+      - script.execute: update_setup_sensors
+  - id: !extend second_entrance_door_station_address
+    on_value:
+      - script.execute: update_setup_sensors
+
 
 # Extend TC:BUS Component
 tc_bus_device:

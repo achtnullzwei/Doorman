@@ -176,6 +176,8 @@ number:
     optimistic: true
     disabled_by_default: true
     entity_category: CONFIG
+    on_value:
+      - script.execute: set_unused_entities_internal
     web_server:
       sorting_group_id: sorting_group_settings
       sorting_weight: -99
