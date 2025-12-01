@@ -196,8 +196,6 @@ Sieh dir das folgende YAML-Beispiel zur Orientierung an:
 substitutions:
   name: "doorman-s3"
   friendly_name: "Doorman S3"
-
-  log_level: "INFO"
   
   # Required for "External Components"
   branch: "master"

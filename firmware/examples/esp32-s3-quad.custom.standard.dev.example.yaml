@@ -5,7 +5,6 @@
 substitutions:
   name: "doorman-s3"
   friendly_name: "Doorman S3"
-  # log_level: "ERROR"
   # led_pin: "GPIO1"
   # rgb_led_pin: "GPIO2"
   # relay_pin: "GPIO42"

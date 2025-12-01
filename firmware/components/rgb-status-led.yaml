@@ -15,6 +15,6 @@ light:
     rmt_symbols: 144
     gamma_correct: 1
     default_transition_length: 1s
-    web_server:
-      sorting_group_id: sorting_group_system
-      sorting_weight: -8
+    #web_server:
+    #  sorting_group_id: sorting_group_system
+    #  sorting_weight: 1

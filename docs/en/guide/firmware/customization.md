@@ -195,8 +195,6 @@ Check out the example YAML configuration below for guidance:
 substitutions:
   name: "doorman-s3"
   friendly_name: "Doorman S3"
-
-  log_level: "INFO"
   
   # Required for "External Components"
   branch: "master"

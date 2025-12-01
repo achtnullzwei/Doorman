@@ -1,16 +1,13 @@
 # Debug Utilities Addon
 
-substitutions:
-  log_level: "VERBOSE"
-
 esphome:
   devices:
     - id: tc_bus_debug
       name: "TC:BUS Debug Tools"
 
 logger:
+  level: VERBOSE
   initial_level: DEBUG
-  runtime_tag_levels: true
 
 remote_receiver:
   dump: raw
@@ -43,6 +40,13 @@ globals:
 
 
 select:
+  - id: !extend esphome_logger_level
+    options:
+      - "Configuration"
+      - "Debug"
+      - "Verbose"
+    initial_option: "Debug"
+
   - platform: template
     id: esphome_logger_level_tc_bus
     device_id: tc_bus_debug

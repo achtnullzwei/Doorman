@@ -119,7 +119,6 @@ def generate_example_yaml(host, api_variant, firmware, branch):
         'substitutions:',
         f'  name: "{device_name}"',
         f'  friendly_name: "{device_friendly_name}"',
-        '  # log_level: "ERROR"',
         '  # led_pin: "GPIO1"',
         '  # rgb_led_pin: "GPIO2"',
         '  # relay_pin: "GPIO42"',
