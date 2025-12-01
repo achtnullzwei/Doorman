@@ -16,8 +16,24 @@ external_components:
 
 web_server:
   sorting_groups:
-    - id: sorting_group_nuki_settings
-      name: "Settings - Nuki Lock"
+    - id: sorting_group_nuki_settings_general
+      name: "Settings - Nuki Lock - General"
+      sorting_weight: -65
+
+    - id: sorting_group_nuki_settings_button_led
+      name: "Settings - Nuki Lock - Button & LED"
+      sorting_weight: -64
+
+    - id: sorting_group_nuki_settings_calibration
+      name: "Settings - Nuki Lock - Calibration"
+      sorting_weight: -66
+
+    - id: sorting_group_nuki_settings_fob
+      name: "Settings - Nuki Lock - Fob Actions"
+      sorting_weight: -62
+
+    - id: sorting_group_nuki_settings_night_mode
+      name: "Settings - Nuki Lock - Night Mode"
       sorting_weight: -61
 
     - id: sorting_group_nuki_bridge_settings
@@ -37,8 +53,7 @@ event:
             - lambda: !lambda 'return event_type.c_str() == "long_press";'
           then:
             - if:
-                condition:
-                  nuki_lock.paired:
+                condition: nuki_lock.paired
                 then:
                   - nuki_lock.unpair:
                       id: apartment_door
@@ -169,6 +184,16 @@ lock:
         sorting_group_id: sorting_group_nuki
         sorting_weight: 8
 
+    # General
+    advertising_mode:
+      id: nuki_advertising_mode
+      device_id: nuki_smart_lock
+      name: "Advertising Mode"
+      disabled_by_default: true
+      web_server:
+        sorting_group_id: sorting_group_nuki_settings_general
+        sorting_weight: 100
+
     # Button & LED
     pairing_enabled:
       id: nuki_button_pairing_enabled
@@ -176,7 +201,7 @@ lock:
       name: "Button: Bluetooth Pairing"
       disabled_by_default: true
       web_server:
-        sorting_group_id: sorting_group_nuki_settings
+        sorting_group_id: sorting_group_nuki_settings_button_led
         sorting_weight: 10
 
     button_enabled:
@@ -185,7 +210,7 @@ lock:
       name: "Button: Locking operations"
       disabled_by_default: true
       web_server:
-        sorting_group_id: sorting_group_nuki_settings
+        sorting_group_id: sorting_group_nuki_settings_button_led
         sorting_weight: 11
 
     single_buton_press_action:
@@ -194,7 +219,7 @@ lock:
       name: "Button: Single Press Action"
       disabled_by_default: true
       web_server:
-        sorting_group_id: sorting_group_nuki_settings
+        sorting_group_id: sorting_group_nuki_settings_button_led
         sorting_weight: 12
 
     double_buton_press_action:
@@ -203,7 +228,7 @@ lock:
       name: "Button: Double Press Action"
       disabled_by_default: true
       web_server:
-        sorting_group_id: sorting_group_nuki_settings
+        sorting_group_id: sorting_group_nuki_settings_button_led
         sorting_weight: 13
 
     led_brightness:
@@ -213,7 +238,7 @@ lock:
       disabled_by_default: true
       mode: slider
       web_server:
-        sorting_group_id: sorting_group_nuki_settings
+        sorting_group_id: sorting_group_nuki_settings_button_led
         sorting_weight: 14
 
     led_enabled:
@@ -222,7 +247,7 @@ lock:
       name: "LED: Signal"
       disabled_by_default: true
       web_server:
-        sorting_group_id: sorting_group_nuki_settings
+        sorting_group_id: sorting_group_nuki_settings_button_led
         sorting_weight: 15
 
     # Night Mode
@@ -232,7 +257,7 @@ lock:
       name: "Night Mode"
       disabled_by_default: true
       web_server:
-        sorting_group_id: sorting_group_nuki_settings
+        sorting_group_id: sorting_group_nuki_settings_night_mode
         sorting_weight: 40
 
     night_mode_auto_lock_enabled:
@@ -241,7 +266,7 @@ lock:
       name: "Night Mode: Auto Lock"
       disabled_by_default: true
       web_server:
-        sorting_group_id: sorting_group_nuki_settings
+        sorting_group_id: sorting_group_nuki_settings_night_mode
         sorting_weight: 41
 
     night_mode_auto_unlock_disabled:
@@ -250,7 +275,7 @@ lock:
       name: "Night Mode: Reject Auto Unlock"
       disabled_by_default: true
       web_server:
-        sorting_group_id: sorting_group_nuki_settings
+        sorting_group_id: sorting_group_nuki_settings_night_mode
         sorting_weight: 42
 
     night_mode_immediate_lock_on_start_enabled:
@@ -259,7 +284,7 @@ lock:
       name: "Night Mode: Lock at Start Time"
       disabled_by_default: true
       web_server:
-        sorting_group_id: sorting_group_nuki_settings
+        sorting_group_id: sorting_group_nuki_settings_night_mode
         sorting_weight: 43
 
     # Fob Actions
@@ -269,7 +294,7 @@ lock:
       name: "Fob: Action 1"
       disabled_by_default: true
       web_server:
-        sorting_group_id: sorting_group_nuki_settings
+        sorting_group_id: sorting_group_nuki_settings_fob
         sorting_weight: 50
 
     fob_action_2:
@@ -278,7 +303,7 @@ lock:
       name: "Fob: Action 2"
       disabled_by_default: true
       web_server:
-        sorting_group_id: sorting_group_nuki_settings
+        sorting_group_id: sorting_group_nuki_settings_fob
         sorting_weight: 51
 
     fob_action_3:
@@ -287,7 +312,7 @@ lock:
       name: "Fob: Action 3"
       disabled_by_default: true
       web_server:
-        sorting_group_id: sorting_group_nuki_settings
+        sorting_group_id: sorting_group_nuki_settings_fob
         sorting_weight: 52
 
     # Auto Lock
@@ -297,7 +322,7 @@ lock:
       name: "Auto Lock"
       disabled_by_default: true
       web_server:
-        sorting_group_id: sorting_group_nuki_settings
+        sorting_group_id: sorting_group_nuki_settings_general
         sorting_weight: 60
 
     auto_lock_timeout:
@@ -307,7 +332,7 @@ lock:
       disabled_by_default: true
       mode: slider
       web_server:
-        sorting_group_id: sorting_group_nuki_settings
+        sorting_group_id: sorting_group_nuki_settings_general
         sorting_weight: 61
 
     immediate_auto_lock_enabled:
@@ -316,7 +341,7 @@ lock:
       name: "Auto Lock: Immediately"
       disabled_by_default: true
       web_server:
-        sorting_group_id: sorting_group_nuki_settings
+        sorting_group_id: sorting_group_nuki_settings_general
         sorting_weight: 62
 
     auto_unlock_disabled:
@@ -325,7 +350,7 @@ lock:
       name: "Auto Unlock: Disable"
       disabled_by_default: true
       web_server:
-        sorting_group_id: sorting_group_nuki_settings
+        sorting_group_id: sorting_group_nuki_settings_general
         sorting_weight: 63
 
     # Advanced Lock Calibration
@@ -335,7 +360,7 @@ lock:
       name: "Auto unlatch"
       disabled_by_default: true
       web_server:
-        sorting_group_id: sorting_group_nuki_settings
+        sorting_group_id: sorting_group_nuki_settings_calibration
         sorting_weight: 90
 
     unlatch_duration:
@@ -345,7 +370,7 @@ lock:
       disabled_by_default: true
       mode: slider
       web_server:
-        sorting_group_id: sorting_group_nuki_settings
+        sorting_group_id: sorting_group_nuki_settings_calibration
         sorting_weight: 91
 
     detached_cylinder_enabled:
@@ -354,7 +379,7 @@ lock:
       name: "Detached Cylinder"
       disabled_by_default: true
       web_server:
-        sorting_group_id: sorting_group_nuki_settings
+        sorting_group_id: sorting_group_nuki_settings_calibration
         sorting_weight: 92
 
     single_lock_enabled:
@@ -363,7 +388,7 @@ lock:
       name: "Single Lock"
       disabled_by_default: true
       web_server:
-        sorting_group_id: sorting_group_nuki_settings
+        sorting_group_id: sorting_group_nuki_settings_calibration
         sorting_weight: 93
 
     unlocked_position_offset:
@@ -373,7 +398,7 @@ lock:
       disabled_by_default: true
       mode: slider
       web_server:
-        sorting_group_id: sorting_group_nuki_settings
+        sorting_group_id: sorting_group_nuki_settings_calibration
         sorting_weight: 94
 
     single_locked_position_offset:
@@ -383,7 +408,7 @@ lock:
       disabled_by_default: true
       mode: slider
       web_server:
-        sorting_group_id: sorting_group_nuki_settings
+        sorting_group_id: sorting_group_nuki_settings_calibration
         sorting_weight: 95
 
     locked_position_offset:
@@ -393,7 +418,7 @@ lock:
       disabled_by_default: true
       mode: slider
       web_server:
-        sorting_group_id: sorting_group_nuki_settings
+        sorting_group_id: sorting_group_nuki_settings_calibration
         sorting_weight: 96
 
     unlocked_to_locked_transition_offset:
@@ -403,7 +428,7 @@ lock:
       disabled_by_default: true
       mode: slider
       web_server:
-        sorting_group_id: sorting_group_nuki_settings
+        sorting_group_id: sorting_group_nuki_settings_calibration
         sorting_weight: 97
 
     request_calibration:
@@ -412,18 +437,8 @@ lock:
       name: "Request Calibration"
       disabled_by_default: true
       web_server:
-        sorting_group_id: sorting_group_nuki_settings
+        sorting_group_id: sorting_group_nuki_settings_calibration
         sorting_weight: 98
-
-    # Other
-    advertising_mode:
-      id: nuki_advertising_mode
-      device_id: nuki_smart_lock
-      name: "Advertising Mode"
-      disabled_by_default: true
-      web_server:
-        sorting_group_id: sorting_group_nuki_settings
-        sorting_weight: 100
 
     # Bridge Settings
     paired:

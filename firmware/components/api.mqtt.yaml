@@ -225,8 +225,7 @@ script:
 
       - logger.log: "Wait for MQTT connection..."
       - wait_until:
-          condition:
-            mqtt.connected:
+          condition: mqtt.connected
 
       - logger.log: "MQTT connected!"
       - light.turn_on:

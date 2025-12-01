@@ -6,16 +6,12 @@ script:
       # WiFi already connected
       - logger.log: "LED: Waiting for HomeKit"
       - delay: 2s
-      - script.execute: homekit_connect
 
-  - id: homekit_connect
-    mode: restart
-    then:
       # Check if is already paired with HomeKit
       - if:
-          condition:
-             - homekit.paired:
+          condition: homekit.paired
           then:
+            - logger.log: "LED: Wait for HomeKit connection..."
             # Regular blue pulse while connecting
             - light.turn_on:
                 id: doorman_rgb_status_led
@@ -28,18 +24,15 @@ script:
             - light.turn_on:
                 id: doorman_rgb_status_led
                 effect: error_api
-            - logger.log: "Wait for HomeKit pairing..."
+            - logger.log: "LED: Wait for HomeKit pairing..."
             - wait_until:
-                condition:
-                  homekit.paired:
-
-      - logger.log: "Wait for HomeKit connection..."
-
+                condition: homekit.paired
+            - logger.log: "LED: Paired, wait for HomeKit connection..."
+            
       - wait_until:
-          condition:
-            homekit.connected:
+          condition: homekit.connected
 
-      - logger.log: "HomeKit connected!"
+      - logger.log: "LED: HomeKit connected!"
 
       - light.turn_on:
           id: doorman_rgb_status_led
