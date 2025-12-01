@@ -6,7 +6,7 @@ switch:
     device_id: tc_bus_is
     name: Setup Mode
     icon: mdi:account-cog
-    restore_mode: RESTORE_DEFAULT_ON
+    restore_mode: RESTORE_DEFAULT_OFF
     entity_category: CONFIG
     optimistic: true
     on_turn_on:
