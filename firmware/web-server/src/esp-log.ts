@@ -171,7 +171,7 @@ export class DebugLog extends LitElement {
           color: #888888;
         }
         .d {
-          color: #00dddd;
+          color: #9269fe;
         }
         .c {
           color: magenta;
@@ -193,7 +193,7 @@ export class DebugLog extends LitElement {
           color: #cccc00;
         }
         .logs[color-scheme="dark"] .d {
-          color: #00aaaa;
+          color: #9269fe;
         }
         .logs {
           overflow-x: auto;
