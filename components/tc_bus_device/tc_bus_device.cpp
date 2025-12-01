@@ -374,19 +374,44 @@ namespace esphome
         {
             if(this->device_group_ == DEVICE_GROUP_INDOOR_STATION)
             {
-                ESP_LOGI(TAG, "Device Settings:");
+                ESP_LOGI(TAG, "Indoor Station Settings:");
 
-                ESP_LOGI(TAG, "  Ringtone volume: %i", get_setting(SETTING_VOLUME_RINGTONE));
-                ESP_LOGI(TAG, "  Handset volume (Door Call): %i", get_setting(SETTING_VOLUME_HANDSET_DOOR_CALL));
-                ESP_LOGI(TAG, "  Handset volume (Internal Call): %i", get_setting(SETTING_VOLUME_HANDSET_INTERNAL_CALL));
-
-                ESP_LOGI(TAG, "  Entrance Door Call Ringtone: %i", get_setting(SETTING_RINGTONE_ENTRANCE_DOOR_CALL));
-                ESP_LOGI(TAG, "  Second Entrance Door Call Ringtone: %i", get_setting(SETTING_RINGTONE_SECOND_ENTRANCE_DOOR_CALL));
-                ESP_LOGI(TAG, "  Floor Call Ringtone: %i", get_setting(SETTING_RINGTONE_FLOOR_CALL));
-                ESP_LOGI(TAG, "  Internal Call Ringtone: %i", get_setting(SETTING_RINGTONE_INTERNAL_CALL));
-
-                ESP_LOGI(TAG, "  Address Divider (AS): %i", get_setting(SETTING_AS_ADDRESS_DIVIDER));
-                ESP_LOGI(TAG, "  Address Divider (VAS): %i", get_setting(SETTING_VAS_ADDRESS_DIVIDER));
+                if(supports_setting(SETTING_VOLUME_RINGTONE))
+                {
+                    ESP_LOGI(TAG, "  Ringtone volume: %i", get_setting(SETTING_VOLUME_RINGTONE));
+                }
+                if(supports_setting(SETTING_VOLUME_HANDSET_DOOR_CALL))
+                {
+                    ESP_LOGI(TAG, "  Handset volume (Door Call): %i", get_setting(SETTING_VOLUME_HANDSET_DOOR_CALL));
+                }
+                if(supports_setting(SETTING_VOLUME_HANDSET_INTERNAL_CALL))
+                {
+                    ESP_LOGI(TAG, "  Handset volume (Internal Call): %i", get_setting(SETTING_VOLUME_HANDSET_INTERNAL_CALL));
+                }
+                if(supports_setting(SETTING_RINGTONE_ENTRANCE_DOOR_CALL))
+                {
+                    ESP_LOGI(TAG, "  Entrance Door Call Ringtone: %i", get_setting(SETTING_RINGTONE_ENTRANCE_DOOR_CALL));
+                }
+                if(supports_setting(SETTING_RINGTONE_SECOND_ENTRANCE_DOOR_CALL))
+                {
+                    ESP_LOGI(TAG, "  Second Entrance Door Call Ringtone: %i", get_setting(SETTING_RINGTONE_SECOND_ENTRANCE_DOOR_CALL));
+                }
+                if(supports_setting(SETTING_RINGTONE_FLOOR_CALL))
+                {
+                    ESP_LOGI(TAG, "  Floor Call Ringtone: %i", get_setting(SETTING_RINGTONE_FLOOR_CALL));
+                }
+                if(supports_setting(SETTING_RINGTONE_INTERNAL_CALL))
+                {
+                    ESP_LOGI(TAG, "  Internal Call Ringtone: %i", get_setting(SETTING_RINGTONE_INTERNAL_CALL));
+                }
+                if(supports_setting(SETTING_AS_ADDRESS_DIVIDER))
+                {
+                    ESP_LOGI(TAG, "  Address Divider (AS): %i", get_setting(SETTING_AS_ADDRESS_DIVIDER));
+                }
+                if(supports_setting(SETTING_VAS_ADDRESS_DIVIDER))
+                {
+                    ESP_LOGI(TAG, "  Address Divider (VAS): %i", get_setting(SETTING_VAS_ADDRESS_DIVIDER));
+                }
 
                 #ifdef USE_SELECT
                     if (this->ringtone_entrance_door_call_select_)
@@ -424,8 +449,16 @@ namespace esphome
             }
             else if(this->device_group_ == DEVICE_GROUP_OUTDOOR_STATION)
             {
-                ESP_LOGI(TAG, "  Address: %i", get_setting(SETTING_AS_ADDRESS));
-                ESP_LOGI(TAG, "  Address Lock: %s", YESNO(get_setting(SETTING_AS_ADDRESS_LOCK)));
+                ESP_LOGI(TAG, "Outdoor Station Settings:");
+
+                if(supports_setting(SETTING_AS_ADDRESS))
+                {
+                    ESP_LOGI(TAG, "  Address: %i", get_setting(SETTING_AS_ADDRESS));
+                }
+                if(supports_setting(SETTING_AS_ADDRESS_LOCK))
+                {
+                    ESP_LOGI(TAG, "  Address Lock: %s", YESNO(get_setting(SETTING_AS_ADDRESS_LOCK)));
+                }
 
                 uint8_t button_rows = get_setting(SETTING_BUTTON_ROWS);
                 uint8_t button_cols = 1;
@@ -458,32 +491,49 @@ namespace esphome
                         DoorbellButtonConfig btn = get_doorbell_button(row, col_param);
                         
                         if (button_cols > 1) {
-                            ESP_LOGI(TAG, "   Button [%i,%i]:", row, col);
+                            ESP_LOGI(TAG, "    Button [%i,%i]:", row, col);
                         } else {
-                            ESP_LOGI(TAG, "   Button %i:", row);
+                            ESP_LOGI(TAG, "    Button %i:", row);
                         }
                         
-                        ESP_LOGI(TAG, "     Primary Action: %x (%i)", btn.primary_action, btn.primary_payload);
-                        ESP_LOGI(TAG, "     Secondary Action: %x (%i)", btn.secondary_action, btn.secondary_payload);
+                        ESP_LOGI(TAG, "      Primary Action: %s", doorbell_button_action_to_string(btn.primary_action));
+                        if(btn.primary_action != DOORBELL_BUTTON_ACTION_NONE)
+                        {
+                            ESP_LOGI(TAG, "        Payload: %i", btn.primary_payload);
+                        }
+                        ESP_LOGI(TAG, "      Secondary Action: %s", doorbell_button_action_to_string(btn.secondary_action));
+                        if(btn.secondary_action != DOORBELL_BUTTON_ACTION_NONE)
+                        {
+                            ESP_LOGI(TAG, "        Payload: %i", btn.secondary_payload);
+                        }
                     }
                 }
 
-                ESP_LOGI(TAG, "  Talking requires door readiness: %s", YESNO(get_setting(SETTING_TALKING_REQUIRES_DOOR_READINESS)));
-
-                uint8_t door_opener_dur = get_setting(SETTING_DOOR_OPENER_DURATION);
-                ESP_LOGI(TAG, "  Door Opener Duration: %i sec.", door_opener_dur);
-
-                uint8_t calling_dur = get_setting(SETTING_CALLING_DURATION);
-                ESP_LOGI(TAG, "  Calling Duration: %f sec.", calling_dur * 0.5);
-
-                uint8_t door_readiness_dur = get_setting(SETTING_DOOR_READINESS_DURATION);
-                if(door_readiness_dur == 0)
+                if(supports_setting(SETTING_TALKING_REQUIRES_DOOR_READINESS))
                 {
-                    ESP_LOGI(TAG, "  Door Readiness Duration: Unlimited");
+                    ESP_LOGI(TAG, "  Talking requires door readiness: %s", YESNO(get_setting(SETTING_TALKING_REQUIRES_DOOR_READINESS)));
                 }
-                else
+                if(supports_setting(SETTING_DOOR_OPENER_DURATION))
                 {
-                    ESP_LOGI(TAG, "  Door Readiness Duration: %i sec.", door_readiness_dur * 8);
+                    uint8_t door_opener_dur = get_setting(SETTING_DOOR_OPENER_DURATION);
+                    ESP_LOGI(TAG, "  Door Opener Duration: %i sec.", door_opener_dur);
+                }
+                if(supports_setting(SETTING_CALLING_DURATION))
+                {
+                    uint8_t calling_dur = get_setting(SETTING_CALLING_DURATION);
+                    ESP_LOGI(TAG, "  Calling Duration: %f sec.", calling_dur * 0.5);
+                }
+                if(supports_setting(SETTING_DOOR_READINESS_DURATION))
+                {
+                    uint8_t door_readiness_dur = get_setting(SETTING_DOOR_READINESS_DURATION);
+                    if(door_readiness_dur == 0)
+                    {
+                        ESP_LOGI(TAG, "  Door Readiness Duration: Unlimited");
+                    }
+                    else
+                    {
+                        ESP_LOGI(TAG, "  Door Readiness Duration: %i sec.", door_readiness_dur * 8);
+                    }
                 }
             }
             else
