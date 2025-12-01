@@ -152,6 +152,11 @@ namespace esphome
             DOORBELL_BUTTON_ACTION_CONTROL_FUNCTION = 0x2,
         };
 
+        struct DoorbellButtonActionMapping {
+            DoorbellButtonAction action;
+            const char* name;
+        };
+
         struct DoorbellButtonConfig {
             static constexpr uint32_t DOORBELL_BUTTON_UNASSIGNED = 0xFFFFF;
 
@@ -196,6 +201,9 @@ namespace esphome
 
         const char* setting_type_to_string(SettingType type);
         SettingType string_to_setting_type(const char* str);
+
+        const char* doorbell_button_action_to_string(DoorbellButtonAction action);
+        DoorbellButtonAction string_to_doorbell_button_action(const char* str);
 
         SettingCellData getSettingCellData(SettingType setting, Model model);
         ModelData getModelData(Model model = MODEL_NONE);

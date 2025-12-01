@@ -117,7 +117,7 @@ button:
     on_press:
       - lambda: |-
           DoorbellButtonConfig button = id(tc_bus_outdoor_station)->get_doorbell_button(1);
-          ESP_LOGD("TAG", "Primary Action: %x", button.primary_action);
+          ESP_LOGD("TAG", "Primary Action: %s", doorbell_button_action_to_string(button.primary_action));
           ESP_LOGD("TAG", "Primary Payload: %x", button.primary_payload);
-          ESP_LOGD("TAG", "Secondary Action: %x", button.secondary_action);
+          ESP_LOGD("TAG", "Secondary Action: %s", doorbell_button_action_to_string(button.secondary_action));
           ESP_LOGD("TAG", "Secondary Payload: %x", button.secondary_payload);

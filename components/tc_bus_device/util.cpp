@@ -54,6 +54,39 @@ namespace esphome
             return "UNKNOWN";
         }
 
+        const DoorbellButtonActionMapping doorbell_button_action_mappings[] = {
+            {DOORBELL_BUTTON_ACTION_NONE, "NONE"},
+            {DOORBELL_BUTTON_ACTION_DOOR_CALL, "DOOR_CALL"},
+            {DOORBELL_BUTTON_ACTION_LIGHT, "LIGHT"},
+            {DOORBELL_BUTTON_ACTION_CONTROL_FUNCTION, "CONTROL_FUNCTION"},
+        };
+
+        DoorbellButtonAction string_to_doorbell_button_action(const char* str)
+        {
+            if (!str) return DOORBELL_BUTTON_ACTION_NONE;
+
+            for (const auto& mapping : doorbell_button_action_mappings) {
+                const char* a = str;
+                const char* b = mapping.name;
+                while (*a && *b) {
+                    if (toupper(*a) != toupper(*b)) break;
+                    ++a; ++b;
+                }
+                if (*a == '\0' && *b == '\0') {
+                    return mapping.action;
+                }
+            }
+            return DOORBELL_BUTTON_ACTION_NONE;
+        }
+
+        const char* doorbell_button_action_to_string(DoorbellButtonAction action)
+        {
+            for (const auto& mapping : doorbell_button_action_mappings) {
+                if (mapping.action == action) return mapping.name;
+            }
+            return "NONE";
+        }
+
         Model identifier_string_to_model(const uint8_t& device_group, const char* model_key, const uint8_t& hw_version, const uint32_t& fw_version)
         {
             if(device_group == 0 || device_group == 1)
