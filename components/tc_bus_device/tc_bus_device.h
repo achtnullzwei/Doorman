@@ -97,6 +97,8 @@ namespace esphome
             void set_force_long_door_opener(bool force_long_door_opener) { this->force_long_door_opener_ = force_long_door_opener; }
             void set_model(Model model, bool save = true);
 
+            float get_setup_priority() const override { return setup_priority::IO; }
+
             void setup() override;
             void dump_config() override;
             void loop() override;
