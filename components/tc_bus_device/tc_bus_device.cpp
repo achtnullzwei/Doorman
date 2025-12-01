@@ -182,6 +182,9 @@ namespace esphome
                             ESP_LOGD(TAG, "Reset running_flow_");
                             running_flow_ = false;
 
+                            ESP_LOGD(TAG, "Memory rading complete");
+                            ESP_LOG_BUFFER_HEX_LEVEL(TAG, memory_buffer_.data(), memory_buffer_.size(), ESP_LOG_DEBUG);
+
                             this->read_memory_complete_callback_.call(memory_buffer_);
 
                             this->publish_settings();
