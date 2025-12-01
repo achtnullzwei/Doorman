@@ -15,7 +15,9 @@ esphome:
   on_boot:
     - priority: 600.0
       then:
+        - script.execute: set_unused_entities_internal
         - script.execute: boot_component_init
+        # RGB status LED boot sequence
         - script.execute: boot_status_led
 
   devices:
@@ -51,15 +53,15 @@ web_server:
 
     - id: sorting_group_settings
       name: "Settings - TC:BUS General"
-      sorting_weight: -91
-
-    - id: sorting_group_settings_advanced
-      name: "Settings - Advanced"
       sorting_weight: -90
 
     - id: sorting_group_indoor_station_settings
       name: "Settings - TC:BUS Indoor Station"
       sorting_weight: -70
+
+    - id: sorting_group_settings_advanced
+      name: "Settings - Advanced"
+      sorting_weight: -69
 
     - id: sorting_group_system
       name: "Settings - System"
@@ -194,9 +196,7 @@ number:
     disabled_by_default: true
     entity_category: CONFIG
     on_value:
-      - lambda: |-
-          bool internal = (x == 63 || x == id(entrance_door_station_address).state);
-          id(second_entrance_door)->set_internal(internal);
+      - script.execute: set_unused_entities_internal
     web_server:
       sorting_group_id: sorting_group_settings
       sorting_weight: -98
@@ -798,7 +798,9 @@ script:
             - lambda: return id(relay_mode)->current_option() != "Standalone";
           then:
             - switch.turn_off: doorman_relay
-      
+
+  - id: set_unused_entities_internal
+    then:
       # Set second entrance door internal if not used
       - lambda: |-
           bool internal = id(second_entrance_door_station_address).state == 63 || id(second_entrance_door_station_address).state == id(entrance_door_station_address).state;

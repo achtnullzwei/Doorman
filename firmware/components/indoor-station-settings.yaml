@@ -39,7 +39,7 @@ select:
       entity_category: CONFIG
       #disabled_by_default: true
       on_value:
-        - script.execute: update_indoor_station_entity_availability
+        - script.execute: set_unused_entities_internal
       web_server:
         sorting_group_id: sorting_group_indoor_station_settings
         sorting_weight: -97
@@ -153,7 +153,6 @@ button:
 script:
   - id: !extend boot_component_init
     then:
-      - script.execute: update_indoor_station_entity_availability
       - if:
           condition:
             - lambda: return id(indoor_station_serial_number).state != 0 && id(indoor_station_model)->current_option() != "None";
@@ -161,7 +160,7 @@ script:
             - tc_bus_device.read_memory:
                 id: tc_bus_indoor_station
 
-  - id: update_indoor_station_entity_availability
+  - id: !extend set_unused_entities_internal
     then:
       - lambda: |-
           id(indoor_station_ringtone_entrance_door_call)->set_internal(id(tc_bus_indoor_station).supports_setting(SETTING_RINGTONE_ENTRANCE_DOOR_CALL));

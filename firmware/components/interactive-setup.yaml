@@ -278,6 +278,9 @@ tc_bus:
           - number.set:
               id: second_entrance_door_station_address
               value: !lambda "return x.address;"
+          - logger.log:
+              format: "The second door is now enabled! If any related entities are missing, restart Doorman to regenerate them."
+              level: WARN
           - script.execute: update_setup_sensors
 
 script:
@@ -293,7 +296,7 @@ script:
             - logger.log:
                 format: "Entering setup mode automatically because no Indoor Station serial number is set."
                 level: INFO
-                
+
   - id: update_setup_sensors
     then:
       - lambda: |-
