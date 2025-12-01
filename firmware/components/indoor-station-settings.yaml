@@ -1,16 +1,5 @@
 # Indoor Station Settings Addon
 
-esphome:
-  on_boot:
-    then:
-      - script.execute: update_indoor_station_entity_availability
-      - if:
-          condition:
-             - lambda: return id(indoor_station_serial_number).state != 0 && id(indoor_station_model)->current_option() != "None";
-          then:
-            - tc_bus_device.read_memory:
-                id: tc_bus_indoor_station
-
 # Extend TC:BUS Component
 tc_bus_device:
   - id: !extend tc_bus_indoor_station
@@ -162,6 +151,16 @@ button:
         sorting_weight: -95
 
 script:
+  - id: !extend boot_component_init
+    then:
+      - script.execute: update_indoor_station_entity_availability
+      - if:
+          condition:
+            - lambda: return id(indoor_station_serial_number).state != 0 && id(indoor_station_model)->current_option() != "None";
+          then:
+            - tc_bus_device.read_memory:
+                id: tc_bus_indoor_station
+
   - id: update_indoor_station_entity_availability
     then:
       - lambda: |-

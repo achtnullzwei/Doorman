@@ -1,21 +1,5 @@
 # API: MQTT
 
-esphome:
-  on_boot:
-    then:
-      - light.turn_on:
-          id: doorman_rgb_status_led
-          effect: pulse
-          red: 100%
-          green: 65%
-          blue: 0%
-
-      - wait_until:
-          condition:
-            wifi.connected:
-
-      - script.execute: mqtt_connect
-
 globals:
    - id: mqtt_connecting
      type: bool
@@ -195,6 +179,12 @@ tc_bus:
           root["serial_number"] = x.serial_number;
 
 script:
+  - id: !extend boot_status_led
+    then:
+      # WiFi already connected
+      - logger.log: "LED: Waiting for MQTT connection"
+      - script.execute: mqtt_connect
+
   - id: mqtt_connect
     mode: restart
     then:

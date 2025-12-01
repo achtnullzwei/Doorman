@@ -13,23 +13,21 @@ esphome:
     name: "AzonInc.Doorman Standard"
     version: "2025.11.0"
   on_boot:
-    priority: 600
-    then:
-      # Always turn off relay on boot if not used standalone
-      - if:
-          condition:
-            - lambda: return id(relay_mode)->current_option() != "Standalone";
-          then:
-            - switch.turn_off: doorman_relay
-      - lambda: |-
-          bool internal = id(second_entrance_door_station_address).state == 63 || id(second_entrance_door_station_address).state == id(entrance_door_station_address).state;
-          id(second_entrance_door)->set_internal(internal);
+    - priority: 600.0
+      then:
+        - script.execute: boot_component_init
+        - script.execute: boot_status_led
 
   devices:
     - id: tc_bus_general
       name: "TC:BUS"
     - id: tc_bus_is
       name: "TC:BUS Indoor Station"
+
+external_components:
+  - source: github://pr#12227
+    components: [wifi]
+    refresh: 10s
 
 # Enable logging
 # Prevent component warning spam
@@ -84,6 +82,7 @@ web_server:
       sorting_weight: -5
 
 wifi:
+  id: wifi_id
   ap:
     ssid: "${friendly_name} Setup"
     password: "Op3n-Sesame!"
@@ -689,6 +688,7 @@ select:
       then:
         - lambda: |-
             id(esphome_logger).set_log_level(i);
+    disabled_by_default: true
     web_server:
       sorting_group_id: sorting_group_system
       sorting_weight: 5
@@ -790,6 +790,23 @@ event:
       sorting_weight: 99
 
 script:
+  - id: boot_component_init
+    then:
+      # Always turn off relay on boot if not used standalone
+      - if:
+          condition:
+            - lambda: return id(relay_mode)->current_option() != "Standalone";
+          then:
+            - switch.turn_off: doorman_relay
+      
+      # Set second entrance door internal if not used
+      - lambda: |-
+          bool internal = id(second_entrance_door_station_address).state == 63 || id(second_entrance_door_station_address).state == id(entrance_door_station_address).state;
+          id(second_entrance_door)->set_internal(internal);
+          id(second_entrance_door_before_open_cmds)->set_internal(internal);
+          id(second_entrance_doorbell)->set_internal(internal);
+          id(second_entrance_doorbell_pattern)->set_internal(internal);
+
   - id: blink_status_led
     mode: restart
     then:
@@ -851,6 +868,39 @@ script:
                   }
               }
           }
+
+  - id: boot_status_led
+    then:
+      # Boot Status LED
+      - logger.log: "LED: Waiting for WiFi connection or provisioning"
+      - light.turn_on:
+          id: doorman_rgb_status_led
+          effect: pulse
+          red: 100%
+          green: 65%
+          blue: 0%
+      # Wait until wifi is connected or ap is active
+      - wait_until:
+          condition:
+            - lambda: return id(wifi_id).is_connected() || id(wifi_id).is_ap_active();
+      # Check if connected or AP active
+      - if:
+          condition: wifi.ap_active
+          then:
+            # AP active
+            - logger.log: "LED: Waiting for WiFi configuration (AP Mode)"
+            - light.turn_on:
+                id: doorman_rgb_status_led
+                effect: slow_pulse
+                red: 100%
+                green: 10%
+                blue: 0%
+            # Wait until AP is deactivated
+            - wait_until:
+                condition:
+                  - lambda: return id(wifi_id).is_ap_active() == false;
+      # WiFi connected
+      - logger.log: "LED: WiFi connected, waiting for API"
 
   - id: update_led
     then:

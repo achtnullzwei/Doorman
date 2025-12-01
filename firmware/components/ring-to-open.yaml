@@ -1,16 +1,5 @@
 # Ring To Open Addon
 
-esphome:
-  on_boot:
-    priority: 600
-    then:
-      - lambda: |-
-          bool internal = id(second_entrance_door_station_address).state == 63 || id(second_entrance_door_station_address).state == id(entrance_door_station_address).state;
-          id(rto_second_entrance_door)->set_internal(internal);
-          id(rto_second_entrance_door_delay)->set_internal(internal);
-          id(rto_second_entrance_door_timeout_mode)->set_internal(internal);
-          id(rto_second_entrance_door_pattern_condition)->set_internal(internal);
-
 web_server:
   sorting_groups:
     - id: sorting_group_rto_settings
@@ -703,6 +692,16 @@ select:
       sorting_weight: -90
 
 script:
+  - id: !extend boot_component_init
+    then:
+      # Set second entrance door entities to internal if not used
+      - lambda: |-
+          bool internal = id(second_entrance_door_station_address).state == 63 || id(second_entrance_door_station_address).state == id(entrance_door_station_address).state;
+          id(rto_second_entrance_door)->set_internal(internal);
+          id(rto_second_entrance_door_delay)->set_internal(internal);
+          id(rto_second_entrance_door_timeout_mode)->set_internal(internal);
+          id(rto_second_entrance_door_pattern_condition)->set_internal(internal);
+          
   - id: rto_entrance_door_timer
     mode: restart
     then:

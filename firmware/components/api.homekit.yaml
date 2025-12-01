@@ -1,23 +1,13 @@
 # API: HomeKit
-   
-esphome:
-  on_boot:
+
+script:
+  - id: !extend boot_status_led
     then:
-      - logger.log: "LED: Waiting for WiFi"
-      - light.turn_on:
-          id: doorman_rgb_status_led
-          effect: pulse
-          red: 100%
-          green: 65%
-          blue: 0%
-      - wait_until:
-          condition:
-            wifi.connected:
-      - logger.log: "LED: WiFi connected, waiting for HomeKit"
+      # WiFi already connected
+      - logger.log: "LED: Waiting for HomeKit"
       - delay: 2s
       - script.execute: homekit_connect
 
-script:
   - id: homekit_connect
     mode: restart
     then:

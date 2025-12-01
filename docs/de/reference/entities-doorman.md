@@ -56,6 +56,18 @@ If you configured WiFi using the captive portal, Improv Serial, or Improv BLE, t
 
 ## Selects
 
+### ESPHome Log Level <Badge type="tip" text="esphome_logger_level" /> <Badge type="info" text="Disabled by default" />
+Configure the ESPHome log level. Default log level is `INFO` for stable builds and `DEBUG` for dev builds.
+
+#### Modes:
+- **Disabled**
+- **Error**
+- **Warning**
+- **Info**
+- **Configuration** <Badge type="info" text="dev builds only" />
+- **Debug** <Badge type="info" text="dev builds only" />
+- **Verbose** <Badge type="info" text="dev builds only" />
+
 ### Relay Mode <Badge type="tip" text="relay_mode" /> <Badge type="info" text="Disabled by default" />
 Configure how the internal relay should be switched — either standalone or triggered when a telegram to open the entrance doors is received. For entrance doors, the relay is switched off again after 5 seconds (default).
 

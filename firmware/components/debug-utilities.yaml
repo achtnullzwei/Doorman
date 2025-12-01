@@ -45,7 +45,8 @@ select:
       - "Configuration"
       - "Debug"
       - "Verbose"
-    initial_option: "Debug"
+    initial_option: "Verbose"
+    disabled_by_default: false
 
   - platform: template
     id: esphome_logger_level_tc_bus
