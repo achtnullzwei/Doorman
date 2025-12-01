@@ -47,6 +47,13 @@ select:
       - "Verbose"
     initial_option: "Verbose"
     disabled_by_default: false
+    on_value:
+      - lambda: |-
+          if(i <= 3) {
+            id(esphome_logger).set_log_level("remote.raw", 0);
+          } else {
+            id(esphome_logger).set_log_level("remote.raw", i);
+          }
 
   - platform: template
     id: esphome_logger_level_tc_bus
@@ -66,10 +73,9 @@ select:
     restore_value: true
     entity_category: CONFIG
     on_value:
-      then:
-        - lambda: |-
-            id(esphome_logger).set_log_level("tc_bus", i);
-            id(esphome_logger).set_log_level("tc_bus_device", i);
+      - lambda: |-
+          id(esphome_logger).set_log_level("tc_bus", i);
+          id(esphome_logger).set_log_level("tc_bus_device", i);
     web_server:
       sorting_group_id: sorting_group_debug_tools
       sorting_weight: -5
