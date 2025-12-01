@@ -32,7 +32,6 @@ external_components:
     refresh: 10s
 
 # Enable logging
-# Prevent component warning spam
 logger:
   id: esphome_logger
   level: INFO
@@ -685,9 +684,8 @@ select:
     restore_value: true
     entity_category: CONFIG
     on_value:
-      then:
-        - lambda: |-
-            id(esphome_logger).set_log_level(i);
+      - lambda: |-
+          id(esphome_logger).set_log_level(i);
     disabled_by_default: true
     web_server:
       sorting_group_id: sorting_group_system
