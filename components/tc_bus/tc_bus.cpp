@@ -120,14 +120,29 @@ namespace esphome
                 {
                     this->cancel_timeout("wait_for_data_telegram");
 
-                    ESP_LOGI(TAG, "Received Data Telegram - Payload: 0x%08X | Is response: %s", telegram_data.payload, YESNO(telegram_data.is_response));
+                    ESP_LOGI(TAG,
+                        "Received Data Telegram:\n"
+                        "  Payload: 0x%08X\n"
+                        "  Response: %s",
+                        telegram_data.payload,
+                        YESNO(telegram_data.is_response));
 
                     ESP_LOGD(TAG, "Reset wait_for_data_telegram_");
                     this->wait_for_data_telegram_ = false;
                 }
                 else
                 {
-                    ESP_LOGI(TAG, "Received Telegram - Type: %s | Address: %i | Payload: 0x%X | Serial-Number: %i | Length: %i-bit | Is response: %s | Raw Data: 0x%08X | Hex Convert: %s", telegram_type_to_string(telegram_data.type), telegram_data.address, telegram_data.payload, telegram_data.serial_number, (telegram_data.is_long ? 32 : 16), YESNO(telegram_data.is_response), telegram_data.raw, telegram_data.hex);
+                    ESP_LOGI(TAG,
+                        "Received Telegram: %s (%i-bit, 0x%08X, %s)\n"
+                        "  Address: %i\n"
+                        "  Payload: 0x%X\n"
+                        "  Serial-Number: %i\n"
+                        "  Response: %s",
+                        telegram_type_to_string(telegram_data.type), (telegram_data.is_long ? 32 : 16), telegram_data.raw, telegram_data.hex, 
+                        telegram_data.address, 
+                        telegram_data.payload, 
+                        telegram_data.serial_number, 
+                        YESNO(telegram_data.is_response));
                 }
 
                 // Fire Callback
@@ -176,11 +191,27 @@ namespace esphome
                 // From transmitter
                 if(telegram_data.type == TELEGRAM_TYPE_DATA)
                 {
-                    ESP_LOGI(TAG, "Sending Data Telegram - Payload: 0x%08X | Is response: %s", telegram_data.payload, YESNO(telegram_data.is_response));
+                    ESP_LOGI(TAG,
+                        "Sending Data Telegram:\n"
+                        "  Payload: 0x%08X\n"
+                        "  Response: %s",
+                        telegram_data.payload,
+                        YESNO(telegram_data.is_response));
                 }
                 else
                 {
-                    ESP_LOGI(TAG, "Sending Telegram - Type: %s | Address: %i | Payload: 0x%X | Serial-Number: %i | Length: %i-bit | Is Response: %s | Raw Data: 0x%08X", telegram_type_to_string(telegram_data.type), telegram_data.address, telegram_data.payload, telegram_data.serial_number, (telegram_data.is_long ? 32 : 16), YESNO(telegram_data.is_response), telegram_data.raw);
+                    ESP_LOGI(TAG,
+                        "Sending Telegram: %s (%i-bit, 0x%08X, %s)\n"
+                        "  Address: %i\n"
+                        "  Payload: 0x%X\n"
+                        "  Serial-Number: %i\n"
+                        "  Response: %s",
+                        telegram_type_to_string(telegram_data.type), 
+                        (telegram_data.is_long ? 32 : 16), telegram_data.raw, telegram_data.hex, 
+                        telegram_data.address, 
+                        telegram_data.payload, 
+                        telegram_data.serial_number, 
+                        YESNO(telegram_data.is_response));
                 }
             }
 
