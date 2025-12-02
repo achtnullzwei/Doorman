@@ -6,7 +6,7 @@ esphome:
       name: "TC:BUS Debug Tools"
 
 logger:
-  level: VERBOSE
+  level: DEBUG
   initial_level: DEBUG
 
 remote_receiver:
@@ -44,8 +44,7 @@ select:
     options:
       - "Configuration"
       - "Debug"
-      - "Verbose"
-    initial_option: "Verbose"
+    initial_option: "Debug"
     disabled_by_default: false
     on_value:
       - lambda: |-
@@ -68,7 +67,6 @@ select:
       - "Info"
       - "Configuration"
       - "Debug"
-      - "Verbose"
     initial_option: "Debug"
     restore_value: true
     entity_category: CONFIG
