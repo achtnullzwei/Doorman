@@ -1,16 +1,26 @@
 # API: Home Assistant
 
 api:
+  # Allow to set key via HA
+  encryption:
   batch_delay: 0ms
   custom_services: true
   homeassistant_services: true
   actions:
     - action: send_tc_telegram_raw
       variables:
-        telegram: int
+        telegram: string
       then:
         - tc_bus.send:
-            telegram: !lambda 'return telegram;'
+            telegram: !lambda |-
+              size_t pos;
+              uint32_t value = std::stoul(telegram, &pos, 16);
+              if (pos != telegram.length()) {
+                  return 0;
+              }
+              return value;
+            is_long: !lambda |-
+              return telegram.length() == 8;
 
     - action: send_tc_telegram
       variables:

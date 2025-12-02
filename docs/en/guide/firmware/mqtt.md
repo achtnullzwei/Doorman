@@ -39,21 +39,16 @@ ON
 Certain special topics allow for advanced telegrams.
 
 ### Send a Bus Telegram (Hexadecimal)
-Here's an example of how to send a hexadecimal telegram (uint32) to the bus:
+Here's an example of how to send a hexadecimal telegram (16-bit/32-bit) to the bus:
 ::: code-group
 ``` [Topic]
-doorman-s3/send_tc_raw_telegram
+doorman-s3/send_tc_telegram/raw
 ```
-```json [Payload]
-{
-    "telegram": 0x1C30BA80
-}
+```text [16-Bit Text Payload]
+1100
 ```
-```json [Advanced Payload]
-{
-    "telegram": 0x00000680,
-    "is_long": true
-}
+```text [32-Bit Text Payload]
+1C30BA80
 ```
 :::
 
@@ -63,7 +58,7 @@ Here's an example of how to use the telegram builder to send a telegram to the b
 ``` [Topic]
 doorman-s3/send_tc_telegram
 ```
-```json [Payload]
+```json [JSON Payload]
 {
     "type": "open_door",
     "address": 0,
@@ -79,7 +74,7 @@ Here's an example of how to use the telegram builder to send a telegram to the b
 ``` [Topic]
 doorman-s3/send_tc_is_telegram
 ```
-```json [Payload]
+```json [JSON Payload]
 {
     "type": "open_door",
     "address": 0,

@@ -9,10 +9,6 @@ Discover practical examples for integrating and automating Doorman with Home Ass
 You can use Home Assistant actions (formerly known as services) to send telegrams on the bus.
 Either use the `telegram` to send raw telegrams or `type`, `address`, `payload` and `serial_number` to send telegrams via the telegram builder.
 
-::: tip
-Remember to include the leading `0x` when calling the action with the `telegram` property. If you omit it, you'll need to convert the HEX telegram to a decimal number first.
-:::
-
 ::: code-group
 ```yaml [Bus Telegram Builder]
 service: esphome.doorman_s3_send_tc_telegram
@@ -32,7 +28,7 @@ data:
 ```yaml [HEX Telegrams]
 service: esphome.doorman_s3_send_tc_telegram_raw
 data:
-  telegram: 0x11E24080
+  telegram: "11E24080"
 ```
 :::
 

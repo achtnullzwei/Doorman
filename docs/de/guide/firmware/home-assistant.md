@@ -9,10 +9,6 @@ Entdecke praktische Beispiele zur Integration und Automatisierung von Doorman mi
 Mit Home Assistant kannst du Aktionen nutzen, um Telegramme über den Bus zu senden.
 Benutze entweder `telegram` für hexadezimale Befehle oder `type`, `address`, `payload` und `serial_number` um Befehle über den Telegram Builder zu senden.
 
-::: tip
-Denk an das führende `0x` beim Senden eines Befehls mit der `telegram` Eigenschaft. Wenn du es weglässt, musst du den HEX-Befehl zuerst in eine Dezimalzahl umwandeln.
-:::
-
 ::: code-group
 ```yaml [Bus Telegram Builder]
 service: esphome.doorman_s3_send_tc_telegram
@@ -32,7 +28,7 @@ data:
 ```yaml [HEX Telegramme]
 service: esphome.doorman_s3_send_tc_telegram_raw
 data:
-  telegram: 0x3a001100
+  telegram: "11E24080"
 ```
 :::
 

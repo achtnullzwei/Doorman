@@ -108,21 +108,21 @@ mqtt:
   discovery: false
   discover_ip: false
   topic_prefix: ${name}
-  on_json_message:
-    - topic: ${name}/send_tc_telegram_raw
+  on_message:
+    - topic: ${name}/send_tc_telegram/raw
       then:
         - tc_bus.send:
             telegram: !lambda |-
-              int telegram = 0;
-              if (x.containsKey("telegram"))
-                telegram = x["telegram"];
-              return telegram;
+              size_t pos;
+              uint32_t value = std::stoul(x, &pos, 16);
+              if (pos != x.length()) {
+                  return 0;
+              }
+              return value;
             is_long: !lambda |-
-              bool is_long = false;
-              if (x.containsKey("is_long"))
-                is_long = x["is_long"];
-              return is_long;
-              
+              return x.length() == 8;
+
+  on_json_message:
     - topic: ${name}/send_tc_telegram
       then:
         - tc_bus.send:
