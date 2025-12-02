@@ -30,6 +30,9 @@ external_components:
   - source: github://pr#12227
     components: [wifi]
     refresh: 10s
+  - source: github://pr#12247
+    components: [web_server_idf]
+    refresh: 10s
 
 # Enable logging
 logger:
