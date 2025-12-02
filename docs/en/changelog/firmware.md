@@ -1,7 +1,7 @@
 # Release Notes & Changelog
 Welcome to the latest updates! Here's a breakdown of all the **new features**, **improvements**, and important **changes** you need to know. Be sure to check out the **Breaking Changes** section for any actions needed to keep everything running smoothly.
 
-## 2025.11.0 <Badge type="warning" text="Next" />
+## 2025.12.0 <Badge type="tip" text="Stable" />
 ### 🚨 IMPORTANT
 Please carefully review the breaking changes listed below before updating!  
 This release **will impact your current setup** and **requires** you to go through the **setup process again**.
@@ -81,6 +81,12 @@ This release **will impact your current setup** and **requires** you to go throu
 - **Added Support for Acknowledgment Messages**  
    Acknowledgment messages are now properly handled, following additional investigation into previously unsupported cases.
 
+- **Added Support for next gen Nuki smart locks**  
+   Nuki Smart Locks Ultra / Go / 5th gen are now supported by the Nuki component.
+
+- **Dynamic encryption key**  
+  Allow to set api encryption key via Home Assistant.
+
 ### 📝 Other Updates
 - **Firmware Configuration Assistant**  
    The new assistant makes flashing the firmware easier than ever — not much technical experience required.
@@ -99,6 +105,22 @@ This release **will impact your current setup** and **requires** you to go throu
   The `command` terminology has been replaced with `telegram`. If you're using the `tc_bus.send` action, you must update your configuration accordingly.  
   Additionally, the `CommandData` class has been renamed to `TelegramData`.  
   For full migration details, please refer to the updated ESPHome component documentation.
+
+- **Adjusted Services**  
+   We've made changes to the Home Assistant services to make them easier to use:
+   - **Old Format**:
+     ```yaml
+     service: esphome.doorman_s3_send_tc_telegram_raw
+     data:
+       telegram: 0x1C30BA41
+     ```
+   - **New Format**:
+     ```yaml
+     service: esphome.doorman_s3_send_tc_telegram_raw
+     data:
+       telegram: "1C30BA41"
+     ```
+     **Why it's awesome**: The raw commands are now string based which is easier to use in automations.
 
 - **Transition to RMT Components**  
    The `TC:BUS` component no longer supports the `rx_pin` and `tx_pin` options.  
@@ -126,7 +148,7 @@ This release **will impact your current setup** and **requires** you to go throu
 - **Minimum ESPHome Version Set**  
    The minimum required version has been updated to **2025.11.0**.
 
-## 2025.3.0 <Badge type="tip" text="Stable" />
+## 2025.3.0
 ### ✨ Improvements
 - **Fix Update Process**  
    Firmware updates are now correctly identified and retrieved for each specific firmware variant.
