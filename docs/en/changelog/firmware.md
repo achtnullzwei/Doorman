@@ -84,9 +84,6 @@ This release **will impact your current setup** and **requires** you to go throu
 - **Added Support for next gen Nuki smart locks**  
    Nuki Smart Locks Ultra / Go / 5th gen are now supported by the Nuki component.
 
-- **Dynamic encryption key**  
-  Allow to set api encryption key via Home Assistant.
-
 ### 📝 Other Updates
 - **Firmware Configuration Assistant**  
    The new assistant makes flashing the firmware easier than ever — not much technical experience required.

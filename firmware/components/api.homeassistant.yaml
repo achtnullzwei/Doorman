@@ -1,8 +1,6 @@
 # API: Home Assistant
 
 api:
-  # Allow to set key via HA
-  encryption:
   batch_delay: 0ms
   custom_services: true
   homeassistant_services: true
