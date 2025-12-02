@@ -93,6 +93,10 @@ i2c: # [!code ++] [!code focus]
 ```
 :::
 
+:::warning REVISION 1.6+
+Ab Doorman Revision 1.6 muss der externe Button aus der Konfigurations-YAML entfernt werden.
+:::
+
 ## Erstelle dein eigenes Klingelmuster
 Wenn du ein benutzerdefiniertes Klingelmuster erstellen möchtest, kannst du die vorhandenen Klingel-Entities ganz einfach erweitern. Weitere Informationen zu Mustern findest du in der [ESPHome-Dokumentation](https://esphome.io/components/binary_sensor/index.html#on-multi-click).
 

@@ -21,7 +21,7 @@ During startup, this component:
 
 Example log output:
 ```log
-[I][doorman_hardware.text_sensor:034]: Detected Doorman Hardware: Revision 1.5.0
+[I][doorman_hardware.text_sensor:034]: Detected Doorman Hardware: Revision 1.6.0
 ```
 
 ## Example YAML Configuration

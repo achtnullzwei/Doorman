@@ -92,6 +92,10 @@ i2c: # [!code ++] [!code focus]
 ```
 :::
 
+:::warning REVISION 1.6+
+Beginning with Doorman revision 1.6, the external button must be removed from your configuration YAML.
+:::
+
 ## Create Your Own Doorbell Pattern
 If you want to create a custom doorbell pattern, you can easily extend the existing doorbell entities. For more information about patterns, refer to the [ESPHome Docs](https://esphome.io/components/binary_sensor/index.html#on-multi-click).
 
