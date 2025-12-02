@@ -251,6 +251,10 @@ befindet er sich bereits im `Setup Mode` für die interaktive Einrichtung.
 Du musst den Modus nicht manuell aktivieren; er wird bei jedem Neustart automatisch gestartet, solange der Einrichtungsprozess nicht abgeschlossen oder abgebrochen wurde.
 :::
 
+::: warning BEVOR DU WEITERMACHST
+Deine Innenstation **muss angeschlossen sein**, damit die Einrichtung abgeschlossen werden kann.
+:::
+
 ### 1. Zugriff auf die Einstellungen
 Öffne die Einstellungen entweder über die Weboberfläche deines Doormans oder besuche die [ESPHome Integrationsseite](https://my.home-assistant.io/redirect/integration/?domain=esphome) und wähle das Doorman S3-Gerät aus.
 
@@ -264,9 +268,7 @@ Geh' auf die Doorman-Weboberfläche zu und navigiere zum Abschnitt `Setup`, um d
 Folge den dort angezeigten Anweisungen, um die Einrichtung abzuschließen.
 :::
 
-::: warning BEVOR DU WEITERMACHST
-Deine Innenstation **muss angeschlossen sein**, damit die Einrichtung abgeschlossen werden kann.
-:::
+![setup-ui](/en/guide/images/setup.png)
 
 ### 3. Warte, bis du auf die Klingel drückst
 Wenn du die Klingel an deiner Wohnungstür oder am Eingang drückst, speichert das System als erstes die Seriennummer deiner Innenstation und versucht dann das Modell zu erkennen.

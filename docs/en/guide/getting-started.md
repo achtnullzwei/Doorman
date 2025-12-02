@@ -251,6 +251,10 @@ When you first connect your Doorman to Home Assistant, it will be in `Setup Mode
 You don't need to manually activate this mode; it will start automatically at each reboot as long as the setup process has not been completed or canceled.
 :::
 
+::: warning BEFORE YOU PROCEED
+The indoor station **must be connected**, to complete the setup process.
+:::
+
 ### 1. Access the Settings
 Open the settings either through your Doorman's web interface or visit the [ESPHome Integration page](https://my.home-assistant.io/redirect/integration/?domain=esphome) and select the Doorman S3 device.
 
@@ -264,9 +268,7 @@ Access the Doorman web interface and navigate to the `Setup` section to see your
 Follow the instructions there to complete the setup.
 :::
 
-::: warning BEFORE YOU PROCEED
-The indoor station **must be connected**, to complete the setup process.
-:::
+![setup-ui](/en/guide/images/setup.png)
 
 ### 3. Wait until you ring the doorbell
 When you press the doorbell button at your apartment or entrance, the system will first save your indoor station's serial number and attempt to detect the model.
