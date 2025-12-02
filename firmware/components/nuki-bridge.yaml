@@ -16,24 +16,28 @@ external_components:
 
 web_server:
   sorting_groups:
-    - id: sorting_group_nuki_settings_general
-      name: "Settings - Nuki Lock - General"
-      sorting_weight: -65
-
     - id: sorting_group_nuki_settings_button_led
       name: "Settings - Nuki Lock - Button & LED"
-      sorting_weight: -64
-
-    - id: sorting_group_nuki_settings_calibration
-      name: "Settings - Nuki Lock - Calibration"
       sorting_weight: -66
+
+    - id: sorting_group_nuki_settings_auto_lock
+      name: "Settings - Nuki Lock - Auto Lock"
+      sorting_weight: -65
 
     - id: sorting_group_nuki_settings_fob
       name: "Settings - Nuki Lock - Fob Actions"
-      sorting_weight: -62
+      sorting_weight: -64
 
     - id: sorting_group_nuki_settings_night_mode
       name: "Settings - Nuki Lock - Night Mode"
+      sorting_weight: -63
+
+    - id: sorting_group_nuki_settings_calibration
+      name: "Settings - Nuki Lock - Calibration"
+      sorting_weight: -62
+
+    - id: sorting_group_nuki_settings_general
+      name: "Settings - Nuki Lock - General"
       sorting_weight: -61
 
     - id: sorting_group_nuki_bridge_settings
@@ -192,7 +196,16 @@ lock:
       disabled_by_default: true
       web_server:
         sorting_group_id: sorting_group_nuki_settings_general
-        sorting_weight: 100
+        sorting_weight: 1
+    
+    auto_unlock_disabled:
+      id: nuki_auto_unlock_disabled
+      device_id: nuki_smart_lock
+      name: "Auto Unlock: Disable"
+      disabled_by_default: true
+      web_server:
+        sorting_group_id: sorting_group_nuki_settings_general
+        sorting_weight: 2
 
     # Button & LED
     pairing_enabled:
@@ -258,25 +271,10 @@ lock:
       disabled_by_default: true
       web_server:
         sorting_group_id: sorting_group_nuki_settings_night_mode
-        sorting_weight: 40
+        sorting_weight: 1
 
-    night_mode_auto_lock_enabled:
-      id: nuki_night_mode_auto_lock_enabled
-      device_id: nuki_smart_lock
-      name: "Night Mode: Auto Lock"
-      disabled_by_default: true
-      web_server:
-        sorting_group_id: sorting_group_nuki_settings_night_mode
-        sorting_weight: 41
-
-    night_mode_auto_unlock_disabled:
-      id: nuki_night_mode_auto_unlock_disabled
-      device_id: nuki_smart_lock
-      name: "Night Mode: Reject Auto Unlock"
-      disabled_by_default: true
-      web_server:
-        sorting_group_id: sorting_group_nuki_settings_night_mode
-        sorting_weight: 42
+    # Start time
+    # End time
 
     night_mode_immediate_lock_on_start_enabled:
       id: nuki_night_mode_immediate_lock_on_start
@@ -285,7 +283,25 @@ lock:
       disabled_by_default: true
       web_server:
         sorting_group_id: sorting_group_nuki_settings_night_mode
-        sorting_weight: 43
+        sorting_weight: 2
+
+    night_mode_auto_unlock_disabled:
+      id: nuki_night_mode_auto_unlock_disabled
+      device_id: nuki_smart_lock
+      name: "Night Mode: Reject Auto Unlock"
+      disabled_by_default: true
+      web_server:
+        sorting_group_id: sorting_group_nuki_settings_night_mode
+        sorting_weight: 3
+
+    night_mode_auto_lock_enabled:
+      id: nuki_night_mode_auto_lock_enabled
+      device_id: nuki_smart_lock
+      name: "Night Mode: Auto Lock"
+      disabled_by_default: true
+      web_server:
+        sorting_group_id: sorting_group_nuki_settings_night_mode
+        sorting_weight: 4
 
     # Fob Actions
     fob_action_1:
@@ -295,7 +311,7 @@ lock:
       disabled_by_default: true
       web_server:
         sorting_group_id: sorting_group_nuki_settings_fob
-        sorting_weight: 50
+        sorting_weight: 1
 
     fob_action_2:
       id: nuki_fob_action_2
@@ -304,7 +320,7 @@ lock:
       disabled_by_default: true
       web_server:
         sorting_group_id: sorting_group_nuki_settings_fob
-        sorting_weight: 51
+        sorting_weight: 2
 
     fob_action_3:
       id: nuki_fob_action_3
@@ -313,7 +329,7 @@ lock:
       disabled_by_default: true
       web_server:
         sorting_group_id: sorting_group_nuki_settings_fob
-        sorting_weight: 52
+        sorting_weight: 3
 
     # Auto Lock
     auto_lock_enabled:
@@ -322,36 +338,27 @@ lock:
       name: "Auto Lock"
       disabled_by_default: true
       web_server:
-        sorting_group_id: sorting_group_nuki_settings_general
-        sorting_weight: 60
+        sorting_group_id: sorting_group_nuki_settings_auto_lock
+        sorting_weight: 1
 
     auto_lock_timeout:
       id: nuki_auto_lock_timeout
       device_id: nuki_smart_lock
-      name: "Auto Lock: Timeout"
+      name: "Auto Lock: Lock after"
       disabled_by_default: true
       mode: slider
       web_server:
-        sorting_group_id: sorting_group_nuki_settings_general
-        sorting_weight: 61
+        sorting_group_id: sorting_group_nuki_settings_auto_lock
+        sorting_weight: 2
 
     immediate_auto_lock_enabled:
       id: nuki_immediate_auto_lock
       device_id: nuki_smart_lock
-      name: "Auto Lock: Immediately"
+      name: "Auto Lock: Immediately after closing"
       disabled_by_default: true
       web_server:
-        sorting_group_id: sorting_group_nuki_settings_general
-        sorting_weight: 62
-
-    auto_unlock_disabled:
-      id: nuki_auto_unlock_disabled
-      device_id: nuki_smart_lock
-      name: "Auto Unlock: Disable"
-      disabled_by_default: true
-      web_server:
-        sorting_group_id: sorting_group_nuki_settings_general
-        sorting_weight: 63
+        sorting_group_id: sorting_group_nuki_settings_auto_lock
+        sorting_weight: 3
 
     # Advanced Lock Calibration
     auto_unlatch: # Knob or Handle
