@@ -106,6 +106,7 @@ lock:
     device_id: nuki_smart_lock
     name: Apartment Door
     icon: "mdi:door"
+    setup_priority: -100.0
     web_server:
       sorting_group_id: sorting_group_controls
       sorting_weight: 3
