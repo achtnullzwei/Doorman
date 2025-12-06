@@ -11,7 +11,7 @@ esphome:
       
 # Add External Components
 external_components:
-  - source: github://uriyacovy/ESPHome_nuki_lock@feat/advanced-lock-settings
+  - source: github://uriyacovy/ESPHome_nuki_lock@nuki-task
     refresh: 60s
 
 web_server:
@@ -106,7 +106,6 @@ lock:
     device_id: nuki_smart_lock
     name: Apartment Door
     icon: "mdi:door"
-    setup_priority: -100.0
     web_server:
       sorting_group_id: sorting_group_controls
       sorting_weight: 3
