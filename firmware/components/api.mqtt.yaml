@@ -179,7 +179,7 @@ tc_bus:
           root["serial_number"] = x.serial_number;
 
 script:
-  - id: !extend boot_status_led
+  - id: !extend boot_state
     then:
       # WiFi already connected
       - logger.log: "LED: Waiting for MQTT connection"

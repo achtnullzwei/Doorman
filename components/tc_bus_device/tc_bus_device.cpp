@@ -372,6 +372,11 @@ namespace esphome
 
         void TCBusDeviceComponent::publish_settings()
         {
+            if(memory_buffer_empty())
+            {
+                return;
+            }
+
             if(this->device_group_ == DEVICE_GROUP_INDOOR_STATION)
             {
                 ESP_LOGI(TAG, "Indoor Station Settings:");
@@ -686,7 +691,7 @@ namespace esphome
             reading_memory_count_ = 0;
             reading_memory_max_ = (this->model_data_.memory_size / 4);
 
-            this->set_timeout("wait_for_memory_reading", reading_memory_max_ * 600, [this]()
+            this->set_timeout("wait_for_memory_reading", reading_memory_max_ * 700, [this]()
             {
                 memory_buffer_.clear();
                 reading_memory_count_ = 0;
@@ -766,7 +771,7 @@ namespace esphome
         void TCBusDeviceComponent::read_memory_block()
         {
             ESP_LOGI(TAG, "Read 4 memory blocks, from %i to %i.", (reading_memory_count_ * 4), (reading_memory_count_ * 4) + 4);
-            send_telegram(TELEGRAM_TYPE_READ_MEMORY_BLOCK, reading_memory_count_, 0, 300);
+            send_telegram(TELEGRAM_TYPE_READ_MEMORY_BLOCK, reading_memory_count_, 0, 250);
         }
 
         uint8_t TCBusDeviceComponent::get_doorbell_button_memory_index(uint8_t row, uint8_t col)

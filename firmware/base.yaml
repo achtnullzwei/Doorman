@@ -18,7 +18,7 @@ esphome:
         - script.execute: set_unused_entities_internal
         - script.execute: boot_component_init
         # RGB status LED boot sequence
-        - script.execute: boot_status_led
+        - script.execute: boot_state
 
   devices:
     - id: tc_bus_general
@@ -785,8 +785,14 @@ event:
       sorting_weight: 99
 
 script:
+  - id: after_wifi_connection
+    then:
+      - logger.log: "Running after_wifi_connection script"
+
   - id: boot_component_init
     then:
+      - logger.log: "Running boot_component_init script"
+
       # Always turn off relay on boot if not used standalone
       - if:
           condition:
@@ -796,6 +802,8 @@ script:
 
   - id: set_unused_entities_internal
     then:
+      - logger.log: "Running set_unused_entities_internal script"
+
       # Set second entrance door internal if not used
       - lambda: |-
           bool internal = id(second_entrance_door_station_address).state == 63 || id(second_entrance_door_station_address).state == id(entrance_door_station_address).state;
@@ -866,7 +874,7 @@ script:
               }
           }
 
-  - id: boot_status_led
+  - id: boot_state
     then:
       # Boot Status LED
       - logger.log: "LED: Waiting for WiFi connection or provisioning"
@@ -898,6 +906,8 @@ script:
                   - lambda: return id(wifi_id).is_ap_active() == false;
       # WiFi connected
       - logger.log: "LED: WiFi connected, waiting for API"
+
+      - script.execute: after_wifi_connection
 
   - id: update_led
     then:

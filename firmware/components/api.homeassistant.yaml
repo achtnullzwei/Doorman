@@ -66,7 +66,7 @@ tc_bus:
           serial_number: !lambda return x.serial_number;
 
 script:
-  - id: !extend boot_status_led
+  - id: !extend boot_state
     then:
       # WiFi already connected
       - logger.log: "LED: Waiting for Home Assistant API connection"
