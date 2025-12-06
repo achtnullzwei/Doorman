@@ -86,7 +86,6 @@ number:
       sorting_weight: 5
 
 switch:
-  # For Ultra / Go / Pro / 5th Gen
   - platform: template
     id: nuki_pairing_as_app
     device_id: nuki_bridge

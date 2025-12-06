@@ -293,7 +293,7 @@ tc_bus:
           - script.execute: update_setup_sensors
 
 script:
-  - id: !extend after_wifi_connection
+  - id: !extend boot_component_init
     then:
       # Turn on setup mode if serial number is 0 on boot
       - if:

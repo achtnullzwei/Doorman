@@ -182,8 +182,14 @@ script:
   - id: !extend boot_state
     then:
       # WiFi already connected
-      - logger.log: "LED: Waiting for MQTT connection"
-      - script.execute: mqtt_connect
+      - if:
+          condition:
+            mqtt.connected:
+          then:
+            - logger.log: "LED: MQTT already connected"
+          else:
+            - logger.log: "LED: Waiting for MQTT connection"
+            - script.execute: mqtt_connect
 
   - id: mqtt_connect
     mode: restart

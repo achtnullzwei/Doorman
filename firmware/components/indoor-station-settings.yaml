@@ -151,7 +151,7 @@ button:
         sorting_weight: -95
 
 script:
-  - id: !extend after_wifi_connection
+  - id: !extend boot_component_init
     then:
       - if:
           condition:
