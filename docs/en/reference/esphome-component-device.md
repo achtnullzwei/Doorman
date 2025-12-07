@@ -8,6 +8,7 @@ The `tc_bus_device` component offers the following configuration options:
 |---------------------------|-----------------------------------------------------------------------------------------------------------------------------------------------|----------|---------------|
 | `id`                      | Unique ID for the component.                                                                                                                  | Yes      |               |
 | `type`                    | Device Group of the TC:BUS Device. E.g. Indoor Station, Outdoor Station.                                                                      | Yes      |               |
+| `auto_configuration`      | When enabled, the component automatically identifies the device using the serial number and reads device memory based on the device model.    | No       | false         |
 | `on_read_memory_complete` | Defines actions to be triggered when the memory reading is complete. Returns a `std::vector<uint8_t>` buffer as the `x` variable.             | No       |               |
 | `on_read_memory_timeout`  | Defines actions to be triggered when the memory reading times out.                                                                            | No       |               |
 | `on_identify_complete`    | Defines actions to be triggered when the identification of the indoor station is complete. Returns a `ModelData` object as the `x` variable.  | No       |               |

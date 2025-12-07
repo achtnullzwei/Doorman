@@ -38,6 +38,7 @@ tc_bus:
 tc_bus_device:
   - id: my_indoor_station
     type: indoor_station
+    auto_configuration: true
 
     on_read_memory_complete:
       - lambda: |-
@@ -65,6 +66,7 @@ tc_bus_device:
 
   - id: my_indoor_station2
     type: indoor_station
+    auto_configuration: true
 
 
 text_sensor:

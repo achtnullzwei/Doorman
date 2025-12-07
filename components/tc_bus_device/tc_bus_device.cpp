@@ -75,7 +75,7 @@ namespace esphome
             this->tc_bus_->register_remote_listener(this);
 
             // Schedule flows
-            if(this->serial_number_ != 0)
+            if(this->auto_configuration_ && this->serial_number_ != 0)
             {
                 if(this->model_ != MODEL_NONE)
                 {
@@ -111,7 +111,7 @@ namespace esphome
             if(serial_number != 0)
             {
                 // Schedule model identification flow
-                if(save && changed)
+                if(this->auto_configuration_ && save && changed)
                 {
                     ESP_LOGD(TAG, "Schedule flow: Model identification (changed serial number from 0)");
 
@@ -157,7 +157,7 @@ namespace esphome
                 this->publish_settings();
 
                 // Schedule memory reading flow
-                if(save && changed)
+                if(this->auto_configuration_ && save && changed)
                 {
                     ESP_LOGD(TAG, "Schedule flow: Memory reading (changed model from none)");
                     read_memory();

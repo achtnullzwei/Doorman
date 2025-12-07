@@ -102,6 +102,7 @@ namespace esphome::tc_bus
         void set_internal_id(const std::string &internal_id) { this->internal_id_.assign(internal_id); }
         void set_tc_bus_component(TCBusComponent *bus) { this->tc_bus_ = bus; }
         void set_device_group(DeviceGroup device_group) { this->device_group_ = device_group; }
+        void set_auto_configuration(bool auto_configuration) { this->auto_configuration_ = auto_configuration; }
         void set_force_long_door_opener(bool force_long_door_opener) { this->force_long_door_opener_ = force_long_door_opener; }
         void set_serial_number(uint32_t serial_number, bool save = true);
         void set_model(Model model, bool save = true);
@@ -195,6 +196,7 @@ namespace esphome::tc_bus
         ModelData model_data_;
         uint32_t serial_number_;
         DeviceGroup device_group_;
+        bool auto_configuration_;
         bool force_long_door_opener_;
 
         // Flow Queue Management

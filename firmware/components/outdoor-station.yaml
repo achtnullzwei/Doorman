@@ -14,6 +14,7 @@ web_server:
 tc_bus_device:
   - id: tc_bus_outdoor_station
     type: outdoor_station
+    auto_configuration: true
 
 number:
   - platform: tc_bus_device

@@ -232,6 +232,8 @@ CONF_RINGTONES = [
 CONF_TC_BUS_DEVICE = "tc_bus_device"
 CONF_TC_BUS_DEVICE_ID = "tc_bus_device_id"
 
+CONF_AUTO_CONFIGURATION = "auto_configuration"
+
 CONF_TELEGRAM = "telegram"
 CONF_IS_LONG = "is_long"
 CONF_ADDRESS = "address"
@@ -258,6 +260,7 @@ CONFIG_SCHEMA = cv.Schema(
         cv.GenerateID() : cv.declare_id(TCBusDeviceComponent),
         cv.GenerateID(CONF_TC_BUS_ID): cv.use_id(TCBusComponent),
         cv.Optional(CONF_TYPE, default="indoor_station"): cv.enum(DEVICE_GROUPS, upper=False),
+        cv.Optional(CONF_AUTO_CONFIGURATION, default="false"): cv.boolean,
         cv.Optional(CONF_ON_READ_MEMORY_COMPLETE): automation.validate_automation(
             {
                 cv.GenerateID(CONF_TRIGGER_ID): cv.declare_id(ReadMemoryCompleteTrigger),
@@ -299,6 +302,7 @@ async def to_code(config):
     cg.add(var.set_tc_bus_component(tc_bus_component))
     cg.add(var.set_internal_id(str(config[CONF_ID])))
     cg.add(var.set_device_group(config[CONF_TYPE]))
+    cg.add(var.set_auto_configuration(config[CONF_AUTO_CONFIGURATION]))
 
     for conf in config.get(CONF_ON_READ_MEMORY_COMPLETE, []):
         trigger = cg.new_Pvariable(conf[CONF_TRIGGER_ID], var)
