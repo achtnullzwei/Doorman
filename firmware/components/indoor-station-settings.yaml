@@ -1,32 +1,5 @@
 # Indoor Station Settings Addon
 
-# Extend TC:BUS Component
-tc_bus_device:
-  - id: !extend tc_bus_indoor_station
-    on_read_memory_complete:
-      - lambda: |-
-          std::string hexString = str_upper_case(format_hex(x));
-          ESP_LOGI("tc_bus", "Memory reading completed. Data: %s", hexString.c_str());
-
-    on_read_memory_timeout:
-      - logger.log:
-          format: "Memory reading timed out! No memory block received in time."
-          level: ERROR
-
-    on_identify_complete:
-      - logger.log:
-          format: "Identified Hardware: %s (v%i) | Firmware: %i.%i.%i"
-          args: [ 'model_to_string(x.model)', 'x.hardware_version', 'x.firmware_major', 'x.firmware_minor', 'x.firmware_patch' ]
-          level: INFO
-      - delay: 2s
-      - tc_bus_device.read_memory:
-          id: tc_bus_indoor_station
-
-    on_identify_timeout:
-      - logger.log:
-          format: "Failed to identify the Indoor Station. Please select it manually."
-          level: ERROR
-
 select:
   - platform: tc_bus_device
     tc_bus_device_id: tc_bus_indoor_station
@@ -151,19 +124,6 @@ button:
         sorting_weight: -95
 
 script:
-  - id: !extend boot_component_init
-    then:
-      - if:
-          condition:
-            - lambda: return id(indoor_station_serial_number).state != 0;
-            - lambda: return id(indoor_station_model)->current_option() != "None";
-          then:
-            - logger.log: "Serial Number and Model available, read memory."
-            - tc_bus_device.read_memory:
-                id: tc_bus_indoor_station
-          else:
-            - logger.log: "Serial Number or Model unavailable, not reading memory."
-
   - id: !extend set_unused_entities_internal
     then:
       - lambda: |-

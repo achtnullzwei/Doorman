@@ -91,7 +91,7 @@ namespace esphome
         {
             public:
                 void play(const Ts &...x) override {
-                    this->parent_->request_version();
+                    this->parent_->identify_device();
                 }
         };
 

@@ -52,16 +52,9 @@ namespace esphome
                 recovered = {MODEL_NONE, 0, false};
             }
 
-            this->serial_number_ = recovered.serial_number;
             this->force_long_door_opener_ = recovered.force_long_door_opener;
+            this->set_serial_number(recovered.serial_number, false);
             this->set_model(recovered.model, false);
-
-            #ifdef USE_NUMBER
-                if (this->serial_number_number_ != nullptr)
-                {
-                    this->serial_number_number_->publish_state(this->serial_number_);
-                }
-            #endif
 
             #ifdef USE_SWITCH
                 if (this->force_long_door_opener_switch_ != nullptr)
@@ -80,10 +73,69 @@ namespace esphome
 
             // Register remote listener
             this->tc_bus_->register_remote_listener(this);
+
+            // Schedule flows
+            if(this->serial_number_ != 0)
+            {
+                if(this->model_ != MODEL_NONE)
+                {
+                    ESP_LOGD(TAG, "Schedule flow: Memory reading (setup)");
+                    read_memory();
+                }
+                else
+                {
+                    ESP_LOGD(TAG, "Schedule flow: Model identification (setup)");
+                    identify_device();
+                }
+            }
+        }
+
+        void TCBusDeviceComponent::set_serial_number(uint32_t serial_number, bool save) {
+
+            if(serial_number > 0xFFFFF)
+            {
+                ESP_LOGW(TAG, "Invalid Serial Number, reset to 0.");
+                serial_number = 0;
+            }
+
+            bool changed = this->serial_number_ == 0 && serial_number != this->serial_number_;
+
+            this->serial_number_ = serial_number;
+
+            // Save to flash
+            if(save)
+            {
+                this->save_preferences();
+            }
+
+            if(serial_number != 0)
+            {
+                // Schedule model identification flow
+                if(save && changed)
+                {
+                    ESP_LOGD(TAG, "Schedule flow: Model identification (changed serial number from 0)");
+
+                    // Wait for possible doorbell ringtone (setup mode)
+                    this->set_timeout(3000, [this]()
+                    {
+                        identify_device();
+                    });
+                }
+            }
+
+            // Update Entities
+            #ifdef USE_NUMBER
+                if (this->serial_number_number_ != nullptr)
+                {
+                    this->serial_number_number_->publish_state(serial_number);
+                }
+            #endif
         }
 
         void TCBusDeviceComponent::set_model(Model model, bool save)
         {
+            bool changed = this->model_ == MODEL_NONE && model != this->model_;
+
             this->model_ = model;
             this->model_data_ = getModelData(model);
 
@@ -93,13 +145,22 @@ namespace esphome
                 this->save_preferences();
             }
 
-            // Reserve memory
             if(model != MODEL_NONE)
             {
+                // Reserve memory
                 ESP_LOGD(TAG, "Reserve Memory Buffer");
                 if(this->model_data_.memory_size > 0)
                 {
                     this->memory_buffer_.reserve(this->model_data_.memory_size);
+                }
+
+                this->publish_settings();
+
+                // Schedule memory reading flow
+                if(save && changed)
+                {
+                    ESP_LOGD(TAG, "Schedule flow: Memory reading (changed model from none)");
+                    read_memory();
                 }
             }
 
@@ -110,8 +171,6 @@ namespace esphome
                     this->model_select_->publish_state(model_to_string(model));
                 }
             #endif
-
-            this->publish_settings();
         }
 
         void TCBusDeviceComponent::save_preferences()
@@ -148,6 +207,9 @@ namespace esphome
                 }
             }
             #endif
+
+            // Process flows
+            this->process_flow_queue();
         }
 
         bool TCBusDeviceComponent::on_receive(tc_bus::TelegramData telegram_data, bool received)
@@ -157,10 +219,16 @@ namespace esphome
                 // From receiver
                 if(telegram_data.type == TELEGRAM_TYPE_DATA)
                 {
-                    if (read_memory_flow_)
+                    if (this->current_flow_ == FLOW_READ_MEMORY)
                     {
-                        ESP_LOGI(TAG, "Received 4 memory blocks from %i to %i | Data: 0x%08X", (reading_memory_count_ * 4), (reading_memory_count_ * 4) + 4, telegram_data.raw);
-                            
+                        ESP_LOGI(TAG, "Received 4 bytes of device memory:\n"
+                                      "  Start address: %i\n"
+                                      "  End address: %i\n"
+                                      "  Data: 0x%08X", 
+                                      (reading_memory_count_ * 4), (reading_memory_count_ * 4) + 4, telegram_data.raw);
+
+                        this->cancel_timeout("wait_for_first_memory_block");
+
                         // Save Data to memory Store
                         memory_buffer_.push_back((telegram_data.raw >> 24) & 0xFF);
                         memory_buffer_.push_back((telegram_data.raw >> 16) & 0xFF);
@@ -173,65 +241,55 @@ namespace esphome
                         // Memory reading complete
                         if (reading_memory_count_ == reading_memory_max_)
                         {
-                            // Turn off
-                            this->cancel_timeout("wait_for_memory_reading");
-
-                            ESP_LOGD(TAG, "Reset read_memory_flow_");
-                            read_memory_flow_ = false;
-
-                            ESP_LOGD(TAG, "Reset running_flow_");
-                            running_flow_ = false;
-
-                            ESP_LOGD(TAG, "Memory rading complete");
-                            ESP_LOG_BUFFER_HEX_LEVEL(TAG, memory_buffer_.data(), memory_buffer_.size(), ESP_LOG_DEBUG);
+                            ESP_LOGI(TAG, "Device memory:\n"
+                                          "  Size: %i Bytes",
+                                          memory_buffer_.size());
+                            ESP_LOGD(TAG, "  Data: %s", format_hex_pretty(memory_buffer_, ' ', false).c_str());
 
                             this->read_memory_complete_callback_.call(memory_buffer_);
 
                             this->publish_settings();
+
+                            // Complete this request and process next in queue
+                            this->complete_current_flow();
                         }
                         else
                         {
-                            read_memory_block();
+                            send_telegram(TELEGRAM_TYPE_READ_MEMORY_BLOCK, reading_memory_count_, 0, 300);
                         }
 
                         // Do not proceed
                         return true;
                     }
-                    else if (read_memory_update_flow_)
+                    else if (current_flow_ == FLOW_READ_MEMORY_UPDATE)
                     {
-                        ESP_LOGI(TAG, "Received 4 memory blocks from %i to %i | Data: 0x%08X", (reading_memory_count_ * 4), (reading_memory_count_ * 4) + 4, telegram_data.raw);
-                            
+                        ESP_LOGI(TAG, "Received 4 bytes of device memory:\n"
+                                      "  Start address: %i\n"
+                                      "  End address: %i\n"
+                                      "  Data: 0x%08X", 
+                                      (reading_memory_count_ * 4), (reading_memory_count_ * 4) + 4, telegram_data.raw);
+
+                        this->cancel_timeout("wait_for_first_memory_block");
+
                         // Save Data to memory Store
                         memory_buffer_[reading_memory_count_]     = (telegram_data.raw >> 24) & 0xFF;
                         memory_buffer_[reading_memory_count_ + 1] = (telegram_data.raw >> 16) & 0xFF;
                         memory_buffer_[reading_memory_count_ + 2] = (telegram_data.raw >> 8) & 0xFF;
                         memory_buffer_[reading_memory_count_ + 3] = telegram_data.raw & 0xFF;
 
-                        // Turn off
-                        this->cancel_timeout("wait_for_memory_reading");
-
-                        ESP_LOGD(TAG, "Reset read_memory_update_flow_");
-                        read_memory_update_flow_ = false;
-
-                        ESP_LOGD(TAG, "Reset running_flow_");
-                        running_flow_ = false;
-
-                        this->read_memory_complete_callback_.call(memory_buffer_);
-
                         this->publish_settings();
+
+                        // Complete this request and process next in queue
+                        this->complete_current_flow();
 
                         // Do not proceed
                         return true;
                     }
-                    else if (identify_model_flow_)
+                    else if (current_flow_ == FLOW_IDENTIFY_DEVICE)
                     {
-                        ESP_LOGI(TAG, "Received model identification | Data: %s", telegram_data.hex);
-
-                        ESP_LOGD(TAG, "Reset identify_model_flow_");
-                        identify_model_flow_ = false;
-
-                        ESP_LOGD(TAG, "Reset running_flow_");
-                        running_flow_ = false;
+                        ESP_LOGI(TAG, "Received device identification:\n"
+                                      "  Data: %s",
+                                      telegram_data.hex);
 
                         this->cancel_timeout("wait_for_identification_group_0");
                         this->cancel_timeout("wait_for_identification_group_1");
@@ -321,26 +379,35 @@ namespace esphome
                             // Add missing information
                             device.memory_size = getModelData(device.model).memory_size;
 
-                            ESP_LOGI(TAG, "Identified Hardware: %s (v%i) | Firmware: %i.%i.%i",
-                                    model_to_string(device.model),
-                                    device.hardware_version,
-                                    device.firmware_major,
-                                    device.firmware_minor,
-                                    device.firmware_patch);
+                            ESP_LOGI(TAG, "Device identified:\n"
+                                          "  Device Group: %i\n"
+                                          "  Model: %s\n"
+                                          "  Version: v%i\n"
+                                          "  Firmware: %i.%i.%i",
+                                          device.device_group,
+                                          model_to_string(device.model),
+                                          device.hardware_version,
+                                          device.firmware_major,
+                                          device.firmware_minor,
+                                          device.firmware_patch);
 
-                            
                             // Update Model
                             if (device.model != this->model_)
                             {
                                 this->set_model(device.model);
                             }
+
                             this->identify_complete_callback_.call(device);
                         }
                         else
                         {
                             ESP_LOGE(TAG, "Unable to identify Hardware! Unknown model. Data received: %s", telegram_data.hex);
+                            ESP_LOGW(TAG, "Please open an issue and provide your logs in order to implement support for this model.");
                             this->identify_unknown_callback_.call();
                         }
+
+                        // Complete this request and process next in queue
+                        this->complete_current_flow();
 
                         // Do not proceed
                         return true;
@@ -372,7 +439,7 @@ namespace esphome
 
         void TCBusDeviceComponent::publish_settings()
         {
-            if(memory_buffer_empty())
+            if(memory_buffer_empty() || this->model_ == MODEL_NONE)
             {
                 return;
             }
@@ -464,56 +531,6 @@ namespace esphome
                 {
                     ESP_LOGI(TAG, "  Address Lock: %s", YESNO(get_setting(SETTING_AS_ADDRESS_LOCK)));
                 }
-
-                uint8_t button_rows = get_setting(SETTING_BUTTON_ROWS);
-                uint8_t button_cols = 1;
-                uint8_t col_offset = 0;
-
-                if(this->model_ == MODEL_AS_TCU2)
-                {
-                    button_rows = 4;
-                    button_cols = 4;
-                    col_offset = 4;
-                }
-                else if (this->model_ == MODEL_AS_PES)
-                {
-                    button_cols = 2;
-                }
-                else if (this->model_ == MODEL_AS_PDS0X || this->model_ == MODEL_AS_PDS0X04)
-                {
-                    if(get_setting(SETTING_HAS_CODE_LOCK) == 254)
-                    {
-                        button_rows = 1;
-                    }
-                }
-
-                ESP_LOGI(TAG, "  Physical Buttons: %i", button_rows * button_cols);
-
-                for (uint8_t row = 1; row <= button_rows; row++) {
-                    for (uint8_t col = 1; col <= button_cols; col++) {
-                        // For non-matrix models, col is ignored (pass 0)
-                        uint8_t col_param = (button_cols > 1) ? col + col_offset : 0;
-                        DoorbellButtonConfig btn = get_doorbell_button(row, col_param);
-                        
-                        if (button_cols > 1) {
-                            ESP_LOGI(TAG, "    Button [%i,%i]:", row, col);
-                        } else {
-                            ESP_LOGI(TAG, "    Button %i:", row);
-                        }
-                        
-                        ESP_LOGI(TAG, "      Primary Action: %s", doorbell_button_action_to_string(btn.primary_action));
-                        if(btn.primary_action != DOORBELL_BUTTON_ACTION_NONE)
-                        {
-                            ESP_LOGI(TAG, "        Payload: %i", btn.primary_payload);
-                        }
-                        ESP_LOGI(TAG, "      Secondary Action: %s", doorbell_button_action_to_string(btn.secondary_action));
-                        if(btn.secondary_action != DOORBELL_BUTTON_ACTION_NONE)
-                        {
-                            ESP_LOGI(TAG, "        Payload: %i", btn.secondary_payload);
-                        }
-                    }
-                }
-
                 if(supports_setting(SETTING_TALKING_REQUIRES_DOOR_READINESS))
                 {
                     ESP_LOGI(TAG, "  Talking requires door readiness: %s", YESNO(get_setting(SETTING_TALKING_REQUIRES_DOOR_READINESS)));
@@ -538,6 +555,61 @@ namespace esphome
                     else
                     {
                         ESP_LOGI(TAG, "  Door Readiness Duration: %i sec.", door_readiness_dur * 8);
+                    }
+                }
+
+                uint8_t button_rows = get_setting(SETTING_BUTTON_ROWS);
+                uint8_t button_cols = 1;
+                uint8_t col_offset = 0;
+
+                if(this->model_ == MODEL_AS_TCU2)
+                {
+                    button_rows = 4;
+                    button_cols = 4;
+                    col_offset = 4;
+                }
+                else if (this->model_ == MODEL_AS_PES)
+                {
+                    button_cols = 2;
+                }
+                else if (this->model_ == MODEL_AS_PDS0X || this->model_ == MODEL_AS_PDS0X04)
+                {
+                    if(get_setting(SETTING_HAS_CODE_LOCK) == 254)
+                    {
+                        button_rows = 1;
+                    }
+                }
+
+                ESP_LOGI(TAG, "  Physical Buttons: %i", button_rows * button_cols);
+                if (button_rows == 0 || button_rows == 255 || button_cols == 0)
+                {
+                    ESP_LOGW(TAG, "    Invalid button configuration: rows=%i, cols=%i. Skipping button listing.", button_rows, button_cols);
+                }
+                else
+                {
+                    for (uint8_t row = 1; row <= button_rows; row++) {
+                        for (uint8_t col = 1; col <= button_cols; col++) {
+                            // For non-matrix models, col is ignored (pass 0)
+                            uint8_t col_param = (button_cols > 1) ? col + col_offset : 0;
+                            DoorbellButtonConfig btn = get_doorbell_button(row, col_param);
+                            
+                            if (button_cols > 1) {
+                                ESP_LOGI(TAG, "    Button [%i,%i]:", row, col);
+                            } else {
+                                ESP_LOGI(TAG, "    Button %i:", row);
+                            }
+                            
+                            ESP_LOGI(TAG, "      Primary Action: %s", doorbell_button_action_to_string(btn.primary_action));
+                            if(btn.primary_action != DOORBELL_BUTTON_ACTION_NONE)
+                            {
+                                ESP_LOGI(TAG, "        Payload: %i", btn.primary_payload);
+                            }
+                            ESP_LOGI(TAG, "      Secondary Action: %s", doorbell_button_action_to_string(btn.secondary_action));
+                            if(btn.secondary_action != DOORBELL_BUTTON_ACTION_NONE)
+                            {
+                                ESP_LOGI(TAG, "        Payload: %i", btn.secondary_payload);
+                            }
+                        }
                     }
                 }
             }
@@ -567,36 +639,33 @@ namespace esphome
             this->tc_bus_->send_telegram(type, address, payload, this->serial_number_, wait_duration);
         }
 
-        void TCBusDeviceComponent::request_version()
+        void TCBusDeviceComponent::identify_device()
         {
-            if(running_flow_ || this->identify_model_flow_)
-            {
-                ESP_LOGE(TAG, "Another flow is already running");
-                return;
-            }
-
             if(this->serial_number_ == 0)
             {
                 ESP_LOGE(TAG, "Device model cannot be identified without a serial number!");
                 return;
             }
 
+            enqueue_flow(FLOW_IDENTIFY_DEVICE, this);
+        }
+
+        void TCBusDeviceComponent::execute_identify_device()
+        {
             this->cancel_timeout("wait_for_identification_group_0");
             this->cancel_timeout("wait_for_identification_group_1");
             this->cancel_timeout("wait_for_identification_other");
-
-            ESP_LOGD(TAG, "Set running_flow_");
-            running_flow_ = true;
-
-            ESP_LOGD(TAG, "Set identify_model_flow_");
-            this->identify_model_flow_ = true;
 
             if(this->device_group_ == DEVICE_GROUP_INDOOR_STATION)
             {
                 // Indoor Stations
 
                 // First try with group 0
-                ESP_LOGI(TAG, "Identifying device model (Group %i) using serial number: %i...", 0, this->serial_number_);
+                ESP_LOGI(TAG, "Identify device:\n"
+                              "  Device Group: %i\n"
+                              "  Serial Number: %i",
+                              0, this->serial_number_);
+
                 send_telegram(TELEGRAM_TYPE_SELECT_DEVICE_GROUP, 0, 0, 400); // group 0
                 send_telegram(TELEGRAM_TYPE_REQUEST_VERSION, 0, 0, 400);
 
@@ -604,7 +673,10 @@ namespace esphome
                 {
                     // Didn't receive identify result of group 0
                     // Second try with group 1
-                    ESP_LOGI(TAG, "Identifying device model (Group %i) using serial number: %i...", 1, this->serial_number_);
+                    ESP_LOGI(TAG, "Identify device:\n"
+                                  "  Device Group: %i\n"
+                                  "  Serial Number: %i",
+                                  1, this->serial_number_);
                     send_telegram(TELEGRAM_TYPE_SELECT_DEVICE_GROUP, 0, 1, 400); // group 1
                     send_telegram(TELEGRAM_TYPE_REQUEST_VERSION, 0, 0, 400);
 
@@ -612,14 +684,12 @@ namespace esphome
                     {
                         // Didn't receive identify result of group 1
                         // Failed
-                        ESP_LOGD(TAG, "Reset identify_model_flow_");
-                        this->identify_model_flow_ = false;
-
-                        ESP_LOGD(TAG, "Reset running_flow_");
-                        running_flow_ = false;
 
                         this->identify_timeout_callback_.call();
-                        ESP_LOGE(TAG, "Identification response not received in time. The device model may not support identification.");
+                        ESP_LOGE(TAG, "Identification timeout. The device model may not support identification. Please select model manually.");
+
+                        // Complete this request and process next in queue
+                        this->complete_current_flow();
                     });
                 });
             }
@@ -628,31 +698,105 @@ namespace esphome
                 // Other Devices
 
                 // Use device group if not 0 and 1
-                ESP_LOGI(TAG, "Identifying device model (group %i) using serial number: %i...", (uint8_t)this->device_group_, this->serial_number_);
+                ESP_LOGI(TAG, "Identify device:\n"
+                              "  Device Group: %i\n"
+                              "  Serial Number: %i",
+                              (uint8_t)this->device_group_, this->serial_number_);
                 send_telegram(TELEGRAM_TYPE_SELECT_DEVICE_GROUP, 0, (uint8_t)this->device_group_, 400);
                 send_telegram(TELEGRAM_TYPE_REQUEST_VERSION, 0, 0, 400);
 
                 this->set_timeout("wait_for_identification_other", 1000, [this]() {
                     // Failed
-                    ESP_LOGD(TAG, "Reset identify_model_flow_");
-                    this->identify_model_flow_ = false;
+                    ESP_LOGE(TAG, "Identification timeout. The device model may not support identification. Please select model manually.");
 
-                    ESP_LOGD(TAG, "Reset running_flow_");
-                    running_flow_ = false;
-
-                    ESP_LOGE(TAG, "Identification response not received in time. The device model may not support identification.");
+                    // Complete this request and process next in queue
+                    this->complete_current_flow();
                 });
             }
         }
 
-        void TCBusDeviceComponent::read_memory()
+        // Flow Queue Management
+        void TCBusDeviceComponent::enqueue_flow(FlowType type, TCBusDeviceComponent *component, uint8_t index)
         {
-            if(running_flow_ || this->read_memory_flow_)
+            TCBusDeviceFlowQueueItem flow;
+            flow.type = type;
+            flow.component = component;
+            flow.index = index;
+            
+            if (!s_flow_queue.push(flow))
             {
-                ESP_LOGE(TAG, "Another flow is already running");
+                ESP_LOGE(component->TAG, "Flow queue is full! Flow dropped.");
                 return;
             }
 
+            ESP_LOGD(component->TAG, "Flow enqueued.");
+        }
+
+        void TCBusDeviceComponent::process_flow_queue()
+        {
+            if (s_flow_queue.empty())
+            {
+                ESP_LOGV(FLOW_QUEUE_TAG, "Queue is empty, nothing to process.");
+                return;
+            }
+            
+            if (s_running_flow)
+            {
+                ESP_LOGV(FLOW_QUEUE_TAG, "Flow already running, waiting...");
+                return;
+            }
+
+            uint32_t now = millis();
+            if (s_last_flow_completion_time > 0 && (now - s_last_flow_completion_time) < 1000)
+            {
+                ESP_LOGV(FLOW_QUEUE_TAG, "Waiting for cooldown period (%u ms remaining)...", 1000 - (now - s_last_flow_completion_time));
+                return;
+            }
+
+            TCBusDeviceFlowQueueItem flow = s_flow_queue.front();
+            s_flow_queue.pop();
+
+            ESP_LOGD(flow.component->TAG, "Processing queued flow.");
+
+            s_running_flow = true;
+            flow.component->set_current_flow(flow.type);
+
+            // Execute the queued flow
+            switch (flow.type)
+            {
+                case FLOW_READ_MEMORY:
+                    flow.component->execute_read_memory();
+                    break;
+                case FLOW_READ_MEMORY_UPDATE:
+                    flow.component->execute_read_memory_update(flow.index);
+                    break;
+                case FLOW_IDENTIFY_DEVICE:
+                    flow.component->execute_identify_device();
+                    break;
+                case FLOW_NONE:
+                default:
+                    ESP_LOGW(flow.component->TAG, "Invalid flow type %d, skipping.", flow.type);
+                    flow.component->complete_current_flow();
+                    break;
+            }
+        }
+
+        void TCBusDeviceComponent::complete_current_flow()
+        {
+            if (current_flow_ == FLOW_NONE)
+            {
+                ESP_LOGW(TAG, "complete_current_flow() called but no flow was running!");
+                return;
+            }
+
+            s_running_flow = false;
+            current_flow_ = FLOW_NONE;
+
+            s_last_flow_completion_time = millis();
+        }
+
+        void TCBusDeviceComponent::read_memory()
+        {
             if (this->serial_number_ == 0)
             {
                 ESP_LOGE(TAG, "Unable to read device memory without a serial number!");
@@ -667,57 +811,49 @@ namespace esphome
 
             if (this->model_data_.memory_size == 0)
             {
-                ESP_LOGE(TAG, "This model %s (Serial: %i) does not support reading memory!", model_to_string(this->model_), this->serial_number_);
+                ESP_LOGE(TAG, "The model %s (Serial: %i) does not support reading memory!", model_to_string(this->model_), this->serial_number_);
                 // Call timeout callback for unsupported models
                 this->read_memory_timeout_callback_.call();
                 return;
             }
-            else
-            {
-                ESP_LOGI(TAG, "Reading EEPROM for model %s (Serial: %i)...", model_to_string(this->model_), this->serial_number_);
-            }
 
-            ESP_LOGD(TAG, "Set running_flow_");
-            running_flow_ = true;
+            // Check if flow is already running
+            enqueue_flow(FLOW_READ_MEMORY, this);
+        }
+
+        void TCBusDeviceComponent::execute_read_memory()
+        {
+            ESP_LOGI(TAG, "Read device memory:\n"
+                          "  Model: %s\n"
+                          "  Serial Number: %i",
+                          model_to_string(this->model_), this->serial_number_);
 
             send_telegram(TELEGRAM_TYPE_SELECT_DEVICE_GROUP, 0, this->model_data_.device_group);
             send_telegram(TELEGRAM_TYPE_SELECT_MEMORY_PAGE, 0, 0);
 
             memory_buffer_.clear();
-  
-            ESP_LOGD(TAG, "Set read_memory_flow_");
-            this->read_memory_flow_ = true;
 
             reading_memory_count_ = 0;
             reading_memory_max_ = (this->model_data_.memory_size / 4);
 
-            this->set_timeout("wait_for_memory_reading", reading_memory_max_ * 700, [this]()
+            this->set_timeout("wait_for_first_memory_block", 2000, [this]()
             {
                 memory_buffer_.clear();
                 reading_memory_count_ = 0;
                 reading_memory_max_ = 0;
 
-                ESP_LOGD(TAG, "Reset read_memory_flow_");
-                this->read_memory_flow_ = false;
-
-                ESP_LOGD(TAG, "Reset running_flow_");
-                running_flow_ = false;
-
                 this->read_memory_timeout_callback_.call();
-                ESP_LOGE(TAG, "Memory block not received in time. Reading canceled!");
+                ESP_LOGE(TAG, "First memory block not received in time. Reading canceled!");
+
+                // Complete this request and process next in queue
+                this->complete_current_flow();
             });
 
-            read_memory_block();
+            send_telegram(TELEGRAM_TYPE_READ_MEMORY_BLOCK, reading_memory_count_, 0, 300);
         }
 
         void TCBusDeviceComponent::read_memory_update(uint8_t index)
         {
-            if(running_flow_ || this->read_memory_update_flow_)
-            {
-                ESP_LOGE(TAG, "Another flow is already running");
-                return;
-            }
-
             if (this->serial_number_ == 0)
             {
                 ESP_LOGE(TAG, "Unable to read device memory without a serial number!");
@@ -732,46 +868,39 @@ namespace esphome
 
             if (this->model_data_.memory_size == 0)
             {
-                ESP_LOGE(TAG, "This model %s (Serial: %i) does not support reading memory!", model_to_string(this->model_), this->serial_number_);
+                ESP_LOGE(TAG, "The model %s (Serial: %i) does not support reading memory!", model_to_string(this->model_), this->serial_number_);
                 // Call timeout callback for unsupported models
                 this->read_memory_timeout_callback_.call();
                 return;
             }
-            else
-            {
-                ESP_LOGI(TAG, "Reading EEPROM for model %s (Serial: %i)...", model_to_string(this->model_), this->serial_number_);
-            }
 
-            ESP_LOGD(TAG, "Set running_flow_");
-            running_flow_ = true;
+            enqueue_flow(FLOW_READ_MEMORY_UPDATE, this, index);
+        }
+
+        void TCBusDeviceComponent::execute_read_memory_update(uint8_t index)
+        {
+            ESP_LOGI(TAG, "Read device memory:\n"
+                          "  Model: %s\n"
+                          "  Serial Number: %i",
+                          model_to_string(this->model_), this->serial_number_);
 
             send_telegram(TELEGRAM_TYPE_SELECT_DEVICE_GROUP, 0, this->model_data_.device_group);
             send_telegram(TELEGRAM_TYPE_SELECT_MEMORY_PAGE, 0, 0);
-  
-            ESP_LOGD(TAG, "Set read_memory_flow_");
-            this->read_memory_update_flow_ = true;
 
             reading_memory_count_ = (index / 4);
 
-            this->set_timeout("wait_for_memory_reading", 600, [this]()
+            this->set_timeout("wait_for_first_memory_block", 2000, [this]()
             {
                 reading_memory_count_ = 0;
                 reading_memory_max_ = 0;
 
-                ESP_LOGD(TAG, "Reset read_memory_update_flow_");
-                this->read_memory_update_flow_ = false;
+                ESP_LOGE(TAG, "Memory block not received in time. Reading canceled!");
 
-                ESP_LOGD(TAG, "Reset running_flow_");
-                running_flow_ = false;
+                // Complete this request and process next in queue
+                this->complete_current_flow();
             });
 
-            read_memory_block();
-        }
-
-        void TCBusDeviceComponent::read_memory_block()
-        {
-            ESP_LOGI(TAG, "Read 4 memory blocks, from %i to %i.", (reading_memory_count_ * 4), (reading_memory_count_ * 4) + 4);
-            send_telegram(TELEGRAM_TYPE_READ_MEMORY_BLOCK, reading_memory_count_, 0, 250);
+            send_telegram(TELEGRAM_TYPE_READ_MEMORY_BLOCK, reading_memory_count_, 0, 300);
         }
 
         uint8_t TCBusDeviceComponent::get_doorbell_button_memory_index(uint8_t row, uint8_t col)
@@ -1112,7 +1241,12 @@ namespace esphome
                 return false;
             }
 
-            ESP_LOGI(TAG, "Writing setting %s (%X) to EEPROM of %s (%i)...", setting_type_to_string(type), new_value, model_to_string(this->model_), this->serial_number_);
+            ESP_LOGI(TAG, "Write setting to device:\n"
+                          "  Setting: %s\n"
+                          "  Value: %X\n"
+                          "  Model: %s\n"
+                          "  Serial Number: %i",
+                          setting_type_to_string(type), new_value, model_to_string(this->model_), this->serial_number_);
             
             // Apply new data
             uint8_t shift = cellData.start_bit - cellData.length + 1;
@@ -1159,7 +1293,10 @@ namespace esphome
                 return false;
             }
 
-            ESP_LOGI(TAG, "Write memory buffer to EEPROM of %s (%i)...", model_to_string(this->model_), this->serial_number_);
+            ESP_LOGI(TAG, "Write memory buffer to device:\n"
+                          "  Model: %s\n"
+                          "  Serial Number: %i",
+                          model_to_string(this->model_), this->serial_number_);
 
             // Prepare Transmission
             send_telegram(TELEGRAM_TYPE_SELECT_DEVICE_GROUP, 0, this->model_data_.device_group);

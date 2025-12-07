@@ -13,7 +13,7 @@ esphome:
     name: "AzonInc.Doorman Standard"
     version: "2025.12.0"
   on_boot:
-    - priority: 600.0
+    - priority: 500.0
       then:
         - script.execute: set_unused_entities_internal
         - script.execute: boot_component_init

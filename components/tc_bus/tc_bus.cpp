@@ -119,6 +119,8 @@ namespace esphome
                 if (wait_for_data_telegram_)
                 {
                     this->cancel_timeout("wait_for_data_telegram");
+                    ESP_LOGD(TAG, "Reset wait_for_data_telegram_");
+                    this->wait_for_data_telegram_ = false;
 
                     ESP_LOGI(TAG,
                         "Received Data Telegram:\n"
@@ -126,9 +128,6 @@ namespace esphome
                         "  Response: %s",
                         telegram_data.payload,
                         YESNO(telegram_data.is_response));
-
-                    ESP_LOGD(TAG, "Reset wait_for_data_telegram_");
-                    this->wait_for_data_telegram_ = false;
                 }
                 else
                 {
@@ -143,6 +142,11 @@ namespace esphome
                         telegram_data.payload, 
                         telegram_data.serial_number, 
                         YESNO(telegram_data.is_response));
+
+                    // Additional information
+                    if(telegram_data.type == TELEGRAM_TYPE_READ_MEMORY_BLOCK) {
+                        ESP_LOGI(TAG, "  Description: Read 4 memory blocks, from %i to %i.", (telegram_data.address * 4), (telegram_data.address * 4) + 4);
+                    }
                 }
 
                 // Fire Callback
@@ -212,6 +216,11 @@ namespace esphome
                         telegram_data.payload, 
                         telegram_data.serial_number, 
                         YESNO(telegram_data.is_response));
+
+                    // Additional information
+                    if(telegram_data.type == TELEGRAM_TYPE_READ_MEMORY_BLOCK) {
+                        ESP_LOGI(TAG, "  Description: Read 4 memory blocks, from %i to %i.", (telegram_data.address * 4), (telegram_data.address * 4) + 4);
+                    }
                 }
             }
 
@@ -221,20 +230,20 @@ namespace esphome
             if (telegram_data.type == TELEGRAM_TYPE_START_TALKING_DOOR_CALL)
             {
                 bool door_readiness_state = telegram_data.payload == 1;
-                ESP_LOGI(TAG, "Door readiness: %s", YESNO(door_readiness_state));
+                ESP_LOGI(TAG, "  Door readiness: %s", YESNO(door_readiness_state));
             }
             else if (telegram_data.type == TELEGRAM_TYPE_START_TALKING)
             {
                 bool talk_mode = telegram_data.payload == 1;
-                ESP_LOGI(TAG, "Talk mode: %s", talk_mode ? "Full duplex / handsfree" : "half duplex");
+                ESP_LOGI(TAG, "  Talk mode: %s", talk_mode ? "Full duplex / handsfree" : "half duplex");
             }
             else if (telegram_data.type == TELEGRAM_TYPE_END_OF_DOOR_READINESS)
             {
-                ESP_LOGI(TAG, "Door readiness: %s", YESNO(false));
+                ESP_LOGI(TAG, "  Door readiness: %s", YESNO(false));
             }
             else if (telegram_data.type == TELEGRAM_TYPE_PROGRAMMING_MODE)
             {
-                ESP_LOGI(TAG, "Programming Mode: %s", YESNO(telegram_data.payload == 1));
+                ESP_LOGI(TAG, "  Programming Mode: %s", YESNO(telegram_data.payload == 1));
                 this->programming_mode_ = telegram_data.payload == 1;
             }
             else if (telegram_data.type == TELEGRAM_TYPE_SELECT_DEVICE_GROUP || telegram_data.type == TELEGRAM_TYPE_SELECT_DEVICE_GROUP_RESET)
@@ -270,7 +279,7 @@ namespace esphome
                 mac[1] = (telegram_data.payload >> 8) & 0xFF;
                 mac[2] = telegram_data.payload & 0xFF;
 
-                ESP_LOGI(TAG, "Discovered Doorman with MAC: %02X:%02X:%02X", mac[0], mac[1], mac[2]);
+                ESP_LOGI(TAG, "  Discovered Doorman MAC: %02X:%02X:%02X", mac[0], mac[1], mac[2]);
             }
 
             // Call remote listeners
@@ -524,7 +533,7 @@ namespace esphome
                         }
                         else
                         {
-                            ESP_LOGD(TAG, "Received telegram 0x%08X, but ignoring it as it matches the last sent telegram.", telegram);
+                            ESP_LOGV(TAG, "Received telegram 0x%08X, but ignoring it as it matches the last sent telegram.", telegram);
                         }
                         this->last_sent_telegram_ = -1;
                     }
@@ -616,9 +625,7 @@ namespace esphome
 
             // Start transmission with initial mark and space
             dst->mark(telegram_data.type == TELEGRAM_TYPE_ACK ? BUS_ACK_START_MS : BUS_CMD_START_MS);
-            ESP_LOGV(TAG, "mark start %i", BUS_CMD_START_MS);
             dst->space(telegram_data.is_long ? BUS_ONE_BIT_MS : BUS_ZERO_BIT_MS);
-            ESP_LOGV(TAG, "space lngth %i", telegram_data.is_long ? BUS_ONE_BIT_MS : BUS_ZERO_BIT_MS);
 
             // Calculate length based on telegram type
             // Acknowledge telegrams only have 4 bits if short
@@ -640,20 +647,16 @@ namespace esphome
                 if (i % 2 == 0)
                 {
                     dst->space(bit ? BUS_ONE_BIT_MS : BUS_ZERO_BIT_MS);
-                    ESP_LOGV(TAG, "space bit %i - %i", bit, bit ? BUS_ONE_BIT_MS : BUS_ZERO_BIT_MS);
                 }
                 else
                 {
                     dst->mark(bit ? BUS_ONE_BIT_MS : BUS_ZERO_BIT_MS);
-                    ESP_LOGV(TAG, "mark bit %i - %i", bit, bit ? BUS_ONE_BIT_MS : BUS_ZERO_BIT_MS);
                 }
             }
 
             dst->mark(checksm ? BUS_ONE_BIT_MS : BUS_ZERO_BIT_MS);
-            ESP_LOGV(TAG, "mark chksm %i", checksm ? BUS_ONE_BIT_MS : BUS_ZERO_BIT_MS);
 
             call.perform();
-            ESP_LOGV(TAG, "perform");
         }
 
         void TCBusComponent::set_programming_mode(bool enabled)

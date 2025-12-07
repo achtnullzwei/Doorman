@@ -6,7 +6,7 @@ namespace esphome
     {
         void IdentifyDeviceButton::press_action()
         {
-            this->parent_->request_version();
+            this->parent_->identify_device();
         }
 
         void ReadMemoryButton::press_action()

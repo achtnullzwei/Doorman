@@ -7,9 +7,7 @@ namespace esphome
     {
         void SerialNumberNumber::control(float value)
         {
-            this->publish_state(value);
-            this->parent_->set_serial_number(value);
-            this->parent_->save_preferences();
+            this->parent_->set_serial_number(value, true);
         }
 
         void VolumeHandsetDoorCallNumber::control(float value)

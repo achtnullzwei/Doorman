@@ -9,16 +9,26 @@ api:
       variables:
         telegram: string
       then:
-        - tc_bus.send:
-            telegram: !lambda |-
-              size_t pos;
-              uint32_t value = std::stoul(telegram, &pos, 16);
-              if (pos != telegram.length()) {
-                  return 0;
-              }
-              return value;
-            is_long: !lambda |-
-              return telegram.length() == 8;
+        - if:
+            condition:
+              lambda: 'return telegram.length() == 4 || telegram.length() == 8;'
+            then:
+              - tc_bus.send:
+                  telegram: !lambda |-
+                    size_t pos;
+                    uint32_t value = std::stoul(telegram, &pos, 16);
+                    if (pos != telegram.length()) {
+                        return 0;
+                    }
+                    return value;
+                  is_long: !lambda |-
+                    return telegram.length() == 8;
+              - api.respond:
+                  success: true
+            else:
+              - api.respond:
+                  success: false
+                  error_message: "Telegram length must be either 4 or 8!"
 
     - action: send_tc_telegram
       variables:
@@ -32,6 +42,8 @@ api:
             address: !lambda 'return address;'
             payload: !lambda 'return payload;'
             serial_number: !lambda 'return serial_number;'
+        - api.respond:
+            success: true
 
     - action: send_tc_is_telegram
       variables:
@@ -44,6 +56,8 @@ api:
             type: !lambda 'return string_to_telegram_type(type.c_str());'
             address: !lambda 'return address;'
             payload: !lambda 'return payload;'
+        - api.respond:
+            success: true
 
 tc_bus:
   on_telegram:

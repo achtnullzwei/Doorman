@@ -117,7 +117,6 @@ namespace esphome
             void set_rx(remote_receiver::RemoteReceiverComponent *rx) { this->rx_ = rx; }
 
             float get_setup_priority() const override { return setup_priority::BUS; }
-
             void setup() override;
             void dump_config() override;
             void loop() override;

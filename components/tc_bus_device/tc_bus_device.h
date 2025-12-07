@@ -2,6 +2,7 @@
 
 #include "esphome/components/tc_bus/tc_bus.h"
 #include "esphome/components/tc_bus/protocol.h"
+#include "esphome/components/tc_bus/queue.h"
 #include "util.h"
 
 #include "esphome/core/application.h"
@@ -28,184 +29,212 @@
 #include "esphome/components/switch/switch.h"
 #endif
 
-namespace esphome
+namespace esphome::tc_bus
 {
-    namespace tc_bus
+    // Queue configuration - max pending flows across all instances
+    constexpr size_t FLOW_QUEUE_SIZE = 10;
+
+    static const char* FLOW_QUEUE_TAG = "tc_bus_device.flow_queue";
+
+    enum FlowType
     {
-        static bool running_flow_ = false;
+        FLOW_NONE,
+        FLOW_READ_MEMORY,
+        FLOW_READ_MEMORY_UPDATE,
+        FLOW_IDENTIFY_DEVICE
+    };
 
 #ifdef USE_BINARY_SENSOR
-        class TCBusDeviceListener
-        {
-        public:
-            template<typename T> void set_type(T type) { this->type_ = type; }
-            template<typename T> void set_address(T address) { this->address_ = address; }
-            template<typename T> void set_payload(T payload) { this->payload_ = payload; }
+    class TCBusDeviceListener
+    {
+    public:
+        template<typename T> void set_type(T type) { this->type_ = type; }
+        template<typename T> void set_address(T address) { this->address_ = address; }
+        template<typename T> void set_payload(T payload) { this->payload_ = payload; }
 
-            void set_auto_off(uint16_t auto_off) { this->auto_off_ = auto_off; }
+        void set_auto_off(uint16_t auto_off) { this->auto_off_ = auto_off; }
 
-            virtual void turn_on(uint32_t *timer, uint16_t auto_off) {};
-            virtual void turn_off(uint32_t *timer) {};
+        virtual void turn_on(uint32_t *timer, uint16_t auto_off) {};
+        virtual void turn_off(uint32_t *timer) {};
 
-            uint32_t timer_;
-            uint16_t auto_off_;
+        uint32_t timer_;
+        uint16_t auto_off_;
 
-            TemplatableValue<TelegramType> type_{};
-            TemplatableValue<uint8_t> address_{};
-            TemplatableValue<uint32_t> payload_{};
-        };
+        TemplatableValue<TelegramType> type_{};
+        TemplatableValue<uint8_t> address_{};
+        TemplatableValue<uint32_t> payload_{};
+    };
 #endif
 
-        struct TCBusDeviceSettings
-        {
-            Model model;
-            uint32_t serial_number;
-            bool force_long_door_opener;
-        };
+    struct TCBusDeviceSettings
+    {
+        Model model;
+        uint32_t serial_number;
+        bool force_long_door_opener;
+    };
 
-        class TCBusDeviceComponent : public Component, public TCBusRemoteListener
-        {
+    class TCBusDeviceComponent : public Component, public TCBusRemoteListener
+    {
 #ifdef USE_SELECT
-            SUB_SELECT(model);
-            SUB_SELECT(ringtone_entrance_door_call);
-            SUB_SELECT(ringtone_second_entrance_door_call);
-            SUB_SELECT(ringtone_floor_call);
-            SUB_SELECT(ringtone_internal_call);
+        SUB_SELECT(model);
+        SUB_SELECT(ringtone_entrance_door_call);
+        SUB_SELECT(ringtone_second_entrance_door_call);
+        SUB_SELECT(ringtone_floor_call);
+        SUB_SELECT(ringtone_internal_call);
 #endif
 #ifdef USE_NUMBER
-            SUB_NUMBER(serial_number);
-            SUB_NUMBER(volume_handset_door_call);
-            SUB_NUMBER(volume_handset_internal_call);
-            SUB_NUMBER(volume_ringtone);
+        SUB_NUMBER(serial_number);
+        SUB_NUMBER(volume_handset_door_call);
+        SUB_NUMBER(volume_handset_internal_call);
+        SUB_NUMBER(volume_ringtone);
 #endif
 #ifdef USE_SWITCH
-            SUB_SWITCH(force_long_door_opener);
+        SUB_SWITCH(force_long_door_opener);
 #endif
 #ifdef USE_BUTTON
-            SUB_BUTTON(read_memory);
-            SUB_BUTTON(identify_device);
+        SUB_BUTTON(read_memory);
+        SUB_BUTTON(identify_device);
 #endif
 
-        public:
-            const char* TAG = "tc_bus_device";
+    public:
+        const char* TAG = "tc_bus_device";
 
-            void set_internal_id(const std::string &internal_id) { this->internal_id_.assign(internal_id); }
-            void set_tc_bus_component(TCBusComponent *bus) { this->tc_bus_ = bus; }
+        void set_internal_id(const std::string &internal_id) { this->internal_id_.assign(internal_id); }
+        void set_tc_bus_component(TCBusComponent *bus) { this->tc_bus_ = bus; }
+        void set_device_group(DeviceGroup device_group) { this->device_group_ = device_group; }
+        void set_force_long_door_opener(bool force_long_door_opener) { this->force_long_door_opener_ = force_long_door_opener; }
+        void set_serial_number(uint32_t serial_number, bool save = true);
+        void set_model(Model model, bool save = true);
+        void set_current_flow(FlowType type) { this->current_flow_ = type; }
 
-            void set_serial_number(uint32_t serial_number) { this->serial_number_ = serial_number; }
-            void set_device_group(DeviceGroup device_group) { this->device_group_ = device_group; }
-            void set_force_long_door_opener(bool force_long_door_opener) { this->force_long_door_opener_ = force_long_door_opener; }
-            void set_model(Model model, bool save = true);
+        float get_setup_priority() const override { return setup_priority::BUS - 1.0f; }
+        void setup() override;
+        void dump_config() override;
+        void loop() override;
 
-            void setup() override;
-            void dump_config() override;
-            void loop() override;
+        // Telegram handling
+        bool on_receive(TelegramData telegram_data, bool received) override;
+        void send_telegram(TelegramType type, uint8_t address = 0, uint32_t payload = 0, uint32_t wait_duration = 200);
 
-            // Telegram handling
-            bool on_receive(TelegramData telegram_data, bool received) override;
-            void send_telegram(TelegramType type, uint8_t address = 0, uint32_t payload = 0, uint32_t wait_duration = 200);
+        // Telegram binary listeners
+        #ifdef USE_BINARY_SENSOR
+        void register_listener(TCBusDeviceListener *listener);
+        #endif
 
-            // Telegram binary listeners
-            #ifdef USE_BINARY_SENSOR
-            void register_listener(TCBusDeviceListener *listener);
-            #endif
 
-            // Memory reading
-            void read_memory();
-            void read_memory_update(uint8_t index);
-            void read_memory_block();
-            bool write_memory();
-            bool memory_buffer_empty() { return this->memory_buffer_.empty(); }
+        // Flow Queue Management
+        static void process_flow_queue();
+        static void enqueue_flow(FlowType type, TCBusDeviceComponent *component, uint8_t index = 0);
+        void complete_current_flow();
 
-            // Bus Device Settings
-            bool supports_setting(SettingType type);
-            uint8_t get_setting(SettingType type);
-            bool update_setting(SettingType type, uint8_t new_value);
-            void publish_settings();
+        // Flow: Memory reading
+        void read_memory();
+        void read_memory_update(uint8_t index);
+        bool write_memory();
+        bool memory_buffer_empty() { return this->memory_buffer_.empty(); }
 
-            uint8_t get_memory_byte(uint8_t index);
+        // Flow: Identify model
+        void identify_device();
 
-            uint8_t get_doorbell_button_memory_index(uint8_t row, uint8_t col);
-            DoorbellButtonConfig get_doorbell_button(uint8_t row);
-            DoorbellButtonConfig get_doorbell_button(uint8_t row, uint8_t col);
-            bool update_doorbell_button(uint8_t row, DoorbellButtonConfig data);
-            bool update_doorbell_button(uint8_t row, uint8_t col, DoorbellButtonConfig data);
+        // Bus Device Settings
+        bool supports_setting(SettingType type);
+        uint8_t get_setting(SettingType type);
+        bool update_setting(SettingType type, uint8_t new_value);
+        void publish_settings();
 
-            // Identification
-            void request_version();
+        uint8_t get_memory_byte(uint8_t index);
 
-            // Preferences
-            void save_preferences();
+        uint8_t get_doorbell_button_memory_index(uint8_t row, uint8_t col);
+        DoorbellButtonConfig get_doorbell_button(uint8_t row);
+        DoorbellButtonConfig get_doorbell_button(uint8_t row, uint8_t col);
+        bool update_doorbell_button(uint8_t row, DoorbellButtonConfig data);
+        bool update_doorbell_button(uint8_t row, uint8_t col, DoorbellButtonConfig data);
 
-            ESPPreferenceObject &get_pref()
-            {
-                return this->pref_;
-            }
+        // Preferences
+        void save_preferences();
 
-            // Automation Callbacks
-            void add_read_memory_complete_callback(std::function<void(std::vector<uint8_t>)> &&callback)
-            {
-                this->read_memory_complete_callback_.add(std::move(callback));
-            }
+        ESPPreferenceObject &get_pref()
+        {
+            return this->pref_;
+        }
 
-            void add_read_memory_timeout_callback(std::function<void()> &&callback)
-            {
-                this->read_memory_timeout_callback_.add(std::move(callback));
-            }
+        // Automation Callbacks
+        void add_read_memory_complete_callback(std::function<void(std::vector<uint8_t>)> &&callback)
+        {
+            this->read_memory_complete_callback_.add(std::move(callback));
+        }
 
-            void add_identify_complete_callback(std::function<void(ModelData)> &&callback)
-            {
-                this->identify_complete_callback_.add(std::move(callback));
-            }
+        void add_read_memory_timeout_callback(std::function<void()> &&callback)
+        {
+            this->read_memory_timeout_callback_.add(std::move(callback));
+        }
 
-            void add_identify_unknown_callback(std::function<void()> &&callback)
-            {
-                this->identify_unknown_callback_.add(std::move(callback));
-            }
+        void add_identify_complete_callback(std::function<void(ModelData)> &&callback)
+        {
+            this->identify_complete_callback_.add(std::move(callback));
+        }
 
-            void add_identify_timeout_callback(std::function<void()> &&callback)
-            {
-                this->identify_timeout_callback_.add(std::move(callback));
-            }
-            
-        protected:
-            // Telegram binary listeners
-            #ifdef USE_BINARY_SENSOR
-            std::vector<TCBusDeviceListener *> listeners_{};
-            #endif
+        void add_identify_unknown_callback(std::function<void()> &&callback)
+        {
+            this->identify_unknown_callback_.add(std::move(callback));
+        }
 
-            // Indoor station data
-            Model model_;
-            ModelData model_data_;
-            uint32_t serial_number_;
-            DeviceGroup device_group_;
-            bool force_long_door_opener_;
+        void add_identify_timeout_callback(std::function<void()> &&callback)
+        {
+            this->identify_timeout_callback_.add(std::move(callback));
+        }
+        
+    protected:
+        // Telegram binary listeners
+        #ifdef USE_BINARY_SENSOR
+        std::vector<TCBusDeviceListener *> listeners_{};
+        #endif
 
-            // Memory reading
-            bool read_memory_flow_ = false;
-            bool read_memory_update_flow_ = false;
-            std::vector<uint8_t> memory_buffer_;
-            uint8_t reading_memory_count_ = 0;
-            uint8_t reading_memory_max_ = 0;
+        // Indoor station data
+        Model model_;
+        ModelData model_data_;
+        uint32_t serial_number_;
+        DeviceGroup device_group_;
+        bool force_long_door_opener_;
 
-            // Identification
-            bool identify_model_flow_ = false;
+        // Flow Queue Management
+        FlowType current_flow_ = FLOW_NONE;
 
-            // Preferences
-            ESPPreferenceObject pref_;
+        // Memory reading
+        std::vector<uint8_t> memory_buffer_;
+        uint8_t reading_memory_count_ = 0;
+        uint8_t reading_memory_max_ = 0;
 
-            // Automation Callbacks
-            CallbackManager<void(std::vector<uint8_t>)> read_memory_complete_callback_{};
-            CallbackManager<void()> read_memory_timeout_callback_{};
-            CallbackManager<void(ModelData)> identify_complete_callback_{};
-            CallbackManager<void()> identify_unknown_callback_{};
-            CallbackManager<void()> identify_timeout_callback_{};
+        // Preferences
+        ESPPreferenceObject pref_;
 
-            // Misc
-            std::string internal_id_;
-            TCBusComponent *tc_bus_{nullptr};
-        };
+        // Automation Callbacks
+        CallbackManager<void(std::vector<uint8_t>)> read_memory_complete_callback_{};
+        CallbackManager<void()> read_memory_timeout_callback_{};
+        CallbackManager<void(ModelData)> identify_complete_callback_{};
+        CallbackManager<void()> identify_unknown_callback_{};
+        CallbackManager<void()> identify_timeout_callback_{};
 
-    } // namespace tc_bus
+        // Misc
+        std::string internal_id_;
+        TCBusComponent *tc_bus_{nullptr};
 
-} // namespace esphome
+    private:
+        // Flow Queue Management
+        void execute_read_memory();
+        void execute_read_memory_update(uint8_t index);
+        void execute_identify_device();
+    };
+
+    // Flow Queue
+    struct TCBusDeviceFlowQueueItem
+    {
+        FlowType type;
+        TCBusDeviceComponent *component;
+        uint8_t index; // Only used for READ_MEMORY_UPDATE
+    };
+
+    static bool s_running_flow = false;
+    static uint32_t s_last_flow_completion_time = 0;
+    static FixedQueue<TCBusDeviceFlowQueueItem, FLOW_QUEUE_SIZE> s_flow_queue;
+}
