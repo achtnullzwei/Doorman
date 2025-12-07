@@ -94,7 +94,7 @@ namespace esphome
       EventEntity* add_event(event::Event* eventPtr);
 
       std::vector<DoorbellEntity*> doorbells;
-      DoorbellEntity* add_doorbell(event::Event* eventPtr, lock::Lock* lockPtr = nullptr, light::LightState* lightPtr = nullptr);
+      DoorbellEntity* add_doorbell(event::Event* eventPtr, lock::Lock* lockPtr = nullptr);
       #endif
 
       #ifdef USE_BUTTON

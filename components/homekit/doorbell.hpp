@@ -22,7 +22,6 @@ namespace esphome
       static constexpr const char* TAG = "homekit.doorbell";
       event::Event* eventPtr;
       lock::Lock* lockPtr;
-      light::LightState* lightPtr;
       hap_acc_t* accessory_ = nullptr;
 
       void on_event_update(event::Event* event_entity, std::string event_type) {
@@ -87,24 +86,6 @@ namespace esphome
         }
       }
 
-      void on_light_update(light::LightState* light_entity) {
-        ESP_LOGD(TAG, "%s value: %s", light_entity->get_name().c_str(), ONOFF(light_entity->current_values.is_on()));
-
-        hap_acc_t* acc = accessory_;
-        if (!acc) return;
-
-        hap_serv_t* hs = hap_acc_get_serv_by_uuid(acc, HAP_SERV_UUID_LIGHTBULB);
-        if (!hs) return;
-
-        hap_char_t* on_char = hap_serv_get_char_by_uuid(hs, HAP_CHAR_UUID_ON);
-        if (!on_char) return;
-
-        hap_val_t state;
-        state.b = light_entity->current_values.get_state();
-        hap_char_update_val(on_char, &state);
-      }
-
-
       static int lock_write(hap_write_data_t write_data[], int count, void* serv_priv, void* write_priv) {
         lock::Lock* lockPtr = (lock::Lock*)serv_priv;
         ESP_LOGD("lock_write", "Write called for Accessory '%s'(%s)", lockPtr->get_name().c_str(), std::to_string(lockPtr->get_object_id_hash()).c_str());
@@ -131,27 +112,6 @@ namespace esphome
         return ret;
       }
 
-      static int light_write(hap_write_data_t write_data[], int count, void* serv_priv, void* write_priv) {
-        light::LightState* lightPtr = (light::LightState*)serv_priv;
-        ESP_LOGD(TAG, "Write called for Accessory %s (%s)", std::to_string(lightPtr->get_object_id_hash()).c_str(), lightPtr->get_name().c_str());
-        int i, ret = HAP_SUCCESS;
-        hap_write_data_t* write;
-        for (i = 0; i < count; i++) {
-          write = &write_data[i];
-          if (!strcmp(hap_char_get_type_uuid(write->hc), HAP_CHAR_UUID_ON)) {
-            ESP_LOGD(TAG, "Received Write for Light '%s' state: %s", lightPtr->get_name().c_str(), write->val.b ? "On" : "Off");
-            ESP_LOGD(TAG, "[STATE] CURRENT STATE: %d", (int)(lightPtr->current_values.get_state() * 100));
-            write->val.b ? lightPtr->turn_on().set_save(true).perform() : lightPtr->turn_off().set_save(true).perform();
-            hap_char_update_val(write->hc, &(write->val));
-            *(write->status) = HAP_STATUS_SUCCESS;
-          }
-          else {
-            *(write->status) = HAP_STATUS_RES_ABSENT;
-          }
-        }
-        return ret;
-      }
-
       static int acc_identify(hap_acc_t* ha) {
         auto it = acc_instance_map.find(ha);
         if (it != acc_instance_map.end()) {
@@ -170,7 +130,7 @@ namespace esphome
       std::vector<HKIdentifyTrigger *> triggers_identify_;
 
     public:
-      DoorbellEntity(event::Event* eventPtr, lock::Lock* lockPtr = nullptr, light::LightState* lightPtr = nullptr): eventPtr(eventPtr), lockPtr(lockPtr), lightPtr(lightPtr) {}
+      DoorbellEntity(event::Event* eventPtr, lock::Lock* lockPtr = nullptr): eventPtr(eventPtr), lockPtr(lockPtr) {}
 
       event::Event* getEventEntity() {
         return eventPtr;
@@ -178,10 +138,6 @@ namespace esphome
 
       lock::Lock* getLockEntity() {
         return lockPtr;
-      }
-
-      light::LightState* getLightEntity() {
-        return lightPtr;
       }
 
       void register_on_identify_trigger(HKIdentifyTrigger* trig) {
@@ -193,10 +149,6 @@ namespace esphome
 
         if(lockPtr != nullptr) {
           ESP_LOGCONFIG(TAG, "Setting up doorbell lock '%s'", lockPtr->get_name().c_str());
-        }
-
-        if(lightPtr != nullptr) {
-          ESP_LOGCONFIG(TAG, "Setting up doorbell light '%s'", lightPtr->get_name().c_str());
         }
 
         // Doorbell Service
@@ -239,16 +191,6 @@ namespace esphome
             hap_acc_add_serv(accessory, lockService);
           }
 
-          // Light Service
-          if (lightPtr != nullptr) {
-            hap_serv_t* lightService = hap_serv_lightbulb_create(false);
-            hap_serv_add_char(lightService, hap_char_name_create(strdup_psram(lightPtr->get_name().c_str())));
-            hap_serv_set_priv(lightService, lightPtr);
-            hap_serv_set_write_cb(lightService, light_write);
-            hap_serv_link_serv(doorbellService, lightService); // Link the Lock Service to the Doorbell Service
-            hap_acc_add_serv(accessory, lightService);
-          }
-
           /* Add the Accessory to the HomeKit Database */
           uint32_t combined_id = eventPtr->get_object_id_hash() ^ (lockPtr ? lockPtr->get_object_id_hash() : 0);
           hap_add_bridged_accessory(accessory, hap_get_unique_aid(std::to_string(combined_id).c_str()));
@@ -259,16 +201,10 @@ namespace esphome
           if (lockPtr != nullptr && !lockPtr->is_internal())
               lockPtr->add_on_state_callback([this]() { this->on_lock_update(lockPtr); });
 
-          if (lightPtr != nullptr && !lightPtr->is_internal())
-              lightPtr->add_new_target_state_reached_callback([this]() { this->on_light_update(lightPtr); });
-
           ESP_LOGI(TAG, "Doorbell Event '%s' linked to HomeKit", eventPtr->get_name().c_str());
           
           if(lockPtr != nullptr)
             ESP_LOGI(TAG, "  Lock '%s' linked to Doorbell '%s'", lockPtr->get_name().c_str(), eventPtr->get_name().c_str());
-
-          if(lightPtr != nullptr)
-            ESP_LOGI(TAG, "  Light '%s' linked to Doorbell '%s'", lightPtr->get_name().c_str(), eventPtr->get_name().c_str());
           
         }
       }

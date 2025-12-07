@@ -72,7 +72,6 @@ CONFIG_SCHEMA = cv.All(cv.Schema({
     cv.Optional(CONF_DOORBELL): cv.ensure_list({
         cv.Required(CONF_ID): cv.use_id(event.Event),
         cv.Optional(CONF_LOCK_ID): cv.use_id(lock.Lock),
-        cv.Optional(CONF_LIGHT_ID): cv.use_id(light.LightState),
         cv.Optional(CONF_IDENTIFY): automation.validate_automation({
             cv.GenerateID(CONF_TRIGGER_ID): cv.declare_id(OnHKIdentifyTrigger),
         }),
@@ -189,11 +188,10 @@ async def to_code(config):
         for l in config["doorbell"]:
             event_ptr = await cg.get_variable(l['id'])
             lock_ptr = await cg.get_variable(l[CONF_LOCK_ID]) if CONF_LOCK_ID in l else cg.nullptr
-            light_ptr = await cg.get_variable(l[CONF_LIGHT_ID]) if CONF_LIGHT_ID in l else cg.nullptr
 
             doorbell_entity = cg.Pvariable(
                 ID(f"{l['id'].id}_hk_doorbell_entity", type=DoorbellEntity),
-                var.add_doorbell(event_ptr, lock_ptr, light_ptr)
+                var.add_doorbell(event_ptr, lock_ptr)
             )
 
             for conf in l.get(CONF_IDENTIFY, []):

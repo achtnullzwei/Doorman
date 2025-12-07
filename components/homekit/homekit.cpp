@@ -136,9 +136,6 @@ namespace esphome
           if (v->getLockEntity() != nullptr) {
             ESP_LOGCONFIG(TAG, "      '%s'", v->getLockEntity()->get_name().c_str());
           }
-          if (v->getLightEntity() != nullptr) {
-            ESP_LOGCONFIG(TAG, "      '%s'", v->getLightEntity()->get_name().c_str());
-          }
         }
       }
       #endif
@@ -193,8 +190,8 @@ namespace esphome
       return events.back();
     }
 
-    DoorbellEntity* HAPAccessory::add_doorbell(event::Event* eventPtr, lock::Lock* lockPtr, light::LightState* lightPtr) {
-      doorbells.push_back(new DoorbellEntity(eventPtr, lockPtr, lightPtr));
+    DoorbellEntity* HAPAccessory::add_doorbell(event::Event* eventPtr, lock::Lock* lockPtr) {
+      doorbells.push_back(new DoorbellEntity(eventPtr, lockPtr));
       return doorbells.back();
     }
     #endif

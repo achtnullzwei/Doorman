@@ -8,13 +8,15 @@
 #include <map>
 #include "esphome/components/homekit_bridge/const.h"
 #include "esphome/components/homekit_bridge/util.h"
+#include "esphome/components/light/light_state.h"
+
 #include "automation.h"
 
 namespace esphome
 {
   namespace homekit
   {
-    class LightEntity
+    class LightEntity : public light::LightTargetStateReachedListener
     {
       static std::unordered_map<hap_acc_t*, LightEntity*> acc_instance_map;
 
@@ -165,8 +167,14 @@ namespace esphome
           triggers_identify_.push_back(trig);
       }
 
+      void on_light_target_state_reached() override {
+        this->on_entity_update(entityPtr);
+      }
+
       void setup() {
         ESP_LOGCONFIG(TAG, "Setting up light '%s'", entityPtr->get_name().c_str());
+
+        entityPtr->add_target_state_reached_listener(this);
 
         hap_acc_cfg_t acc_cfg = {
           .name = strdup_psram(entityPtr->get_name().c_str()),
@@ -216,9 +224,6 @@ namespace esphome
 
         /* Add the Accessory to the HomeKit Database */
         hap_add_bridged_accessory(accessory, hap_get_unique_aid(std::to_string(entityPtr->get_object_id_hash()).c_str()));
-
-        if (!entityPtr->is_internal())
-          entityPtr->add_new_target_state_reached_callback([this]() { this->on_entity_update(entityPtr); });
 
         ESP_LOGI(TAG, "Light '%s' linked to HomeKit", entityPtr->get_name().c_str());
       }
