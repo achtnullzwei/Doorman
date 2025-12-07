@@ -260,7 +260,7 @@ namespace esphome
               lockPtr->add_on_state_callback([this]() { this->on_lock_update(lockPtr); });
 
           if (lightPtr != nullptr && !lightPtr->is_internal())
-              lightPtr->add_target_state_reached_callback([this]() { this->on_light_update(lightPtr); });
+              lightPtr->add_new_target_state_reached_callback([this]() { this->on_light_update(lightPtr); });
 
           ESP_LOGI(TAG, "Doorbell Event '%s' linked to HomeKit", eventPtr->get_name().c_str());
           
