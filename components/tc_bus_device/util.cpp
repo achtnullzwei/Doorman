@@ -87,6 +87,21 @@ namespace esphome
             return "NONE";
         }
 
+        const char* device_group_to_string(uint8_t device_group)
+        {
+            if(device_group == 0 || device_group == DEVICE_GROUP_INDOOR_STATION) {
+                return "Indoor Station";
+            } else if(device_group == DEVICE_GROUP_OUTDOOR_STATION) {
+                return "Outdoor Station";
+            } else if(device_group == DEVICE_GROUP_CONTROLLER) {
+                return "Controller";
+            } else if(device_group == DEVICE_GROUP_EXTENSION) {
+                return "Extension";
+            } else {
+                return "Unknown";
+            }
+        }
+
         Model identifier_string_to_model(const uint8_t& device_group, const char* model_key, const uint8_t& hw_version, const uint32_t& fw_version)
         {
             if(device_group == 0 || device_group == 1)

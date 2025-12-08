@@ -190,8 +190,7 @@ namespace esphome
         void TCBusDeviceComponent::dump_config()
         {
             ESP_LOGCONFIG(TAG, "TC:BUS Device:");
-
-            ESP_LOGCONFIG(TAG, "  Device Group: %d", this->device_group_);
+            ESP_LOGCONFIG(TAG, "  Device Group: %s", device_group_to_string(this->device_group_));
         }
 
         void TCBusDeviceComponent::loop()
@@ -221,11 +220,13 @@ namespace esphome
                 {
                     if (this->current_flow_ == FLOW_READ_MEMORY)
                     {
-                        ESP_LOGI(TAG, "Received 4 bytes of device memory:\n"
+                        uint8_t percent = ((reading_memory_count_ + 1) * 100) / reading_memory_max_;
+
+                        ESP_LOGI(TAG, "Received device memory (%i%%):\n"
                                       "  Start address: %i\n"
                                       "  End address: %i\n"
-                                      "  Data: 0x%08X", 
-                                      (reading_memory_count_ * 4), (reading_memory_count_ * 4) + 4, telegram_data.raw);
+                                      "  Block Data: %s",
+                                      percent, (reading_memory_count_ * 4), (reading_memory_count_ * 4) + 4, format_hex_pretty(telegram_data.raw, ' ', false).c_str());
 
                         this->cancel_timeout("wait_for_first_memory_block");
 
@@ -241,10 +242,8 @@ namespace esphome
                         // Memory reading complete
                         if (reading_memory_count_ == reading_memory_max_)
                         {
-                            ESP_LOGI(TAG, "Device memory:\n"
-                                          "  Size: %i Bytes",
-                                          memory_buffer_.size());
-                            ESP_LOGD(TAG, "  Data: %s", format_hex_pretty(memory_buffer_, ' ', false).c_str());
+                            ESP_LOGI(TAG, "  Total Size: %i Bytes", memory_buffer_.size());
+                            ESP_LOGD(TAG, "  Buffer: %s", format_hex_pretty(memory_buffer_, ' ', false).c_str());
 
                             this->read_memory_complete_callback_.call(memory_buffer_);
 
@@ -263,11 +262,11 @@ namespace esphome
                     }
                     else if (current_flow_ == FLOW_READ_MEMORY_UPDATE)
                     {
-                        ESP_LOGI(TAG, "Received 4 bytes of device memory:\n"
+                        ESP_LOGI(TAG, "Received requested device memory block:\n"
                                       "  Start address: %i\n"
                                       "  End address: %i\n"
-                                      "  Data: 0x%08X", 
-                                      (reading_memory_count_ * 4), (reading_memory_count_ * 4) + 4, telegram_data.raw);
+                                      "  Block Data: %s", 
+                                      (reading_memory_count_ * 4), (reading_memory_count_ * 4) + 4, format_hex_pretty(telegram_data.raw, ' ', false).c_str());
 
                         this->cancel_timeout("wait_for_first_memory_block");
 
@@ -380,11 +379,11 @@ namespace esphome
                             device.memory_size = getModelData(device.model).memory_size;
 
                             ESP_LOGI(TAG, "Device identified:\n"
-                                          "  Device Group: %i\n"
+                                          "  Device Group: %s\n"
                                           "  Model: %s\n"
                                           "  Version: v%i\n"
                                           "  Firmware: %i.%i.%i",
-                                          device.device_group,
+                                          device_group_to_string(device.device_group),
                                           model_to_string(device.model),
                                           device.hardware_version,
                                           device.firmware_major,
@@ -401,8 +400,11 @@ namespace esphome
                         }
                         else
                         {
-                            ESP_LOGE(TAG, "Unable to identify Hardware! Unknown model. Data received: %s", telegram_data.hex);
-                            ESP_LOGW(TAG, "Please open an issue and provide your logs in order to implement support for this model.");
+                            ESP_LOGE(TAG, "Unable to identify device:\n"
+                                          "  Reason: Unknown model"
+                                          "  Data received: %s"
+                                          "  Note: Please open an issue and provide your logs in order to implement support for this device model.",
+                                          telegram_data.hex);
                             this->identify_unknown_callback_.call();
                         }
 
@@ -444,10 +446,13 @@ namespace esphome
                 return;
             }
 
+            ESP_LOGI(TAG, "Device Settings:\n"
+                          "  Device Group: %s\n"
+                          "  Serial Number: %i",
+                          device_group_to_string(this->device_group_), this->serial_number_);
+
             if(this->device_group_ == DEVICE_GROUP_INDOOR_STATION)
             {
-                ESP_LOGI(TAG, "Indoor Station Settings:");
-
                 if(supports_setting(SETTING_VOLUME_RINGTONE))
                 {
                     ESP_LOGI(TAG, "  Ringtone volume: %i", get_setting(SETTING_VOLUME_RINGTONE));
@@ -521,8 +526,6 @@ namespace esphome
             }
             else if(this->device_group_ == DEVICE_GROUP_OUTDOOR_STATION)
             {
-                ESP_LOGI(TAG, "Outdoor Station Settings:");
-
                 if(supports_setting(SETTING_AS_ADDRESS))
                 {
                     ESP_LOGI(TAG, "  Address: %i", get_setting(SETTING_AS_ADDRESS));
@@ -616,7 +619,7 @@ namespace esphome
             else
             {
                 // Other devices
-                ESP_LOGW(TAG, "Can't publish settings for this device group - not implemented yet");
+                ESP_LOGW(TAG, "  Note: This Device Group is not implemented yet!");
             }
         }
 
@@ -662,9 +665,9 @@ namespace esphome
 
                 // First try with group 0
                 ESP_LOGI(TAG, "Identify device:\n"
-                              "  Device Group: %i\n"
+                              "  Device Group: %i (%i)\n"
                               "  Serial Number: %i",
-                              0, this->serial_number_);
+                              device_group_to_string(DEVICE_GROUP_INDOOR_STATION), 0, this->serial_number_);
 
                 send_telegram(TELEGRAM_TYPE_SELECT_DEVICE_GROUP, 0, 0, 400); // group 0
                 send_telegram(TELEGRAM_TYPE_REQUEST_VERSION, 0, 0, 400);
@@ -674,9 +677,9 @@ namespace esphome
                     // Didn't receive identify result of group 0
                     // Second try with group 1
                     ESP_LOGI(TAG, "Identify device:\n"
-                                  "  Device Group: %i\n"
+                                  "  Device Group: %i (%i)\n"
                                   "  Serial Number: %i",
-                                  1, this->serial_number_);
+                                  device_group_to_string(DEVICE_GROUP_INDOOR_STATION), 1, this->serial_number_);
                     send_telegram(TELEGRAM_TYPE_SELECT_DEVICE_GROUP, 0, 1, 400); // group 1
                     send_telegram(TELEGRAM_TYPE_REQUEST_VERSION, 0, 0, 400);
 
@@ -699,9 +702,9 @@ namespace esphome
 
                 // Use device group if not 0 and 1
                 ESP_LOGI(TAG, "Identify device:\n"
-                              "  Device Group: %i\n"
+                              "  Device Group: %s\n"
                               "  Serial Number: %i",
-                              (uint8_t)this->device_group_, this->serial_number_);
+                              device_group_to_string(this->device_group_), this->serial_number_);
                 send_telegram(TELEGRAM_TYPE_SELECT_DEVICE_GROUP, 0, (uint8_t)this->device_group_, 400);
                 send_telegram(TELEGRAM_TYPE_REQUEST_VERSION, 0, 0, 400);
 
@@ -824,9 +827,10 @@ namespace esphome
         void TCBusDeviceComponent::execute_read_memory()
         {
             ESP_LOGI(TAG, "Read device memory:\n"
+                          "  Device Group: %s\n"
                           "  Model: %s\n"
                           "  Serial Number: %i",
-                          model_to_string(this->model_), this->serial_number_);
+                          device_group_to_string(this->device_group_), model_to_string(this->model_), this->serial_number_);
 
             send_telegram(TELEGRAM_TYPE_SELECT_DEVICE_GROUP, 0, this->model_data_.device_group);
             send_telegram(TELEGRAM_TYPE_SELECT_MEMORY_PAGE, 0, 0);
@@ -880,9 +884,10 @@ namespace esphome
         void TCBusDeviceComponent::execute_read_memory_update(uint8_t index)
         {
             ESP_LOGI(TAG, "Read device memory:\n"
+                          "  Device Group: %s\n"
                           "  Model: %s\n"
                           "  Serial Number: %i",
-                          model_to_string(this->model_), this->serial_number_);
+                          device_group_to_string(this->device_group_), model_to_string(this->model_), this->serial_number_);
 
             send_telegram(TELEGRAM_TYPE_SELECT_DEVICE_GROUP, 0, this->model_data_.device_group);
             send_telegram(TELEGRAM_TYPE_SELECT_MEMORY_PAGE, 0, 0);
@@ -1069,6 +1074,7 @@ namespace esphome
 
             uint8_t base_index = get_doorbell_button_memory_index(row, col);
             if (base_index == 0) {
+                ESP_LOGW(TAG, "No memory index for button found!");
                 return button;
             }
 
@@ -1121,6 +1127,7 @@ namespace esphome
             uint8_t base_index = get_doorbell_button_memory_index(row, col);
             if (base_index == 0)
             {
+                ESP_LOGE(TAG, "No memory index for button found!");
                 return false;
             }
 
@@ -1199,18 +1206,16 @@ namespace esphome
 
             // Get Setting Cell Data by Model
             SettingCellData cellData = getSettingCellData(type, this->model_);
-            if (cellData.index != 0)
-            {
-                uint8_t shift = cellData.start_bit - cellData.length + 1;
-                uint8_t mask = (1 << cellData.length) - 1;
-                uint8_t value = (memory_buffer_[cellData.index] >> shift) & mask;
-                return value;
-            }
-            else
+            if (cellData.index == 0)
             {
                 ESP_LOGV(TAG, "The setting '%s' is not available for model '%s'.", setting_type_to_string(type), model_to_string(this->model_));
                 return 0;
             }
+
+            uint8_t shift = cellData.start_bit - cellData.length + 1;
+            uint8_t mask = (1 << cellData.length) - 1;
+            uint8_t value = (memory_buffer_[cellData.index] >> shift) & mask;
+            return value;
         }
 
         bool TCBusDeviceComponent::update_setting(SettingType type, uint8_t new_value)
@@ -1242,11 +1247,12 @@ namespace esphome
             }
 
             ESP_LOGI(TAG, "Write setting to device:\n"
-                          "  Setting: %s\n"
-                          "  Value: %X\n"
+                          "  Device Group: %s\n"
                           "  Model: %s\n"
-                          "  Serial Number: %i",
-                          setting_type_to_string(type), new_value, model_to_string(this->model_), this->serial_number_);
+                          "  Serial Number: %i"
+                          "  Setting: %s\n"
+                          "  Value: %X",
+                          device_group_to_string(this->device_group_), (this->model_), this->serial_number_, setting_type_to_string(type), new_value);
             
             // Apply new data
             uint8_t shift = cellData.start_bit - cellData.length + 1;
@@ -1294,9 +1300,12 @@ namespace esphome
             }
 
             ESP_LOGI(TAG, "Write memory buffer to device:\n"
+                          "  Device Group: %s\n"
                           "  Model: %s\n"
-                          "  Serial Number: %i",
-                          model_to_string(this->model_), this->serial_number_);
+                          "  Serial Number: %i"
+                          "  Size: %i Bytes",
+                          device_group_to_string(this->device_group_), (this->model_), this->serial_number_, this->memory_buffer_.size());
+            ESP_LOGD(TAG, "  Data: %s", format_hex_pretty(this->memory_buffer_, ' ', false).c_str());
 
             // Prepare Transmission
             send_telegram(TELEGRAM_TYPE_SELECT_DEVICE_GROUP, 0, this->model_data_.device_group);

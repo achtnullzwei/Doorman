@@ -205,6 +205,8 @@ namespace esphome
         const char* doorbell_button_action_to_string(DoorbellButtonAction action);
         DoorbellButtonAction string_to_doorbell_button_action(const char* str);
 
+        const char* device_group_to_string(uint8_t device_group);
+
         SettingCellData getSettingCellData(SettingType setting, Model model);
         ModelData getModelData(Model model = MODEL_NONE);
 
