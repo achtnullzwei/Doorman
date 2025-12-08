@@ -65,9 +65,9 @@ const allCountries = [
 
 export default {
     data() {
-        const standardTrackingDetails = 'Choose this option if you are comfortable with not being able to track the shipment. Lost packages cannot be refunded or replaced.';
-
-        const trackedTrackingDetails = 'Recommended for reliable delivery and shipment visibility. Lost packages may be eligible for investigation or claim.';
+        const envelopeTrackingDetails = 'This option is similar to Parcel but intended for smaller, low-quantity orders.';
+        const parcelTrackingDetails = 'Choose this option if you are comfortable with not being able to track the shipment. Lost packages cannot be refunded or replaced.';
+        const packageTrackingDetails = 'Recommended for reliable delivery and shipment visibility with <u>tracking</u>. Lost packages may be eligible for investigation or claim.';
 
         return {
             errors: {
@@ -98,7 +98,7 @@ export default {
                 product: 'pcb',
                 amount: 1,
                 shipping_region: 'DE',
-                shipping_method: 'standard',
+                shipping_method: 'envelope',
                 payment_option: 'paypal',
                 message: '',
                 model: ''
@@ -124,14 +124,14 @@ export default {
                     name: 'Doorman S3',
                     image: '/pcb.png',
                     details: 'PCB only – ideal if you can mount it inside a wallbox or the indoor station enclosure.',
-                    price: 35
+                    price: 0
                 },
                 {
                     key: 'bundle',
                     name: 'Doorman S3 - Bundle',
                     image: '/enclosure.png',
                     details: 'Includes PCB and case – perfect when the device is installed in a visible spot.',
-                    price: 38
+                    price: 0
                 }
             ],
             shipping_regions: [
@@ -142,18 +142,28 @@ export default {
                     icon: IconTwemojiFlagGermany,
                     options: [
                         {
-                            key: 'standard',
-                            name: 'Standard Shipping',
+                            key: 'envelope',
+                            name: 'Envelope',
                             icon: '',
-                            details: standardTrackingDetails,
-                            price: 1.8
+                            details: envelopeTrackingDetails,
+                            price: 0,
+                            max_items: 0
+                        },
+                        {
+                            key: 'standard',
+                            name: 'Parcel',
+                            icon: '',
+                            details: parcelTrackingDetails,
+                            price: 0,
+                            max_items: 0
                         },
                         {
                             key: 'tracking',
-                            name: 'Tracked Shipping',
+                            name: 'Package',
                             icon: '',
-                            details: trackedTrackingDetails,
-                            price: 6.19
+                            details: packageTrackingDetails,
+                            price: 0,
+                            max_items: 0
                         }
                     ],
                     countries: [
@@ -169,17 +179,19 @@ export default {
                     options: [
                         {
                             key: 'standard',
-                            name: 'Standard Shipping',
+                            name: 'Parcel (Standard)',
                             icon: '',
-                            details: standardTrackingDetails,
-                            price: 9
+                            details: parcelTrackingDetails,
+                            price: 0,
+                            max_items: 0
                         },
                         {
                             key: 'tracking',
-                            name: 'Tracked Shipping',
+                            name: 'Tracked Package',
                             icon: '',
-                            details: trackedTrackingDetails,
-                            price: 27
+                            details: packageTrackingDetails,
+                            price: 0,
+                            max_items: 0
                         }
                     ],
                     countries: [
@@ -195,17 +207,19 @@ export default {
                     options: [
                         {
                             key: 'standard',
-                            name: 'Standard Shipping',
+                            name: 'Parcel (Standard)',
                             icon: '',
-                            details: standardTrackingDetails,
-                            price: 7
+                            details: parcelTrackingDetails,
+                            price: 0,
+                            max_items: 0
                         },
                         {
                             key: 'tracking',
-                            name: 'Tracked Shipping',
+                            name: 'Tracked Package',
                             icon: '',
-                            details: trackedTrackingDetails,
-                            price: 14.5
+                            details: packageTrackingDetails,
+                            price: 0,
+                            max_items: 0
                         }
                     ],
                     countries: [
@@ -221,17 +235,19 @@ export default {
                     options: [
                         {
                             key: 'standard',
-                            name: 'Standard Shipping',
+                            name: 'Parcel (Standard)',
                             icon: '',
-                            details: standardTrackingDetails,
-                            price: 15
+                            details: parcelTrackingDetails,
+                            price: 0,
+                            max_items: 0
                         },
                         {
                             key: 'tracking',
-                            name: 'Tracked Shipping',
+                            name: 'Tracked Package',
                             icon: '',
-                            details: trackedTrackingDetails,
-                            price: 30
+                            details: packageTrackingDetails,
+                            price: 0,
+                            max_items: 0
                         }
                     ],
                     countries: [
@@ -302,7 +318,23 @@ export default {
         },
         'form.model'(val) {
             this.errors.model = !val;
-        }
+        },
+        'form.amount'(newAmount, oldAmount) {
+            const shipping_region = this.shipping_regions.find(d => d.key === this.form.shipping_region);
+            const shipping_option = shipping_region.options.find(d => d.key === this.form.shipping_method);
+
+            if (shipping_option.max_items != 0 && newAmount > shipping_option.max_items) {
+                this.form.shipping_method = 'standard';
+            }
+        },
+        'form.shipping_region'(newRegion, oldRegion) {
+            const shipping_region = this.shipping_regions.find(d => d.key === this.form.shipping_region);
+            const shipping_option = shipping_region.options.find(d => d.key === this.form.shipping_method);
+
+            if(!shipping_option) {
+                this.form.shipping_method = 'standard';
+            }
+        },
     },
     computed: {
         availability_class() {
@@ -418,10 +450,17 @@ export default {
 
                         const mergedOptions = r.options.map(opt => {
                             const optOverride = override.options?.find(o => o.key === opt.key);
-                            return optOverride ? { ...opt, ...optOverride } : opt;
+                            return optOverride ? { ...opt, ...optOverride, name: opt.name } : opt;
                         });
 
-                        return { ...r, ...override, options: mergedOptions };
+                        // destructure name out of override so it doesn't overwrite r.name
+                        const { name: _ignored, ...restOverride } = override;
+
+                        return { 
+                            ...r, 
+                            ...restOverride, 
+                            options: mergedOptions 
+                        };
                     });
                 }
             } catch (err) {
@@ -797,7 +836,7 @@ Otherwise, you'll only be notified when your Doorman is ready for shipment. Stat
         <h5 class="firmware_title_row">How should it be shipped?</h5>
         <div class="firmware_option_row" :class="{ half: available_shipping_options.length <= 2 }">
             <label class="firmware_option" v-for="option in available_shipping_options" :key="option.key">
-                <input type="radio" class="reset_default" v-model="form.shipping_method" :value="option.key">
+                <input type="radio" class="reset_default" :disabled="option.max_items != 0 && form.amount > option.max_items" v-model="form.shipping_method" :value="option.key">
                 <span class="checkmark">
                     <div class="icon" v-if="option.icon"><component :is="option.icon" /></div>
                     <div class="title">{{ option.name }} <Badge type="tip">{{ option.price.toFixed(2) }} €</Badge></div>
