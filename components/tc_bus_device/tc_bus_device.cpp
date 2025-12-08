@@ -665,7 +665,7 @@ namespace esphome
 
                 // First try with group 0
                 ESP_LOGI(TAG, "Identify device:\n"
-                              "  Device Group: %i (%i)\n"
+                              "  Device Group: %s (%i)\n"
                               "  Serial Number: %i",
                               device_group_to_string(DEVICE_GROUP_INDOOR_STATION), 0, this->serial_number_);
 
@@ -677,7 +677,7 @@ namespace esphome
                     // Didn't receive identify result of group 0
                     // Second try with group 1
                     ESP_LOGI(TAG, "Identify device:\n"
-                                  "  Device Group: %i (%i)\n"
+                                  "  Device Group: %s (%i)\n"
                                   "  Serial Number: %i",
                                   device_group_to_string(DEVICE_GROUP_INDOOR_STATION), 1, this->serial_number_);
                     send_telegram(TELEGRAM_TYPE_SELECT_DEVICE_GROUP, 0, 1, 400); // group 1
