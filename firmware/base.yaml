@@ -907,6 +907,9 @@ script:
             - wait_until:
                 condition:
                   - lambda: return id(wifi_id).is_ap_active() == false;
+            # Wait until wifi is really connected
+            - wait_until:
+                condition: wifi.connected
       # WiFi connected
       - logger.log: "LED: WiFi connected, waiting for API"
 
