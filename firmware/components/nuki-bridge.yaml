@@ -72,7 +72,7 @@ number:
   - platform: template
     id: nuki_security_pin
     device_id: nuki_bridge
-    name: "Security Pin"
+    name: "Security PIN"
     icon: "mdi:shield-key"
     mode: box
     step: 1
@@ -94,6 +94,7 @@ switch:
     restore_mode: RESTORE_DEFAULT_OFF
     entity_category: CONFIG
     optimistic: true
+    disabled_by_default: true
     web_server:
       sorting_group_id: sorting_group_nuki_bridge_settings
       sorting_weight: 4
@@ -474,7 +475,7 @@ lock:
     pin_status:
       id: nuki_pin_status
       device_id: nuki_bridge
-      name: "Security Pin Status"
+      name: "Security PIN Status"
       web_server:
         sorting_group_id: sorting_group_nuki_bridge_settings
         sorting_weight: 6
@@ -482,7 +483,7 @@ lock:
     unpair:
       id: nuki_unpair_device
       device_id: nuki_bridge
-      name: "Unpair Device"
+      name: "Unpair"
       disabled_by_default: true
       web_server:
         sorting_group_id: sorting_group_nuki_bridge_settings
