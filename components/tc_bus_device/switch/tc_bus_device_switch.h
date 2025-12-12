@@ -7,9 +7,9 @@ namespace esphome
 {
   namespace tc_bus
   {
-    class ForceLongDoorOpenerSwitch final : public switch_::Switch, public Parented<TCBusDeviceComponent> {
+    class ForceLongDoorOpenerProtocolSwitch final : public switch_::Switch, public Parented<TCBusDeviceComponent> {
       public:
-        ForceLongDoorOpenerSwitch() = default;
+        ForceLongDoorOpenerProtocolSwitch() = default;
 
       protected:
         void write_state(bool value) override;

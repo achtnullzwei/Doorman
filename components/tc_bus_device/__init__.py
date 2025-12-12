@@ -89,6 +89,8 @@ SETTING_TYPES = {
     "volume_handset_internal": SETTING_TYPE.SETTING_VOLUME_HANDSET_INTERNAL,
     "as_address_divider": SETTING_TYPE.SETTING_AS_ADDRESS_DIVIDER,
     "vas_address_divider": SETTING_TYPE.SETTING_VAS_ADDRESS_DIVIDER,
+    "use_long_door_opener_protocol": SETTING_TYPE.SETTING_USE_LONG_DOOR_OPENER_PROTOCOL,
+    "ambient_light": SETTING_TYPE.SETTING_AMBIENT_LIGHT,
     "door_opener_duration": SETTING_TYPE.SETTING_DOOR_OPENER_DURATION,
     "as_address": SETTING_TYPE.SETTING_AS_ADDRESS,
     "as_address_lock": SETTING_TYPE.SETTING_AS_ADDRESS_LOCK,

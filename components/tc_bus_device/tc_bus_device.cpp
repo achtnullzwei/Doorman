@@ -52,19 +52,19 @@ namespace esphome
                 recovered = {MODEL_NONE, 0, false};
             }
 
-            this->force_long_door_opener_ = recovered.force_long_door_opener;
+            this->force_long_door_opener_protocol_ = recovered.force_long_door_opener_protocol;
             this->set_serial_number(recovered.serial_number, false);
             this->set_model(recovered.model, false);
 
             #ifdef USE_SWITCH
-                if (this->force_long_door_opener_switch_ != nullptr)
+                if (this->force_long_door_opener_protocol_switch_ != nullptr)
                 {
-                    this->force_long_door_opener_switch_->publish_state(this->force_long_door_opener_);
+                    this->force_long_door_opener_protocol_switch_->publish_state(this->force_long_door_opener_protocol_);
                 }
             #endif
 
             #ifdef USE_BINARY_SENSOR
-                // Reset Bunary Sensor Listeners
+                // Reset Binary Sensor Listeners
                 for (auto &listener : listeners_)
                 {
                     listener->turn_off(&listener->timer_);
@@ -178,7 +178,7 @@ namespace esphome
             TCBusDeviceSettings settings{
                 this->model_,
                 this->serial_number_,
-                this->force_long_door_opener_
+                this->force_long_door_opener_protocol_
             };
 
             if (!this->pref_.save(&settings))
@@ -633,10 +633,17 @@ namespace esphome
         void TCBusDeviceComponent::send_telegram(TelegramType type, uint8_t address, uint32_t payload, uint32_t wait_duration)
         {
             // Use 32-bit protocol
-            if(type == TELEGRAM_TYPE_OPEN_DOOR && this->force_long_door_opener_)
+            if(type == TELEGRAM_TYPE_OPEN_DOOR)
             {
-                ESP_LOGV(TAG, "Detected 32-bit door protocol override, change telegram telegram to OPEN_DOOR_LONG.");
-                type = TELEGRAM_TYPE_OPEN_DOOR_LONG;
+                if(get_setting(SETTING_USE_LONG_DOOR_OPENER_PROTOCOL) == 1)
+                {
+                    type = TELEGRAM_TYPE_OPEN_DOOR_LONG;
+                }
+                else if(this->force_long_door_opener_protocol_)
+                {
+                    ESP_LOGV(TAG, "Detected 32-bit door protocol override, change telegram telegram to OPEN_DOOR_LONG.");
+                    type = TELEGRAM_TYPE_OPEN_DOOR_LONG;
+                }
             }
 
             this->tc_bus_->send_telegram(type, address, payload, this->serial_number_, wait_duration);
@@ -1068,7 +1075,7 @@ namespace esphome
 
             if (this->model_ == MODEL_NONE || this->model_data_.device_group != 2)
             {
-                ESP_LOGE(TAG, "This model is not an outdoor station and unsupported!");
+                ESP_LOGE(TAG, "This device is not an outdoor station and unsupported!");
                 return button;
             }
 
@@ -1114,13 +1121,13 @@ namespace esphome
 
             if (this->model_ == MODEL_NONE || this->model_data_.device_group != 2)
             {
-                ESP_LOGE(TAG, "This model is not an outdoor station!");
+                ESP_LOGE(TAG, "This device is not an outdoor station and unsupported!");
                 return false;
             }
 
             if (!(this->model_data_.capabilities & CAP_UPDATE_DOORBELL_BUTTON))
             {
-                ESP_LOGE(TAG, "For your own safety, the feature is disabled on this model!");
+                ESP_LOGE(TAG, "For your own safety, the feature is disabled on this device!");
                 return false;
             }
 

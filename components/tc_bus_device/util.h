@@ -124,6 +124,8 @@ namespace esphome
             SETTING_VOLUME_HANDSET_INTERNAL_CALL,
             SETTING_AS_ADDRESS_DIVIDER,
             SETTING_VAS_ADDRESS_DIVIDER,
+            SETTING_USE_LONG_DOOR_OPENER_PROTOCOL,
+            SETTING_AMBIENT_LIGHT,
             SETTING_DOOR_OPENER_DURATION,
             SETTING_AS_ADDRESS,
             SETTING_AS_ADDRESS_LOCK,
@@ -142,7 +144,7 @@ namespace esphome
         struct SettingCellData {
             uint8_t index = 0;
             uint8_t start_bit = 0;
-            uint8_t length = 0;
+            uint8_t length = 1;
         };
 
         enum DoorbellButtonAction {
@@ -176,15 +178,17 @@ namespace esphome
             CAP_VOLUME_HANDSET_INTERNAL_CALL = (1 << 6),
             CAP_AS_ADDRESS_DIVIDER = (1 << 7),
             CAP_VAS_ADDRESS_DIVIDER = (1 << 8),
-            CAP_DOOR_OPENER_DURATION = (1 << 9),
-            CAP_AS_ADDRESS = (1 << 10),
-            CAP_AS_ADDRESS_LOCK = (1 << 11),
-            CAP_TALKING_REQUIRES_DOOR_READINESS = (1 << 12),
-            CAP_DOOR_READINESS_DURATION = (1 << 13),
-            CAP_CALLING_DURATION = (1 << 14),
-            CAP_BUTTON_ROWS = (1 << 15),
-            CAP_HAS_CODE_LOCK = (1 << 16),
-            CAP_UPDATE_DOORBELL_BUTTON = (1 << 17),
+            CAP_USE_LONG_DOOR_OPENER_PROTOCOL = (1 << 9),
+            CAP_AMBIENT_LIGHT = (1 << 10),
+            CAP_DOOR_OPENER_DURATION = (1 << 11),
+            CAP_AS_ADDRESS = (1 << 12),
+            CAP_AS_ADDRESS_LOCK = (1 << 13),
+            CAP_TALKING_REQUIRES_DOOR_READINESS = (1 << 14),
+            CAP_DOOR_READINESS_DURATION = (1 << 15),
+            CAP_CALLING_DURATION = (1 << 16),
+            CAP_BUTTON_ROWS = (1 << 17),
+            CAP_HAS_CODE_LOCK = (1 << 18),
+            CAP_UPDATE_DOORBELL_BUTTON = (1 << 19),
         };
 
         struct ModelData {

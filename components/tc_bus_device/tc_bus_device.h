@@ -70,7 +70,7 @@ namespace esphome::tc_bus
     {
         Model model;
         uint32_t serial_number;
-        bool force_long_door_opener;
+        bool force_long_door_opener_protocol;
     };
 
     class TCBusDeviceComponent : public Component, public TCBusRemoteListener
@@ -89,7 +89,7 @@ namespace esphome::tc_bus
         SUB_NUMBER(volume_ringtone);
 #endif
 #ifdef USE_SWITCH
-        SUB_SWITCH(force_long_door_opener);
+        SUB_SWITCH(force_long_door_opener_protocol);
 #endif
 #ifdef USE_BUTTON
         SUB_BUTTON(read_memory);
@@ -103,7 +103,7 @@ namespace esphome::tc_bus
         void set_tc_bus_component(TCBusComponent *bus) { this->tc_bus_ = bus; }
         void set_device_group(DeviceGroup device_group) { this->device_group_ = device_group; }
         void set_auto_configuration(bool auto_configuration) { this->auto_configuration_ = auto_configuration; }
-        void set_force_long_door_opener(bool force_long_door_opener) { this->force_long_door_opener_ = force_long_door_opener; }
+        void set_force_long_door_opener_protocol(bool force_long_door_opener_protocol) { this->force_long_door_opener_protocol_ = force_long_door_opener_protocol; }
         void set_serial_number(uint32_t serial_number, bool save = true);
         void set_model(Model model, bool save = true);
         void set_current_flow(FlowType type) { this->current_flow_ = type; }
@@ -197,7 +197,7 @@ namespace esphome::tc_bus
         uint32_t serial_number_;
         DeviceGroup device_group_;
         bool auto_configuration_;
-        bool force_long_door_opener_;
+        bool force_long_door_opener_protocol_;
 
         // Flow Queue Management
         FlowType current_flow_ = FLOW_NONE;
