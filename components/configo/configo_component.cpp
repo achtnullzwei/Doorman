@@ -10,10 +10,8 @@
 #include "esphome/components/tc_bus/tc_bus.h"
 #include "esphome/components/tc_bus/protocol.h"
 
-namespace esphome
+namespace esphome::configo
 {
-  namespace configo
-  {
     static const char *const TAG = "configo";
 
     void ConfigoComponent::setup()
@@ -294,6 +292,4 @@ namespace esphome
         byte = this->read_byte_();
       }
     }
-
-  }  // namespace configo
-}  // namespace esphome
+}

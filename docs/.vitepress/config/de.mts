@@ -180,7 +180,7 @@ function sidebarReference(): DefaultTheme.SidebarItem[] {
         { text: 'TC:BUS', link: 'esphome-component' },
         { text: 'TC:BUS Device', link: 'esphome-component-device' },
         { text: 'TC:BUS Serial', link: 'esphome-component-serial' },
-        { text: 'Doorman Hardware', link: 'esphome-component-doorman' }
+        { text: 'Hardware', link: 'esphome-component-hardware' }
       ]
     },
     {

@@ -8,20 +8,23 @@ The `tc_bus_device` component offers the following configuration options:
 |---------------------------|-----------------------------------------------------------------------------------------------------------------------------------------------|----------|---------------|
 | `id`                      | Unique ID for the component.                                                                                                                  | Yes      |               |
 | `type`                    | Device Group of the TC:BUS Device. E.g. Indoor Station, Outdoor Station.                                                                      | Yes      |               |
-| `auto_configuration`      | When enabled, the component automatically identifies the device using the serial number and reads device memory based on the device model.    | No       | false         |
+| `auto_configuration`      | When enabled, the component [automatically identifies](#automatic-configuration) the device using the serial number and reads device memory based on the device model.    | No       | `False`       |
 | `on_read_memory_complete` | Defines actions to be triggered when the memory reading is complete. Returns a `std::vector<uint8_t>` buffer as the `x` variable.             | No       |               |
 | `on_read_memory_timeout`  | Defines actions to be triggered when the memory reading times out.                                                                            | No       |               |
 | `on_identify_complete`    | Defines actions to be triggered when the identification of the indoor station is complete. Returns a `ModelData` object as the `x` variable.  | No       |               |
 | `on_identify_unknown`     | Defines actions to be triggered when the identification of the indoor station completes with unknown model.                                   | No       |               |
 | `on_identify_timeout`     | Defines actions to be triggered when the identification of the indoor station times out.                                                      | No       |               |
 
+## Automatic Configuration
+If you enable the `auto_configuration` option, the component automatically attempts to identify the device model as soon as the serial number is set.
+Once the model is successfully identified, the component will automatically read the device memory to retrieve its current configuration and state.
 
 ## Number Inputs
 The `tc_bus_device` Number Input platform offers the following configuration options:
 
 | Option                         | Description                                                                                                   | Required | Default       |
 |--------------------------------|---------------------------------------------------------------------------------------------------------------|----------|---------------|
-| `tc_bus_device_id` | ID of the related `tc_bus_device` instance.                                                             | Yes      |               |
+| `tc_bus_device_id`             | ID of the related `tc_bus_device` instance.                                                                   | Yes      |               |
 | `serial_number`                | Indoor Station Serial Number Input to set the serial number of the predefined indoor station.                 | No       |               |
 | `volume_handset_door_call`     | Door Call Handset Volume Number Input to set the handset volume for door calls of your indoor station.        | No       |               |
 | `volume_handset_internal_call` | Internal Call Handset Volume Number Input to set the handset volume for internal calls of your indoor station.| No       |               |
@@ -55,7 +58,7 @@ The `tc_bus_device` Button platform offers the following configuration options:
 | Option                | Description                                                                                       | Required | Default       |
 |-----------------------|---------------------------------------------------------------------------------------------------|----------|---------------|
 | `tc_bus_device_id`    | ID of the related `tc_bus_device` instance.                                                       | Yes      |               |
-| `identify_device`     | This starts the identification process to determine the device model by using it's serial number. | No       | |
+| `identify_device`     | This starts the identification process to determine the device model by using it's serial number. | No       |               |
 | `read_memory`         | This reads the device memory if supported into a memory buffer. Take a look at the [supported models and settings](#model-setting-availability). | No       | |
 
 ## Binary Sensors
@@ -133,7 +136,10 @@ on_...:
 This action allows you to automatically detect the model of a supported device on the bus.
 
 ::: tip Note
-Automatic identification is not supported by all devices. Currently, only indoor stations are fully supported in the identification process. However, you will still receive a response with the device's identification data, even for unsupported models. Feel free to open an Issue with the identification response data in order to implement it.
+Automatic identification is not available on all devices. At present, only indoor stations are fully supported in the identification process.
+Nonetheless, unsupported devices may still return identification data. If your device does so, please submit the response data as an issue so it can be included in future updates.
+
+If no identification response is received, the device does not support the identification protocol. This usually applies to older hardware that predates this feature. In such cases, you will need to manually configure the device model.
 :::
 
 ```yaml
@@ -173,17 +179,29 @@ If no payload is provided, it remains unset.
 
 For matrix systems, you can use the `button_col` parameter. For other systems, this parameter is not required.
 
-```yaml
+:::code-group
+```yaml [Rows only]
 on_...:
   - tc_bus_device.update_doorbell_button:
       id: my_tc_bus_outdoor_station_device
       button_row: 1
-      button_col: 1
       primary_action: door_call
       primary_payload: 798906
       secondary_action: control_function
       secondary_payload: 8
 ```
+```yaml [Matrix]
+on_...:
+  - tc_bus_device.update_doorbell_button:
+      id: my_tc_bus_outdoor_station_device
+      button_row: 2
+      button_col: 4
+      primary_action: door_call
+      primary_payload: 798906
+      secondary_action: control_function
+      secondary_payload: 8
+```
+:::
 
 ### Sending Telegrams <Badge type="tip" text="tc_bus_device.send" />
 You can send device related telegrams on the bus using this action.

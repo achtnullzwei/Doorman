@@ -24,10 +24,8 @@
 #endif
 #endif
 
-namespace esphome
+namespace esphome::configo
 {
-  namespace configo
-  {
     // Serial Number in decimal 
     // 0x12345 in HEX
     constexpr uint32_t DEVICE_SERIAL = 74565;
@@ -68,6 +66,4 @@ namespace esphome
       uint32_t last_read_byte_{0};
       bool waitingForResponse_ = false;
     };
-
-  }  // namespace configo
-}  // namespace esphome
+}
