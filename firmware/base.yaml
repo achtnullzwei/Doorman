@@ -238,8 +238,8 @@ text:
 text_sensor:
   - platform: hardware
     product:
-      id: doorman_product_name
-      name: "Doorman Variant"
+      id: doorman_model
+      name: "Doorman Model"
       icon: "mdi:package-variant"
       disabled_by_default: true
       entity_category: DIAGNOSTIC
@@ -247,7 +247,7 @@ text_sensor:
         sorting_group_id: sorting_group_information
         sorting_weight: -20
     revision:
-      id: doorman_hardware_version
+      id: doorman_revision
       name: "Doorman Revision"
       icon: "mdi:numbers"
       disabled_by_default: true
@@ -399,7 +399,7 @@ sensor:
   - platform: wifi_signal
     id: doorman_wifi_signal_db
     update_interval: 60s
-    internal: True
+    internal: true
 
   - platform: copy
     id: doorman_wifi_signal

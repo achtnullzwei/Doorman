@@ -363,7 +363,7 @@ export class EntityTable extends LitElement implements RestAction {
                           ></iconify-icon>`
                         : nothing}
                     </div>
-                    <div>${(group.name.toLowerCase().includes('setup') && idx != 0 ? idx + '. ' : '') + component.name.replace('RTO: ','').replace('Setup: ','')}</div>
+                    <div>${(group.name.toLowerCase().includes('setup') && idx != 0 ? idx + '. ' : '') + component.name.replace('RTO: ','').replace('Setup: ','').replace('MQTT: ','').replace('Fob: ','')}</div>
                     <div>
                       ${this.has_controls && component.has_action
                         ? this.control(component)

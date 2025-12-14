@@ -18,10 +18,10 @@ Reports the installed base ESPHome version.
 ### Doorman Firmware Version <Badge type="tip" text="doorman_firmware_version" /> <Badge type="info" text="Disabled by default" />
 Reports the installed Doorman firmware version and build time.
 
-### Doorman Variant <Badge type="tip" text="doorman_product_name" /> <Badge type="info" text="Disabled by default" />
-Reports the Doorman variant.
+### Doorman Model <Badge type="tip" text="doorman_model" /> <Badge type="info" text="Disabled by default" />
+Reports the Doorman model.
 
-### Doorman Revision <Badge type="tip" text="doorman_hardware_version" /> <Badge type="info" text="Disabled by default" />
+### Doorman Revision <Badge type="tip" text="doorman_revision" /> <Badge type="info" text="Disabled by default" />
 Reports the Doorman hardware revision.
 
 

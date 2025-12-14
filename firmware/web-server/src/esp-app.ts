@@ -104,13 +104,17 @@ export default class EspApp extends LitElement {
   }
 
   async getHardwareVersion() {
-    const response = await fetch(`${getBasePath()}/text_sensor/doorman_hardware`);
-    const data = await response.json();
-    if(data.value != 'Generic')
+    const response_model = await fetch(`${getBasePath()}/text_sensor/doorman_model`);
+    const data_model = await response_model.json();
+
+    const response_revision = await fetch(`${getBasePath()}/text_sensor/doorman_revision`);
+    const data_revision = await response_revision.json();
+
+    if(data_model.value.toLowerCase() != 'unsupported')
     {
-      this.hardwareVersion = data.value.replace('Doorman S3', 'Revision ');
+      this.hardwareVersion = data_model.value + ' (' + data_revision.value + ')';
     } else {
-      this.hardwareVersion = 'Generic ESP';
+      this.hardwareVersion = data_model.value;
     }
   }
 
@@ -204,10 +208,10 @@ export default class EspApp extends LitElement {
   }
 
   renderNotSupportedHardware() {
-    if (this.hardwareVersion.toLowerCase().includes('generic')) {
+    if (this.hardwareVersion.toLowerCase().includes('unknown') || this.hardwareVersion.toLowerCase().includes('unsupported')) {
       return html`<infobox class="warning">
         <iconify-icon icon="mdi:warning" height="24px"></iconify-icon>
-        <span>For optimal performance, we recommend the official <a target="_blank" href="https://doorman.azon.ai/guide/what-is-doorman">Doorman S3</a> board.</span>
+        <span>For optimal performance, the official <a target="_blank" href="https://doorman.azon.ai/guide/what-is-doorman">Doorman S3</a> board is recommended.</span>
       </infobox>`;
     } else {
       return html`<infobox>
