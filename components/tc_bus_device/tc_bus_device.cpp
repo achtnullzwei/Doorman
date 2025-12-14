@@ -113,6 +113,9 @@ namespace esphome
                 // Schedule model identification flow
                 if(this->auto_configuration_ && save && changed)
                 {
+                    // Clear memory because device serial number changed
+                    this->memory_buffer_.clear();
+
                     ESP_LOGD(TAG, "Schedule flow: Model identification (changed serial number from 0)");
 
                     // Wait for possible doorbell ringtone (setup mode)
@@ -1256,7 +1259,7 @@ namespace esphome
                           "  Serial Number: %i"
                           "  Setting: %s\n"
                           "  Value: %X",
-                          device_group_to_string(this->device_group_), (this->model_), this->serial_number_, setting_type_to_string(type), new_value);
+                          device_group_to_string(this->device_group_), model_to_string(this->model_), this->serial_number_, setting_type_to_string(type), new_value);
             
             // Apply new data
             uint8_t shift = cellData.start_bit - cellData.length + 1;
@@ -1308,7 +1311,7 @@ namespace esphome
                           "  Model: %s\n"
                           "  Serial Number: %i"
                           "  Size: %i Bytes",
-                          device_group_to_string(this->device_group_), (this->model_), this->serial_number_, this->memory_buffer_.size());
+                          device_group_to_string(this->device_group_), model_to_string(this->model_), this->serial_number_, this->memory_buffer_.size());
             ESP_LOGD(TAG, "  Data: %s", format_hex_pretty(this->memory_buffer_, ' ', false).c_str());
 
             // Prepare Transmission
