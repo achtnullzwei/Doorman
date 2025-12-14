@@ -98,7 +98,7 @@ namespace esphome
                 serial_number = 0;
             }
 
-            bool changed = this->serial_number_ == 0 && serial_number != this->serial_number_;
+            bool changed = serial_number != this->serial_number_;
 
             this->serial_number_ = serial_number;
 
@@ -286,10 +286,6 @@ namespace esphome
                     }
                     else if (current_flow_ == FLOW_IDENTIFY_DEVICE)
                     {
-                        ESP_LOGI(TAG, "Received device identification:\n"
-                                      "  Data: %s",
-                                      telegram_data.hex);
-
                         this->cancel_timeout("wait_for_identification_group_0");
                         this->cancel_timeout("wait_for_identification_group_1");
                         this->cancel_timeout("wait_for_identification_other");
@@ -401,9 +397,10 @@ namespace esphome
                         else
                         {
                             ESP_LOGE(TAG, "Unable to identify device:\n"
-                                          "  Reason: Unknown model"
-                                          "  Data received: %s"
+                                          "  Device Group: %s\n"
+                                          "  Data received: %s\n"
                                           "  Note: Please open an issue and provide your logs in order to implement support for this device model.",
+                                          device_group_to_string(device.device_group),
                                           telegram_data.hex);
                             this->identify_unknown_callback_.call();
                         }
