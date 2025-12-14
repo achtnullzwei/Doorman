@@ -249,7 +249,7 @@ text_sensor:
     revision:
       id: doorman_revision
       name: "Doorman Revision"
-      icon: "mdi:numbers"
+      icon: "mdi:chip"
       disabled_by_default: true
       entity_category: DIAGNOSTIC
       web_server:
