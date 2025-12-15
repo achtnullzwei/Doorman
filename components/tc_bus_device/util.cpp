@@ -20,6 +20,7 @@ namespace esphome
             {SETTING_VAS_ADDRESS_DIVIDER, "VAS_ADDRESS_DIVIDER"},
             {SETTING_USE_LONG_DOOR_OPENER_PROTOCOL, "USE_LONG_DOOR_OPENER_PROTOCOL"},
             {SETTING_AMBIENT_LIGHT, "AMBIENT_LIGHT"},
+            {SETTING_DND, "DND"},
             {SETTING_DOOR_OPENER_DURATION, "DOOR_OPENER_DURATION"},
             {SETTING_AS_ADDRESS, "AS_ADDRESS"},
             {SETTING_AS_ADDRESS_LOCK, "AS_ADDRESS_LOCK"},
@@ -358,6 +359,7 @@ namespace esphome
                     modelData.capabilities |= CAP_VOLUME_RINGTONE;
                     modelData.capabilities |= CAP_VOLUME_HANDSET_DOOR_CALL;
                     modelData.capabilities |= CAP_AS_ADDRESS_DIVIDER;
+                    modelData.capabilities |= CAP_DND;
                     break;
                 case MODEL_IS_ISW3130: /* TC50P */
                     modelData.device_group = 1;
@@ -369,6 +371,7 @@ namespace esphome
                     modelData.capabilities |= CAP_VOLUME_RINGTONE;
                     modelData.capabilities |= CAP_VOLUME_HANDSET_DOOR_CALL;
                     modelData.capabilities |= CAP_AS_ADDRESS_DIVIDER;
+                    modelData.capabilities |= CAP_DND;
                     break;
                 case MODEL_IS_ISW3230: /* TC50 GFA */
                     modelData.device_group = 1;
@@ -380,6 +383,7 @@ namespace esphome
                     modelData.capabilities |= CAP_VOLUME_RINGTONE;
                     modelData.capabilities |= CAP_VOLUME_HANDSET_DOOR_CALL;
                     modelData.capabilities |= CAP_AS_ADDRESS_DIVIDER;
+                    modelData.capabilities |= CAP_DND;
                     break;
                 case MODEL_IS_ISW3330: /* TC50 BW */
                     modelData.device_group = 1;
@@ -391,6 +395,7 @@ namespace esphome
                     modelData.capabilities |= CAP_VOLUME_RINGTONE;
                     modelData.capabilities |= CAP_VOLUME_HANDSET_DOOR_CALL;
                     modelData.capabilities |= CAP_AS_ADDRESS_DIVIDER;
+                    modelData.capabilities |= CAP_DND;
                     break;
                 case MODEL_IS_ISW3340:
                     modelData.device_group = 1;
@@ -402,6 +407,7 @@ namespace esphome
                     modelData.capabilities |= CAP_VOLUME_RINGTONE;
                     modelData.capabilities |= CAP_VOLUME_HANDSET_DOOR_CALL;
                     modelData.capabilities |= CAP_AS_ADDRESS_DIVIDER;
+                    modelData.capabilities |= CAP_DND;
                     break;
                 case MODEL_IS_ISW5010: /* TC60 */
                 case MODEL_IS_ISW5020:
@@ -422,6 +428,7 @@ namespace esphome
                     modelData.capabilities |= CAP_AS_ADDRESS_DIVIDER;
                     modelData.capabilities |= CAP_USE_LONG_DOOR_OPENER_PROTOCOL;
                     modelData.capabilities |= CAP_AMBIENT_LIGHT;
+                    modelData.capabilities |= CAP_DND;
                     break;
                 case MODEL_IS_IVW511X: /* VTC60 */
                 case MODEL_IS_IVW521X: /* VTC60/2D */
@@ -439,6 +446,7 @@ namespace esphome
                     modelData.capabilities |= CAP_VAS_ADDRESS_DIVIDER;
                     modelData.capabilities |= CAP_USE_LONG_DOOR_OPENER_PROTOCOL;
                     modelData.capabilities |= CAP_AMBIENT_LIGHT;
+                    modelData.capabilities |= CAP_DND;
                     break;
                 case MODEL_IS_ISW7030: /* TC70 */
                     modelData.device_group = 1;
@@ -451,6 +459,7 @@ namespace esphome
                     modelData.capabilities |= CAP_VOLUME_HANDSET_DOOR_CALL;
                     modelData.capabilities |= CAP_VOLUME_HANDSET_INTERNAL_CALL;
                     modelData.capabilities |= CAP_AS_ADDRESS_DIVIDER;
+                    modelData.capabilities |= CAP_DND;
                     break;
                 case MODEL_IS_IVW7510: /* VTC70 */
                     modelData.device_group = 1;
@@ -464,6 +473,7 @@ namespace esphome
                     modelData.capabilities |= CAP_VOLUME_HANDSET_INTERNAL_CALL;
                     modelData.capabilities |= CAP_AS_ADDRESS_DIVIDER;
                     modelData.capabilities |= CAP_VAS_ADDRESS_DIVIDER;
+                    modelData.capabilities |= CAP_DND;
                     break;
                 case MODEL_IS_ISH7030: /* TCH70 */
                     modelData.device_group = 1;
@@ -476,6 +486,7 @@ namespace esphome
                     modelData.capabilities |= CAP_VOLUME_HANDSET_DOOR_CALL;
                     modelData.capabilities |= CAP_VOLUME_HANDSET_INTERNAL_CALL;
                     modelData.capabilities |= CAP_AS_ADDRESS_DIVIDER;
+                    modelData.capabilities |= CAP_DND;
                     break;
                 case MODEL_IS_IVH7510: /* VTCH70 */
                     modelData.device_group = 1;
@@ -489,6 +500,7 @@ namespace esphome
                     modelData.capabilities |= CAP_VOLUME_HANDSET_INTERNAL_CALL;
                     modelData.capabilities |= CAP_AS_ADDRESS_DIVIDER;
                     modelData.capabilities |= CAP_VAS_ADDRESS_DIVIDER;
+                    modelData.capabilities |= CAP_DND;
                     break;
                 case MODEL_IS_ISWM7000:
                     modelData.device_group = 1;
@@ -501,6 +513,7 @@ namespace esphome
                     modelData.capabilities |= CAP_VOLUME_HANDSET_DOOR_CALL;
                     modelData.capabilities |= CAP_VOLUME_HANDSET_INTERNAL_CALL;
                     modelData.capabilities |= CAP_AS_ADDRESS_DIVIDER;
+                    modelData.capabilities |= CAP_DND;
                     break;
                 case MODEL_IS_IVWM7000:
                     modelData.device_group = 1;
@@ -514,6 +527,7 @@ namespace esphome
                     modelData.capabilities |= CAP_VOLUME_HANDSET_INTERNAL_CALL;
                     modelData.capabilities |= CAP_AS_ADDRESS_DIVIDER;
                     modelData.capabilities |= CAP_VAS_ADDRESS_DIVIDER;
+                    modelData.capabilities |= CAP_DND;
                     break;
                 case MODEL_IS_ISW4100: /* TC31 */
                     modelData.device_group = 1;
@@ -523,6 +537,7 @@ namespace esphome
                     modelData.capabilities |= CAP_RINGTONE_FLOOR_CALL;
                     modelData.capabilities |= CAP_RINGTONE_SECOND_ENTRANCE_DOOR_CALL;
                     modelData.capabilities |= CAP_AS_ADDRESS_DIVIDER;
+                    modelData.capabilities |= CAP_DND;
                     break;
                 case MODEL_IS_IMM2100: /* TCE31 */
                     modelData.device_group = 1;
@@ -532,6 +547,7 @@ namespace esphome
                     modelData.capabilities |= CAP_RINGTONE_FLOOR_CALL;
                     modelData.capabilities |= CAP_RINGTONE_SECOND_ENTRANCE_DOOR_CALL;
                     modelData.capabilities |= CAP_AS_ADDRESS_DIVIDER;
+                    modelData.capabilities |= CAP_DND;
                     break;
                 case MODEL_IS_IVW2210: /* Ecoos */
                     modelData.device_group = 1;
@@ -543,6 +559,7 @@ namespace esphome
                     modelData.capabilities |= CAP_VOLUME_RINGTONE;
                     modelData.capabilities |= CAP_AS_ADDRESS_DIVIDER;
                     modelData.capabilities |= CAP_VAS_ADDRESS_DIVIDER;
+                    modelData.capabilities |= CAP_DND;
                     // Supported? Not documented
                     //modelData.capabilities |= CAP_VOLUME_HANDSET_DOOR_CALL;
                     break;
@@ -556,6 +573,7 @@ namespace esphome
                     modelData.capabilities |= CAP_VOLUME_RINGTONE;
                     modelData.capabilities |= CAP_AS_ADDRESS_DIVIDER;
                     modelData.capabilities |= CAP_VAS_ADDRESS_DIVIDER;
+                    modelData.capabilities |= CAP_DND;
                     // Supported? Not documented
                     //modelData.capabilities |= CAP_VOLUME_HANDSET_DOOR_CALL;
                     break;
@@ -569,6 +587,7 @@ namespace esphome
                     modelData.capabilities |= CAP_VOLUME_RINGTONE;
                     modelData.capabilities |= CAP_AS_ADDRESS_DIVIDER;
                     modelData.capabilities |= CAP_VAS_ADDRESS_DIVIDER;
+                    modelData.capabilities |= CAP_DND;
                     // Supported? Not documented
                     //modelData.capabilities |= CAP_VOLUME_HANDSET_DOOR_CALL;
                     break;
@@ -583,6 +602,7 @@ namespace esphome
                     modelData.capabilities |= CAP_VOLUME_HANDSET_DOOR_CALL;
                     modelData.capabilities |= CAP_AS_ADDRESS_DIVIDER;
                     modelData.capabilities |= CAP_VAS_ADDRESS_DIVIDER;
+                    modelData.capabilities |= CAP_DND;
                     break;
                 case MODEL_IS_TC40V2:
                     modelData.device_group = 1;
@@ -594,6 +614,7 @@ namespace esphome
                     modelData.capabilities |= CAP_VOLUME_RINGTONE;
                     modelData.capabilities |= CAP_VOLUME_HANDSET_DOOR_CALL;
                     modelData.capabilities |= CAP_AS_ADDRESS_DIVIDER;
+                    modelData.capabilities |= CAP_DND;
                     break;
                 case MODEL_IS_VTC40:
                     modelData.device_group = 1;
@@ -606,6 +627,7 @@ namespace esphome
                     modelData.capabilities |= CAP_VOLUME_HANDSET_DOOR_CALL;
                     modelData.capabilities |= CAP_AS_ADDRESS_DIVIDER;
                     modelData.capabilities |= CAP_VAS_ADDRESS_DIVIDER;
+                    modelData.capabilities |= CAP_DND;
                     break;
                 case MODEL_IS_TC40:
                     modelData.device_group = 1;
@@ -617,6 +639,7 @@ namespace esphome
                     modelData.capabilities |= CAP_VOLUME_RINGTONE;
                     modelData.capabilities |= CAP_VOLUME_HANDSET_DOOR_CALL;
                     modelData.capabilities |= CAP_AS_ADDRESS_DIVIDER;
+                    modelData.capabilities |= CAP_DND;
                     break;
                 case MODEL_IS_TC2000:
                     modelData.device_group = 1;
@@ -624,6 +647,7 @@ namespace esphome
                     modelData.capabilities |= CAP_RINGTONE_ENTRANCE_DOOR_CALL;
                     modelData.capabilities |= CAP_RINGTONE_INTERNAL_CALL;
                     modelData.capabilities |= CAP_RINGTONE_FLOOR_CALL;
+                    modelData.capabilities |= CAP_DND;
                     break;
                 case MODEL_IS_TC20P:
                     modelData.device_group = 1;
@@ -632,6 +656,7 @@ namespace esphome
                     modelData.capabilities |= CAP_RINGTONE_INTERNAL_CALL;
                     modelData.capabilities |= CAP_RINGTONE_FLOOR_CALL;
                     modelData.capabilities |= CAP_RINGTONE_SECOND_ENTRANCE_DOOR_CALL;
+                    modelData.capabilities |= CAP_DND;
                     break;
                 case MODEL_IS_TC20F:
                     modelData.device_group = 1;
@@ -640,6 +665,7 @@ namespace esphome
                     modelData.capabilities |= CAP_RINGTONE_INTERNAL_CALL;
                     modelData.capabilities |= CAP_RINGTONE_FLOOR_CALL;
                     modelData.capabilities |= CAP_RINGTONE_SECOND_ENTRANCE_DOOR_CALL;
+                    modelData.capabilities |= CAP_DND;
                     break;
                 case MODEL_IS_IVW2220:
                     modelData.device_group = 1;
@@ -651,6 +677,7 @@ namespace esphome
                     modelData.capabilities |= CAP_VOLUME_RINGTONE;
                     modelData.capabilities |= CAP_AS_ADDRESS_DIVIDER;
                     modelData.capabilities |= CAP_VAS_ADDRESS_DIVIDER;
+                    modelData.capabilities |= CAP_DND;
                     break;
                 case MODEL_IS_IVW2221:
                     modelData.device_group = 1;
@@ -662,6 +689,7 @@ namespace esphome
                     modelData.capabilities |= CAP_VOLUME_RINGTONE;
                     modelData.capabilities |= CAP_AS_ADDRESS_DIVIDER;
                     modelData.capabilities |= CAP_VAS_ADDRESS_DIVIDER;
+                    modelData.capabilities |= CAP_DND;
                     break;
                 case MODEL_IS_IVW3011:
                     modelData.device_group = 1;
@@ -673,6 +701,7 @@ namespace esphome
                     modelData.capabilities |= CAP_VOLUME_RINGTONE;
                     modelData.capabilities |= CAP_AS_ADDRESS_DIVIDER;
                     modelData.capabilities |= CAP_VAS_ADDRESS_DIVIDER;
+                    modelData.capabilities |= CAP_DND;
                     break;
                 case MODEL_IS_IVW3012:
                     modelData.device_group = 1;
@@ -684,6 +713,7 @@ namespace esphome
                     modelData.capabilities |= CAP_VOLUME_RINGTONE;
                     modelData.capabilities |= CAP_AS_ADDRESS_DIVIDER;
                     modelData.capabilities |= CAP_VAS_ADDRESS_DIVIDER;
+                    modelData.capabilities |= CAP_DND;
                     break;
                 case MODEL_IS_TKIS:
                     modelData.device_group = 1;
@@ -695,6 +725,7 @@ namespace esphome
                     modelData.capabilities |= CAP_VOLUME_RINGTONE;
                     modelData.capabilities |= CAP_VOLUME_HANDSET_DOOR_CALL;
                     modelData.capabilities |= CAP_AS_ADDRESS_DIVIDER;
+                    modelData.capabilities |= CAP_DND;
                     break;
                 case MODEL_IS_TKISV:
                     modelData.device_group = 1;
@@ -707,6 +738,7 @@ namespace esphome
                     modelData.capabilities |= CAP_VOLUME_HANDSET_DOOR_CALL;
                     modelData.capabilities |= CAP_AS_ADDRESS_DIVIDER;
                     modelData.capabilities |= CAP_VAS_ADDRESS_DIVIDER;
+                    modelData.capabilities |= CAP_DND;
                     break;
                 case MODEL_IS_CAI2000:
                     modelData.device_group = 1;
@@ -718,6 +750,7 @@ namespace esphome
                     modelData.capabilities |= CAP_VOLUME_RINGTONE;
                     modelData.capabilities |= CAP_AS_ADDRESS_DIVIDER;
                     modelData.capabilities |= CAP_VAS_ADDRESS_DIVIDER;
+                    modelData.capabilities |= CAP_DND;
                     break;
                 case MODEL_IS_CAIXXXX:
                     modelData.device_group = 1;
@@ -728,6 +761,7 @@ namespace esphome
                     modelData.capabilities |= CAP_RINGTONE_SECOND_ENTRANCE_DOOR_CALL;
                     modelData.capabilities |= CAP_VOLUME_RINGTONE;
                     modelData.capabilities |= CAP_AS_ADDRESS_DIVIDER;
+                    modelData.capabilities |= CAP_DND;
                     break;
                 case MODEL_IS_ISW42X0:
                     modelData.device_group = 1;
@@ -738,12 +772,14 @@ namespace esphome
                     modelData.capabilities |= CAP_RINGTONE_SECOND_ENTRANCE_DOOR_CALL;
                     modelData.capabilities |= CAP_VOLUME_RINGTONE;
                     modelData.capabilities |= CAP_AS_ADDRESS_DIVIDER;
+                    modelData.capabilities |= CAP_DND;
                     break;
 
                 // Group 0
                 case MODEL_IS_ISH3022: /* TCH50P */
                     modelData.device_group = 0;
                     modelData.memory_size = 32;
+                    modelData.capabilities |= CAP_DND;
                     // Volume is set directly on hardware
                     break;
                 case MODEL_IS_ISH3130: /* TCH50P */
@@ -756,6 +792,7 @@ namespace esphome
                     modelData.capabilities |= CAP_VOLUME_RINGTONE;
                     modelData.capabilities |= CAP_VOLUME_HANDSET_DOOR_CALL;
                     modelData.capabilities |= CAP_AS_ADDRESS_DIVIDER;
+                    modelData.capabilities |= CAP_DND;
                     break;
                 case MODEL_IS_ISH3230: /* TCH50 GFA */
                     modelData.device_group = 0;
@@ -767,6 +804,7 @@ namespace esphome
                     modelData.capabilities |= CAP_VOLUME_RINGTONE;
                     modelData.capabilities |= CAP_VOLUME_HANDSET_DOOR_CALL;
                     modelData.capabilities |= CAP_AS_ADDRESS_DIVIDER;
+                    modelData.capabilities |= CAP_DND;
                     break;
                 case MODEL_IS_ISH3030: /* TCH50 */
                     modelData.device_group = 0;
@@ -778,6 +816,7 @@ namespace esphome
                     modelData.capabilities |= CAP_VOLUME_RINGTONE;
                     modelData.capabilities |= CAP_VOLUME_HANDSET_DOOR_CALL;
                     modelData.capabilities |= CAP_AS_ADDRESS_DIVIDER;
+                    modelData.capabilities |= CAP_DND;
                     break;
                 case MODEL_IS_ISH1030: /* TTS25 */
                     modelData.device_group = 0;
@@ -785,6 +824,7 @@ namespace esphome
                     modelData.capabilities |= CAP_RINGTONE_ENTRANCE_DOOR_CALL;
                     modelData.capabilities |= CAP_RINGTONE_INTERNAL_CALL;
                     modelData.capabilities |= CAP_RINGTONE_FLOOR_CALL;
+                    modelData.capabilities |= CAP_DND;
                     break;
                 case MODEL_IS_TTCXX:
                     modelData.device_group = 0;
@@ -792,6 +832,7 @@ namespace esphome
                     modelData.capabilities |= CAP_RINGTONE_ENTRANCE_DOOR_CALL;
                     modelData.capabilities |= CAP_RINGTONE_INTERNAL_CALL;
                     modelData.capabilities |= CAP_RINGTONE_FLOOR_CALL;
+                    modelData.capabilities |= CAP_DND;
                     break;
                 case MODEL_IS_TTSXX:
                     modelData.device_group = 0;
@@ -799,6 +840,7 @@ namespace esphome
                     modelData.capabilities |= CAP_RINGTONE_ENTRANCE_DOOR_CALL;
                     modelData.capabilities |= CAP_RINGTONE_INTERNAL_CALL;
                     modelData.capabilities |= CAP_RINGTONE_FLOOR_CALL;
+                    modelData.capabilities |= CAP_DND;
                     break;
                 case MODEL_IS_IMM1000: /* TCH30 */
                     modelData.device_group = 0;
@@ -810,6 +852,7 @@ namespace esphome
                     modelData.capabilities |= CAP_VOLUME_RINGTONE;
                     modelData.capabilities |= CAP_VOLUME_HANDSET_DOOR_CALL;
                     modelData.capabilities |= CAP_AS_ADDRESS_DIVIDER;
+                    modelData.capabilities |= CAP_DND;
                     break;
                 case MODEL_IS_IMM1100: /* TCHE30 */
                     modelData.device_group = 0;
@@ -821,6 +864,7 @@ namespace esphome
                     modelData.capabilities |= CAP_VOLUME_RINGTONE;
                     modelData.capabilities |= CAP_VOLUME_HANDSET_DOOR_CALL;
                     modelData.capabilities |= CAP_AS_ADDRESS_DIVIDER;
+                    modelData.capabilities |= CAP_DND;
                     break;
                 case MODEL_IS_IMM1300: /* VTCH30 */
                     modelData.device_group = 0;
@@ -832,6 +876,7 @@ namespace esphome
                     modelData.capabilities |= CAP_VOLUME_RINGTONE;
                     modelData.capabilities |= CAP_VOLUME_HANDSET_DOOR_CALL;
                     modelData.capabilities |= CAP_AS_ADDRESS_DIVIDER;
+                    modelData.capabilities |= CAP_DND;
                     break;
                 case MODEL_IS_IMM1500:
                     modelData.device_group = 0;
@@ -843,6 +888,7 @@ namespace esphome
                     modelData.capabilities |= CAP_VOLUME_RINGTONE;
                     modelData.capabilities |= CAP_VOLUME_HANDSET_DOOR_CALL;
                     modelData.capabilities |= CAP_AS_ADDRESS_DIVIDER;
+                    modelData.capabilities |= CAP_DND;
                     break;
                 case MODEL_IS_IMM1310: /* VTCHE30 */
                     modelData.device_group = 0;
@@ -854,6 +900,7 @@ namespace esphome
                     modelData.capabilities |= CAP_VOLUME_RINGTONE;
                     modelData.capabilities |= CAP_VOLUME_HANDSET_DOOR_CALL;
                     modelData.capabilities |= CAP_AS_ADDRESS_DIVIDER;
+                    modelData.capabilities |= CAP_DND;
                     break;
                 case MODEL_IS_IMM1110: /* TCHEE30 */
                     modelData.device_group = 0;
@@ -865,6 +912,7 @@ namespace esphome
                     modelData.capabilities |= CAP_VOLUME_RINGTONE;
                     modelData.capabilities |= CAP_VOLUME_HANDSET_DOOR_CALL;
                     modelData.capabilities |= CAP_AS_ADDRESS_DIVIDER;
+                    modelData.capabilities |= CAP_DND;
                     break;
                 case MODEL_IS_IVH3222: /* VTCH50 */
                     modelData.device_group = 0;
@@ -875,6 +923,7 @@ namespace esphome
                     modelData.capabilities |= CAP_RINGTONE_SECOND_ENTRANCE_DOOR_CALL;
                     modelData.capabilities |= CAP_VOLUME_RINGTONE;
                     modelData.capabilities |= CAP_VOLUME_HANDSET_DOOR_CALL;
+                    modelData.capabilities |= CAP_DND;
                     break;
                 case MODEL_IS_IVH4222: /* VTCH50/2D */
                     modelData.device_group = 0;
@@ -885,6 +934,7 @@ namespace esphome
                     modelData.capabilities |= CAP_RINGTONE_SECOND_ENTRANCE_DOOR_CALL;
                     modelData.capabilities |= CAP_VOLUME_RINGTONE;
                     modelData.capabilities |= CAP_VOLUME_HANDSET_DOOR_CALL;
+                    modelData.capabilities |= CAP_DND;
                     break;
                 case MODEL_IS_VMH:
                     modelData.device_group = 0;
@@ -897,6 +947,7 @@ namespace esphome
                     modelData.capabilities |= CAP_VOLUME_HANDSET_DOOR_CALL;
                     modelData.capabilities |= CAP_AS_ADDRESS_DIVIDER;
                     modelData.capabilities |= CAP_VAS_ADDRESS_DIVIDER;
+                    modelData.capabilities |= CAP_DND;
                     break;
                 case MODEL_IS_VML:
                     modelData.device_group = 0;
@@ -909,6 +960,7 @@ namespace esphome
                     modelData.capabilities |= CAP_VOLUME_HANDSET_DOOR_CALL;
                     modelData.capabilities |= CAP_AS_ADDRESS_DIVIDER;
                     modelData.capabilities |= CAP_VAS_ADDRESS_DIVIDER;
+                    modelData.capabilities |= CAP_DND;
                     break;
                 case MODEL_IS_VMF:
                     modelData.device_group = 0;
@@ -921,6 +973,7 @@ namespace esphome
                     modelData.capabilities |= CAP_VOLUME_HANDSET_DOOR_CALL;
                     modelData.capabilities |= CAP_AS_ADDRESS_DIVIDER;
                     modelData.capabilities |= CAP_VAS_ADDRESS_DIVIDER;
+                    modelData.capabilities |= CAP_DND;
                     break;
 
                 case MODEL_IS_IVW9010:
@@ -1072,30 +1125,72 @@ namespace esphome
 
             if(model_data.device_group == 0 || model_data.device_group == 1)
             {
+                bool model_is_tasta = (model == MODEL_IS_ISW5010 || model == MODEL_IS_ISW5020 || 
+                       model == MODEL_IS_ISW5030 || model == MODEL_IS_ISW5031 || 
+                       model == MODEL_IS_ISW5033 || model == MODEL_IS_ISW6010 || 
+                       model == MODEL_IS_ISW6031 || model == MODEL_IS_IVW511X || 
+                       model == MODEL_IS_IVW521X || model == MODEL_IS_IVW6511);
+
                 // IS
                 if (setting == SETTING_RINGTONE_ENTRANCE_DOOR_CALL && (model_data.capabilities & CAP_RINGTONE_ENTRANCE_DOOR_CALL))
                 {
-                    data.index = 3;
-                    data.start_bit = 7;
-                    data.length = 4;
+                    if(model_is_tasta)
+                    {
+                        data.index = 24;
+                        data.start_bit = 7;
+                        data.length = 8;
+                    }
+                    else
+                    {
+                        data.index = 3;
+                        data.start_bit = 7;
+                        data.length = 4;
+                    }
                 }
                 else if (setting == SETTING_RINGTONE_INTERNAL_CALL && (model_data.capabilities & CAP_RINGTONE_INTERNAL_CALL))
                 {
-                    data.index = 6;
-                    data.start_bit = 7;
-                    data.length = 4;
+                    if(model_is_tasta)
+                    {
+                        data.index = 25;
+                        data.start_bit = 7;
+                        data.length = 8;
+                    }
+                    else
+                    {
+                        data.index = 6;
+                        data.start_bit = 7;
+                        data.length = 4;
+                    }
                 }
                 else if (setting == SETTING_RINGTONE_FLOOR_CALL && (model_data.capabilities & CAP_RINGTONE_FLOOR_CALL))
                 {
-                    data.index = 9;
-                    data.start_bit = 7;
-                    data.length = 4;
+                    if(model_is_tasta)
+                    {
+                        data.index = 26;
+                        data.start_bit = 7;
+                        data.length = 8;
+                    }
+                    else
+                    {
+                        data.index = 9;
+                        data.start_bit = 7;
+                        data.length = 4;
+                    }
                 }
                 else if (setting == SETTING_RINGTONE_SECOND_ENTRANCE_DOOR_CALL && (model_data.capabilities & CAP_RINGTONE_SECOND_ENTRANCE_DOOR_CALL))
                 {
-                    data.index = 12;
-                    data.start_bit = 7;
-                    data.length = 4;
+                    if(model_is_tasta)
+                    {
+                        data.index = 27;
+                        data.start_bit = 7;
+                        data.length = 8;
+                    }
+                    else
+                    {
+                        data.index = 12;
+                        data.start_bit = 7;
+                        data.length = 4;
+                    }
                 }
                 else if (setting == SETTING_VOLUME_RINGTONE && (model_data.capabilities & CAP_VOLUME_RINGTONE))
                 {
@@ -1136,6 +1231,12 @@ namespace esphome
                 {
                     data.index = 23;
                     data.start_bit = 1;
+                }
+                else if (setting == SETTING_DND && (model_data.capabilities & CAP_DND))
+                {
+                    data.index = 12;
+                    data.start_bit = 3;
+                    data.length = 4;
                 }
             }
             else if(model_data.device_group == 2)

@@ -453,6 +453,10 @@ namespace esphome
 
             if(this->device_group_ == DEVICE_GROUP_INDOOR_STATION)
             {
+                if(supports_setting(SETTING_DND))
+                {
+                    ESP_LOGI(TAG, "  DND status: %i", YESNO(get_setting(SETTING_DND)));
+                }
                 if(supports_setting(SETTING_VOLUME_RINGTONE))
                 {
                     ESP_LOGI(TAG, "  Ringtone volume: %i", get_setting(SETTING_VOLUME_RINGTONE));
