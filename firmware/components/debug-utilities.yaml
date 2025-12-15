@@ -144,6 +144,18 @@ button:
       sorting_group_id: sorting_group_debug_tools
 
   - platform: template
+    id: debug_floor_call
+    device_id: tc_bus_debug
+    name: "Test Floor Call"
+    icon: mdi:restart
+    on_press:
+      - tc_bus_device.send:
+          id: tc_bus_indoor_station
+          type: floor_call
+    web_server:
+      sorting_group_id: sorting_group_debug_tools
+
+  - platform: template
     id: debug_system_discovery
     device_id: tc_bus_debug
     name: "System Discovery"

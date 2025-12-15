@@ -940,7 +940,7 @@ namespace esphome::tc_bus
                         model_to_string(this->model_), device_group_to_string(this->device_group_), this->serial_number_);
 
         send_telegram(TELEGRAM_TYPE_SELECT_DEVICE_GROUP, 0, this->model_data_.device_group);
-        send_telegram(TELEGRAM_TYPE_SELECT_MEMORY_PAGE, 0, 0);
+        send_telegram(TELEGRAM_TYPE_SELECT_MEMORY_PAGE, 0, 0, 300);
 
         reading_memory_count_ = (index / 4);
 
