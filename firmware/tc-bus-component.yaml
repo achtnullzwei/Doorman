@@ -12,6 +12,8 @@ wifi:
 
 api:
 
+logger:
+
 external_components:
   - source:
       type: local
@@ -114,15 +116,15 @@ select:
   - platform: tc_bus_device
     tc_bus_device_id: my_indoor_station2
     model:
-      name: "IS1: Model"
+      name: "IS2: Model"
     ringtone_entrance_door_call:
-      name: "IS1: Ringtone: Entrance Door Call"
+      name: "IS2: Ringtone: Entrance Door Call"
     ringtone_second_entrance_door_call:
-      name: "IS1: Ringtone: Second Entrance Door Call"
+      name: "IS2: Ringtone: Second Entrance Door Call"
     ringtone_floor_call:
-      name: "IS1: Ringtone: Floor Call"
+      name: "IS2: Ringtone: Floor Call"
     ringtone_internal_call:
-      name: "IS1: Ringtone: Internal Call"
+      name: "IS2: Ringtone: Internal Call"
 
 switch:
   - platform: tc_bus_device

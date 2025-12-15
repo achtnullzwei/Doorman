@@ -442,6 +442,7 @@ Here are the available doorbell button actions you can use to update the doorbel
 Here are the available setting types you can use to update the settings of your bus devices.
 
 ### Indoor Station
+- ringtone_mute <Badge type="tip" text="SETTING_RINGTONE_MUTE" />
 - ringtone_floor_call <Badge type="tip" text="SETTING_RINGTONE_FLOOR_CALL" />
 - ringtone_entrance_door_call <Badge type="tip" text="SETTING_RINGTONE_ENTRANCE_DOOR_CALL" />
 - ringtone_second_entrance_door_call <Badge type="tip" text="SETTING_RINGTONE_SECOND_ENTRANCE_DOOR_CALL" />
@@ -451,7 +452,6 @@ Here are the available setting types you can use to update the settings of your 
 - volume_handset_internal_call <Badge type="tip" text="SETTING_VOLUME_HANDSET_INTERNAL_CALL" />
 - volume_handset_internal_call <Badge type="tip" text="SETTING_AS_ADDRESS_DIVIDER" />
 - volume_handset_internal_call <Badge type="tip" text="SETTING_VAS_ADDRESS_DIVIDER" />
-- ringtone_mute <Badge type="tip" text="SETTING_RINGTONE_RINGTONE_MUTE" />
 
 ### Outdoor Station
 - as_address <Badge type="tip" text="SETTING_AS_ADDRESS" />

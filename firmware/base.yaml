@@ -15,12 +15,14 @@ esphome:
   on_boot:
     - priority: 500.0
       then:
-        - script.execute: set_unused_entities_internal
         - script.execute: boot_component_init
     - priority: 375.0
       then:
         # RGB status LED boot sequence
         - script.execute: boot_state
+    - priority: 350.0
+      then:
+        - script.execute: set_unused_entities_internal
 
   devices:
     - id: tc_bus_general

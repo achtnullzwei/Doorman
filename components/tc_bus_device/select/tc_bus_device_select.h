@@ -3,10 +3,8 @@
 #include "esphome/components/select/select.h"
 #include "../tc_bus_device.h"
 
-namespace esphome
+namespace esphome::tc_bus
 {
-  namespace tc_bus
-  {
     class ModelSelect final : public select::Select, public Parented<TCBusDeviceComponent> {
       public:
         ModelSelect() = default;
@@ -47,5 +45,4 @@ namespace esphome
         void control(const std::string &value) override;
     };
 
-  }  // namespace tc_bus
-}  // namespace esphome
+}

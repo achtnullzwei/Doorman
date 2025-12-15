@@ -3,10 +3,8 @@
 #include "esphome/components/number/number.h"
 #include "../tc_bus_device.h"
 
-namespace esphome
+namespace esphome::tc_bus
 {
-  namespace tc_bus
-  {
     class SerialNumberNumber final : public number::Number, public Parented<TCBusDeviceComponent> {
       public:
         SerialNumberNumber() = default;
@@ -39,5 +37,4 @@ namespace esphome
         void control(float value) override;
     };
 
-  }  // namespace tc_bus
-}  // namespace esphome
+}

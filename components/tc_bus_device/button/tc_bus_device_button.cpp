@@ -1,17 +1,14 @@
 #include "tc_bus_device_button.h"
 
-namespace esphome
+namespace esphome::tc_bus
 {
-    namespace tc_bus
+    void IdentifyDeviceButton::press_action()
     {
-        void IdentifyDeviceButton::press_action()
-        {
-            this->parent_->identify_device();
-        }
+        this->parent_->identify_device();
+    }
 
-        void ReadMemoryButton::press_action()
-        {
-            this->parent_->read_memory();
-        }
-    }  // namespace tc_bus
-}  // namespace esphome
+    void ReadMemoryButton::press_action()
+    {
+        this->parent_->read_memory();
+    }
+}

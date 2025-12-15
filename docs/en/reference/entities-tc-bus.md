@@ -67,6 +67,9 @@ Controls the turn-on doorbell-confirmation for the [Ring To Open](../guide/featu
 ### RTO: Display Status <Badge type="tip" text="rto_led_status" /> <Badge type="info" text="Disabled by default" />
 Controls the Status LED for the [Ring To Open](../guide/features/ring-to-open) automation.
 
+### Ringtone: Mute <Badge type="tip" text="indoor_station_ringtone_mute" />
+Sets the intercom phone ringtone mute.
+
 ### Use 32-Bit Door Protocol <Badge type="tip" text="use_32_open_door_protocol" /> <Badge type="info" text="Disabled by default" />
 This guarantees the long door opener telegram is used and adds a serial number to the short door opener telegram.
 

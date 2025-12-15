@@ -10,7 +10,6 @@ switch:
       name: "Ringtone: Mute"
       icon: "mdi:mute"
       entity_category: CONFIG
-      #disabled_by_default: true
       web_server:
         sorting_group_id: sorting_group_indoor_station_settings
         sorting_weight: -81
@@ -25,7 +24,6 @@ select:
       name: "Model"
       icon: "mdi:doorbell-video"
       entity_category: CONFIG
-      #disabled_by_default: true
       on_value:
         - script.execute: set_unused_entities_internal
       web_server:
@@ -38,7 +36,6 @@ select:
       name: "Ringtone: Entrance Door Call"
       icon: "mdi:music"
       entity_category: CONFIG
-      #disabled_by_default: true
       web_server:
         sorting_group_id: sorting_group_indoor_station_settings
         sorting_weight: -80
