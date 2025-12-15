@@ -20,17 +20,47 @@ namespace esphome::hardware
         #ifdef USE_ESP32
         uint8_t revision[3] = {0};
         uint8_t model = 0;
+        uint8_t model_alt = 0;
 
         esp_err_t rev_err = esp_efuse_read_block(EFUSE_BLK3, revision, 0, 24);
         esp_err_t model_err = esp_efuse_read_block(EFUSE_BLK3, &model, 24, 8);
+        // Alternative location
+        esp_err_t model_alt_err = esp_efuse_read_block(EFUSE_BLK4, &model_alt, 0, 8);
 
-        if (rev_err == ESP_OK && model_err == ESP_OK && revision[0] > 0)
+        if (rev_err == ESP_OK && model_err == ESP_OK && model_alt_err == ESP_OK && revision[0] > 0)
         {
+            // No model set, fix it
+            if(model == 0 && model_alt == 0)
+            {
+                model = 1; // Doorman S3
+
+                ESP_LOGI(TAG, "Writing model: %d at bit offset 0", model);
+                esp_err_t write_err = esp_efuse_write_block(EFUSE_BLK4, &model, 0, 8);
+                
+                if (write_err == ESP_OK) {
+                    ESP_LOGI(TAG, "Successfully written model");
+                    
+                    // Verify
+                    uint8_t verify = 0;
+                    esp_efuse_read_block(EFUSE_BLK4, &verify, 0, 8);
+                    ESP_LOGI(TAG, "Verified value: %d", verify);
+                } else {
+                    ESP_LOGE(TAG, "Write failed: %s", esp_err_to_name(write_err));
+                }
+            }
+
+            // Use alternative model
+            if(model_alt != 0)
+            {
+                model = model_alt;
+            }
+
             // Product Name
             if (this->model_ != nullptr)
             {
                 constexpr const char* MODEL_NAMES[] = {
-                    "Doorman S3" // 0
+                    "Unset",
+                    "Doorman S3"
                 };
                 constexpr size_t NUM_MODELS = sizeof(MODEL_NAMES) / sizeof(MODEL_NAMES[0]);
                 const char* model_name = (model < NUM_MODELS) ? MODEL_NAMES[model] : "Unknown";

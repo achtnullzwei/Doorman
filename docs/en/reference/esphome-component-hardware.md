@@ -5,7 +5,7 @@ During production, each board's PCB hardware revision and model are permanently 
 The component reads these EFuse values and exposes them as text sensors, providing visibility into the physical hardware characteristics of each device.
 
 ## How does it work?
-Each board has its PCB revision and variant permanently encoded in `EFUSE_BLK3`:
+Each board has its PCB revision and variant permanently encoded in `EFUSE_BLK3` and for old batches `EFUSE_BLK4`:
 
 | Byte | Meaning       |
 | ---- | ------------- |
@@ -16,7 +16,7 @@ Each board has its PCB revision and variant permanently encoded in `EFUSE_BLK3`:
 
 During startup, this component:
 
-1. Reads 32 bits from `EFUSE_BLK3`
+1. Reads data from `EFUSE_BLK3` and `EFUSE_BLK4`
 2. Parses the hardware revision into major.minor.patch format and extracts the model
 3. Exposes the results as text sensors
 
