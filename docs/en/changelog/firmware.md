@@ -8,23 +8,23 @@ This release **will impact your current setup** and **requires** you to go throu
 
 ### 🚀 What's New?
 - **Streamlined Door Control with Unified Lock Entities**  
-  The `Open Door` buttons have been replaced by new, standardized lock entities.  
-  You can now use the `lock.unlock` action in Home Assistant for seamless door control.  
-  This change simplifies dashboard integration and delivers a more consistent, intuitive experience.
+   The `Open Door` buttons have been replaced by new, standardized lock entities.  
+   You can now use the `lock.unlock` action in Home Assistant for seamless door control.  
+   This change simplifies dashboard integration and delivers a more consistent, intuitive experience.
 
 - **Use Light Entity instead of Button for Hallway Light**  
-  The `Turn on the light` button has been replaced by the `Hallway Light` light entity.  
-  You can now use the `light.turn_on` action in Home Assistant to turn on the hallway light. This change simplifies dashboard integration and delivers a more consistent, intuitive experience.
+   The `Turn on the light` button has been replaced by the `Hallway Light` light entity.  
+   You can now use the `light.turn_on` action in Home Assistant to turn on the hallway light. This change simplifies dashboard integration and delivers a more consistent, intuitive experience.
 
 - **Extended Ring to Open to Apartment Doorbells**  
    [Ring To Open](https://doorman.azon.ai/guide/features/ring-to-open) now also works with your apartment doorbell when paired with a Nuki Smart Lock — making access even more convenient and seamless.
 
 - **MQTT Integration**  
-  The configuration assistant now allows you to select the [MQTT integration](https://doorman.azon.ai/guide/firmware/mqtt).  
-  After flashing, just enter your broker credentials via the built-in web interface.
+   The configuration assistant now allows you to select the [MQTT integration](https://doorman.azon.ai/guide/firmware/mqtt).  
+   After flashing, just enter your broker credentials via the built-in web interface.
 
 - **HomeKit Integration**  
-  To enable native control through Apple's Home app and Siri, you can now choose the [HomeKit integration](https://doorman.azon.ai/guide/firmware/homekit) in the configuration assistant.
+   To enable native control through Apple's Home app and Siri, you can now choose the [HomeKit integration](https://doorman.azon.ai/guide/firmware/homekit) in the configuration assistant.
 
 - **Pre-Open Telegrams**  
    In some setups, it's necessary to send one or more preparatory telegrams to select the correct door. This feature allows you to define and send a sequence of telegrams before the `open_door` telegram is executed.
@@ -46,10 +46,10 @@ This release **will impact your current setup** and **requires** you to go throu
    Additionally, the Delay settings are now presented as dropdown menus, making it more intuitive to use the random delay feature—which was previously hidden behind the 60-second setting.
 
 - **Smarter Ring to Open with Pattern Recognition**  
-  The door now opens only when a configured doorbell ring pattern is detected, offering more precise control over access.
+   The door now opens only when a configured doorbell ring pattern is detected, offering more precise control over access.
 
 - **Quadruple Doorbell Pattern**  
-  A new quadruple-press pattern has been added, with slightly refined timing to improve reliability and avoid overlap with other patterns.
+   A new quadruple-press pattern has been added, with slightly refined timing to improve reliability and avoid overlap with other patterns.
 
 - **Install Update Button**  
    A new button lets you install the latest available Doorman firmware version directly from the web interface.
@@ -58,13 +58,16 @@ This release **will impact your current setup** and **requires** you to go throu
    The default firmware now includes a Wi-Fi signal strength sensor, which was previously only available in the developer version.
 
 - **Component split**  
-  The `tc_bus` ESPHome component has been refactored into three separate components: `tc_bus`, `tc_bus_device`, and `doorman_hardware`. This change improves maintainability and adds flexibility when working with multiple TC:BUS devices.
+   The `tc_bus` ESPHome component has been refactored into three separate components: `tc_bus`, `tc_bus_device`, and `doorman_hardware`. This change improves maintainability and adds flexibility when working with multiple TC:BUS devices.
 
 - **TC:BUS Serial Component**  
-  The `tc_bus_serial` ESPHome component is now available, enabling serial communication with the TC:BUS via USB.
+   The `tc_bus_serial` ESPHome component is now available, enabling serial communication with the TC:BUS via USB.
 
 - **Extended Model Detection Support**  
    Detection capabilities now include additional older models like the `TTC-xx` and `TTS-xx` and common outdoor stations.
+
+- **Fixed TASTA settings**  
+   The ringtone settings for TASTA indoor stations now work as expected.
 
 - **Expanded Support for Model-Specific Settings**  
    Settings compatibility has been added for most indoor station models and also for some outdoor station models.
@@ -99,9 +102,9 @@ This release **will impact your current setup** and **requires** you to go throu
 
 ### 🚨 Breaking Changes
 - **Renamed `command` to `telegram`**  
-  The `command` terminology has been replaced with `telegram`. If you're using the `tc_bus.send` action, you must update your configuration accordingly.  
-  Additionally, the `CommandData` class has been renamed to `TelegramData`.  
-  For full migration details, please refer to the updated ESPHome component documentation.
+   The `command` terminology has been replaced with `telegram`. If you're using the `tc_bus.send` action, you must update your configuration accordingly.  
+   Additionally, the `CommandData` class has been renamed to `TelegramData`.  
+   For full migration details, please refer to the updated ESPHome component documentation.
 
 - **Adjusted Services**  
    We've made changes to the Home Assistant services to make them easier to use:
@@ -124,23 +127,23 @@ This release **will impact your current setup** and **requires** you to go throu
    Instead, you must now define the `remote_receiver` and `remote_transmitter` components when using your own custom config.
 
 - **Home Assistant Events Removed from Component**  
-  Events are no longer directly handled by the `tc_bus` component. Instead, they are now defined in the Home Assistant–specific Doorman configuration YAML file.
+   Events are no longer directly handled by the `tc_bus` component. Instead, they are now defined in the Home Assistant–specific Doorman configuration YAML file.
 
 - **Removed Open Door and Light Buttons**  
-  The `Turn on the light` and `Open Door` buttons have been removed in favor of more efficient control methods.
+   The `Turn on the light` and `Open Door` buttons have been removed in favor of more efficient control methods.
 
 - **Renamed Ring to Open Entities**  
-  The [Ring To Open](https://doorman.azon.ai/guide/features/ring-to-open) entities are now labeled as `RTO: Door Name – Setting` to reflect the updated configuration structure, improving clarity and consistency.
+   The [Ring To Open](https://doorman.azon.ai/guide/features/ring-to-open) entities are now labeled as `RTO: Door Name – Setting` to reflect the updated configuration structure, improving clarity and consistency.
 
 - **Renamed Intercom Model Entity**  
-  The `Intercom Model` setting has been renamed to `Indoor Station Model` for more consistency with the documentation and to better reflect its purpose.
+   The `Intercom Model` setting has been renamed to `Indoor Station Model` for more consistency with the documentation and to better reflect its purpose.
 
 - **Renamed Nuki Lock**  
-  The `Nuki Lock` entity has been renamed to `Apartment Door` for better alignment with the naming convention used for other doors.
+   The `Nuki Lock` entity has been renamed to `Apartment Door` for better alignment with the naming convention used for other doors.
 
 - **Changed Setup Mode logic**  
-  Previously, setup mode saved the outdoor station address only once, when pressing either the apartment doorbell or the outdoor station doorbell. This caused issues if the system was using a non-default address.  
-  Now, you need to press the outdoor station doorbell for each door to ensure the address is saved correctly. Take a look [here](https://doorman.azon.ai/guide/getting-started#interactive-setup) for more information.
+   Previously, setup mode saved the outdoor station address only once, when pressing either the apartment doorbell or the outdoor station doorbell. This caused issues if the system was using a non-default address.  
+   Now, you need to press the outdoor station doorbell for each door to ensure the address is saved correctly. Take a look [here](https://doorman.azon.ai/guide/getting-started#interactive-setup) for more information.
 
 - **Minimum ESPHome Version Set**  
    The minimum required version has been updated to **2025.11.0**.
