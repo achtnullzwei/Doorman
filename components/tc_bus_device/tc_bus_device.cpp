@@ -57,18 +57,18 @@ namespace esphome
             this->set_model(recovered.model, false);
 
             #ifdef USE_SWITCH
-                if (this->force_long_door_opener_protocol_switch_ != nullptr)
-                {
-                    this->force_long_door_opener_protocol_switch_->publish_state(this->force_long_door_opener_protocol_);
-                }
+            if (this->force_long_door_opener_protocol_switch_ != nullptr)
+            {
+                this->force_long_door_opener_protocol_switch_->publish_state(this->force_long_door_opener_protocol_);
+            }
             #endif
 
             #ifdef USE_BINARY_SENSOR
-                // Reset Binary Sensor Listeners
-                for (auto &listener : listeners_)
-                {
-                    listener->turn_off(&listener->timer_);
-                }
+            // Reset Binary Sensor Listeners
+            for (auto &listener : listeners_)
+            {
+                listener->turn_off(&listener->timer_);
+            }
             #endif
 
             // Register remote listener
@@ -114,6 +114,7 @@ namespace esphome
                 if(this->auto_configuration_ && save && changed)
                 {
                     // Clear memory because device serial number changed
+                    ESP_LOGD(TAG, "Clear memory buffer");
                     this->memory_buffer_.clear();
 
                     ESP_LOGD(TAG, "Schedule flow: Model identification (changed serial number from 0)");
@@ -128,16 +129,16 @@ namespace esphome
 
             // Update Entities
             #ifdef USE_NUMBER
-                if (this->serial_number_number_ != nullptr)
-                {
-                    this->serial_number_number_->publish_state(serial_number);
-                }
+            if (this->serial_number_number_ != nullptr)
+            {
+                this->serial_number_number_->publish_state(serial_number);
+            }
             #endif
         }
 
         void TCBusDeviceComponent::set_model(Model model, bool save)
         {
-            bool changed = this->model_ == MODEL_NONE && model != this->model_;
+            bool changed_from_none = this->model_ == MODEL_NONE && model != this->model_;
 
             this->model_ = model;
             this->model_data_ = getModelData(model);
@@ -160,19 +161,21 @@ namespace esphome
                 this->publish_settings();
 
                 // Schedule memory reading flow
-                if(this->auto_configuration_ && save && changed)
+                // if model was changed from 'none' to valid model
+                // or memory buffer is empty
+                if(this->auto_configuration_ && save && (changed_from_none || this->memory_buffer_empty()))
                 {
-                    ESP_LOGD(TAG, "Schedule flow: Memory reading (changed model from none)");
+                    ESP_LOGD(TAG, "Schedule flow: Memory reading (%s)", changed_from_none ? "changed model - from none" : "changed model - buffer empty");
                     read_memory();
                 }
             }
 
             // Update Entities
             #ifdef USE_SELECT
-                if (this->model_select_ != nullptr)
-                {
-                    this->model_select_->publish_state(model_to_string(model));
-                }
+            if (this->model_select_ != nullptr)
+            {
+                this->model_select_->publish_state(model_to_string(model));
+            }
             #endif
         }
 
@@ -390,10 +393,7 @@ namespace esphome
                                           device.firmware_patch);
 
                             // Update Model
-                            if (device.model != this->model_)
-                            {
-                                this->set_model(device.model);
-                            }
+                            this->set_model(device.model);
 
                             this->identify_complete_callback_.call(device);
                         }
@@ -418,20 +418,20 @@ namespace esphome
                 else
                 {
                     #ifdef USE_BINARY_SENSOR
-                        // Fire Binary Sensors
-                        for (auto &listener : listeners_)
-                        {
-                            bool allow_publish = (telegram_data.type == (listener->type_.value_or(TELEGRAM_TYPE_UNKNOWN))) &&
-                                (telegram_data.address == listener->address_.value_or(0) || listener->address_.value_or(0) == 255) &&
-                                (telegram_data.payload == listener->payload_.value_or(0) || listener->payload_.value_or(0) == 255) &&
-                                (telegram_data.serial_number == this->serial_number_);
+                    // Fire Binary Sensors
+                    for (auto &listener : listeners_)
+                    {
+                        bool allow_publish = (telegram_data.type == (listener->type_.value_or(TELEGRAM_TYPE_UNKNOWN))) &&
+                            (telegram_data.address == listener->address_.value_or(0) || listener->address_.value_or(0) == 255) &&
+                            (telegram_data.payload == listener->payload_.value_or(0) || listener->payload_.value_or(0) == 255) &&
+                            (telegram_data.serial_number == this->serial_number_);
 
-                            // Trigger listener binary sensor if match found
-                            if (allow_publish)
-                            {
-                                listener->turn_on(&listener->timer_, listener->auto_off_);
-                            }
+                        // Trigger listener binary sensor if match found
+                        if (allow_publish)
+                        {
+                            listener->turn_on(&listener->timer_, listener->auto_off_);
                         }
+                    }
                     #endif
                 }
             }
@@ -441,7 +441,7 @@ namespace esphome
 
         void TCBusDeviceComponent::publish_settings()
         {
-            if(memory_buffer_empty() || this->model_ == MODEL_NONE)
+            if(this->memory_buffer_empty() || this->model_ == MODEL_NONE)
             {
                 return;
             }
@@ -467,19 +467,19 @@ namespace esphome
                 }
                 if(supports_setting(SETTING_RINGTONE_ENTRANCE_DOOR_CALL))
                 {
-                    ESP_LOGI(TAG, "  Entrance Door Call Ringtone: %i", get_setting(SETTING_RINGTONE_ENTRANCE_DOOR_CALL));
+                    ESP_LOGI(TAG, "  Entrance Door Call Ringtone: %s", int_to_ringtone(get_setting(SETTING_RINGTONE_ENTRANCE_DOOR_CALL)));
                 }
                 if(supports_setting(SETTING_RINGTONE_SECOND_ENTRANCE_DOOR_CALL))
                 {
-                    ESP_LOGI(TAG, "  Second Entrance Door Call Ringtone: %i", get_setting(SETTING_RINGTONE_SECOND_ENTRANCE_DOOR_CALL));
+                    ESP_LOGI(TAG, "  Second Entrance Door Call Ringtone: %s", int_to_ringtone(get_setting(SETTING_RINGTONE_SECOND_ENTRANCE_DOOR_CALL)));
                 }
                 if(supports_setting(SETTING_RINGTONE_FLOOR_CALL))
                 {
-                    ESP_LOGI(TAG, "  Floor Call Ringtone: %i", get_setting(SETTING_RINGTONE_FLOOR_CALL));
+                    ESP_LOGI(TAG, "  Floor Call Ringtone: %s", int_to_ringtone(get_setting(SETTING_RINGTONE_FLOOR_CALL)));
                 }
                 if(supports_setting(SETTING_RINGTONE_INTERNAL_CALL))
                 {
-                    ESP_LOGI(TAG, "  Internal Call Ringtone: %i", get_setting(SETTING_RINGTONE_INTERNAL_CALL));
+                    ESP_LOGI(TAG, "  Internal Call Ringtone: %s", int_to_ringtone(get_setting(SETTING_RINGTONE_INTERNAL_CALL)));
                 }
                 if(supports_setting(SETTING_AS_ADDRESS_DIVIDER))
                 {
@@ -491,37 +491,37 @@ namespace esphome
                 }
 
                 #ifdef USE_SELECT
-                    if (this->ringtone_entrance_door_call_select_)
-                    {
-                        this->ringtone_entrance_door_call_select_->publish_state(int_to_ringtone(get_setting(SETTING_RINGTONE_ENTRANCE_DOOR_CALL)));
-                    }
-                    if (this->ringtone_second_entrance_door_call_select_)
-                    {
-                        this->ringtone_second_entrance_door_call_select_->publish_state(int_to_ringtone(get_setting(SETTING_RINGTONE_SECOND_ENTRANCE_DOOR_CALL)));
-                    }
-                    if (this->ringtone_floor_call_select_)
-                    {
-                        this->ringtone_floor_call_select_->publish_state(int_to_ringtone(get_setting(SETTING_RINGTONE_FLOOR_CALL)));
-                    }
-                    if (this->ringtone_internal_call_select_)
-                    {
-                        this->ringtone_internal_call_select_->publish_state(int_to_ringtone(get_setting(SETTING_RINGTONE_INTERNAL_CALL)));
-                    }
+                if (this->ringtone_entrance_door_call_select_)
+                {
+                    this->ringtone_entrance_door_call_select_->publish_state(int_to_ringtone(get_setting(SETTING_RINGTONE_ENTRANCE_DOOR_CALL)));
+                }
+                if (this->ringtone_second_entrance_door_call_select_)
+                {
+                    this->ringtone_second_entrance_door_call_select_->publish_state(int_to_ringtone(get_setting(SETTING_RINGTONE_SECOND_ENTRANCE_DOOR_CALL)));
+                }
+                if (this->ringtone_floor_call_select_)
+                {
+                    this->ringtone_floor_call_select_->publish_state(int_to_ringtone(get_setting(SETTING_RINGTONE_FLOOR_CALL)));
+                }
+                if (this->ringtone_internal_call_select_)
+                {
+                    this->ringtone_internal_call_select_->publish_state(int_to_ringtone(get_setting(SETTING_RINGTONE_INTERNAL_CALL)));
+                }
                 #endif
 
                 #ifdef USE_NUMBER
-                    if (this->volume_handset_door_call_number_)
-                    {
-                        this->volume_handset_door_call_number_->publish_state(get_setting(SETTING_VOLUME_HANDSET_DOOR_CALL));
-                    }
-                    if (this->volume_handset_internal_call_number_)
-                    {
-                        this->volume_handset_internal_call_number_->publish_state(get_setting(SETTING_VOLUME_HANDSET_INTERNAL_CALL));
-                    }
-                    if (this->volume_ringtone_number_)
-                    {
-                        this->volume_ringtone_number_->publish_state(get_setting(SETTING_VOLUME_RINGTONE));
-                    }
+                if (this->volume_handset_door_call_number_)
+                {
+                    this->volume_handset_door_call_number_->publish_state(get_setting(SETTING_VOLUME_HANDSET_DOOR_CALL));
+                }
+                if (this->volume_handset_internal_call_number_)
+                {
+                    this->volume_handset_internal_call_number_->publish_state(get_setting(SETTING_VOLUME_HANDSET_INTERNAL_CALL));
+                }
+                if (this->volume_ringtone_number_)
+                {
+                    this->volume_ringtone_number_->publish_state(get_setting(SETTING_VOLUME_RINGTONE));
+                }
                 #endif
             }
             else if(this->device_group_ == DEVICE_GROUP_OUTDOOR_STATION)
@@ -624,10 +624,10 @@ namespace esphome
         }
 
         #ifdef USE_BINARY_SENSOR
-            void TCBusDeviceComponent::register_listener(TCBusDeviceListener *listener)
-            {
-                this->listeners_.push_back(listener);
-            }
+        void TCBusDeviceComponent::register_listener(TCBusDeviceListener *listener)
+        {
+            this->listeners_.push_back(listener);
+        }
         #endif
 
         void TCBusDeviceComponent::send_telegram(TelegramType type, uint8_t address, uint32_t payload, uint32_t wait_duration)
@@ -1067,7 +1067,7 @@ namespace esphome
         {
             DoorbellButtonConfig button{};
 
-            if (memory_buffer_.empty())
+            if (this->memory_buffer_empty())
             {
                 ESP_LOGE(TAG, "Memory buffer is empty. Please read memory before proceeding!");
                 return button;
@@ -1113,7 +1113,7 @@ namespace esphome
 
         bool TCBusDeviceComponent::update_doorbell_button(uint8_t row, uint8_t col, DoorbellButtonConfig button)
         {
-            if (this->memory_buffer_.empty())
+            if (this->memory_buffer_empty())
             {
                 ESP_LOGE(TAG, "Memory buffer is empty. Please read memory before proceeding!");
                 return false;
@@ -1172,7 +1172,7 @@ namespace esphome
 
         uint8_t TCBusDeviceComponent::get_memory_byte(uint8_t index)
         {
-            if (memory_buffer_.empty() || index >= memory_buffer_.size())
+            if (this->memory_buffer_empty() || index >= memory_buffer_.size())
             {
                 return 0xFF;
             }
@@ -1181,7 +1181,7 @@ namespace esphome
 
         bool TCBusDeviceComponent::supports_setting(SettingType type)
         {
-            if (memory_buffer_.empty() || this->model_ == MODEL_NONE)
+            if (this->memory_buffer_empty() || this->model_ == MODEL_NONE)
             {
                 return false;
             }
@@ -1200,7 +1200,7 @@ namespace esphome
 
         uint8_t TCBusDeviceComponent::get_setting(SettingType type)
         {
-            if (memory_buffer_.empty())
+            if (this->memory_buffer_empty())
             {
                 return 0;
             }
@@ -1227,7 +1227,7 @@ namespace esphome
 
         bool TCBusDeviceComponent::update_setting(SettingType type, uint8_t new_value)
         {
-            if (this->memory_buffer_.empty())
+            if (this->memory_buffer_empty())
             {
                 ESP_LOGE(TAG, "Memory buffer is empty. Please read memory before proceeding!");
                 return false;
@@ -1256,7 +1256,7 @@ namespace esphome
             ESP_LOGI(TAG, "Write setting to device:\n"
                           "  Device Group: %s\n"
                           "  Model: %s\n"
-                          "  Serial Number: %i"
+                          "  Serial Number: %i\n"
                           "  Setting: %s\n"
                           "  Value: %X",
                           device_group_to_string(this->device_group_), model_to_string(this->model_), this->serial_number_, setting_type_to_string(type), new_value);
@@ -1288,7 +1288,7 @@ namespace esphome
 
         bool TCBusDeviceComponent::write_memory()
         {
-            if (this->memory_buffer_.empty())
+            if (this->memory_buffer_empty())
             {
                 ESP_LOGE(TAG, "Memory buffer is empty! Please read memory first before proceeding.");
                 return false;
@@ -1309,7 +1309,7 @@ namespace esphome
             ESP_LOGI(TAG, "Write memory buffer to device:\n"
                           "  Device Group: %s\n"
                           "  Model: %s\n"
-                          "  Serial Number: %i"
+                          "  Serial Number: %i\n"
                           "  Size: %i Bytes",
                           device_group_to_string(this->device_group_), model_to_string(this->model_), this->serial_number_, this->memory_buffer_.size());
             ESP_LOGD(TAG, "  Data: %s", format_hex_pretty(this->memory_buffer_, ' ', false).c_str());
