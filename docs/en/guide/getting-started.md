@@ -287,7 +287,7 @@ To enable detection of the **doorbell(s)** and allow unlocking of the **door(s)*
 
 🕒 Wait about **one minute after setup finishes** before doing this, so the system can correctly store the second door's address.
 
-⚠️ Entities related to the second entrance door won't appear until you configure its address. If you've already set it up but these entities are still unavailable, restart Doorman or reload the device in Home Assistant to refresh the integration.
+⚠️ The second entrance door entities require address configuration before they'll appear. Similarly, indoor station settings need the model to be set first. If you've configured both but entities are still invisible/unavailable, restart Doorman or reload the ESPHome integration in Home Assistant.
 :::
 
 ### 4. Setup complete

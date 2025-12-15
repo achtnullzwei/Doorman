@@ -287,7 +287,7 @@ Damit die **Türklingel(n)** erkannt werden und du die **Tür(en) öffnen** kann
 
 🕒 Warte etwa **eine Minute nach der Einrichtung**, bevor du das machst, damit die Adresse der zweiten Tür korrekt gespeichert wird.
 
-⚠️ Entitäten für die zweite Eingangstür werden erst angezeigt, nachdem Du deren Adresse konfiguriert hast. Falls die zweite Einganstür bereits eingerichtet ist, aber diese Entitäten noch nicht verfügbar sind, starte Doorman neu oder lade das Gerät in Home Assistant neu, um die Integration zu aktualisieren.
+⚠️ Entitäten für die zweite Eingangstür werden erst nach der Adresskonfiguration angezeigt. Gleiches gilt für die Innenstationseinstellungen, die erst nach Festlegung des Modells verfügbar sind. Falls Du beides bereits konfiguriert hast, aber die Entitäten trotzdem unsichtbar/nicht verfügbar bleiben, starte Doorman neu oder lade die ESPHome-Integration in Home Assistant neu.
 :::
 
 ### 4. Einrichtung abgeschlossen

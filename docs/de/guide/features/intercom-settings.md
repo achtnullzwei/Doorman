@@ -8,8 +8,10 @@ Die Einstellungen werden automatisch verfügbar, sobald deine Innenstation erfol
 
 Welche Einstellungen dir zur Verfügung stehen, hängt vom Modell deiner Innenstation ab. Eine Übersicht der unterstützten Einstellungen findest du in der [Liste unterstützter Einstellungen](../../reference/esphome-component-device#model-setting-availability).
 
-::: info HINWEIS
-Die meisten Einstellungen sind standardmäßig in der Oberfläche ausgeblendet.
+Das Modell muss zuerst gesetzt werden, sonst werden die Einstellungen weder im Webinterface noch in Home Assistant angezeigt. Sobald das Modell gesetzt ist, werden die Einstellungen sichtbar – lade das Webinterface neu, um sie zu sehen.
 
-Um diese anzuzeigen, klicke in der Doorman-Weboberfläche auf `SHOW ALL` oder aktiviere die entsprechende Entität in Home Assistant.
+::: tip
+Wenn das Modell bereits konfiguriert ist, die Entitäten aber trotzdem fehlen oder nicht verfügbar sind, starte Doorman neu oder lade die ESPHome-Integration in Home Assistant neu.
+
+Die meisten Innenstation-bezogenen Einstellungen sind standardmäßig ausgeblendet oder deaktiviert. Um sie anzuzeigen, klicke im Doorman-Webinterface auf `SHOW ALL` oder aktiviere die entsprechende Entität in Home Assistant.
 :::

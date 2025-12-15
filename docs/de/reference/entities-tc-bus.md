@@ -68,7 +68,7 @@ Controls the turn-on doorbell-confirmation for the [Ring To Open](../guide/featu
 Controls the Status LED for the [Ring To Open](../guide/features/ring-to-open) automation.
 
 ### Ringtone: Mute <Badge type="tip" text="indoor_station_ringtone_mute" />
-Sets the intercom phone ringtone mute.
+Mutes the indoor station ringtone.
 
 ### Use 32-Bit Door Protocol <Badge type="tip" text="use_32_open_door_protocol" /> <Badge type="info" text="Disabled by default" />
 This guarantees the long door opener telegram is used and adds a serial number to the short door opener telegram.
@@ -82,7 +82,7 @@ Not all models are supported as old models might not support this feature.
 :::
 
 ### Read Memory <Badge type="tip" text="read_indoor_station_memory" /> <Badge type="info" text="Disabled by default" />
-Reads the memory of the intercom phone with the specified serial number.
+Reads the memory of the indoor station with the specified serial number.
 
 
 ## Numbers
@@ -97,13 +97,13 @@ Sets the address of the entrance outdoor station.
 Sets the address of the second entrance outdoor station.
 
 ### Volume: Ringtone <Badge type="tip" text="indoor_station_volume_ringtone" /> <Badge type="info" text="Disabled by default" />
-Sets the intercom phone ringtone volume.
+Sets the indoor station ringtone volume.
 
 ### Volume: Handset Door Call <Badge type="tip" text="indoor_station_volume_handset_door_call" /> <Badge type="info" text="Disabled by default" />
-Sets the intercom phone handset door call volume.
+Sets the indoor station handset door call volume.
 
 ### Volume: Handset Internal Call <Badge type="tip" text="indoor_station_volume_handset_internal_call" /> <Badge type="info" text="Disabled by default" />
-Sets the intercom phone handset internal call volume.
+Sets the indoor station handset internal call volume.
 
 
 ## Texts
@@ -217,28 +217,28 @@ Defines the trigger to toggle the [Ring To Open](../guide/features/ring-to-open)
 - **External Button**
 
 ### Indoor Station Model <Badge type="tip" text="indoor_station_model" /> <Badge type="info" text="Disabled by default" />
-Sets the intercom indoor station model. Check the [Supported Models and Settings](esphome-component-device#model-setting-availability) to see your options.
+Sets the indoor station model. Check the [Supported Models and Settings](esphome-component-device#model-setting-availability) to see your options.
 
 ### Ringtone: Entrance Door Call <Badge type="tip" text="indoor_station_ringtone_entrance_door_call" /> <Badge type="info" text="Disabled by default" />
-Sets the intercom phone ringtone for entrance door calls.
+Sets the indoor station ringtone for entrance door calls.
 
 ##### Options:
 - **Ringtone 1 ... 13**
 
 ### Ringtone: Second Entrance Door Call <Badge type="tip" text="indoor_station_ringtone_second_entrance_door_call" /> <Badge type="info" text="Disabled by default" />
-Sets the intercom phone ringtone for second entrance door calls.
+Sets the indoor station ringtone for second entrance door calls.
 
 ##### Options:
 - **Ringtone 1 ... 13**
 
 ### Ringtone: Floor Call <Badge type="tip" text="indoor_station_ringtone_floor_call" /> <Badge type="info" text="Disabled by default" />
-Sets the intercom phone ringtone for floor calls.
+Sets the indoor station ringtone for floor calls.
 
 ##### Options:
 - **Ringtone 1 ... 13**
 
 ### Ringtone: Internal Call <Badge type="tip" text="indoor_station_ringtone_internal_call" /> <Badge type="info" text="Disabled by default" />
-Sets the intercom phone ringtone for internal calls.
+Sets the indoor station ringtone for internal calls.
 
 ##### Options:
 - **Ringtone 1 ... 13**
