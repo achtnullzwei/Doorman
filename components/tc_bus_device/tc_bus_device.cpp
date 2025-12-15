@@ -1193,7 +1193,7 @@ namespace esphome::tc_bus
 
     bool TCBusDeviceComponent::supports_setting(SettingType type)
     {
-        if (this->memory_buffer_empty() || this->model_ == MODEL_NONE)
+        if (this->model_ == MODEL_NONE)
         {
             return false;
         }
