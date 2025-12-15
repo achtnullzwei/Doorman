@@ -8,13 +8,13 @@ HardwareTextSensor = hardware_ns.class_(
     "HardwareTextSensor", cg.Component
 )
 
-CONF_PRODUCT = "product"
+CONF_MODEL = "model"
 CONF_REVISION = "revision"
 
 CONFIG_SCHEMA = cv.Schema(
     {
         cv.GenerateID(): cv.declare_id(HardwareTextSensor),
-        cv.Optional(CONF_PRODUCT): text_sensor.text_sensor_schema(
+        cv.Optional(CONF_MODEL): text_sensor.text_sensor_schema(
             HardwareTextSensor,
         ).extend(),
         cv.Optional(CONF_REVISION): text_sensor.text_sensor_schema(
@@ -28,9 +28,9 @@ async def to_code(config):
     var = cg.new_Pvariable(config[CONF_ID])
     await cg.register_component(var, config)
 
-    if CONF_PRODUCT in config:
-        sens = await text_sensor.new_text_sensor(config[CONF_PRODUCT])
-        cg.add(var.set_product(sens))
+    if CONF_MODEL in config:
+        sens = await text_sensor.new_text_sensor(config[CONF_MODEL])
+        cg.add(var.set_model(sens))
 
     if CONF_REVISION in config:
         sens = await text_sensor.new_text_sensor(config[CONF_REVISION])

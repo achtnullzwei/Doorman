@@ -1,6 +1,6 @@
 # Hardware Component <Badge type="tip" text="hardware" />
 The Hardware component is a custom ESPHome text sensor hub designed for boards I manufacture.
-During production, each board's PCB hardware revision and product type are permanently written to the ESP32's EFuse memory. This enables the firmware to automatically detect the correct hardware version at runtime without manual configuration.
+During production, each board's PCB hardware revision and model are permanently written to the ESP32's EFuse memory. This enables the firmware to automatically detect the correct hardware version at runtime without manual configuration.
 
 The component reads these EFuse values and exposes them as text sensors, providing visibility into the physical hardware characteristics of each device.
 
@@ -12,17 +12,17 @@ Each board has its PCB revision and variant permanently encoded in `EFUSE_BLK3`:
 | 0    | Major version |
 | 1    | Minor version |
 | 2    | Patch version |
-| 3    | Product type  |
+| 3    | Model         |
 
 During startup, this component:
 
 1. Reads 32 bits from `EFUSE_BLK3`
-2. Parses the hardware revision into major.minor.patch format and extracts the product type
+2. Parses the hardware revision into major.minor.patch format and extracts the model
 3. Exposes the results as text sensors
 
 Example log output:
 ```log
-[I][hardware.text_sensor:034]: Product: Doorman S3
+[I][hardware.text_sensor:034]: Model: Doorman S3
 [I][hardware.text_sensor:035]: Revision: 1.6.0
 ```
 
@@ -36,9 +36,9 @@ external_components:
 
 text_sensor:
   - platform: hardware
-    product:
-      id: doorman_variant
-      name: Product
+    model:
+      id: doorman_model
+      name: Model
     revision:
       id: doorman_hardware_version
       name: Hardware Revision

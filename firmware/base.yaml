@@ -239,7 +239,7 @@ text:
 
 text_sensor:
   - platform: hardware
-    product:
+    model:
       id: doorman_model
       name: "Doorman Model"
       icon: "mdi:package-variant"

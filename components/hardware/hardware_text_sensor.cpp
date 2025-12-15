@@ -19,25 +19,25 @@ namespace esphome::hardware
 
         #ifdef USE_ESP32
         uint8_t revision[3] = {0};
-        uint8_t product = 0;
+        uint8_t model = 0;
 
         esp_err_t rev_err = esp_efuse_read_block(EFUSE_BLK3, revision, 0, 24);
-        esp_err_t prod_err = esp_efuse_read_block(EFUSE_BLK3, &product, 24, 8);
+        esp_err_t model_err = esp_efuse_read_block(EFUSE_BLK3, &model, 24, 8);
 
-        if (rev_err == ESP_OK && prod_err == ESP_OK && revision[0] > 0)
+        if (rev_err == ESP_OK && model_err == ESP_OK && revision[0] > 0)
         {
             // Product Name
-            if (this->product_ != nullptr)
+            if (this->model_ != nullptr)
             {
-                constexpr const char* PRODUCT_NAMES[] = {
+                constexpr const char* MODEL_NAMES[] = {
                     "Doorman S3" // 0
                 };
-                constexpr size_t NUM_PRODUCTS = sizeof(PRODUCT_NAMES) / sizeof(PRODUCT_NAMES[0]);
-                const char* product_name = (product < NUM_PRODUCTS) ? PRODUCT_NAMES[product] : "Unknown";
+                constexpr size_t NUM_MODELS = sizeof(MODEL_NAMES) / sizeof(MODEL_NAMES[0]);
+                const char* model_name = (model < NUM_MODELS) ? MODEL_NAMES[model] : "Unknown";
                 
-                ESP_LOGI(TAG, "Product: %s", product_name);
+                ESP_LOGI(TAG, "Model: %s", model_name);
 
-                this->product_->publish_state(product_name);
+                this->model_->publish_state(model_name);
             }
 
             // Revision
@@ -53,9 +53,9 @@ namespace esphome::hardware
         {
             ESP_LOGW(TAG, "No hardware revision available");
             
-            if (this->product_ != nullptr)
+            if (this->model_ != nullptr)
             {
-                this->product_->publish_state("Unknown");
+                this->model_->publish_state("Unknown");
             }
             
             if (this->revision_ != nullptr)
@@ -66,9 +66,9 @@ namespace esphome::hardware
         #else
         ESP_LOGE(TAG, "Unsuppported platform!");
 
-        if (this->product_ != nullptr)
+        if (this->model_ != nullptr)
         {
-            this->product_->publish_state("Unsupported");
+            this->model_->publish_state("Unsupported");
         }
 
         if (this->revision_ != nullptr)
@@ -82,9 +82,9 @@ namespace esphome::hardware
     {
         ESP_LOGCONFIG(TAG, "Hardware:");
 
-        if (this->product_ != nullptr)
+        if (this->model_ != nullptr)
         {
-            LOG_TEXT_SENSOR("  ", "Product", this->product_);
+            LOG_TEXT_SENSOR("  ", "Model", this->model_);
         }
 
         if (this->revision_ != nullptr)
