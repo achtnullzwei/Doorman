@@ -745,7 +745,7 @@ Otherwise, you'll only be notified when your Doorman is ready for shipment. Stat
         Your order is being prepared for shipment and will be dispatched soon. Once it has been sent, you will receive an update with tracking details. Thank you for your patience!
     </p>
     <p v-if="user">
-        <VPButton text="Mark as shipped" @click="updateOrderStatus" />
+        <VPButton text="Mark as shipped (admin)" @click="updateOrderStatus" />
     </p>
 </div>
 <div v-else-if="status.status == 'shipped'" class="tip custom-block">
@@ -758,7 +758,7 @@ Otherwise, you'll only be notified when your Doorman is ready for shipment. Stat
     </p>
     <p v-if="user" style="display:flex;gap: 10px;">
         <VPButton v-if="status.tracking" text="Tracking" @click="openTracking" />
-        <VPButton text="Close order" @click="closeOrder" />
+        <VPButton text="Close order (admin)" @click="closeOrder" />
     </p>
     <p v-else style="display:flex;gap: 10px;">
         <VPButton v-if="status.tracking" text="Tracking" @click="openTracking" />

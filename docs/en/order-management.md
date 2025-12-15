@@ -631,7 +631,7 @@ export default {
                 ctx.fillText(order.hash, 298, 105);
                 this.drawWrappedText(
                     ctx,
-                    "Scan the QR Code to open the Quickstart Guide",
+                    order.language == 'de' ? "Scanne den QR Code für die Schnellstart Anleitung" : "Scan the QR Code to open the Quickstart Guide",
                     "20px Inter",
                     "20px Inter",
                     110,
@@ -654,8 +654,16 @@ export default {
                 await drawQRCodeAndLogo(order.hash);
 
             } else if (type === "quickstart") {
-                y = this.drawWrappedText(ctx, "Thank you", normalFont, normalFont, x, y, lineHeight, 0, "", 260);
-                y = this.drawWrappedText(ctx, `for supporting the Doorman project, ${order.fullname.split(" ")[0]}.`, "20px Inter", "20px Inter", x, y, lineHeight, 0, "", 270);
+                if(order.language == 'de')
+                {
+                    y = this.drawWrappedText(ctx, "Vielen Dank", normalFont, normalFont, x, y, lineHeight, 0, "", 260);
+                    y = this.drawWrappedText(ctx, `dass du Doorman unterstützt, ${order.fullname.split(" ")[0]}.`, "20px Inter", "20px Inter", x, y, lineHeight, 0, "", 270);
+                }
+                else
+                {
+                    y = this.drawWrappedText(ctx, "Thank you", normalFont, normalFont, x, y, lineHeight, 0, "", 260);
+                    y = this.drawWrappedText(ctx, `for supporting the Doorman project, ${order.fullname.split(" ")[0]}.`, "20px Inter", "20px Inter", x, y, lineHeight, 0, "", 270);
+                }
                 await drawQRCodeAndLogo(order.hash);
 
             } else if (type === "standard_receiver") {
