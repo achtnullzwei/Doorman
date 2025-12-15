@@ -11,7 +11,7 @@ namespace esphome::hardware
         void set_model(text_sensor::TextSensor *model) { model_ = model; }
         void set_revision(text_sensor::TextSensor *revision) { revision_ = revision; }
 
-        float get_setup_priority() const override { return setup_priority::HARDWARE; }
+        float get_setup_priority() const override { return setup_priority::BUS; }
 
         void setup() override;
         void dump_config() override;

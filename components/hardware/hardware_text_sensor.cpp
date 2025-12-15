@@ -17,17 +17,22 @@ namespace esphome::hardware
         ESP_LOGCONFIG(TAG, "Running setup");
         ESP_LOGI(TAG, "Checking Hardware...");
 
-        #ifdef USE_ESP32
         uint8_t revision[3] = {0};
         uint8_t model = 0;
-        uint8_t model_alt = 0;
 
+        #ifdef USE_ESP32
         esp_err_t rev_err = esp_efuse_read_block(EFUSE_BLK3, revision, 0, 24);
         esp_err_t model_err = esp_efuse_read_block(EFUSE_BLK3, &model, 24, 8);
+
+        // Most likely Doorman S3
+        #ifdef USE_ESP32_VARIANT_ESP32S3
+        ESP_LOGD(TAG, "Do some extra checks for S3");
+
         // Alternative location
+        uint8_t model_alt = 0;
         esp_err_t model_alt_err = esp_efuse_read_block(EFUSE_BLK4, &model_alt, 0, 8);
 
-        if (rev_err == ESP_OK && model_err == ESP_OK && model_alt_err == ESP_OK && revision[0] > 0)
+        if (model_alt_err == ESP_OK)
         {
             // No model set, fix it
             if(model == 0 && model_alt == 0)
@@ -54,58 +59,53 @@ namespace esphome::hardware
             {
                 model = model_alt;
             }
+        }
+        #endif // USE_ESP32_VARIANT_ESP32S3
 
-            // Product Name
-            if (this->model_ != nullptr)
-            {
-                constexpr const char* MODEL_NAMES[] = {
-                    "Unset",
-                    "Doorman S3"
-                };
-                constexpr size_t NUM_MODELS = sizeof(MODEL_NAMES) / sizeof(MODEL_NAMES[0]);
-                const char* model_name = (model < NUM_MODELS) ? MODEL_NAMES[model] : "Unknown";
-                
-                ESP_LOGI(TAG, "Model: %s", model_name);
+        #else
+        ESP_LOGW(TAG, "Unsupported platform detected!");
+        #endif // USE_ESP32
 
-                this->model_->publish_state(model_name);
-            }
+        // Product Name
+        if (this->model_ != nullptr)
+        {
+            #ifdef USE_ESP32
+            constexpr const char* MODEL_NAMES[] = {
+                "Unofficial",
+                "Doorman S3"
+            };
+            constexpr size_t NUM_MODELS = sizeof(MODEL_NAMES) / sizeof(MODEL_NAMES[0]);
+            const char* model_name = (model < NUM_MODELS) ? MODEL_NAMES[model] : "Unknown";
+            ESP_LOGI(TAG, "Model: %s", model_name);
+            this->model_->publish_state(model_name);
+            #else
+            ESP_LOGI(TAG, "Model: Unsupported");
+            this->model_->publish_state("Unsupported");
+            #endif
+        }
 
-            // Revision
-            if (this->revision_ != nullptr)
+        // Revision
+        if (this->revision_ != nullptr)
+        {
+            #ifdef USE_ESP32
+            if(revision[0] > 0)
             {
                 char revision_str[32];
                 snprintf(revision_str, sizeof(revision_str), "%u.%u.%u", revision[0], revision[1], revision[2]);
-                this->revision_->publish_state(revision_str);
                 ESP_LOGI(TAG, "Revision: %s", revision_str);
+                this->revision_->publish_state(revision_str);
+                
             }
-        }
-        else
-        {
-            ESP_LOGW(TAG, "No hardware revision available");
-            
-            if (this->model_ != nullptr)
+            else
             {
-                this->model_->publish_state("Unknown");
-            }
-            
-            if (this->revision_ != nullptr)
-            {
+                ESP_LOGW(TAG, "Revision: Not available");
                 this->revision_->publish_state("0.0.0");
             }
-        }
-        #else
-        ESP_LOGE(TAG, "Unsuppported platform!");
-
-        if (this->model_ != nullptr)
-        {
-            this->model_->publish_state("Unsupported");
-        }
-
-        if (this->revision_ != nullptr)
-        {
+            #else
+            ESP_LOGW(TAG, "Revision: Unsupported");
             this->revision_->publish_state("0.0.0");
+            #endif
         }
-        #endif
     }
 
     void HardwareTextSensor::dump_config()
