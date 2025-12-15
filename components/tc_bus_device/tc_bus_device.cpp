@@ -413,12 +413,11 @@ namespace esphome::tc_bus
                         device.memory_size = getModelData(device.model).memory_size;
 
                         ESP_LOGI(TAG,   "Device identified:\n"
-                                        "  Group: %s\n"
-                                        "  Model: %s\n"
+                                        "  Model: %s (%s)\n"
                                         "  Version: %i\n"
                                         "  Firmware: %i.%i.%i",
-                                        device_group_to_string(device.device_group),
                                         model_to_string(device.model),
+                                        device_group_to_string(device.device_group),
                                         device.hardware_version,
                                         device.firmware_major,
                                         device.firmware_minor,
@@ -432,7 +431,7 @@ namespace esphome::tc_bus
                     else
                     {
                         ESP_LOGE(TAG,   "Unable to identify device:\n"
-                                        "  Device Group: %s\n"
+                                        "  Group: %s\n"
                                         "  Data received: %s\n"
                                         "  Note: Please open an issue and provide your logs in order to implement support for this device model.",
                                         device_group_to_string(device.device_group),
@@ -479,9 +478,9 @@ namespace esphome::tc_bus
         }
 
         ESP_LOGI(TAG,   "Device Settings:\n"
-                        "  Device Group: %s\n"
+                        "  Model: %s (%s)\n"
                         "  Serial Number: %i",
-                        device_group_to_string(this->device_group_), this->serial_number_);
+                        model_to_string(this->model_), device_group_to_string(this->device_group_), this->serial_number_);
 
         if(this->device_group_ == DEVICE_GROUP_INDOOR_STATION)
         {
@@ -718,7 +717,7 @@ namespace esphome::tc_bus
 
             // First try with group 0
             ESP_LOGI(TAG,   "Identify device:\n"
-                            "  Device Group: %s (%i)\n"
+                            "  Group: %s (%i)\n"
                             "  Serial Number: %i",
                             device_group_to_string(DEVICE_GROUP_INDOOR_STATION), 0, this->serial_number_);
 
@@ -730,7 +729,7 @@ namespace esphome::tc_bus
                 // Didn't receive identify result of group 0
                 // Second try with group 1
                 ESP_LOGI(TAG,   "Identify device:\n"
-                                "  Device Group: %s (%i)\n"
+                                "  Group: %s (%i)\n"
                                 "  Serial Number: %i",
                                 device_group_to_string(DEVICE_GROUP_INDOOR_STATION), 1, this->serial_number_);
                 send_telegram(TELEGRAM_TYPE_SELECT_DEVICE_GROUP, 0, 1, 400); // group 1
@@ -755,7 +754,7 @@ namespace esphome::tc_bus
 
             // Use device group if not 0 and 1
             ESP_LOGI(TAG,   "Identify device:\n"
-                            "  Device Group: %s\n"
+                            "  Group: %s\n"
                             "  Serial Number: %i",
                             device_group_to_string(this->device_group_), this->serial_number_);
             send_telegram(TELEGRAM_TYPE_SELECT_DEVICE_GROUP, 0, (uint8_t)this->device_group_, 400);
@@ -880,10 +879,9 @@ namespace esphome::tc_bus
     void TCBusDeviceComponent::execute_read_memory()
     {
         ESP_LOGI(TAG,   "Read device memory:\n"
-                        "  Device Group: %s\n"
-                        "  Model: %s\n"
+                        "  Model: %s (%s)\n"
                         "  Serial Number: %i",
-                        device_group_to_string(this->device_group_), model_to_string(this->model_), this->serial_number_);
+                        model_to_string(this->model_), device_group_to_string(this->device_group_), this->serial_number_);
 
         send_telegram(TELEGRAM_TYPE_SELECT_DEVICE_GROUP, 0, this->model_data_.device_group);
         send_telegram(TELEGRAM_TYPE_SELECT_MEMORY_PAGE, 0, 0);
@@ -937,10 +935,9 @@ namespace esphome::tc_bus
     void TCBusDeviceComponent::execute_read_memory_update(uint8_t index)
     {
         ESP_LOGI(TAG, "Read device memory:\n"
-                        "  Device Group: %s\n"
-                        "  Model: %s\n"
+                        "  Model: %s (%s)\n"
                         "  Serial Number: %i",
-                        device_group_to_string(this->device_group_), model_to_string(this->model_), this->serial_number_);
+                        model_to_string(this->model_), device_group_to_string(this->device_group_), this->serial_number_);
 
         send_telegram(TELEGRAM_TYPE_SELECT_DEVICE_GROUP, 0, this->model_data_.device_group);
         send_telegram(TELEGRAM_TYPE_SELECT_MEMORY_PAGE, 0, 0);
@@ -1300,12 +1297,11 @@ namespace esphome::tc_bus
         }
 
         ESP_LOGI(TAG,   "Write setting to device:\n"
-                        "  Device Group: %s\n"
-                        "  Model: %s\n"
+                        "  Model: %s (%s)\n"
                         "  Serial Number: %i\n"
                         "  Setting: %s\n"
                         "  Value: %X",
-                        device_group_to_string(this->device_group_), model_to_string(this->model_), this->serial_number_, setting_type_to_string(type), new_value);
+                        model_to_string(this->model_), device_group_to_string(this->device_group_), this->serial_number_, setting_type_to_string(type), new_value);
         
         // Apply new data
         uint8_t shift = cellData.start_bit - cellData.length + 1;
@@ -1353,11 +1349,10 @@ namespace esphome::tc_bus
         }
 
         ESP_LOGI(TAG,   "Write memory buffer to device:\n"
-                        "  Device Group: %s\n"
-                        "  Model: %s\n"
+                        "  Model: %s (%s)\n"
                         "  Serial Number: %i\n"
                         "  Size: %i Bytes",
-                        device_group_to_string(this->device_group_), model_to_string(this->model_), this->serial_number_, this->memory_buffer_.size());
+                        model_to_string(this->model_), device_group_to_string(this->device_group_), this->serial_number_, this->memory_buffer_.size());
         ESP_LOGD(TAG,   "  Data: %s", format_hex_pretty(this->memory_buffer_, ' ', false).c_str());
 
         // Prepare Transmission
