@@ -14,5 +14,13 @@ namespace esphome
       protected:
         void write_state(bool value) override;
     };
+
+    class RingtoneMuteSwitch final : public switch_::Switch, public Parented<TCBusDeviceComponent> {
+      public:
+        RingtoneMuteSwitch() = default;
+
+      protected:
+        void write_state(bool value) override;
+    };
   }  // namespace tc_bus
 }  // namespace esphome

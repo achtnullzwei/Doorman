@@ -10,5 +10,11 @@ namespace esphome
             this->parent_->set_force_long_door_opener_protocol(value);
             this->parent_->save_preferences();
         }
+
+        void RingtoneMuteSwitch::write_state(bool value)
+        {
+            this->publish_state(value);
+            this->parent_->update_setting(SETTING_RINGTONE_MUTE, value);
+        }
     }  // namespace tc_bus
 }  // namespace esphome

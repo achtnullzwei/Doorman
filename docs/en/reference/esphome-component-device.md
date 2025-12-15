@@ -47,10 +47,11 @@ The `tc_bus_device` Select platform offers the following configuration options:
 ## Switches
 The `tc_bus_device` Switch platform offers the following configuration options:
 
-| Option                               | Description                                                                                                    | Required | Default       |
-|--------------------------------------|----------------------------------------------------------------------------------------------------------------|----------|---------------|
-| `tc_bus_device_id`                   | ID of the related `tc_bus_device` instance.                                                                    | Yes      |               |
-| `force_long_door_opener`             | This enforces execution of the long door opener telegram and mandates inclusion of a serial number in the short door opener telegram. | No       | |
+| Option                   | Description                                                                                                    | Required | Default       |
+|--------------------------|----------------------------------------------------------------------------------------------------------------|----------|---------------|
+| `tc_bus_device_id`       | ID of the related `tc_bus_device` instance.                                                                    | Yes      |               |
+| `force_long_door_opener` | This enforces execution of the long door opener telegram and mandates inclusion of a serial number in the short door opener telegram. | No       | |
+| `ringtone_mute`          | Ringtone Mute Switch to mute the ringtone of your indoor station.                                              | No       | |
 
 ## Buttons
 The `tc_bus_device` Button platform offers the following configuration options:
@@ -295,6 +296,8 @@ switch:
     tc_bus_device_id: my_tc_bus_indoor_station_device
     force_long_door_opener:
       name: "Enforce long Door Opener Telegram"
+    ringtone_mute:
+      name: "Ringtone: Mute"
 
 button:
   - platform: tc_bus_device
@@ -448,6 +451,7 @@ Here are the available setting types you can use to update the settings of your 
 - volume_handset_internal_call <Badge type="tip" text="SETTING_VOLUME_HANDSET_INTERNAL_CALL" />
 - volume_handset_internal_call <Badge type="tip" text="SETTING_AS_ADDRESS_DIVIDER" />
 - volume_handset_internal_call <Badge type="tip" text="SETTING_VAS_ADDRESS_DIVIDER" />
+- ringtone_mute <Badge type="tip" text="SETTING_RINGTONE_RINGTONE_MUTE" />
 
 ### Outdoor Station
 - as_address <Badge type="tip" text="SETTING_AS_ADDRESS" />

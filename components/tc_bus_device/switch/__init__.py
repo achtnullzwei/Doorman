@@ -8,8 +8,10 @@ from esphome.const import (
 from .. import CONF_TC_BUS_DEVICE_ID, TCBusDeviceComponent, tc_bus_ns
 
 ForceLongDoorOpenerProtocolSwitch = tc_bus_ns.class_("ForceLongDoorOpenerProtocolSwitch", switch.Switch, cg.Component)
+RingtoneMuteSwitch = tc_bus_ns.class_("RingtoneMuteSwitch", switch.Switch, cg.Component)
 
 CONF_FORCE_LONG_DOOR_OPENER_PROTOCOL = "force_long_door_opener_protocol"
+CONF_RINGTONE_RINGTONE_MUTE = "ringtone_mute"
 
 CONFIG_SCHEMA = cv.Schema(
     {
@@ -19,6 +21,12 @@ CONFIG_SCHEMA = cv.Schema(
             device_class=DEVICE_CLASS_SWITCH,
             entity_category=ENTITY_CATEGORY_CONFIG,
             icon="mdi:flash-alert"
+        ),
+        cv.Optional(CONF_RINGTONE_RINGTONE_MUTE): switch.switch_schema(
+            RingtoneMuteSwitch,
+            device_class=DEVICE_CLASS_SWITCH,
+            entity_category=ENTITY_CATEGORY_CONFIG,
+            icon="mdi:mute"
         ),
     }
 )

@@ -90,6 +90,7 @@ namespace esphome::tc_bus
 #endif
 #ifdef USE_SWITCH
         SUB_SWITCH(force_long_door_opener_protocol);
+        SUB_SWITCH(ringtone_mute);
 #endif
 #ifdef USE_BUTTON
         SUB_BUTTON(read_memory);

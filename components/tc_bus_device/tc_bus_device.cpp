@@ -453,22 +453,11 @@ namespace esphome
 
             if(this->device_group_ == DEVICE_GROUP_INDOOR_STATION)
             {
-                if(supports_setting(SETTING_DND))
+                if(supports_setting(SETTING_RINGTONE_MUTE))
                 {
-                    ESP_LOGI(TAG, "  DND status: %s", YESNO(get_setting(SETTING_DND)));
+                    ESP_LOGI(TAG, "  Ringtone muted: %s", YESNO(get_setting(SETTING_RINGTONE_MUTE)));
                 }
-                if(supports_setting(SETTING_VOLUME_RINGTONE))
-                {
-                    ESP_LOGI(TAG, "  Ringtone volume: %i", get_setting(SETTING_VOLUME_RINGTONE));
-                }
-                if(supports_setting(SETTING_VOLUME_HANDSET_DOOR_CALL))
-                {
-                    ESP_LOGI(TAG, "  Handset volume (Door Call): %i", get_setting(SETTING_VOLUME_HANDSET_DOOR_CALL));
-                }
-                if(supports_setting(SETTING_VOLUME_HANDSET_INTERNAL_CALL))
-                {
-                    ESP_LOGI(TAG, "  Handset volume (Internal Call): %i", get_setting(SETTING_VOLUME_HANDSET_INTERNAL_CALL));
-                }
+                
                 if(supports_setting(SETTING_RINGTONE_ENTRANCE_DOOR_CALL))
                 {
                     ESP_LOGI(TAG, "  Entrance Door Call Ringtone: %s", int_to_ringtone(get_setting(SETTING_RINGTONE_ENTRANCE_DOOR_CALL)));
@@ -477,14 +466,28 @@ namespace esphome
                 {
                     ESP_LOGI(TAG, "  Second Entrance Door Call Ringtone: %s", int_to_ringtone(get_setting(SETTING_RINGTONE_SECOND_ENTRANCE_DOOR_CALL)));
                 }
-                if(supports_setting(SETTING_RINGTONE_FLOOR_CALL))
-                {
-                    ESP_LOGI(TAG, "  Floor Call Ringtone: %s", int_to_ringtone(get_setting(SETTING_RINGTONE_FLOOR_CALL)));
-                }
                 if(supports_setting(SETTING_RINGTONE_INTERNAL_CALL))
                 {
                     ESP_LOGI(TAG, "  Internal Call Ringtone: %s", int_to_ringtone(get_setting(SETTING_RINGTONE_INTERNAL_CALL)));
                 }
+                if(supports_setting(SETTING_RINGTONE_FLOOR_CALL))
+                {
+                    ESP_LOGI(TAG, "  Floor Call Ringtone: %s", int_to_ringtone(get_setting(SETTING_RINGTONE_FLOOR_CALL)));
+                }
+                if(supports_setting(SETTING_VOLUME_RINGTONE))
+                {
+                    ESP_LOGI(TAG, "  Ringtone volume: %i", get_setting(SETTING_VOLUME_RINGTONE));
+                }
+
+                if(supports_setting(SETTING_VOLUME_HANDSET_DOOR_CALL))
+                {
+                    ESP_LOGI(TAG, "  Handset volume (Door Call): %i", get_setting(SETTING_VOLUME_HANDSET_DOOR_CALL));
+                }
+                if(supports_setting(SETTING_VOLUME_HANDSET_INTERNAL_CALL))
+                {
+                    ESP_LOGI(TAG, "  Handset volume (Internal Call): %i", get_setting(SETTING_VOLUME_HANDSET_INTERNAL_CALL));
+                }
+
                 if(supports_setting(SETTING_AS_ADDRESS_DIVIDER))
                 {
                     ESP_LOGI(TAG, "  Address Divider (AS): %i", get_setting(SETTING_AS_ADDRESS_DIVIDER));
@@ -525,6 +528,13 @@ namespace esphome
                 if (this->volume_ringtone_number_)
                 {
                     this->volume_ringtone_number_->publish_state(get_setting(SETTING_VOLUME_RINGTONE));
+                }
+                #endif
+
+                #ifdef USE_SWITCH
+                if (this->ringtone_mute_switch_)
+                {
+                    this->ringtone_mute_switch_->publish_state(get_setting(SETTING_RINGTONE_MUTE) == 1);
                 }
                 #endif
             }
