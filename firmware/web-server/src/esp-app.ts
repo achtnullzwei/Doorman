@@ -104,17 +104,17 @@ export default class EspApp extends LitElement {
   }
 
   async getHardwareVersion() {
-    const response_model = await fetch(`${getBasePath()}/text_sensor/doorman_model`);
+    const response_model = await fetch(`${getBasePath()}/text_sensor/model`);
     const data_model = await response_model.json();
 
-    const response_revision = await fetch(`${getBasePath()}/text_sensor/doorman_revision`);
+    const response_revision = await fetch(`${getBasePath()}/text_sensor/revision`);
     const data_revision = await response_revision.json();
 
-    if(data_model.value.toLowerCase() != 'unsupported')
+    if(data_model.value.toLowerCase() == 'unsupported')
     {
-      this.hardwareVersion = data_model.value + ' (' + data_revision.value + ')';
+      this.hardwareVersion = 'Unsupported Hardware';
     } else {
-      this.hardwareVersion = data_model.value;
+      this.hardwareVersion = data_model.value + ' (' + data_revision.value + ')';
     }
   }
 

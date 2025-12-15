@@ -136,7 +136,8 @@ namespace esphome::tc_bus
 
     void TCBusDeviceComponent::set_model(Model model, bool save)
     {
-        bool changed_from_none = this->model_ == MODEL_NONE && model != this->model_;
+        bool changed = model != this->model_;
+        bool changed_from_none = this->model_ == MODEL_NONE && changed;
 
         this->model_ = model;
         this->model_data_ = getModelData(model);
@@ -147,7 +148,8 @@ namespace esphome::tc_bus
             this->save_preferences();
         }
 
-        if(model != MODEL_NONE)
+        // When model was changed and new model is not none
+        if(changed && model != MODEL_NONE)
         {
             // Reserve memory
             ESP_LOGD(TAG, "Reserve Memory Buffer");
@@ -157,15 +159,15 @@ namespace esphome::tc_bus
             }
 
             this->publish_settings();
+        }
 
-            // Schedule memory reading flow
-            // if model was changed from 'none' to valid model
-            // or memory buffer is empty
-            if(this->auto_configuration_ && save && (changed_from_none || this->memory_buffer_empty()))
-            {
-                ESP_LOGD(TAG, "Schedule flow: Memory reading (%s)", changed_from_none ? "changed model - from none" : "changed model - buffer empty");
-                read_memory();
-            }
+        // Schedule memory reading flow
+        // if model was changed from 'none' to valid model
+        // or memory buffer is empty
+        if(model != MODEL_NONE && this->auto_configuration_ && save && (changed_from_none || this->memory_buffer_empty()))
+        {
+            ESP_LOGD(TAG, "Schedule flow: Memory reading (%s)", changed_from_none ? "changed model - from none" : "changed model - buffer empty");
+            read_memory();
         }
 
         // Update Entities
