@@ -23,10 +23,8 @@
 #include <HardwareSerial.h>
 #endif
 
-namespace esphome
+namespace esphome::tc_bus_serial
 {
-  namespace tc_bus_serial
-  {
     class TCBusSerialComponent : public Component, public tc_bus::TCBusRemoteListener {
     public:
       void setup() override;
@@ -51,6 +49,4 @@ namespace esphome
       std::vector<uint8_t> rx_buffer_;
       uint32_t last_read_byte_{0};
     };
-
-  }  // namespace tc_bus_serial
-}  // namespace esphome
+}

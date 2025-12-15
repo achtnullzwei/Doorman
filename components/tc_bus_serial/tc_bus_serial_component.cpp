@@ -10,10 +10,8 @@
 #include "esphome/components/tc_bus/tc_bus.h"
 #include "esphome/components/tc_bus/protocol.h"
 
-namespace esphome
+namespace esphome::tc_bus_serial
 {
-  namespace tc_bus_serial
-  {
     static const char *const TAG = "tc_bus_serial";
 
     void TCBusSerialComponent::setup()
@@ -234,6 +232,4 @@ namespace esphome
         byte = this->read_byte_();
       }
     }
-
-  }  // namespace tc_bus_serial
-}  // namespace esphome
+}

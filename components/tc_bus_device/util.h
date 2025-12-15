@@ -220,5 +220,4 @@ namespace esphome::tc_bus
 
     uint8_t ringtone_to_int(const char* str);
     const char* int_to_ringtone(uint8_t ringtone);
-
 }
