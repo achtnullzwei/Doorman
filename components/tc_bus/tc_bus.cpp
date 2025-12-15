@@ -52,8 +52,8 @@ namespace esphome::tc_bus
         ESP_LOGCONFIG(TAG, "TC:BUS:");
 
         #ifdef USE_TEXT_SENSOR
-            ESP_LOGCONFIG(TAG, "Text Sensors:");
-            LOG_TEXT_SENSOR("  ", "Last Telegram", this->bus_telegram_text_sensor_);
+        ESP_LOGCONFIG(TAG, "  Text Sensors:");
+        LOG_TEXT_SENSOR("    ", "Last Telegram", this->bus_telegram_text_sensor_);
         #endif
     }
 
@@ -62,25 +62,25 @@ namespace esphome::tc_bus
         uint32_t now_millis = millis();
 
         #ifdef USE_BINARY_SENSOR
-            // Turn off binary sensor after ... milliseconds
-            for (auto &listener : listeners_)
+        // Turn off binary sensor after ... milliseconds
+        for (auto &listener : listeners_)
+        {
+            if (listener->timer_ && now_millis > listener->timer_)
             {
-                if (listener->timer_ && now_millis > listener->timer_)
-                {
-                    listener->turn_off(&listener->timer_);
-                }
+                listener->turn_off(&listener->timer_);
             }
+        }
         #endif
 
         #ifdef USE_LOCK
-            // Lock after ... milliseconds
-            for (auto &listener : lock_listeners_)
+        // Lock after ... milliseconds
+        for (auto &listener : lock_listeners_)
+        {
+            if (listener->timer_ && now_millis > listener->timer_)
             {
-                if (listener->timer_ && now_millis > listener->timer_)
-                {
-                    listener->lock(&listener->timer_);
-                }
+                listener->lock(&listener->timer_);
             }
+        }
         #endif
 
         // Process telegram queue
@@ -151,41 +151,41 @@ namespace esphome::tc_bus
             this->received_telegram_callback_.call(telegram_data);
 
             #ifdef USE_BINARY_SENSOR
-                // Fire Binary Sensors
-                for (auto &listener : listeners_)
+            // Fire Binary Sensors
+            for (auto &listener : listeners_)
+            {
+                bool allow_publish = false;
+
+                uint32_t listener_telegram = listener->telegram_.value_or(0);
+
+                if (listener_telegram != 0)
                 {
-                    bool allow_publish = false;
+                    allow_publish = (telegram_data.raw == listener_telegram);
+                }
+                else
+                {
+                    auto type = listener->type_.value_or(TELEGRAM_TYPE_UNKNOWN);
+                    auto addr = listener->address_.value_or(0);
+                    auto payload = listener->payload_.value_or(0);
+                    auto serial = listener->serial_number_.value_or(0);
 
-                    uint32_t listener_telegram = listener->telegram_.value_or(0);
-
-                    if (listener_telegram != 0)
+                    if (
+                        telegram_data.type == type &&
+                        (telegram_data.address == addr || addr == 255) &&
+                        (telegram_data.payload == payload || payload == 255) &&
+                        (serial == 0 || telegram_data.serial_number == serial || serial == 255)
+                    )
                     {
-                        allow_publish = (telegram_data.raw == listener_telegram);
-                    }
-                    else
-                    {
-                        auto type = listener->type_.value_or(TELEGRAM_TYPE_UNKNOWN);
-                        auto addr = listener->address_.value_or(0);
-                        auto payload = listener->payload_.value_or(0);
-                        auto serial = listener->serial_number_.value_or(0);
-
-                        if (
-                            telegram_data.type == type &&
-                            (telegram_data.address == addr || addr == 255) &&
-                            (telegram_data.payload == payload || payload == 255) &&
-                            (serial == 0 || telegram_data.serial_number == serial || serial == 255)
-                        )
-                        {
-                            allow_publish = true;
-                        }
-                    }
-
-                    // Trigger listener binary sensor if match found
-                    if (allow_publish)
-                    {
-                        listener->turn_on(&listener->timer_, listener->auto_off_);
+                        allow_publish = true;
                     }
                 }
+
+                // Trigger listener binary sensor if match found
+                if (allow_publish)
+                {
+                    listener->turn_on(&listener->timer_, listener->auto_off_);
+                }
+            }
             #endif
         }
         else
@@ -287,28 +287,28 @@ namespace esphome::tc_bus
         }
 
         #ifdef USE_LOCK
-            if (telegram_data.type == TELEGRAM_TYPE_OPEN_DOOR || telegram_data.type == TELEGRAM_TYPE_OPEN_DOOR_LONG)
+        if (telegram_data.type == TELEGRAM_TYPE_OPEN_DOOR || telegram_data.type == TELEGRAM_TYPE_OPEN_DOOR_LONG)
+        {
+            // Update Locks
+            for (auto &listener : lock_listeners_)
             {
-                // Update Locks
-                for (auto &listener : lock_listeners_)
+                if(telegram_data.address == listener->address_.value_or(0) || listener->address_.value_or(0) == 255)
                 {
-                    if(telegram_data.address == listener->address_.value_or(0) || listener->address_.value_or(0) == 255)
-                    {
-                        listener->unlock(&listener->timer_, listener->auto_lock_);
-                    }
+                    listener->unlock(&listener->timer_, listener->auto_lock_);
                 }
             }
+        }
         #endif
 
         #ifdef USE_TEXT_SENSOR
-            if (telegram_data.type != TELEGRAM_TYPE_ACK)
+        if (telegram_data.type != TELEGRAM_TYPE_ACK)
+        {
+            // Publish Telegram to Last Bus Telegram Sensor
+            if (this->bus_telegram_text_sensor_ != nullptr)
             {
-                // Publish Telegram to Last Bus Telegram Sensor
-                if (this->bus_telegram_text_sensor_ != nullptr)
-                {
-                    this->bus_telegram_text_sensor_->publish_state(telegram_data.hex);
-                }
+                this->bus_telegram_text_sensor_->publish_state(telegram_data.hex);
             }
+        }
         #endif
     }
 
@@ -553,17 +553,17 @@ namespace esphome::tc_bus
     }
 
     #ifdef USE_BINARY_SENSOR
-        void TCBusComponent::register_listener(TCBusListener *listener)
-        {
-            this->listeners_.push_back(listener);
-        }
+    void TCBusComponent::register_listener(TCBusListener *listener)
+    {
+        this->listeners_.push_back(listener);
+    }
     #endif
 
     #ifdef USE_LOCK
-        void TCBusComponent::register_lock_listener(TCBusLockListener *listener)
-        {
-            this->lock_listeners_.push_back(listener);
-        }
+    void TCBusComponent::register_lock_listener(TCBusLockListener *listener)
+    {
+        this->lock_listeners_.push_back(listener);
+    }
     #endif
 
     void TCBusComponent::send_telegram(uint32_t telegram, uint32_t wait_duration)

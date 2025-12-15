@@ -196,7 +196,39 @@ namespace esphome::tc_bus
     void TCBusDeviceComponent::dump_config()
     {
         ESP_LOGCONFIG(TAG, "TC:BUS Device:");
-        ESP_LOGCONFIG(TAG, "  Device Group: %s", device_group_to_string(this->device_group_));
+        ESP_LOGCONFIG(TAG, "  Group: %s", device_group_to_string(this->device_group_));
+        ESP_LOGCONFIG(TAG, "  Model: %s", model_to_string(this->model_));
+        ESP_LOGCONFIG(TAG, "  Serial Number: %i", this->serial_number_);
+        ESP_LOGCONFIG(TAG, "  Force long door opener protocol: %s", YESNO(this->force_long_door_opener_protocol_));
+
+        #ifdef USE_BUTTON
+        ESP_LOGCONFIG(TAG, "  Buttons:");
+        LOG_BUTTON("    ", "Identify", this->identify_device_button_);
+        LOG_BUTTON("    ", "Read Memory", this->read_memory_button_);
+        #endif
+
+        #ifdef USE_SWITCH
+        ESP_LOGCONFIG(TAG, "  Switches:");
+        LOG_SWITCH("    ", "Force long door opener protocol", this->force_long_door_opener_protocol_switch_);
+        LOG_SWITCH("    ", "Ringtone Mute", this->ringtone_mute_switch_);
+        #endif
+
+        #ifdef USE_NUMBER
+        ESP_LOGCONFIG(TAG, "  Number Inputs:");
+        LOG_NUMBER("    ", "Serial Number", this->serial_number_number_);
+        LOG_NUMBER("    ", "Volume Handset Door Call", this->volume_handset_door_call_number_);
+        LOG_NUMBER("    ", "Volume Handset Internal Call", this->volume_handset_internal_call_number_);
+        LOG_NUMBER("    ", "Volume Ringtone", this->volume_ringtone_number_);
+        #endif
+
+        #ifdef USE_SELECT
+        ESP_LOGCONFIG(TAG, "  Select Inputs:");
+        LOG_SELECT("    ", "Model", this->model_select_);
+        LOG_SELECT("    ", "Ringtone Entrance Door Call", this->ringtone_entrance_door_call_select_);
+        LOG_SELECT("    ", "Ringtone Second Entrance Door Call", this->ringtone_second_entrance_door_call_select_);
+        LOG_SELECT("    ", "Ringtone Floor Call", this->ringtone_floor_call_select_);
+        LOG_SELECT("    ", "Ringtone Internal Call", this->ringtone_internal_call_select_);
+        #endif
     }
 
     void TCBusDeviceComponent::loop()
@@ -381,9 +413,9 @@ namespace esphome::tc_bus
                         device.memory_size = getModelData(device.model).memory_size;
 
                         ESP_LOGI(TAG,   "Device identified:\n"
-                                        "  Device Group: %s\n"
+                                        "  Group: %s\n"
                                         "  Model: %s\n"
-                                        "  Version: v%i\n"
+                                        "  Version: %i\n"
                                         "  Firmware: %i.%i.%i",
                                         device_group_to_string(device.device_group),
                                         model_to_string(device.model),
