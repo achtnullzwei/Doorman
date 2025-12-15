@@ -455,7 +455,7 @@ namespace esphome
             {
                 if(supports_setting(SETTING_DND))
                 {
-                    ESP_LOGI(TAG, "  DND status: %i", YESNO(get_setting(SETTING_DND)));
+                    ESP_LOGI(TAG, "  DND status: %s", YESNO(get_setting(SETTING_DND)));
                 }
                 if(supports_setting(SETTING_VOLUME_RINGTONE))
                 {
