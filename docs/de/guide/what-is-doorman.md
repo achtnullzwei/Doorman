@@ -39,7 +39,7 @@ Du hast gerade deinen Doorman erhalten? Geh direkt zur [Quickstart](getting-star
 
 ## Möchtest du auch einen?
 
-Wenn du an einem Doorman S3 interessiert bist, nutze einfach den Button unten, um eine Anfrage zu senden.
+Wenn du an einem Doorman S3 interessiert bist, nutze einfach den Button unten, um eine **unverbindliche Anfrage** zu senden.
 
 Wenn du Fragen hast oder direkten Kontakt wünschst, kannst du mich gerne auf [Discord](https://discord.gg/t2d34dvmBf) oder per [E-Mail](mailto:flo@azon.ai?subject=Doorman) anschreiben.
 

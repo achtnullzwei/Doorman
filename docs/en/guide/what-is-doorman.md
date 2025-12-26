@@ -39,11 +39,11 @@ Just received your Doorman? Jump to the [Quickstart](getting-started) guide.
 - TC:BUS communication for functions like opening the front door and detecting the doorbell
 - Can be used as a Nuki Bridge with the [Nuki Bridge Addon](firmware/nuki-bridge).
 
-## Interested in Buying One?
+## Interested in a Doorman?
 
-If you're interested in a Doorman S3 unit, simply use the button below to send an inquiry.  
+If you'd like a fully assembled Doorman S3 unit, you can use the button below to submit a non-binding inquiry.
 
-You can also reach out on [Discord](https://discord.gg/t2d34dvmBf) or via [E-Mail](mailto:flo@azon.ai?subject=Doorman) if you have any questions and prefer direct contact first.
+If you have any questions or prefer direct contact, you can also reach out on [Discord](https://discord.gg/t2d34dvmBf) or via [email](mailto:flo@azon.ai?subject=Doorman).
 
 <div class="custom-layout">
     <a class="btn" href="../order">Send Inquiry</a>

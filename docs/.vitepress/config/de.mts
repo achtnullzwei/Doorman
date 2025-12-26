@@ -77,7 +77,7 @@ function nav(): DefaultTheme.NavItem[] {
           activeMatch: '/de/reference/'
         },
         {
-          text: 'Doorman bestellen',
+          text: 'Hol dir deinen Doorman',
           link: '/de/order',
           activeMatch: '/de/order'
         },

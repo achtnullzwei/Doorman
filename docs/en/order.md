@@ -687,21 +687,22 @@ textarea {
 
 # Get your own Doorman <Badge v-if="status.status !== 'error' && available_units >= 0" :type="availability_class" :text="availability_text" @click="openManagement" />
 
-Interested in a ready-to-use solution? I offer fully assembled Doorman S3 units with the [Doorman Firmware](guide/firmware/installation) pre-installed — ready for seamless integration with Home Assistant.
+As part of this open-source, community-driven project, I occasionally make fully assembled Doorman S3 hardware available with the [Doorman Firmware](guide/firmware/installation) pre-installed — ready for seamless integration with Home Assistant.
 
 :::tip PLEASE NOTE
-This is **not an official or certified product**. It is the result of a reverse engineering effort and is provided **as-is**, with **no guarantee of compatibility, safety, or functionality**.
+This is **not an official, commercial or certified product**.  
+The Doorman hardware and firmware are the result of a reverse-engineering effort and are provided as-is, with **no guarantees regarding safety, reliability, or compatibility**.
 
-**This is not a purchase or checkout** — it's a non-binding inquiry to help me gauge interest and manage requests efficiently.
+This page does **not** constitute a shop, sale, or checkout process.  
+Submitting the form below is a **non-binding expression of interest** only, intended to help gauge demand and manage requests.
 :::
 
-To request a Doorman, simply fill out the form below.
+If you submit an inquiry, I may contact you if clarification is needed. Otherwise, you'll only hear from me if and when a unit becomes available.
 
-Once I receive your inquiry, I'll contact you if I have any questions.
-Otherwise, you'll only be notified when your Doorman is ready for shipment. Status updates are automated, so **please check your spam folder** if you don't hear from me within a month.
+Availability is limited and occurs **without a fixed schedule**. Any notifications are automated, so **please check your spam folder** if you don't hear back within a month.
 
 <div v-if="status.status == 'none' && available_units === 0" class="danger custom-block">
-    <p class="custom-block-title">OUT OF STOCK</p>
+    <p class="custom-block-title">CURRENTLY UNAVAILABLE</p>
     <p v-html="availability_time_text"></p>
     <p>You can send your inquiry anyway, and I'll make sure to reserve one for you as soon as they arrive.</p>
 </div>
@@ -723,9 +724,9 @@ Otherwise, you'll only be notified when your Doorman is ready for shipment. Stat
 </div>
 <div v-else-if="status.status == 'pending_review'" class="warning custom-block">
     <p class="custom-block-title">REVIEW PENDING</p>
-    <p>I have received your order and will now review your inquiry to confirm compatibility. You'll be notified as soon as the review is complete.</p>
+    <p>I will now review your inquiry to confirm compatibility. You'll be notified as soon as the review is complete.</p>
     <p>
-        <VPButton text="Cancel Order" @click="cancelOrder" />
+        <VPButton text="Cancel Inquiry" @click="cancelOrder" />
     </p>
 </div>
 <div v-else-if="status.status == 'reserved'" class="warning custom-block">
@@ -792,9 +793,9 @@ Otherwise, you'll only be notified when your Doorman is ready for shipment. Stat
 </div>
 <form v-else-if="status.status == 'none'" @submit.prevent="submit">
     <div v-if="step == 1">
-        <h5 class="firmware_title_row">Already ordered?</h5>
+        <h5 class="firmware_title_row">Already submitted a request?</h5>
         <div style="display: flex; gap: 15px;justify-content: space-between; align-items: center;">
-            <input type="text" name="order_hash" id="order_hash" maxlength="8" v-model="orderHash" placeholder="Order Number" style="text-transform: uppercase; margin: 0px;" />
+            <input type="text" name="order_hash" id="order_hash" maxlength="8" v-model="orderHash" placeholder="Request Number" style="text-transform: uppercase; margin: 0px;" />
             <VPButton type="button" text="Check Status" :disabled="orderHash.length != 8" @click="checkOrder" />
         </div>
         <br>

@@ -50,7 +50,7 @@ function nav(): DefaultTheme.NavItem[] {
           activeMatch: '/reference/'
         },
         {
-          text: 'Order Doorman',
+          text: 'Get your Doorman',
           link: '/order',
           activeMatch: '/order',
         },

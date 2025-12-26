@@ -690,20 +690,22 @@ textarea {
 
 # Hol dir deinen Doorman <Badge v-if="status.status !== 'error' && available_units >= 0" :type="availability_class" :text="availability_text" @click="openManagement" />
 
-Du suchst eine einfache Lösung? Ich hab einen einsatzbereiten Doorman S3 für dich, schon mit der [Doorman-Firmware](guide/firmware/installation) geflasht. Den kannst du direkt in dein Home Assistant Setup einbinden – ganz ohne Stress.
+Im Rahmen dieses **Open-Source- und Community-Projekts** stelle ich **gelegentlich vollständig gelötete Doorman-S3** mit vorinstallierter [Doorman-Firmware](guide/firmware/installation) zur Verfügung. Den kannst du direkt in dein Home Assistant Setup einbinden – ganz ohne Stress.
 
-:::tip BITTE BEACHTE
-Dies ist **kein offizielles oder zertifiziertes Produkt**. Es basiert auf Reverse Engineering und wird **ohne Garantie auf Kompatibilität, Sicherheit oder Funktionalität** bereitgestellt.
+:::tip BITTE BEACHTEN
+Dies ist **kein offizielles, kommerzielles oder zertifiziertes Produkt**.  
+Die Doorman-Hardware und -Firmware sind das Ergebnis eines Reverse-Engineering-Projekts und werden **ohne jegliche Gewährleistung** bereitgestellt – insbesondere **ohne Zusicherungen hinsichtlich Sicherheit, Zuverlässigkeit oder Kompatibilität**.
 
-**Dies ist kein Kauf oder Checkout** — nur eine unverbindliche Anfrage, damit ich das Interesse einschätzen und Bestellungen effizient koordinieren kann.
+Diese Seite stellt **keinen Shop, Verkauf oder Bestellvorgang** dar.  
+Das Ausfüllen des Formulars ist **keine Bestellung**, sondern lediglich eine **unverbindliche Interessenbekundung**, um die Nachfrage abzuschätzen und Anfragen zu koordinieren.
 :::
 
-Um eine Anfrage zu stellen, fülle einfach das untenstehende Formular aus.
+Wenn du eine Anfrage sendest, melde ich mich ggf. bei Rückfragen. Andernfalls erhältst du nur dann eine Nachricht, **wenn und falls** ein Doorman verfügbar wird.
 
-Sobald ich deine Anfrage erhalten habe, melde ich mich bei Rückfragen. Ansonsten wirst du nur benachrichtigt, wenn dein Doorman versandbereit ist. Die Statusaktualisierungen erfolgen automatisiert – **überprüfe bitte auch deinen Spam-Ordner**, falls du innerhalb eines Monats nichts von mir hörst.
+Die Verfügbarkeit ist begrenzt und hängt von Zeit und Kapazität ab. Benachrichtigungen erfolgen automatisiert – **bitte prüfe daher auch deinen Spam-Ordner**, falls du innerhalb eines Monats nichts von mir hörst.
 
 <div v-if="status.status == 'none' && available_units === 0" class="danger custom-block">
-    <p class="custom-block-title">AUSVERKAUFT</p>
+    <p class="custom-block-title">DERZEIT NICHT VERFÜGBAR</p>
     <p v-html="availability_time_text"></p>
     <p>Du kannst deine Anfrage trotzdem schonmal senden, dann reserviere ich dir einen.</p>
 </div>
@@ -725,9 +727,9 @@ Sobald ich deine Anfrage erhalten habe, melde ich mich bei Rückfragen. Ansonste
 </div>
 <div v-else-if="status.status == 'pending_review'" class="warning custom-block">
     <p class="custom-block-title">ÜBERPRÜFUNG AUSSTEHEND</p>
-    <p>Ich habe deine Bestellung erhalten und werde diese mit dir prüfen, um die Kompatibilität abzuklären. Du wirst benachrichtigt, sobald die Überprüfung abgeschlossen ist.</p>
+    <p>Ich habe deine Anfrage erhalten und werde diese mit dir prüfen, um die Kompatibilität abzuklären. Du wirst benachrichtigt, sobald die Überprüfung abgeschlossen ist.</p>
     <p>
-        <VPButton text="Bestellung stornieren" @click="cancelOrder" />
+        <VPButton text="Anfrage stornieren" @click="cancelOrder" />
     </p>
 </div>
 <div v-else-if="status.status == 'reserved'" class="warning custom-block">
@@ -794,9 +796,9 @@ Sobald ich deine Anfrage erhalten habe, melde ich mich bei Rückfragen. Ansonste
 </div>
 <form v-else-if="status.status == 'none'" @submit.prevent="submit">
     <div v-if="step == 1">
-        <h5 class="firmware_title_row">Schon bestellt?</h5>
+        <h5 class="firmware_title_row">Schon eine Anfrage gesendet?</h5>
         <div style="display: flex; gap: 15px;justify-content: space-between; align-items: center;">
-            <input type="text" name="order_hash" id="order_hash" maxlength="8" v-model="orderHash" placeholder="Bestellnummer" style="text-transform: uppercase; margin: 0px;" />
+            <input type="text" name="order_hash" id="order_hash" maxlength="8" v-model="orderHash" placeholder="Anfragenummer" style="text-transform: uppercase; margin: 0px;" />
             <VPButton type="button" text="Status prüfen" :disabled="orderHash.length != 8" @click="checkOrder" />
         </div>
         <br>
