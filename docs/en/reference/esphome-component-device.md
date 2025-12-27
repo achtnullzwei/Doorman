@@ -452,6 +452,8 @@ Here are the available setting types you can use to update the settings of your 
 - volume_handset_internal_call <Badge type="tip" text="SETTING_VOLUME_HANDSET_INTERNAL_CALL" />
 - volume_handset_internal_call <Badge type="tip" text="SETTING_AS_ADDRESS_DIVIDER" />
 - volume_handset_internal_call <Badge type="tip" text="SETTING_VAS_ADDRESS_DIVIDER" />
+- use_long_door_opener_protocol <Badge type="tip" text="SETTING_USE_LONG_DOOR_OPENER_PROTOCOL" />
+- ambient_light <Badge type="tip" text="SETTING_AMBIENT_LIGHT" />
 
 ### Outdoor Station
 - as_address <Badge type="tip" text="SETTING_AS_ADDRESS" />
