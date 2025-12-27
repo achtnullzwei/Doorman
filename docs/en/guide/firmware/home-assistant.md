@@ -1,3 +1,7 @@
+---
+description: Discover examples for integrating and automating Doorman with Home Assistant, from basic setups to advanced configurations.
+---
+
 # Home Assistant Integration
 
 Discover practical examples for integrating and automating Doorman with Home Assistant, from basic setups to advanced configurations.

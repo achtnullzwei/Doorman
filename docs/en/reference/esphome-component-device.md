@@ -1,3 +1,7 @@
+---
+description: Complete documentation for the TC:BUS Device ESPHome component, including setup, configuration, and usage details.
+---
+
 # TC:BUS Device Component <Badge type="tip" text="tc_bus_device" />
 This component extends the [TC:BUS](./esphome-component) base component, making it easier to communicate with individual devices on the bus. It lets you identify devices, access their memory, and read or modify their settings - take a look at the [supported models and settings](#model-setting-availability).
 

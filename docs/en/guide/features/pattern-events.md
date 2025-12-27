@@ -1,3 +1,7 @@
+---
+description: The Pattern Events feature allows custom doorbell and phone pickup patterns to trigger automations, supporting single to quadruple events.
+---
+
 # Pattern Events
 
 The Doorman firmware includes pattern event entities that you can use in [Home Assistant](https://www.home-assistant.io/) automations.

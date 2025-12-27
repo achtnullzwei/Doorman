@@ -1,3 +1,7 @@
+---
+description: Discover Doorman's GPIO pinout and connections for integrating buttons, relays, and other peripherals.
+---
+
 # GPIO Pinout
 
 The Doorman S3 uses certain GPIO pins for specific functions and provides additional GPIO pins for your own sensors and devices.

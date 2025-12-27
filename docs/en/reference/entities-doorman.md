@@ -1,3 +1,7 @@
+---
+description: Reference guide for all Doorman entities, detailing their functions, usage, and configuration.
+---
+
 # Doorman Entities
 On this page, you can view all the entities related to Doorman.
 

@@ -1,3 +1,7 @@
+---
+description: Find help and resources for Doorman, including troubleshooting, guides, and community support for your intercom gateway.
+---
+
 # Support
 
 If you're experiencing issues with your Doorman, help is available through several channels:

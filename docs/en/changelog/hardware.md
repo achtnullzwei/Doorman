@@ -1,3 +1,7 @@
+---
+description: Explore the complete history of Doorman PCB revisions, including new features, improvements, and changes in each update.
+---
+
 # PCB Revision History & Changelog
 Welcome to the complete history of all PCB updates! This page highlights the new features, improvements, and changes made in each revision.
 

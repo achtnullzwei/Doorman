@@ -1,3 +1,7 @@
+---
+description: Learn how to configure Doorman with MQTT, including practical examples using topics and payloads for automation.
+---
+
 # MQTT Integration
 
 This page provides everything you need — from configuration to practical examples using MQTT topics and payloads.

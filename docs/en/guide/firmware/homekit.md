@@ -1,3 +1,7 @@
+---
+description: Learn how to set up and control your Doorman device using Apple HomeKit for seamless automation and management.
+---
+
 # HomeKit Integration
 
 This page provides everything you need to set up and control your Doorman device with Apple HomeKit.

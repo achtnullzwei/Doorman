@@ -1,3 +1,7 @@
+---
+description: Reference guide for all Nuki Bridge entities, detailing their functions, usage, and configuration.
+---
+
 # Nuki Bridge Entities
 On this page, you can view all the entities related to Nuki Bridge.
 

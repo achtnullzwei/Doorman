@@ -1,6 +1,10 @@
-# Ring To Open <Badge type="warning" text="RTO / Party Mode" />
+---
+description: Ring To Open (RTO) is a Doorman feature that automates entrance doors, allowing them to open when someone rings the doorbell. It supports per-door settings and central control.
+---
 
-The Doorman firmware features a Ring To Open automation, which was previously known as Party Mode.
+# Ring To Open <Badge type="warning" text="RTO" />
+
+The Doorman firmware features a Ring To Open automation.
 
 ### What does it do?
 As the name implies, the entrance door will open automatically when someone rings the doorbell.

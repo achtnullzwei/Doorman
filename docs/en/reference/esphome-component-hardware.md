@@ -1,3 +1,7 @@
+---
+description: Complete documentation for the Hardware ESPHome component, configuration, and usage details.
+---
+
 # Hardware Component <Badge type="tip" text="hardware" />
 The Hardware component is a custom ESPHome text sensor hub designed for boards I manufacture.
 During production, each board's PCB hardware revision and model are permanently written to the ESP32's EFuse memory. This enables the firmware to automatically detect the correct hardware version at runtime without manual configuration.

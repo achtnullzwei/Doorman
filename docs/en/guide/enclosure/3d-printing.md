@@ -1,8 +1,11 @@
+---
+description: Download and 3D print your own Doorman enclosure. STL files are optimized for resin printers for the best results.
+---
+
 # Enclosure
 
 If you need an enclosure, you can print your own.\
 Click [here](https://github.com/azoninc/doorman/blob/master/enclosure) to download the files on GitHub.
-
 
 ::: tip
 The STL files are optimized for resin printers, so you'll achieve the best results using one.

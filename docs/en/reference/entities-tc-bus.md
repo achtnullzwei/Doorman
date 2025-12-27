@@ -1,3 +1,7 @@
+---
+description: Reference guide for all TC:BUS entities, detailing their functions, usage, and configuration.
+---
+
 # TC:BUS Entities
 On this page, you can view all the entities related to TC:BUS.
 

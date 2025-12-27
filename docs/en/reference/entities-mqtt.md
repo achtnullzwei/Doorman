@@ -1,3 +1,7 @@
+---
+description: Reference guide for all MQTT entities, detailing their functions, usage, and configuration.
+---
+
 # MQTT Integration Entities
 On this page, you can view all the entities related to MQTT integration.
 

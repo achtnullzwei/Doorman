@@ -1,3 +1,7 @@
+---
+description: Documentation for the Nuki Bridge Addon, including setup and usage to integrate your Nuki system with the intercom gateway.
+---
+
 # Nuki Bridge Addon
 
 This add-on integrates the [Nuki Bridge](https://github.com/uriyacovy/ESPHome_nuki_lock) component via Bluetooth LE (BLE). **Using Improv over BLE at the same time is not supported**, as the Nuki Bridge occupies the Bluetooth stack. It's also not compatible with the MQTT or HomeKit integrations.

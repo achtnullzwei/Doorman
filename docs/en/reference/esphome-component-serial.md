@@ -1,3 +1,7 @@
+---
+description: Complete documentation for the TC:BUS Serial ESPHome component, including setup, configuration, and usage details.
+---
+
 # TC:BUS Serial Component <Badge type="tip" text="tc_bus_serial" />
 This component extends the [TC:BUS](./esphome-component) base component, enabling direct interaction over a serial connection.
 

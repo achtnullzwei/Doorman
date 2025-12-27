@@ -1,3 +1,7 @@
+---
+description: Explore examples to customize and extend Doorman firmware, adding sensors and tweaking settings to tailor the device to your needs.
+---
+
 # Customization
 
 Explore various examples to customize and extend the Doorman firmware. From adding custom sensors to tweaking automation settings, these examples help you tailor the device to your specific needs. Follow the guides to unlock full flexibility and make the most of your setup.

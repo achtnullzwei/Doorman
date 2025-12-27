@@ -1,3 +1,7 @@
+---
+description: Reference guide for all Nuki Smart Lock entities, detailing their functions, usage, and configuration.
+---
+
 # Nuki Lock Entities
 On this page, you can view all the entities related to the Nuki Lock.
 

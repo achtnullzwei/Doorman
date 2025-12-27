@@ -1,3 +1,7 @@
+---
+description: Explore Doormans hardware specifications.
+---
+
 # Doorman Hardware Specifications
 You can find a few information here about how to use 
 

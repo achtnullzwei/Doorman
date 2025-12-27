@@ -1,3 +1,7 @@
+---
+description: Reference guide for all entities, detailing their functions, usage, and configuration.
+---
+
 # Entities
 The Doorman firmware exposes many entities by default. On the sub-pages is a list of the available sensors and controls, along with an explanation of how to configure them.
 

@@ -1,3 +1,7 @@
+---
+description: Complete documentation for the TC:BUS ESPHome component, including setup, configuration, and usage details.
+---
+
 # TC:BUS Component <Badge type="tip" text="tc_bus" />
 The TC:BUS Component for ESPHome allows you to interface with [TCS:Bus](https://www.tcsag.de/) or [Koch TC:Bus](https://kochag.ch/) intercom systems, providing automation, monitoring, and interaction capabilities within the [ESPHome](https://esphome.io/) ecosystem.
 

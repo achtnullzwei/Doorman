@@ -1,4 +1,5 @@
 ---
+description: Get a pre-assembled Doorman S3 with firmware, ready for seamless setup and use.
 editLink: false
 lastUpdated: false
 ---

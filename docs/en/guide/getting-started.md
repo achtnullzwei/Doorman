@@ -1,3 +1,7 @@
+---
+description: Step-by-step guide to set up your Doorman intercom gateway, from hardware assembly to initial configuration.
+---
+
 # Getting Started
 
 First time here? Don't worry — we've got you covered! 😊

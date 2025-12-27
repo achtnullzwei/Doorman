@@ -1,3 +1,7 @@
+---
+description: Step-by-step instructions to install or update Doorman firmware, including Web Serial, web interface, and Home Assistant integration.
+---
+
 <script setup>
 import { inBrowser } from 'vitepress'
 import pkg from '../../../package.json';
