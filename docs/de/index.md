@@ -1,6 +1,7 @@
 ---
 # https://vitepress.dev/reference/default-theme-home-page
 layout: home
+description: Mit dem Doorman S3 Gateway kannst du deine TCS oder Koch Gegensprechanlage an jedes Heimautomatisierungssystem anbinden.
 
 hero:
   name: Doorman

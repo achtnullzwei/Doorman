@@ -1,6 +1,7 @@
 ---
 # https://vitepress.dev/reference/default-theme-home-page
 layout: home
+description: Doorman S3 lets you connect your TCS or Koch intercom to any home automation system.
 
 hero:
   name: Doorman
@@ -13,6 +14,7 @@ hero:
     - theme: brand
       text: What is Doorman?
       link: /guide/what-is-doorman
+
     - theme: alt
       text: Quickstart
       link: /guide/getting-started

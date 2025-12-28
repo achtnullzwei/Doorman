@@ -4,20 +4,21 @@ import { defineConfig, type DefaultTheme } from 'vitepress'
 const require = createRequire(import.meta.url)
 const pkg = require('../../package.json')
 
+const branch = pkg.version.includes('dev') ? 'dev' : 'master';
+
 export const en = defineConfig({
-    lang: 'en-US',
-    description: "Doorman S3 lets you connect your TCS or Koch intercom to any home automation system.",
-  
-    /* prettier-ignore */
-    head: [
-        ['meta', { property: 'og:locale', content: 'en' }],
-        ['meta', { property: 'og:title', content: 'Doorman | Gateway for TCS and Koch intercoms' }],
-        ['meta', { property: 'og:description', content: 'Doorman S3 lets you connect your TCS or Koch intercom to any home automation system.' }],
-        ['meta', { name: 'og:description', content: 'Doorman S3 lets you connect your TCS or Koch intercom to any home automation system.' }],
-    ],
+  lang: 'en-US',
+  description: "Doorman S3 lets you connect your TCS or Koch intercom to any home automation system.",
+
+  /* prettier-ignore */
+  head: [
+    ['meta', { property: 'og:locale', content: 'en' }],
+    ['meta', { property: 'og:title', content: 'Doorman | Gateway for TCS and Koch intercoms' }],
+    ['meta', { property: 'og:description', content: 'Doorman S3 lets you connect your TCS or Koch intercom to any home automation system.' }],
+    ['meta', { name: 'og:description', content: 'Doorman S3 lets you connect your TCS or Koch intercom to any home automation system.' }],
+  ],
 
   themeConfig: {
-
     nav: nav(),
 
     sidebar: {
@@ -27,7 +28,8 @@ export const en = defineConfig({
     },
 
     editLink: {
-        pattern: 'https://github.com/azoninc/doorman/edit/master/docs/:path'
+      pattern: 'https://github.com/azoninc/doorman/edit/' + branch  + '/docs/:path',
+      text: 'Edit this page'
     },
 
     footer: {
@@ -38,45 +40,45 @@ export const en = defineConfig({
 })
 
 function nav(): DefaultTheme.NavItem[] {
-    return [
+  return [
+    {
+      text: 'Guide',
+      link: '/guide/what-is-doorman',
+      activeMatch: '/guide/'
+    },
+    {
+      text: 'Reference',
+      link: '/reference/entities',
+      activeMatch: '/reference/'
+    },
+    {
+      text: 'Get your Doorman',
+      link: '/order',
+      activeMatch: '/order',
+    },
+    {
+      text: pkg.version,
+      items: [
+        { text: 'Issues', link: 'https://github.com/azoninc/doorman/issues' },
         {
-          text: 'Guide',
-          link: '/guide/what-is-doorman',
-          activeMatch: '/guide/'
+          text: 'Changelog',
+          link: '/changelog/firmware',
+          activeMatch: '/changelog/'
         },
         {
-          text: 'Reference',
-          link: '/reference/entities',
-          activeMatch: '/reference/'
-        },
-        {
-          text: 'Get your Doorman',
-          link: '/order',
-          activeMatch: '/order',
-        },
-        {
-          text: pkg.version,
+          text: 'Docs',
           items: [
-            { text: 'Issues', link: 'https://github.com/azoninc/doorman/issues' },
             {
-              text: 'Changelog',
-              link: '/changelog/firmware',
-              activeMatch: '/changelog/'
-            },
-            {
-              text: 'Docs',
-              items: [
-                {
-                  text: !pkg.version.includes('dev') ? 'Switch to development' : 'Switch to current',
-                  link: !pkg.version.includes('dev') ? 'https://dev.doorman.azon.ai/' : 'https://doorman.azon.ai/',
-                  target: '_self'
-                }
-              ]
+              text: branch != 'dev' ? 'Switch to development' : 'Switch to current',
+              link: branch != 'dev' ? 'https://dev.doorman.azon.ai/' : 'https://doorman.azon.ai/',
+              target: '_self'
             }
           ]
         }
       ]
-  }
+    }
+  ]
+}
 
 function sidebarGuide(): DefaultTheme.SidebarItem[] {
   return [

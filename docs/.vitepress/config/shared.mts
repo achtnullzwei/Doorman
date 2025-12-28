@@ -159,20 +159,15 @@ export const shared = defineConfig({
   },
 
   themeConfig: {
-
     logo: {
       src: '/logo.png', width: 24, height: 24
     },
 
     lastUpdated: {
-        formatOptions: {
-            dateStyle: 'short',
-            timeStyle: 'medium'
-        }
-    },
-
-    editLink: {
-        pattern: 'https://github.com/azoninc/doorman/edit/' + branch  + '/docs/:path',
+      formatOptions: {
+        dateStyle: 'medium',
+        timeStyle: 'short'
+      }
     },
 
     socialLinks: [

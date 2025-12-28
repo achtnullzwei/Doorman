@@ -1,5 +1,5 @@
 ---
-description: Ring To Open (RTO) is a Doorman feature that automates entrance doors, allowing them to open when someone rings the doorbell. It supports per-door settings and central control.
+description: Ring To Open (RTO) is a Doorman feature that automates entrance doors, allowing them to open when someone rings the doorbell.
 ---
 
 # Ring To Open <Badge type="warning" text="RTO" />
