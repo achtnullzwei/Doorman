@@ -47,6 +47,7 @@ wifi:
   output_power: 8.5
   enable_btm: true
   enable_rrm: true
+  use_psram: true
 
 substitutions:
   rx_pin: "GPIO9"

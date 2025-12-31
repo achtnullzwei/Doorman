@@ -32,6 +32,16 @@ data:
 ```
 :::
 
+## WLAN neu konfigurieren
+Mit Home Assistant kannst du Aktionen nutzen, um die WLAN Zugangsdaten neu zu konfigurieren.
+
+```yaml
+service: esphome.doorman_s3_reconfigure_wifi
+data:
+  ssid: "Your new WiFi SSID"
+  password: "YourNewPassword!"
+```
+
 ## ESPHome-Events abhören
 Doorman schickt jedes Mal, wenn ein Telegramm ankommt, `esphome.doorman`-Events an Home Assistant.
 

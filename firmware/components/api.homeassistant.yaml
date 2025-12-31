@@ -59,6 +59,16 @@ api:
         - api.respond:
             success: true
 
+    - action: reconfigure_wifi
+      variables:
+        ssid: string
+        password: string
+      then:
+        - wifi.configure:
+            ssid: !lambda 'return ssid;'
+            password: !lambda 'return password;'
+            save: true
+
 tc_bus:
   on_telegram:
     - homeassistant.event:

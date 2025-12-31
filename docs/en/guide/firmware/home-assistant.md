@@ -10,7 +10,7 @@ Discover practical examples for integrating and automating Doorman with Home Ass
 <!--@include: ./instructions/home-assistant.md-->
 
 ## Sending Bus telegrams
-You can use Home Assistant actions (formerly known as services) to send telegrams on the bus.
+You can use Home Assistant actions to send telegrams on the bus.
 Either use the `telegram` to send raw telegrams or `type`, `address`, `payload` and `serial_number` to send telegrams via the telegram builder.
 
 ::: code-group
@@ -35,6 +35,16 @@ data:
   telegram: "11E24080"
 ```
 :::
+
+## Reconfigure WiFi credentials
+You can use Home Assistant actions to change the WiFi credentials.
+
+```yaml
+service: esphome.doorman_s3_reconfigure_wifi
+data:
+  ssid: "Your new WiFi SSID"
+  password: "YourNewPassword!"
+```
 
 ## Listening for ESPHome events
 Doorman sends `esphome.doorman` events to Home Assistant each time a telegram is received.

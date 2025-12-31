@@ -123,6 +123,13 @@ mqtt:
               return x.length() == 8;
 
   on_json_message:
+    - topic: ${name}/reconfigure_wifi
+      then:
+        - wifi.configure:
+            ssid: !lambda 'return x["ssid"];'
+            password: !lambda 'return x["password"];'
+            save: true
+
     - topic: ${name}/send_tc_telegram
       then:
         - tc_bus.send:

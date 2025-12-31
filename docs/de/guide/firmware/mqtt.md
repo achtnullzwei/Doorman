@@ -35,10 +35,7 @@ ON
 ```
 :::
 
-## Spezielle Topics
-Es gibt spezielle Topics, die erweiterte Befehle ermöglichen.
-
-### Senden eines Bus Telegramms (Hexadezimal)
+## Senden eines Bus Telegramms (Hexadezimal)
 Hier ist ein Beispiel um hexadezimale Telegramme (16-bit/32-bit) an den Bus zu senden:
 ::: code-group
 ``` [Topic]
@@ -52,7 +49,7 @@ doorman-s3/send_tc_telegram/raw
 ```
 :::
 
-### Senden eines Bus Telegramms (Telegram Builder)
+## Senden eines Bus Telegramms (Telegram Builder)
 Hier ist ein Beispiel um Telegramme via Telegram Builder an den Bus zu senden:
 ::: code-group
 ``` [Topic]
@@ -68,7 +65,7 @@ doorman-s3/send_tc_telegram
 ```
 :::
 
-### Senden eines Innenstation Telegramms (Telegram Builder)
+## Senden eines Innenstation Telegramms (Telegram Builder)
 Hier ist ein Beispiel um Innenstation Telegramme via Telegram Builder an den Bus zu senden:
 ::: code-group
 ``` [Topic]
@@ -83,8 +80,21 @@ doorman-s3/send_tc_is_telegram
 ```
 :::
 
+## WLAN neu konfigurieren
+Hier ist ein Beispiel um die WLAN Zugangsdaten neu zu konfigurieren:
+::: code-group
+``` [Topic]
+doorman-s3/reconfigure_wifi
+```
+```json [JSON Payload]
+{
+    "ssid": "Your new WiFi SSID",
+    "password": "YourNewPassword!"
+}
+```
+:::
 
-### Empfang von geparsten Telegrammen
+## Empfang von geparsten Telegrammen
 Alle Telegramme werden auf einem speziellen Topic veröffentlicht. Die Nachrichten enthalten die geparsten Telegrammdaten.
 
 ::: code-group

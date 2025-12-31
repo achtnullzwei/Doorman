@@ -349,6 +349,7 @@ button:
       sorting_group_id: sorting_group_system
       sorting_weight: 12
 
+
 output:
   - platform: template
     type: binary

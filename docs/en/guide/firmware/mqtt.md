@@ -39,10 +39,7 @@ ON
 ```
 :::
 
-## Special Topics
-Certain special topics allow for advanced telegrams.
-
-### Send a Bus Telegram (Hexadecimal)
+## Send a Bus Telegram (Hexadecimal)
 Here's an example of how to send a hexadecimal telegram (16-bit/32-bit) to the bus:
 ::: code-group
 ``` [Topic]
@@ -56,7 +53,7 @@ doorman-s3/send_tc_telegram/raw
 ```
 :::
 
-### Send a Bus Telegram (Telegram Builder)
+## Send a Bus Telegram (Telegram Builder)
 Here's an example of how to use the telegram builder to send a telegram to the bus:
 ::: code-group
 ``` [Topic]
@@ -72,7 +69,7 @@ doorman-s3/send_tc_telegram
 ```
 :::
 
-### Send a Indoor Station Telegram (Telegram Builder)
+## Send a Indoor Station Telegram (Telegram Builder)
 Here's an example of how to use the telegram builder to send a telegram to the bus:
 ::: code-group
 ``` [Topic]
@@ -87,8 +84,21 @@ doorman-s3/send_tc_is_telegram
 ```
 :::
 
+## Reconfigure WiFi credentials
+Here's an example of how to reconfigure your WiFi credentials:
+::: code-group
+``` [Topic]
+doorman-s3/reconfigure_wifi
+```
+```json [JSON Payload]
+{
+    "ssid": "Your new WiFi SSID",
+    "password": "YourNewPassword!"
+}
+```
+:::
 
-### Receive parsed telegrams
+## Receive parsed telegrams
 Each telegram is published on a special topic. The messages contain the parsed telegram data.
 
 ::: code-group
