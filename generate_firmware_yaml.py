@@ -185,5 +185,24 @@ def main():
         
         print(f'Generated: {filename}')
 
+        # Also generate stock version for compatibility with older setups
+        if firmware == 'standard':
+            print('Generate stock version for compatibility...')
+
+            stock_filename = f'{host}.{api_variant}.stock.{branch}.yaml'
+            stock_example_filename = f'{host}.{api_variant}.stock.{branch}.example.yaml'
+
+            # Write stock config YAML (same content as standard)
+            stock_config_filepath = os.path.join('firmware', 'configurations', stock_filename)
+            with open(stock_config_filepath, 'w', encoding='utf-8') as f:
+                f.write(config_content)
+
+            # Write stock example YAML (same content as standard)
+            stock_example_filepath = os.path.join('firmware', 'examples', stock_example_filename)
+            with open(stock_example_filepath, 'w', encoding='utf-8') as f:
+                f.write(example_content)
+
+            print(f'Generated: {stock_filename}')
+
 if __name__ == '__main__':
     main()

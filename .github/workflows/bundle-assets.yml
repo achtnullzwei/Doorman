@@ -38,6 +38,12 @@ jobs:
           path: output/firmware/release
           merge-multiple: true
 
+      # Temporary duplicate for stock compatibility
+      - name: Temporary backwards compatibility for stock firmware filenames
+        working-directory: output/firmware/release
+        run: |
+          for f in *.standard; do cp -r "$f" "${f%.standard}.stock"; done
+
       - name: Upload Pages artifact
         if: github.ref_name == 'master'
         uses: actions/upload-pages-artifact@v4
