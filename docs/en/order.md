@@ -1,4 +1,5 @@
 ---
+layout: orderpage
 description: Get a pre-assembled Doorman S3 with firmware, ready for seamless setup and use.
 editLink: false
 lastUpdated: false
@@ -796,7 +797,7 @@ Availability is limited and occurs **without a fixed schedule**. Any notificatio
     <div v-if="step == 1">
         <h5 class="firmware_title_row">Already submitted a request?</h5>
         <div style="display: flex; gap: 15px;justify-content: space-between; align-items: center;">
-            <input type="text" name="order_hash" id="order_hash" maxlength="8" v-model="orderHash" placeholder="Request Number" style="text-transform: uppercase; margin: 0px;" />
+            <input type="text" name="order_hash" id="order_hash" maxlength="8" v-model="orderHash" placeholder="Request Number #A1B2C3D4" style="text-transform: uppercase; margin: 0px;" />
             <VPButton type="button" text="Check Status" :disabled="orderHash.length != 8" @click="checkOrder" />
         </div>
         <br>

@@ -1,5 +1,6 @@
 import DefaultTheme from "vitepress/theme";
 import Layout from './Layout.vue'
+import OrderPage from './OrderPage.vue'
 
 import ContactModal from './components/ContactModal.vue'
 
@@ -15,6 +16,7 @@ export default {
     Layout: Layout,
     enhanceApp({ app }) {
         app.component('ContactModal', ContactModal)
+        app.component('orderpage', OrderPage)
 
         enhanceAppWithTabs(app);
 

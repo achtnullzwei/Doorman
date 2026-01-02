@@ -1,4 +1,6 @@
 ---
+layout: orderpage
+description: Hol dir deinen Doorman S3, bereit für nahtlose Einrichtung und Nutzung.
 editLink: false
 lastUpdated: false
 ---
@@ -798,7 +800,7 @@ Die Verfügbarkeit ist begrenzt und hängt von Zeit und Kapazität ab. Benachric
     <div v-if="step == 1">
         <h5 class="firmware_title_row">Schon eine Anfrage gesendet?</h5>
         <div style="display: flex; gap: 15px;justify-content: space-between; align-items: center;">
-            <input type="text" name="order_hash" id="order_hash" maxlength="8" v-model="orderHash" placeholder="Anfragenummer" style="text-transform: uppercase; margin: 0px;" />
+            <input type="text" name="order_hash" id="order_hash" maxlength="8" v-model="orderHash" placeholder="Anfragenummer #A1B2C3D4" style="text-transform: uppercase; margin: 0px;" />
             <VPButton type="button" text="Status prüfen" :disabled="orderHash.length != 8" @click="checkOrder" />
         </div>
         <br>

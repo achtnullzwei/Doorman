@@ -1,5 +1,5 @@
 ---
-layout: doc
+layout: orderpage
 description: Order Management
 footer: false
 aside: false
