@@ -46,7 +46,7 @@ jobs:
           echo "files=$files" >> $GITHUB_OUTPUT
 
   build:
-    name: Build ${{ matrix.file }}
+    name: Build ${{ inputs.name }}
     needs: [prepare]
     runs-on: ubuntu-latest
     strategy:
