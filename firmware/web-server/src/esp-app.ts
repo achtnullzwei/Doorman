@@ -93,10 +93,10 @@ export default class EspApp extends LitElement {
   }
 
   async getFirmwareVersion() {
-    const firmwareRequest = await fetch(`${getBasePath()}/text_sensor/doorman_firmware_version`);
+    const firmwareRequest = await fetch(`${getBasePath()}/text_sensor/Firmware%20Version`);
     const firmwareValue = await firmwareRequest.json();
 
-    const esphomeRequest = await fetch(`${getBasePath()}/text_sensor/esphome_version`);
+    const esphomeRequest = await fetch(`${getBasePath()}/text_sensor/ESPHome%20Version`);
     const esphomeValue = await esphomeRequest.json();
 
     this.firmwareVersion = firmwareValue.value;
@@ -104,10 +104,10 @@ export default class EspApp extends LitElement {
   }
 
   async getHardwareVersion() {
-    const response_model = await fetch(`${getBasePath()}/text_sensor/model`);
+    const response_model = await fetch(`${getBasePath()}/text_sensor/Model`);
     const data_model = await response_model.json();
 
-    const response_revision = await fetch(`${getBasePath()}/text_sensor/revision`);
+    const response_revision = await fetch(`${getBasePath()}/text_sensor/Revision`);
     const data_revision = await response_revision.json();
 
     if(data_model.value.toLowerCase() == 'unsupported')

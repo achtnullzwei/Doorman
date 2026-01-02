@@ -15,7 +15,7 @@ Reports the wifi signal in percent.
 ### ESPHome Version <Badge type="tip" text="esphome_version" /> <Badge type="info" text="Disabled by default" />
 Reports the installed base ESPHome version.
 
-### Doorman Firmware Version <Badge type="tip" text="doorman_firmware_version" /> <Badge type="info" text="Disabled by default" />
+### Firmware Version <Badge type="tip" text="doorman_firmware_version" /> <Badge type="info" text="Disabled by default" />
 Reports the installed Doorman firmware version and build time.
 
 ### Model <Badge type="tip" text="doorman_model" /> <Badge type="info" text="Disabled by default" />
