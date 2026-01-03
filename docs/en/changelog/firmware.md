@@ -5,7 +5,7 @@ description: Stay up to date with Doorman's latest features, improvements, and i
 # Release Notes & Changelog
 Welcome to the latest updates! Here's a breakdown of all the **new features**, **improvements**, and important **changes** you need to know. Be sure to check out the **Breaking Changes** section for any actions needed to keep everything running smoothly.
 
-## 2025.12.0 <Badge type="tip" text="Stable" />
+## 2026.1.0 <Badge type="tip" text="Stable" />
 ### 🚨 IMPORTANT
 Please carefully review the breaking changes listed below before updating!  
 This release **will impact your current setup** and **requires** you to go through the **setup process again**.
@@ -150,7 +150,7 @@ This release **will impact your current setup** and **requires** you to go throu
    Now, you need to press the outdoor station doorbell for each door to ensure the address is saved correctly. Take a look [here](https://doorman.azon.ai/guide/getting-started#interactive-setup) for more information.
 
 - **Minimum ESPHome Version Set**  
-   The minimum required version has been updated to **2025.11.0**.
+   The minimum required version has been updated to **2026.1.0**.
 
 ## 2025.3.0
 ### ✨ Improvements
