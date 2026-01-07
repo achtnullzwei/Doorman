@@ -356,7 +356,7 @@ export default {
                 }
 
                 try {
-                    if(order.shipping_method == 'standard' && order.shipping_region == 'DE') {
+                    if(order.shipping_method == 'envelope' && order.shipping_region == 'DE') {
                         await this.generateLabel(order, 'standard_sender');
                         await this.print();
 
