@@ -121,56 +121,64 @@ namespace esphome::tc_bus
             else if (strcmp(model_key, "B00") == 0) return MODEL_IS_IMM1000;
             else if (strcmp(model_key, "200") == 0) return MODEL_IS_ISW4100;
             else if (strcmp(model_key, "201") == 0) return MODEL_IS_IMM2100;
+
             else if (strcmp(model_key, "020") == 0 || strcmp(model_key, "021") == 0 || strcmp(model_key, "022") == 0 || strcmp(model_key, "023") == 0 || strcmp(model_key, "024") == 0 || strcmp(model_key, "025") == 0 || strcmp(model_key, "026") == 0 || strcmp(model_key, "027") == 0)
-                return MODEL_IS_ISW5010;
-
-            else if (strcmp(model_key, "030") == 0 || strcmp(model_key, "031") == 0 || strcmp(model_key, "032") == 0)
-                return MODEL_IS_IVW511X;
-
-            else if (strcmp(model_key, "03A") == 0 || strcmp(model_key, "03B") == 0 || strcmp(model_key, "03C") == 0 || strcmp(model_key, "03D") == 0 || strcmp(model_key, "03F") == 0)
-                return MODEL_IS_IVW521X;
+                return MODEL_IS_TASTA_AUDIO; // ISW5010
 
             else if (strcmp(model_key, "028") == 0 || strcmp(model_key, "02B") == 0 || strcmp(model_key, "02F") == 0)
-                return MODEL_IS_ISW5020;
+                return MODEL_IS_TASTA_AUDIO; // ISW5020
 
-            else if (strcmp(model_key, "068") == 0 || strcmp(model_key, "06F") == 0)
-                return MODEL_IS_ISW5030;
+            else if (strcmp(model_key, "030") == 0 || strcmp(model_key, "031") == 0 || strcmp(model_key, "032") == 0 || strcmp(model_key, "033") == 0 || strcmp(model_key, "034") == 0 || strcmp(model_key, "035") == 0 || strcmp(model_key, "036") == 0 || strcmp(model_key, "037") == 0)
+                return MODEL_IS_TASTA_VIDEO; // IVW511X
 
-            else if (strcmp(model_key, "060") == 0) return MODEL_IS_ISW5033;
-
-            else if (strcmp(model_key, "070") == 0 || strcmp(model_key, "071") == 0 || strcmp(model_key, "072") == 0 || strcmp(model_key, "073") == 0 || strcmp(model_key, "074") == 0 || strcmp(model_key, "075") == 0 || strcmp(model_key, "076") == 0 || strcmp(model_key, "077") == 0)
-                return MODEL_IS_ISW6031;
-
-            else if (strcmp(model_key, "080") == 0 || strcmp(model_key, "081") == 0 || strcmp(model_key, "082") == 0 || strcmp(model_key, "083") == 0 || strcmp(model_key, "084") == 0 || strcmp(model_key, "085") == 0 || strcmp(model_key, "086") == 0 || strcmp(model_key, "087") == 0)
-                return MODEL_IS_ISW7030;
-
-            else if (strcmp(model_key, "088") == 0 || strcmp(model_key, "089") == 0 || strcmp(model_key, "08A") == 0 || strcmp(model_key, "08B") == 0 || strcmp(model_key, "08C") == 0 || strcmp(model_key, "08D") == 0 || strcmp(model_key, "08E") == 0 || strcmp(model_key, "08F") == 0)
-                return MODEL_IS_IVW7510;
-
-            else if (strcmp(model_key, "180") == 0 || strcmp(model_key, "181") == 0 || strcmp(model_key, "182") == 0 || strcmp(model_key, "183") == 0 || strcmp(model_key, "184") == 0 || strcmp(model_key, "185") == 0 || strcmp(model_key, "186") == 0 || strcmp(model_key, "187") == 0)
-                return MODEL_IS_ISH7030;
-
-            else if (strcmp(model_key, "188") == 0 || strcmp(model_key, "189") == 0 || strcmp(model_key, "18A") == 0 || strcmp(model_key, "18B") == 0 || strcmp(model_key, "18C") == 0 || strcmp(model_key, "18D") == 0 || strcmp(model_key, "18E") == 0 || strcmp(model_key, "18F") == 0)
-                return MODEL_IS_IVH7510;
-
-            else if (strcmp(model_key, "078") == 0 || strcmp(model_key, "079") == 0 || strcmp(model_key, "07A") == 0 || strcmp(model_key, "07B") == 0 || strcmp(model_key, "07C") == 0 || strcmp(model_key, "07D") == 0 || strcmp(model_key, "07E") == 0 || strcmp(model_key, "07F") == 0)
-                return MODEL_IS_ISW6010;
+            else if (strcmp(model_key, "038") == 0 || strcmp(model_key, "039") == 0 || strcmp(model_key, "03A") == 0 || strcmp(model_key, "03B") == 0 || strcmp(model_key, "03C") == 0 || strcmp(model_key, "03D") == 0 || strcmp(model_key, "03E") == 0 || strcmp(model_key, "03F") == 0)
+                return MODEL_IS_TASTA_VIDEO; // IVW521X
 
             else if (strcmp(model_key, "058") == 0 || strcmp(model_key, "059") == 0 || strcmp(model_key, "05A") == 0 || strcmp(model_key, "05B") == 0 || strcmp(model_key, "05C") == 0 || strcmp(model_key, "05D") == 0 || strcmp(model_key, "05E") == 0 || strcmp(model_key, "05F") == 0)
-                return MODEL_IS_IVW6511;
+                return MODEL_IS_TASTA_PRO_VIDEO; // IVW6511 (+ smart stick)
+
+            else if (strcmp(model_key, "060") == 0)
+                return MODEL_IS_TASTA_AUDIO; // ISW5033
+
+            else if (strcmp(model_key, "068") == 0 || strcmp(model_key, "06F") == 0)
+                return MODEL_IS_TASTA_AUDIO; // ISW5030 / ISW5031
+
+            else if (strcmp(model_key, "070") == 0 || strcmp(model_key, "071") == 0 || strcmp(model_key, "072") == 0 || strcmp(model_key, "073") == 0 || strcmp(model_key, "074") == 0 || strcmp(model_key, "075") == 0 || strcmp(model_key, "076") == 0 || strcmp(model_key, "077") == 0)
+                return MODEL_IS_TASTA_PRO_AUDIO; // ISW6031 (+ smart stick)
+
+            else if (strcmp(model_key, "078") == 0 || strcmp(model_key, "079") == 0 || strcmp(model_key, "07A") == 0 || strcmp(model_key, "07B") == 0 || strcmp(model_key, "07C") == 0 || strcmp(model_key, "07D") == 0 || strcmp(model_key, "07E") == 0 || strcmp(model_key, "07F") == 0)
+                return MODEL_IS_TASTA_PRO_AUDIO; // ISW6010 (+ smart stick)
+
+            else if (strcmp(model_key, "080") == 0 || strcmp(model_key, "081") == 0 || strcmp(model_key, "082") == 0 || strcmp(model_key, "083") == 0 || strcmp(model_key, "084") == 0 || strcmp(model_key, "085") == 0 || strcmp(model_key, "086") == 0 || strcmp(model_key, "087") == 0)
+                return MODEL_IS_SENSO_PRO_AUDIO; // ISW7030 / TC70
+
+            else if (strcmp(model_key, "088") == 0 || strcmp(model_key, "089") == 0 || strcmp(model_key, "08A") == 0 || strcmp(model_key, "08B") == 0 || strcmp(model_key, "08C") == 0 || strcmp(model_key, "08D") == 0 || strcmp(model_key, "08E") == 0 || strcmp(model_key, "08F") == 0)
+                return MODEL_IS_SENSO_PRO_VIDEO; // IVW7510 (+ smart stick)
+
+            else if (strcmp(model_key, "180") == 0 || strcmp(model_key, "181") == 0 || strcmp(model_key, "182") == 0 || strcmp(model_key, "183") == 0 || strcmp(model_key, "184") == 0 || strcmp(model_key, "185") == 0 || strcmp(model_key, "186") == 0 || strcmp(model_key, "187") == 0)
+                return MODEL_IS_SENSO_PRO_AUDIO; // ISH7030
+
+            else if (strcmp(model_key, "188") == 0 || strcmp(model_key, "189") == 0 || strcmp(model_key, "18A") == 0 || strcmp(model_key, "18B") == 0 || strcmp(model_key, "18C") == 0 || strcmp(model_key, "18D") == 0 || strcmp(model_key, "18E") == 0 || strcmp(model_key, "18F") == 0)
+                return MODEL_IS_SENSO_PRO_VIDEO; // IVH7510
 
             else if (strcmp(model_key, "C70") == 0 || strcmp(model_key, "C71") == 0 || strcmp(model_key, "C72") == 0 || strcmp(model_key, "C73") == 0 || strcmp(model_key, "C74") == 0 || strcmp(model_key, "C75") == 0 || strcmp(model_key, "C76") == 0 || strcmp(model_key, "C77") == 0)
-                return MODEL_IS_ISW7030;
+                return MODEL_IS_SENSO_PRO_AUDIO; // ISW7030 / TC70 (+ smart stick)
 
             else if (strcmp(model_key, "C90") == 0 || strcmp(model_key, "C91") == 0 || strcmp(model_key, "C92") == 0 || strcmp(model_key, "C93") == 0 || strcmp(model_key, "C94") == 0 || strcmp(model_key, "C95") == 0 || strcmp(model_key, "C96") == 0 || strcmp(model_key, "C97") == 0)
-                return MODEL_IS_ISWM7000;
+                return MODEL_IS_SENSO_PRO_AUDIO; // ISWM7000 (+ smart stick)
 
             else if (strcmp(model_key, "C80") == 0 || strcmp(model_key, "C81") == 0 || strcmp(model_key, "C82") == 0 || strcmp(model_key, "C83") == 0 || strcmp(model_key, "C84") == 0 || strcmp(model_key, "C85") == 0 || strcmp(model_key, "C86") == 0 || strcmp(model_key, "C87") == 0)
-                return MODEL_IS_IVWM7000;
+                return MODEL_IS_SENSO_PRO_VIDEO; // IVWM7000 (+ smart stick)
 
-            else if (strcmp(model_key, "800") == 0 || strcmp(model_key, "805") == 0) return MODEL_IS_IVW2210;
-            else if (strcmp(model_key, "807") == 0) return MODEL_IS_IVW2211;
-            else if (strcmp(model_key, "80C") == 0) return MODEL_IS_IVW2212;
+            else if (strcmp(model_key, "800") == 0 || strcmp(model_key, "805") == 0)
+                return MODEL_IS_ECOOS; // IVW2210
+
+            else if (strcmp(model_key, "807") == 0)
+                return MODEL_IS_ECOOS; // IVW2211
+
+            else if (strcmp(model_key, "80C") == 0)
+                return MODEL_IS_ECOOS; // IVW2212
+
             else if (strcmp(model_key, "810") == 0) return MODEL_IS_IVW2220;
             else if (strcmp(model_key, "815") == 0) return MODEL_IS_IVW2221;
             else if (strcmp(model_key, "820") == 0) return MODEL_IS_IVW3011;
@@ -235,27 +243,15 @@ namespace esphome::tc_bus
         {MODEL_IS_ISW3230, "TCS ISW3230 / Koch TC50 GFA"},
         {MODEL_IS_ISW3330, "TCS ISW3330 / Koch TC50 BW"},
         {MODEL_IS_ISW3340, "TCS ISW3340"},
-        {MODEL_IS_ISW5010, "TCS ISW5010 / Koch TC60"},
-        {MODEL_IS_ISW5020, "TCS ISW5020"},
-        {MODEL_IS_ISW5030, "TCS ISW5030"},
-        {MODEL_IS_ISW5031, "TCS ISW5031"},
-        {MODEL_IS_ISW5033, "TCS ISW5033"},
-        {MODEL_IS_IVW511X, "TCS IVW511x / Koch VTC60 / Scantron VIVO"},
-        {MODEL_IS_IVW521X, "TCS IVW521x / Koch VTC60/2D"},
-        {MODEL_IS_ISW6031, "TCS ISW6031"},
-        {MODEL_IS_ISW7030, "TCS ISW7030 / Koch TC70"},
-        {MODEL_IS_IVW7510, "TCS IVW7510 / Koch VTC70"},
-        {MODEL_IS_ISH7030, "TCS ISH7030 / Koch TCH70"},
-        {MODEL_IS_IVH7510, "TCS IVH7510 / Koch VTCH70"},
-        {MODEL_IS_ISW6010, "TCS ISW6010"},
-        {MODEL_IS_IVW6511, "TCS IVW6511"},
-        {MODEL_IS_ISWM7000, "TCS ISWM7000"},
-        {MODEL_IS_IVWM7000, "TCS IVWM7000"},
+        {MODEL_IS_TASTA_AUDIO, "TCS TASTA Audio / Koch 60 Series Audio"},
+        {MODEL_IS_TASTA_PRO_AUDIO, "TCS TASTA PRO Audio"},
+        {MODEL_IS_TASTA_VIDEO, "TCS TASTA Video / Koch 60 Series Video / Scantron VIVO"},
+        {MODEL_IS_TASTA_PRO_VIDEO, "TCS TASTA PRO Video"},
+        {MODEL_IS_SENSO_PRO_AUDIO, "TCS SENSO PRO Audio / Koch 70 Series Audio"},
+        {MODEL_IS_SENSO_PRO_VIDEO, "TCS SENSO PRO Video / Koch 70 Series Video"},
+        {MODEL_IS_ECOOS, "TCS ECOOS / Koch ecoos / Scantron SLIM60T"},
         {MODEL_IS_ISW4100, "TCS ISW4100 / Koch TC31"},
         {MODEL_IS_IMM2100, "TCS IMM2100 / Koch TCE31"},
-        {MODEL_IS_IVW2210, "TCS IVW2210 / Koch Ecoos"},
-        {MODEL_IS_IVW2211, "TCS IVW2211 / Koch Ecoos"},
-        {MODEL_IS_IVW2212, "TCS IVW2212 / Koch Ecoos / Scantron SLIM60T"},
         {MODEL_IS_VTC42V2, "TCS VTC42V2"},
         {MODEL_IS_TC40V2, "TCS TC40V2"},
         {MODEL_IS_VTC40, "TCS VTC40"},
@@ -407,13 +403,8 @@ namespace esphome::tc_bus
                 modelData.capabilities |= CAP_AS_ADDRESS_DIVIDER;
                 modelData.capabilities |= CAP_RINGTONE_MUTE;
                 break;
-            case MODEL_IS_ISW5010: /* TC60 */
-            case MODEL_IS_ISW5020:
-            case MODEL_IS_ISW5030:
-            case MODEL_IS_ISW5031:
-            case MODEL_IS_ISW5033:
-            case MODEL_IS_ISW6010:
-            case MODEL_IS_ISW6031:
+            case MODEL_IS_TASTA_AUDIO: /* Koch 60 Series Audio */
+            case MODEL_IS_TASTA_PRO_AUDIO:
                 modelData.device_group = 1;
                 modelData.memory_size = 32;
                 modelData.capabilities |= CAP_RINGTONE_ENTRANCE_DOOR_CALL;
@@ -428,9 +419,8 @@ namespace esphome::tc_bus
                 modelData.capabilities |= CAP_AMBIENT_LIGHT;
                 modelData.capabilities |= CAP_RINGTONE_MUTE;
                 break;
-            case MODEL_IS_IVW511X: /* VTC60 */
-            case MODEL_IS_IVW521X: /* VTC60/2D */
-            case MODEL_IS_IVW6511:
+            case MODEL_IS_TASTA_VIDEO: /* Koch 60 Series Video */
+            case MODEL_IS_TASTA_PRO_VIDEO:
                 modelData.device_group = 1;
                 modelData.memory_size = 48;
                 modelData.capabilities |= CAP_RINGTONE_ENTRANCE_DOOR_CALL;
@@ -446,7 +436,7 @@ namespace esphome::tc_bus
                 modelData.capabilities |= CAP_AMBIENT_LIGHT;
                 modelData.capabilities |= CAP_RINGTONE_MUTE;
                 break;
-            case MODEL_IS_ISW7030: /* TC70 */
+            case MODEL_IS_SENSO_PRO_AUDIO:  /* Koch 70 Series Audio */
                 modelData.device_group = 1;
                 modelData.memory_size = 32;
                 modelData.capabilities |= CAP_RINGTONE_ENTRANCE_DOOR_CALL;
@@ -459,7 +449,7 @@ namespace esphome::tc_bus
                 modelData.capabilities |= CAP_AS_ADDRESS_DIVIDER;
                 modelData.capabilities |= CAP_RINGTONE_MUTE;
                 break;
-            case MODEL_IS_IVW7510: /* VTC70 */
+            case MODEL_IS_SENSO_PRO_VIDEO:  /* Koch 70 Series Video */
                 modelData.device_group = 1;
                 modelData.memory_size = 48;
                 modelData.capabilities |= CAP_RINGTONE_ENTRANCE_DOOR_CALL;
@@ -473,59 +463,19 @@ namespace esphome::tc_bus
                 modelData.capabilities |= CAP_VAS_ADDRESS_DIVIDER;
                 modelData.capabilities |= CAP_RINGTONE_MUTE;
                 break;
-            case MODEL_IS_ISH7030: /* TCH70 */
+            case MODEL_IS_ECOOS:
                 modelData.device_group = 1;
-                modelData.memory_size = 32;
+                modelData.memory_size = 64;
                 modelData.capabilities |= CAP_RINGTONE_ENTRANCE_DOOR_CALL;
                 modelData.capabilities |= CAP_RINGTONE_INTERNAL_CALL;
                 modelData.capabilities |= CAP_RINGTONE_FLOOR_CALL;
                 modelData.capabilities |= CAP_RINGTONE_SECOND_ENTRANCE_DOOR_CALL;
                 modelData.capabilities |= CAP_VOLUME_RINGTONE;
-                modelData.capabilities |= CAP_VOLUME_HANDSET_DOOR_CALL;
-                modelData.capabilities |= CAP_VOLUME_HANDSET_INTERNAL_CALL;
-                modelData.capabilities |= CAP_AS_ADDRESS_DIVIDER;
-                modelData.capabilities |= CAP_RINGTONE_MUTE;
-                break;
-            case MODEL_IS_IVH7510: /* VTCH70 */
-                modelData.device_group = 1;
-                modelData.memory_size = 48;
-                modelData.capabilities |= CAP_RINGTONE_ENTRANCE_DOOR_CALL;
-                modelData.capabilities |= CAP_RINGTONE_INTERNAL_CALL;
-                modelData.capabilities |= CAP_RINGTONE_FLOOR_CALL;
-                modelData.capabilities |= CAP_RINGTONE_SECOND_ENTRANCE_DOOR_CALL;
-                modelData.capabilities |= CAP_VOLUME_RINGTONE;
-                modelData.capabilities |= CAP_VOLUME_HANDSET_DOOR_CALL;
-                modelData.capabilities |= CAP_VOLUME_HANDSET_INTERNAL_CALL;
                 modelData.capabilities |= CAP_AS_ADDRESS_DIVIDER;
                 modelData.capabilities |= CAP_VAS_ADDRESS_DIVIDER;
                 modelData.capabilities |= CAP_RINGTONE_MUTE;
-                break;
-            case MODEL_IS_ISWM7000:
-                modelData.device_group = 1;
-                modelData.memory_size = 32;
-                modelData.capabilities |= CAP_RINGTONE_ENTRANCE_DOOR_CALL;
-                modelData.capabilities |= CAP_RINGTONE_INTERNAL_CALL;
-                modelData.capabilities |= CAP_RINGTONE_FLOOR_CALL;
-                modelData.capabilities |= CAP_RINGTONE_SECOND_ENTRANCE_DOOR_CALL;
-                modelData.capabilities |= CAP_VOLUME_RINGTONE;
-                modelData.capabilities |= CAP_VOLUME_HANDSET_DOOR_CALL;
-                modelData.capabilities |= CAP_VOLUME_HANDSET_INTERNAL_CALL;
-                modelData.capabilities |= CAP_AS_ADDRESS_DIVIDER;
-                modelData.capabilities |= CAP_RINGTONE_MUTE;
-                break;
-            case MODEL_IS_IVWM7000:
-                modelData.device_group = 1;
-                modelData.memory_size = 48;
-                modelData.capabilities |= CAP_RINGTONE_ENTRANCE_DOOR_CALL;
-                modelData.capabilities |= CAP_RINGTONE_INTERNAL_CALL;
-                modelData.capabilities |= CAP_RINGTONE_FLOOR_CALL;
-                modelData.capabilities |= CAP_RINGTONE_SECOND_ENTRANCE_DOOR_CALL;
-                modelData.capabilities |= CAP_VOLUME_RINGTONE;
-                modelData.capabilities |= CAP_VOLUME_HANDSET_DOOR_CALL;
-                modelData.capabilities |= CAP_VOLUME_HANDSET_INTERNAL_CALL;
-                modelData.capabilities |= CAP_AS_ADDRESS_DIVIDER;
-                modelData.capabilities |= CAP_VAS_ADDRESS_DIVIDER;
-                modelData.capabilities |= CAP_RINGTONE_MUTE;
+                // Supported? Not documented
+                //modelData.capabilities |= CAP_VOLUME_HANDSET_DOOR_CALL;
                 break;
             case MODEL_IS_ISW4100: /* TC31 */
                 modelData.device_group = 1;
@@ -546,48 +496,6 @@ namespace esphome::tc_bus
                 modelData.capabilities |= CAP_RINGTONE_SECOND_ENTRANCE_DOOR_CALL;
                 modelData.capabilities |= CAP_AS_ADDRESS_DIVIDER;
                 modelData.capabilities |= CAP_RINGTONE_MUTE;
-                break;
-            case MODEL_IS_IVW2210: /* Ecoos */
-                modelData.device_group = 1;
-                modelData.memory_size = 64;
-                modelData.capabilities |= CAP_RINGTONE_ENTRANCE_DOOR_CALL;
-                modelData.capabilities |= CAP_RINGTONE_INTERNAL_CALL;
-                modelData.capabilities |= CAP_RINGTONE_FLOOR_CALL;
-                modelData.capabilities |= CAP_RINGTONE_SECOND_ENTRANCE_DOOR_CALL;
-                modelData.capabilities |= CAP_VOLUME_RINGTONE;
-                modelData.capabilities |= CAP_AS_ADDRESS_DIVIDER;
-                modelData.capabilities |= CAP_VAS_ADDRESS_DIVIDER;
-                modelData.capabilities |= CAP_RINGTONE_MUTE;
-                // Supported? Not documented
-                //modelData.capabilities |= CAP_VOLUME_HANDSET_DOOR_CALL;
-                break;
-            case MODEL_IS_IVW2211: /* Ecoos */
-                modelData.device_group = 1;
-                modelData.memory_size = 64;
-                modelData.capabilities |= CAP_RINGTONE_ENTRANCE_DOOR_CALL;
-                modelData.capabilities |= CAP_RINGTONE_INTERNAL_CALL;
-                modelData.capabilities |= CAP_RINGTONE_FLOOR_CALL;
-                modelData.capabilities |= CAP_RINGTONE_SECOND_ENTRANCE_DOOR_CALL;
-                modelData.capabilities |= CAP_VOLUME_RINGTONE;
-                modelData.capabilities |= CAP_AS_ADDRESS_DIVIDER;
-                modelData.capabilities |= CAP_VAS_ADDRESS_DIVIDER;
-                modelData.capabilities |= CAP_RINGTONE_MUTE;
-                // Supported? Not documented
-                //modelData.capabilities |= CAP_VOLUME_HANDSET_DOOR_CALL;
-                break;
-            case MODEL_IS_IVW2212: /* Ecoos */
-                modelData.device_group = 1;
-                modelData.memory_size = 64;
-                modelData.capabilities |= CAP_RINGTONE_ENTRANCE_DOOR_CALL;
-                modelData.capabilities |= CAP_RINGTONE_INTERNAL_CALL;
-                modelData.capabilities |= CAP_RINGTONE_FLOOR_CALL;
-                modelData.capabilities |= CAP_RINGTONE_SECOND_ENTRANCE_DOOR_CALL;
-                modelData.capabilities |= CAP_VOLUME_RINGTONE;
-                modelData.capabilities |= CAP_AS_ADDRESS_DIVIDER;
-                modelData.capabilities |= CAP_VAS_ADDRESS_DIVIDER;
-                modelData.capabilities |= CAP_RINGTONE_MUTE;
-                // Supported? Not documented
-                //modelData.capabilities |= CAP_VOLUME_HANDSET_DOOR_CALL;
                 break;
             case MODEL_IS_VTC42V2:
                 modelData.device_group = 1;
@@ -777,8 +685,9 @@ namespace esphome::tc_bus
             case MODEL_IS_ISH3022: /* TCH50P */
                 modelData.device_group = 0;
                 modelData.memory_size = 32;
-                modelData.capabilities |= CAP_RINGTONE_MUTE;
                 // Volume is set directly on hardware
+                // Might not be supported
+                modelData.capabilities |= CAP_RINGTONE_MUTE;
                 break;
             case MODEL_IS_ISH3130: /* TCH50P */
                 modelData.device_group = 0;
@@ -822,7 +731,8 @@ namespace esphome::tc_bus
                 modelData.capabilities |= CAP_RINGTONE_ENTRANCE_DOOR_CALL;
                 modelData.capabilities |= CAP_RINGTONE_INTERNAL_CALL;
                 modelData.capabilities |= CAP_RINGTONE_FLOOR_CALL;
-                modelData.capabilities |= CAP_RINGTONE_MUTE;
+                // Has Hardware Switch, might not be supported
+                // modelData.capabilities |= CAP_RINGTONE_MUTE;
                 break;
             case MODEL_IS_TTCXX:
                 modelData.device_group = 0;
@@ -830,7 +740,8 @@ namespace esphome::tc_bus
                 modelData.capabilities |= CAP_RINGTONE_ENTRANCE_DOOR_CALL;
                 modelData.capabilities |= CAP_RINGTONE_INTERNAL_CALL;
                 modelData.capabilities |= CAP_RINGTONE_FLOOR_CALL;
-                modelData.capabilities |= CAP_RINGTONE_MUTE;
+                // Has Hardware Switch, might not be supported
+                // modelData.capabilities |= CAP_RINGTONE_MUTE;
                 break;
             case MODEL_IS_TTSXX:
                 modelData.device_group = 0;
@@ -838,7 +749,8 @@ namespace esphome::tc_bus
                 modelData.capabilities |= CAP_RINGTONE_ENTRANCE_DOOR_CALL;
                 modelData.capabilities |= CAP_RINGTONE_INTERNAL_CALL;
                 modelData.capabilities |= CAP_RINGTONE_FLOOR_CALL;
-                modelData.capabilities |= CAP_RINGTONE_MUTE;
+                // Has Hardware Switch, might not be supported
+                // modelData.capabilities |= CAP_RINGTONE_MUTE;
                 break;
             case MODEL_IS_IMM1000: /* TCH30 */
                 modelData.device_group = 0;
@@ -921,6 +833,7 @@ namespace esphome::tc_bus
                 modelData.capabilities |= CAP_RINGTONE_SECOND_ENTRANCE_DOOR_CALL;
                 modelData.capabilities |= CAP_VOLUME_RINGTONE;
                 modelData.capabilities |= CAP_VOLUME_HANDSET_DOOR_CALL;
+                // Has Hardware Switch, might not be supported
                 modelData.capabilities |= CAP_RINGTONE_MUTE;
                 break;
             case MODEL_IS_IVH4222: /* VTCH50/2D */
@@ -932,6 +845,7 @@ namespace esphome::tc_bus
                 modelData.capabilities |= CAP_RINGTONE_SECOND_ENTRANCE_DOOR_CALL;
                 modelData.capabilities |= CAP_VOLUME_RINGTONE;
                 modelData.capabilities |= CAP_VOLUME_HANDSET_DOOR_CALL;
+                // Has Hardware Switch, might not be supported
                 modelData.capabilities |= CAP_RINGTONE_MUTE;
                 break;
             case MODEL_IS_VMH:
@@ -1123,11 +1037,12 @@ namespace esphome::tc_bus
 
         if(model_data.device_group == 0 || model_data.device_group == 1)
         {
-            bool model_is_tasta = (model == MODEL_IS_ISW5010 || model == MODEL_IS_ISW5020 || 
-                    model == MODEL_IS_ISW5030 || model == MODEL_IS_ISW5031 || 
-                    model == MODEL_IS_ISW5033 || model == MODEL_IS_ISW6010 || 
-                    model == MODEL_IS_ISW6031 || model == MODEL_IS_IVW511X || 
-                    model == MODEL_IS_IVW521X || model == MODEL_IS_IVW6511);
+            bool model_is_tasta = (
+                model == MODEL_IS_TASTA_AUDIO ||
+                model == MODEL_IS_TASTA_VIDEO ||
+                model == MODEL_IS_TASTA_PRO_AUDIO ||
+                model == MODEL_IS_TASTA_PRO_VIDEO
+            );
 
             // IS
             if (setting == SETTING_RINGTONE_ENTRANCE_DOOR_CALL && (model_data.capabilities & CAP_RINGTONE_ENTRANCE_DOOR_CALL))
