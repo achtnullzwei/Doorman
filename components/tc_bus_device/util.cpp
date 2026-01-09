@@ -553,7 +553,6 @@ namespace esphome::tc_bus
                 modelData.capabilities |= CAP_RINGTONE_ENTRANCE_DOOR_CALL;
                 modelData.capabilities |= CAP_RINGTONE_INTERNAL_CALL;
                 modelData.capabilities |= CAP_RINGTONE_FLOOR_CALL;
-                modelData.capabilities |= CAP_RINGTONE_MUTE;
                 break;
             case MODEL_IS_TC20P:
                 modelData.device_group = 1;
@@ -562,7 +561,6 @@ namespace esphome::tc_bus
                 modelData.capabilities |= CAP_RINGTONE_INTERNAL_CALL;
                 modelData.capabilities |= CAP_RINGTONE_FLOOR_CALL;
                 modelData.capabilities |= CAP_RINGTONE_SECOND_ENTRANCE_DOOR_CALL;
-                modelData.capabilities |= CAP_RINGTONE_MUTE;
                 break;
             case MODEL_IS_TC20F:
                 modelData.device_group = 1;
@@ -571,7 +569,6 @@ namespace esphome::tc_bus
                 modelData.capabilities |= CAP_RINGTONE_INTERNAL_CALL;
                 modelData.capabilities |= CAP_RINGTONE_FLOOR_CALL;
                 modelData.capabilities |= CAP_RINGTONE_SECOND_ENTRANCE_DOOR_CALL;
-                modelData.capabilities |= CAP_RINGTONE_MUTE;
                 break;
             case MODEL_IS_IVW2220:
                 modelData.device_group = 1;
