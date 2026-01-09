@@ -1037,17 +1037,19 @@ namespace esphome::tc_bus
 
         if(model_data.device_group == 0 || model_data.device_group == 1)
         {
-            bool model_is_tasta = (
+            bool next_gen_model = (
                 model == MODEL_IS_TASTA_AUDIO ||
                 model == MODEL_IS_TASTA_VIDEO ||
                 model == MODEL_IS_TASTA_PRO_AUDIO ||
-                model == MODEL_IS_TASTA_PRO_VIDEO
+                model == MODEL_IS_TASTA_PRO_VIDEO ||
+                model == MODEL_IS_SENSO_PRO_AUDIO ||
+                model == MODEL_IS_SENSO_PRO_VIDEO
             );
 
             // IS
             if (setting == SETTING_RINGTONE_ENTRANCE_DOOR_CALL && (model_data.capabilities & CAP_RINGTONE_ENTRANCE_DOOR_CALL))
             {
-                if(model_is_tasta)
+                if(next_gen_model)
                 {
                     data.index = 24;
                     data.start_bit = 7;
@@ -1062,7 +1064,7 @@ namespace esphome::tc_bus
             }
             else if (setting == SETTING_RINGTONE_INTERNAL_CALL && (model_data.capabilities & CAP_RINGTONE_INTERNAL_CALL))
             {
-                if(model_is_tasta)
+                if(next_gen_model)
                 {
                     data.index = 25;
                     data.start_bit = 7;
@@ -1077,7 +1079,7 @@ namespace esphome::tc_bus
             }
             else if (setting == SETTING_RINGTONE_FLOOR_CALL && (model_data.capabilities & CAP_RINGTONE_FLOOR_CALL))
             {
-                if(model_is_tasta)
+                if(next_gen_model)
                 {
                     data.index = 26;
                     data.start_bit = 7;
@@ -1092,7 +1094,7 @@ namespace esphome::tc_bus
             }
             else if (setting == SETTING_RINGTONE_SECOND_ENTRANCE_DOOR_CALL && (model_data.capabilities & CAP_RINGTONE_SECOND_ENTRANCE_DOOR_CALL))
             {
-                if(model_is_tasta)
+                if(next_gen_model)
                 {
                     data.index = 27;
                     data.start_bit = 7;

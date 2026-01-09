@@ -143,7 +143,7 @@ namespace esphome::tc_bus
 
                 // Additional information
                 if(telegram_data.type == TELEGRAM_TYPE_READ_MEMORY_BLOCK) {
-                    ESP_LOGI(TAG, "  Description: Read 4 memory blocks, from %i to %i.", (telegram_data.address * 4), (telegram_data.address * 4) + 4);
+                    ESP_LOGD(TAG, "  Description: Read 4 memory blocks, from %i to %i.", (telegram_data.address * 4), (telegram_data.address * 4) + 4);
                 }
             }
 
@@ -217,7 +217,7 @@ namespace esphome::tc_bus
 
                 // Additional information
                 if(telegram_data.type == TELEGRAM_TYPE_READ_MEMORY_BLOCK) {
-                    ESP_LOGI(TAG, "  Description: Read 4 memory blocks, from %i to %i.", (telegram_data.address * 4), (telegram_data.address * 4) + 4);
+                    ESP_LOGD(TAG, "  Description: Read 4 memory blocks, from %i to %i.", (telegram_data.address * 4), (telegram_data.address * 4) + 4);
                 }
             }
         }

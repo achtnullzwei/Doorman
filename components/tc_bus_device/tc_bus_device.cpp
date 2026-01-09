@@ -384,6 +384,23 @@ namespace esphome::tc_bus
                                     break;
 
                                 default:
+                                    ESP_LOGW(TAG,   "Partial device identification:\n"
+                                                    "  This device is not fully supported in the identification routine.\n"
+                                                    "  Potential models: ISH1030 / VMH / VML / VMF / VME / TTN / TTS / TTF / TC20X\n"
+                                                    "  Note: Please open an issue and provide your logs in order to implement support for this device model.");
+                                    break;
+                            }
+                        }
+                        else if(device.device_group == 2)
+                        {
+                            // Old outdoor station models
+                            switch(telegram_data.raw)
+                            {
+                                default:
+                                    ESP_LOGW(TAG,   "Partial device identification:\n"
+                                                    "  This device is not fully supported in the identification routine.\n"
+                                                    "  Potential models: PAK / PUK / PES / PDS / TCU2 / AVD / VPDS / AVE / VPES / AVU / VPUK / AD1 / AD2 / AD3\n"
+                                                    "  Note: Please open an issue and provide your logs in order to implement support for this device model.");
                                     break;
                             }
                         }
@@ -397,6 +414,10 @@ namespace esphome::tc_bus
                                     break;
 
                                 default:
+                                    ESP_LOGW(TAG,   "Partial device identification:\n"
+                                                    "  This device is not fully supported in the identification routine.\n"
+                                                    "  Potential models: BVS20 / BVS100 / NVV1000 / PSG / VBVS05 / BSG2\n"
+                                                    "  Note: Please open an issue and provide your logs in order to implement support for this device model.");
                                     break;
                             }
                         }
