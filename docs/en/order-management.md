@@ -113,21 +113,17 @@ export default {
                     x.street.toLowerCase().includes(this.orderFilter.toLowerCase()) ||
                     x.address_extra.toLowerCase().includes(this.orderFilter.toLowerCase());
             }).sort((a, b) => {
-                const getPriority = (status) => {
-                    if (status === 'pending_review') return 1;
-                    if (status === 'pending_payment') return 2;
-                    if (status === 'reserved') return 3;
-                    return 4;
-                };
-
-                const priorityA = getPriority(a.status);
-                const priorityB = getPriority(b.status);
+                const priorityA = this.statusPriority(a.status);
+                const priorityB = this.statusPriority(b.status);
 
                 if (priorityA !== priorityB) return priorityA - priorityB;
 
-                if (priorityA === 3) {
-                    // reserved: ascend
+                if (a.status === 'reserved' || a.status === 'pending_shipment') {
+                    // ascend
                     return a.id - b.id;
+                } else if(a.status === 'shipped') {
+                    // ascend
+                    return a.updated_timestamp - b.updated_timestamp;
                 } else {
                     // descend
                     return b.id - a.id;
@@ -162,6 +158,27 @@ export default {
 
                 return price;
             }
+        },
+        statusPriority(){
+            return (status) => {
+                if (status === 'pending_review') {
+                    return 1;
+                } else if (status === 'pending_shipment') {
+                    return 2;
+                } else if (status === 'pending_payment') {
+                    return 3;
+                } else if (status === 'reserved') {
+                    return 4;
+                } else if (status === 'shipped') {
+                    return 5;
+                } else if (status === 'closed') {
+                    return 6;
+                } else if (status === 'cancelled') {
+                    return 7;
+                } else {
+                    return 8;
+                }
+            };
         },
         statusLabel(){
             return (status) => {
