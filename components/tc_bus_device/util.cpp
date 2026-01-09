@@ -679,7 +679,7 @@ namespace esphome::tc_bus
                 break;
 
             // Group 0
-            case MODEL_IS_ISH3022: /* TCH50P */
+            case MODEL_IS_ISH3022:
                 modelData.device_group = 0;
                 modelData.memory_size = 32;
                 // Volume is set directly on hardware
@@ -728,8 +728,6 @@ namespace esphome::tc_bus
                 modelData.capabilities |= CAP_RINGTONE_ENTRANCE_DOOR_CALL;
                 modelData.capabilities |= CAP_RINGTONE_INTERNAL_CALL;
                 modelData.capabilities |= CAP_RINGTONE_FLOOR_CALL;
-                // Has Hardware Switch, might not be supported
-                // modelData.capabilities |= CAP_RINGTONE_MUTE;
                 break;
             case MODEL_IS_TTCXX:
                 modelData.device_group = 0;
@@ -737,8 +735,6 @@ namespace esphome::tc_bus
                 modelData.capabilities |= CAP_RINGTONE_ENTRANCE_DOOR_CALL;
                 modelData.capabilities |= CAP_RINGTONE_INTERNAL_CALL;
                 modelData.capabilities |= CAP_RINGTONE_FLOOR_CALL;
-                // Has Hardware Switch, might not be supported
-                // modelData.capabilities |= CAP_RINGTONE_MUTE;
                 break;
             case MODEL_IS_TTSXX:
                 modelData.device_group = 0;
@@ -746,8 +742,6 @@ namespace esphome::tc_bus
                 modelData.capabilities |= CAP_RINGTONE_ENTRANCE_DOOR_CALL;
                 modelData.capabilities |= CAP_RINGTONE_INTERNAL_CALL;
                 modelData.capabilities |= CAP_RINGTONE_FLOOR_CALL;
-                // Has Hardware Switch, might not be supported
-                // modelData.capabilities |= CAP_RINGTONE_MUTE;
                 break;
             case MODEL_IS_IMM1000: /* TCH30 */
                 modelData.device_group = 0;
