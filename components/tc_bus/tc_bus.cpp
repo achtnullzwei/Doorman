@@ -10,10 +10,6 @@
 #include "esphome/core/helpers.h"
 #include "esphome/core/preferences.h"
 
-#ifdef USE_ARDUINO
-#include "Arduino.h"
-#endif
-
 #include <optional>
 #include <utility>
 #include <vector>
@@ -117,7 +113,7 @@ namespace esphome::tc_bus
             if (wait_for_data_telegram_)
             {
                 this->cancel_timeout("wait_for_data_telegram");
-                ESP_LOGD(TAG, "Reset wait_for_data_telegram_");
+                ESP_LOGV(TAG, "Reset wait_for_data_telegram_");
                 this->wait_for_data_telegram_ = false;
 
                 ESP_LOGI(TAG,
@@ -142,7 +138,8 @@ namespace esphome::tc_bus
                     YESNO(telegram_data.is_response));
 
                 // Additional information
-                if(telegram_data.type == TELEGRAM_TYPE_READ_MEMORY_BLOCK) {
+                if(telegram_data.type == TELEGRAM_TYPE_READ_MEMORY_BLOCK)
+                {
                     ESP_LOGD(TAG, "  Description: Read 4 memory blocks, from %i to %i.", (telegram_data.address * 4), (telegram_data.address * 4) + 4);
                 }
             }
@@ -216,7 +213,8 @@ namespace esphome::tc_bus
                     YESNO(telegram_data.is_response));
 
                 // Additional information
-                if(telegram_data.type == TELEGRAM_TYPE_READ_MEMORY_BLOCK) {
+                if(telegram_data.type == TELEGRAM_TYPE_READ_MEMORY_BLOCK)
+                {
                     ESP_LOGD(TAG, "  Description: Read 4 memory blocks, from %i to %i.", (telegram_data.address * 4), (telegram_data.address * 4) + 4);
                 }
             }
@@ -246,17 +244,17 @@ namespace esphome::tc_bus
         }
         else if (telegram_data.type == TELEGRAM_TYPE_SELECT_DEVICE_GROUP || telegram_data.type == TELEGRAM_TYPE_SELECT_DEVICE_GROUP_RESET)
         {
-            ESP_LOGD(TAG, "Save device group: %d", telegram_data.payload);
+            ESP_LOGV(TAG, "Save device group: %d", telegram_data.payload);
             this->selected_device_group_ = (uint8_t)telegram_data.payload;
         }
         else if (telegram_data.type == TELEGRAM_TYPE_READ_MEMORY_BLOCK || telegram_data.type == TELEGRAM_TYPE_REQUEST_VERSION)
         {
-            ESP_LOGD(TAG, "Set wait_for_data_telegram_");
+            ESP_LOGV(TAG, "Set wait_for_data_telegram_");
             this->wait_for_data_telegram_ = true;
 
             this->set_timeout("wait_for_data_telegram", 1000, [this]() {
                 // Failed
-                ESP_LOGD(TAG, "Reset wait_for_data_telegram_ (timeout)");
+                ESP_LOGV(TAG, "Reset wait_for_data_telegram_ (timeout)");
                 this->wait_for_data_telegram_ = false;
             });
         }
@@ -655,10 +653,5 @@ namespace esphome::tc_bus
         dst->mark(checksm ? BUS_ONE_BIT_MS : BUS_ZERO_BIT_MS);
 
         call.perform();
-    }
-
-    void TCBusComponent::set_programming_mode(bool enabled)
-    {
-        send_telegram(TELEGRAM_TYPE_PROGRAMMING_MODE, 0, enabled ? 1 : 0);
     }
 }

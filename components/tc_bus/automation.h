@@ -40,7 +40,9 @@ namespace esphome::tc_bus
         TEMPLATABLE_VALUE(bool, programming_mode)
 
         public:
-            void play(const Ts &...x) override { this->parent_->set_programming_mode(this->programming_mode_.value(x...)); }
+            void play(const Ts &...x) override {
+                this->parent_->send_telegram(TELEGRAM_TYPE_PROGRAMMING_MODE, 0, this->programming_mode_.value(x...) ? 1 : 0);
+            }
     };
 
     // Callbacks

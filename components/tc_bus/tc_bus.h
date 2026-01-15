@@ -166,7 +166,6 @@ namespace esphome::tc_bus
         }
 
         // Misc
-        void set_programming_mode(bool enabled);
         uint8_t selected_device_group_ = 2;
 
     protected:

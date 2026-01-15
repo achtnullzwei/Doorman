@@ -10,10 +10,6 @@
 #include "esphome/core/helpers.h"
 #include "esphome/core/preferences.h"
 
-#ifdef USE_ARDUINO
-#include "Arduino.h"
-#endif
-
 #include <optional>
 #include <utility>
 #include <vector>
