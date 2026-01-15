@@ -5,6 +5,9 @@ description: Explore the complete history of Doorman PCB revisions, including ne
 # PCB Revision History & Changelog
 Welcome to the complete history of all PCB updates! This page highlights the new features, improvements, and changes made in each revision.
 
+## 1.6.1 <Badge type="warning" text="PoC" />
+- Add some optional component footprints for audio PoC
+
 ## 1.6.0 <Badge type="tip" text="Current" />
 - Replace Terminal Pin 5 with 3.3V
 - Replace Terminal Pin 6 with GPIO40

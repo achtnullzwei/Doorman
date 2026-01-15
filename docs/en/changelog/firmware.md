@@ -149,6 +149,9 @@ This release **will impact your current setup** and **requires** you to go throu
    Previously, setup mode saved the outdoor station address only once, when pressing either the apartment doorbell or the outdoor station doorbell. This caused issues if the system was using a non-default address.  
    Now, you need to press the outdoor station doorbell for each door to ensure the address is saved correctly. Take a look [here](https://doorman.azon.ai/guide/getting-started#interactive-setup) for more information.
 
+- **Model List Reordered**  
+   The order of models has been updated. Your previously selected model may have changed, so you might need to reselect and set it up again.
+
 - **Minimum ESPHome Version Set**  
    The minimum required version has been updated to **2026.1.0**.
 
