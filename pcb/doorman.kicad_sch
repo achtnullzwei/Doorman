@@ -6,8 +6,8 @@
 	(paper "A4")
 	(title_block
 		(title "Doorman S3")
-		(date "2025-10-28")
-		(rev "1.6")
+		(date "2026-01-07")
+		(rev "1.6.1")
 		(comment 1 "TC:Bus Intercom Gateway")
 	)
 	(lib_symbols
@@ -3474,6 +3474,192 @@
 			)
 			(embedded_fonts no)
 		)
+		(symbol "Jumper:SolderJumper_2_Open"
+			(pin_numbers
+				(hide yes)
+			)
+			(pin_names
+				(offset 0)
+				(hide yes)
+			)
+			(exclude_from_sim yes)
+			(in_bom no)
+			(on_board yes)
+			(property "Reference" "JP"
+				(at 0 2.032 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Value" "SolderJumper_2_Open"
+				(at 0 -2.54 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Footprint" ""
+				(at 0 0 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(hide yes)
+				)
+			)
+			(property "Datasheet" "~"
+				(at 0 0 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(hide yes)
+				)
+			)
+			(property "Description" "Solder Jumper, 2-pole, open"
+				(at 0 0 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(hide yes)
+				)
+			)
+			(property "ki_keywords" "solder jumper SPST"
+				(at 0 0 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(hide yes)
+				)
+			)
+			(property "ki_fp_filters" "SolderJumper*Open*"
+				(at 0 0 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(hide yes)
+				)
+			)
+			(symbol "SolderJumper_2_Open_0_1"
+				(polyline
+					(pts
+						(xy -0.254 1.016) (xy -0.254 -1.016)
+					)
+					(stroke
+						(width 0)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(arc
+					(start -0.254 -1.016)
+					(mid -1.2656 0)
+					(end -0.254 1.016)
+					(stroke
+						(width 0)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(arc
+					(start -0.254 -1.016)
+					(mid -1.2656 0)
+					(end -0.254 1.016)
+					(stroke
+						(width 0)
+						(type default)
+					)
+					(fill
+						(type outline)
+					)
+				)
+				(arc
+					(start 0.254 1.016)
+					(mid 1.2656 0)
+					(end 0.254 -1.016)
+					(stroke
+						(width 0)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(arc
+					(start 0.254 1.016)
+					(mid 1.2656 0)
+					(end 0.254 -1.016)
+					(stroke
+						(width 0)
+						(type default)
+					)
+					(fill
+						(type outline)
+					)
+				)
+				(polyline
+					(pts
+						(xy 0.254 1.016) (xy 0.254 -1.016)
+					)
+					(stroke
+						(width 0)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+			)
+			(symbol "SolderJumper_2_Open_1_1"
+				(pin passive line
+					(at -3.81 0 0)
+					(length 2.54)
+					(name "A"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "1"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin passive line
+					(at 3.81 0 180)
+					(length 2.54)
+					(name "B"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "2"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+			)
+			(embedded_fonts no)
+		)
 		(symbol "RF_Module:ESP32-S3-WROOM-1"
 			(exclude_from_sim no)
 			(in_bom yes)
@@ -6243,7 +6429,7 @@
 	)
 	(text "Capacitor needs to be\ndirectly connected to the bus.\nNo Bridge rectifier inbetween!"
 		(exclude_from_sim no)
-		(at 253.492 111.252 0)
+		(at 257.048 109.474 0)
 		(effects
 			(font
 				(size 1 1)
@@ -6441,7 +6627,7 @@
 		(uuid "227dab47-a3d0-4767-9b41-c09c4c02f793")
 	)
 	(junction
-		(at 231.14 113.03)
+		(at 240.03 114.3)
 		(diameter 0)
 		(color 0 0 0 0)
 		(uuid "3f36e922-34c2-443d-aea2-7d070e884b5c")
@@ -6605,10 +6791,6 @@
 		(uuid "b0aa9cd1-327e-4969-88ad-9664b2641a9d")
 	)
 	(no_connect
-		(at 52.07 86.36)
-		(uuid "b3782e62-b79b-4873-b629-189ff4206537")
-	)
-	(no_connect
 		(at 52.07 96.52)
 		(uuid "b3db032b-b834-4ff2-939b-4a7b026fee3b")
 	)
@@ -6752,7 +6934,7 @@
 	)
 	(wire
 		(pts
-			(xy 242.57 109.22) (xy 240.03 109.22)
+			(xy 251.46 110.49) (xy 248.92 110.49)
 		)
 		(stroke
 			(width 0)
@@ -6832,7 +7014,7 @@
 	)
 	(wire
 		(pts
-			(xy 231.14 113.03) (xy 231.14 116.84)
+			(xy 240.03 114.3) (xy 240.03 118.11)
 		)
 		(stroke
 			(width 0)
@@ -6872,7 +7054,7 @@
 	)
 	(wire
 		(pts
-			(xy 227.33 113.03) (xy 231.14 113.03)
+			(xy 236.22 114.3) (xy 240.03 114.3)
 		)
 		(stroke
 			(width 0)
@@ -7122,7 +7304,7 @@
 	)
 	(wire
 		(pts
-			(xy 231.14 113.03) (xy 241.3 113.03)
+			(xy 240.03 114.3) (xy 250.19 114.3)
 		)
 		(stroke
 			(width 0)
@@ -7282,7 +7464,7 @@
 	)
 	(wire
 		(pts
-			(xy 231.14 109.22) (xy 231.14 113.03)
+			(xy 240.03 110.49) (xy 240.03 114.3)
 		)
 		(stroke
 			(width 0)
@@ -7342,7 +7524,7 @@
 	)
 	(wire
 		(pts
-			(xy 232.41 116.84) (xy 231.14 116.84)
+			(xy 241.3 118.11) (xy 240.03 118.11)
 		)
 		(stroke
 			(width 0)
@@ -7492,6 +7674,16 @@
 	)
 	(wire
 		(pts
+			(xy 220.98 114.3) (xy 218.44 114.3)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "9c9e964c-85e9-456d-9042-14c02fee8169")
+	)
+	(wire
+		(pts
 			(xy 33.02 157.48) (xy 35.56 157.48)
 		)
 		(stroke
@@ -7549,16 +7741,6 @@
 			(type default)
 		)
 		(uuid "ab7bceaf-c0f7-48e1-8889-017d724542b4")
-	)
-	(wire
-		(pts
-			(xy 222.25 116.84) (xy 222.25 113.03)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "ac10e991-d689-460d-b33b-9c96ae856239")
 	)
 	(polyline
 		(pts
@@ -7642,7 +7824,7 @@
 	)
 	(wire
 		(pts
-			(xy 242.57 116.84) (xy 240.03 116.84)
+			(xy 251.46 118.11) (xy 248.92 118.11)
 		)
 		(stroke
 			(width 0)
@@ -7852,6 +8034,16 @@
 	)
 	(wire
 		(pts
+			(xy 231.14 114.3) (xy 228.6 114.3)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "e0e2c7a2-c71e-4cf6-a6e8-9b49ecf7ee2d")
+	)
+	(wire
+		(pts
 			(xy 236.22 35.56) (xy 240.03 35.56)
 		)
 		(stroke
@@ -7902,7 +8094,7 @@
 	)
 	(wire
 		(pts
-			(xy 232.41 109.22) (xy 231.14 109.22)
+			(xy 241.3 110.49) (xy 240.03 110.49)
 		)
 		(stroke
 			(width 0)
@@ -8422,7 +8614,7 @@
 	)
 	(global_label "ADC_IN"
 		(shape input)
-		(at 241.3 113.03 0)
+		(at 250.19 114.3 0)
 		(fields_autoplaced yes)
 		(effects
 			(font
@@ -8432,7 +8624,7 @@
 		)
 		(uuid "8405190b-2a0d-43c0-8457-237e022714bb")
 		(property "Intersheetrefs" "${INTERSHEET_REFS}"
-			(at 250.8167 113.03 0)
+			(at 259.7067 114.3 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -8508,6 +8700,28 @@
 			)
 		)
 	)
+	(global_label "BUS_WIRE1"
+		(shape input)
+		(at 218.44 114.3 90)
+		(fields_autoplaced yes)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left)
+		)
+		(uuid "a0ca0a1d-d446-4a27-92bf-5c064ce6352f")
+		(property "Intersheetrefs" "${INTERSHEET_REFS}"
+			(at 218.44 100.8525 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+				(hide yes)
+			)
+		)
+	)
 	(global_label "BUS_ANA"
 		(shape input)
 		(at 201.93 88.9 0)
@@ -8525,6 +8739,28 @@
 					(size 1.27 1.27)
 				)
 				(justify left)
+				(hide yes)
+			)
+		)
+	)
+	(global_label "ADC_IN"
+		(shape input)
+		(at 52.07 86.36 180)
+		(fields_autoplaced yes)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right)
+		)
+		(uuid "a9e53b18-80a0-457a-a78a-141e73dad580")
+		(property "Intersheetrefs" "${INTERSHEET_REFS}"
+			(at 42.5533 86.36 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify right)
 				(hide yes)
 			)
 		)
@@ -8962,7 +9198,7 @@
 	(symbol
 		(lib_name "GND_5")
 		(lib_id "power:GND")
-		(at 242.57 116.84 0)
+		(at 251.46 118.11 0)
 		(unit 1)
 		(exclude_from_sim no)
 		(in_bom yes)
@@ -8970,7 +9206,7 @@
 		(dnp no)
 		(uuid "02cb5231-ae94-4f77-96f9-b3fbaa7d3ccf")
 		(property "Reference" "#PWR039"
-			(at 242.57 123.19 0)
+			(at 251.46 124.46 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -8979,7 +9215,7 @@
 			)
 		)
 		(property "Value" "GND"
-			(at 242.57 120.65 0)
+			(at 251.46 121.92 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -8987,7 +9223,7 @@
 			)
 		)
 		(property "Footprint" ""
-			(at 242.57 116.84 0)
+			(at 251.46 118.11 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -8996,7 +9232,7 @@
 			)
 		)
 		(property "Datasheet" ""
-			(at 242.57 116.84 0)
+			(at 251.46 118.11 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -9005,7 +9241,7 @@
 			)
 		)
 		(property "Description" "Power symbol creates a global label with name \"GND\" , ground"
-			(at 242.57 116.84 0)
+			(at 251.46 118.11 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -10728,15 +10964,15 @@
 	)
 	(symbol
 		(lib_id "Device:C_Polarized_Small")
-		(at 224.79 113.03 90)
+		(at 233.68 114.3 90)
 		(unit 1)
 		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board no)
+		(in_bom no)
+		(on_board yes)
 		(dnp yes)
 		(uuid "50d5bb22-6597-4373-bff5-4cb2a4768d25")
 		(property "Reference" "C8"
-			(at 224.79 107.696 90)
+			(at 233.68 108.966 90)
 			(effects
 				(font
 					(size 1 1)
@@ -10744,15 +10980,15 @@
 			)
 		)
 		(property "Value" "33uF"
-			(at 224.79 109.22 90)
+			(at 233.68 110.49 90)
 			(effects
 				(font
 					(size 0.8 0.8)
 				)
 			)
 		)
-		(property "Footprint" ""
-			(at 224.79 113.03 0)
+		(property "Footprint" "Capacitor_SMD:C_1206_3216Metric_Pad1.33x1.80mm_HandSolder"
+			(at 233.68 114.3 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -10761,7 +10997,7 @@
 			)
 		)
 		(property "Datasheet" "~"
-			(at 224.79 113.03 0)
+			(at 233.68 114.3 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -10770,7 +11006,7 @@
 			)
 		)
 		(property "Description" "Polarized capacitor, small symbol"
-			(at 224.79 113.03 0)
+			(at 233.68 114.3 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -10788,6 +11024,74 @@
 			(project ""
 				(path "/2048a046-8e00-475d-aeec-41a343368725"
 					(reference "C8")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Jumper:SolderJumper_2_Open")
+		(at 224.79 114.3 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom no)
+		(on_board yes)
+		(dnp yes)
+		(fields_autoplaced yes)
+		(uuid "52880b38-bbb8-416d-b262-49bea84e5109")
+		(property "Reference" "JP2"
+			(at 224.79 107.95 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "SolderJumper_2_Open"
+			(at 224.79 110.49 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" "Jumper:SolderJumper-2_P1.3mm_Open_RoundedPad1.0x1.5mm"
+			(at 224.79 114.3 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" "~"
+			(at 224.79 114.3 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" "Solder Jumper, 2-pole, open"
+			(at 224.79 114.3 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "1"
+			(uuid "14c76a08-72ad-4811-af3e-6701f0c0074f")
+		)
+		(pin "2"
+			(uuid "0e8709f0-b064-4a28-892d-f8fb47b1d5a4")
+		)
+		(instances
+			(project ""
+				(path "/2048a046-8e00-475d-aeec-41a343368725"
+					(reference "JP2")
 					(unit 1)
 				)
 			)
@@ -11839,15 +12143,15 @@
 	)
 	(symbol
 		(lib_id "Device:R")
-		(at 236.22 116.84 270)
+		(at 245.11 118.11 270)
 		(unit 1)
 		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board no)
+		(in_bom no)
+		(on_board yes)
 		(dnp yes)
 		(uuid "6b9b6f5f-8eea-42d0-891e-418b949f89c1")
 		(property "Reference" "R11"
-			(at 234.696 118.872 90)
+			(at 243.586 120.142 90)
 			(effects
 				(font
 					(size 1 1)
@@ -11856,7 +12160,7 @@
 			)
 		)
 		(property "Value" "10K"
-			(at 234.696 116.84 90)
+			(at 243.586 118.11 90)
 			(effects
 				(font
 					(size 1 1)
@@ -11864,8 +12168,8 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" "Resistor_SMD:R_0603_1608Metric"
-			(at 236.22 115.062 90)
+		(property "Footprint" "Resistor_SMD:R_1206_3216Metric_Pad1.30x1.75mm_HandSolder"
+			(at 245.11 116.332 90)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -11874,7 +12178,7 @@
 			)
 		)
 		(property "Datasheet" ""
-			(at 236.22 116.84 0)
+			(at 245.11 118.11 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -11883,7 +12187,7 @@
 			)
 		)
 		(property "Description" "100mW Thick Film Resistors ±100ppm/℃ ±1% 10kΩ 0603 Chip Resistor - Surface Mount ROHS"
-			(at 236.22 116.84 0)
+			(at 245.11 118.11 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -11892,7 +12196,7 @@
 			)
 		)
 		(property "LCSC" "C25804"
-			(at 236.22 116.84 0)
+			(at 245.11 118.11 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -11901,7 +12205,7 @@
 			)
 		)
 		(property "MPN" "0603WAF1002T5E"
-			(at 236.22 116.84 0)
+			(at 245.11 118.11 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -11910,7 +12214,7 @@
 			)
 		)
 		(property "Package" "0603"
-			(at 236.22 116.84 0)
+			(at 245.11 118.11 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -11919,7 +12223,7 @@
 			)
 		)
 		(property "Height" ""
-			(at 236.22 116.84 0)
+			(at 245.11 118.11 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -11928,7 +12232,7 @@
 			)
 		)
 		(property "Mouser Part Number" ""
-			(at 236.22 116.84 0)
+			(at 245.11 118.11 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -11937,7 +12241,7 @@
 			)
 		)
 		(property "Mouser Price/Stock" ""
-			(at 236.22 116.84 0)
+			(at 245.11 118.11 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -11946,7 +12250,7 @@
 			)
 		)
 		(property "Price" ""
-			(at 236.22 116.84 0)
+			(at 245.11 118.11 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -12552,71 +12856,6 @@
 			(project "doorman"
 				(path "/2048a046-8e00-475d-aeec-41a343368725"
 					(reference "#PWR08")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
-		(lib_id "power:+24V")
-		(at 222.25 116.84 180)
-		(unit 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(dnp no)
-		(uuid "73ad24b8-a55e-4877-8d87-9e4049638536")
-		(property "Reference" "#PWR040"
-			(at 222.25 113.03 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Value" "+24V Bus"
-			(at 222.25 120.904 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Footprint" ""
-			(at 222.25 116.84 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Datasheet" ""
-			(at 222.25 116.84 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Description" "Power symbol creates a global label with name \"+24V Bus\""
-			(at 222.25 116.84 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(pin "1"
-			(uuid "0c4e9e5b-be97-462e-908c-66159ec56cea")
-		)
-		(instances
-			(project "doorman"
-				(path "/2048a046-8e00-475d-aeec-41a343368725"
-					(reference "#PWR040")
 					(unit 1)
 				)
 			)
@@ -14245,7 +14484,7 @@
 	(symbol
 		(lib_name "+3.3V_1")
 		(lib_id "power:+3.3V")
-		(at 242.57 109.22 0)
+		(at 251.46 110.49 0)
 		(unit 1)
 		(exclude_from_sim no)
 		(in_bom yes)
@@ -14253,7 +14492,7 @@
 		(dnp no)
 		(uuid "aa136f83-703d-4d2a-93bd-62733a5991f2")
 		(property "Reference" "#PWR038"
-			(at 242.57 113.03 0)
+			(at 251.46 114.3 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -14262,7 +14501,7 @@
 			)
 		)
 		(property "Value" "+3.3V"
-			(at 239.522 104.902 0)
+			(at 248.412 106.172 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -14271,7 +14510,7 @@
 			)
 		)
 		(property "Footprint" ""
-			(at 242.57 109.22 0)
+			(at 251.46 110.49 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -14280,7 +14519,7 @@
 			)
 		)
 		(property "Datasheet" ""
-			(at 242.57 109.22 0)
+			(at 251.46 110.49 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -14289,7 +14528,7 @@
 			)
 		)
 		(property "Description" "Power symbol creates a global label with name \"+3.3V\""
-			(at 242.57 109.22 0)
+			(at 251.46 110.49 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -14773,15 +15012,15 @@
 	)
 	(symbol
 		(lib_id "Device:R")
-		(at 236.22 109.22 270)
+		(at 245.11 110.49 270)
 		(unit 1)
 		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board no)
+		(in_bom no)
+		(on_board yes)
 		(dnp yes)
 		(uuid "b83af5da-4e66-4aa2-b7e1-3dd14171e814")
 		(property "Reference" "R8"
-			(at 235.204 111.252 90)
+			(at 244.094 112.522 90)
 			(effects
 				(font
 					(size 1 1)
@@ -14790,7 +15029,7 @@
 			)
 		)
 		(property "Value" "10K"
-			(at 234.696 109.22 90)
+			(at 243.586 110.49 90)
 			(effects
 				(font
 					(size 1 1)
@@ -14798,8 +15037,8 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" "Resistor_SMD:R_0603_1608Metric"
-			(at 236.22 107.442 90)
+		(property "Footprint" "Resistor_SMD:R_1206_3216Metric_Pad1.30x1.75mm_HandSolder"
+			(at 245.11 108.712 90)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -14808,7 +15047,7 @@
 			)
 		)
 		(property "Datasheet" ""
-			(at 236.22 109.22 0)
+			(at 245.11 110.49 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -14817,7 +15056,7 @@
 			)
 		)
 		(property "Description" "100mW Thick Film Resistors ±100ppm/℃ ±1% 10kΩ 0603 Chip Resistor - Surface Mount ROHS"
-			(at 236.22 109.22 0)
+			(at 245.11 110.49 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -14826,7 +15065,7 @@
 			)
 		)
 		(property "LCSC" "C25804"
-			(at 236.22 109.22 0)
+			(at 245.11 110.49 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -14835,7 +15074,7 @@
 			)
 		)
 		(property "MPN" "0603WAF1002T5E"
-			(at 236.22 109.22 0)
+			(at 245.11 110.49 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -14844,7 +15083,7 @@
 			)
 		)
 		(property "Package" "0603"
-			(at 236.22 109.22 0)
+			(at 245.11 110.49 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -14853,7 +15092,7 @@
 			)
 		)
 		(property "Height" ""
-			(at 236.22 109.22 0)
+			(at 245.11 110.49 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -14862,7 +15101,7 @@
 			)
 		)
 		(property "Mouser Part Number" ""
-			(at 236.22 109.22 0)
+			(at 245.11 110.49 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -14871,7 +15110,7 @@
 			)
 		)
 		(property "Mouser Price/Stock" ""
-			(at 236.22 109.22 0)
+			(at 245.11 110.49 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -14880,7 +15119,7 @@
 			)
 		)
 		(property "Price" ""
-			(at 236.22 109.22 0)
+			(at 245.11 110.49 0)
 			(effects
 				(font
 					(size 1.27 1.27)
