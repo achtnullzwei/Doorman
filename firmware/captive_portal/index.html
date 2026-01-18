@@ -16,14 +16,23 @@
       </div>
     </header>
 
-    <infobox>
+    <infobox id="docsinfo">
       <div>
         <svg xmlns="http://www.w3.org/2000/svg" width="24px" height="24px" viewBox="0 0 24 24"><path fill="currentColor" d="M14 2H6c-1.11 0-2 .89-2 2v16c0 1.11.89 2 2 2h12c1.11 0 2-.89 2-2V8zm-3 18h-1c-1.61 0-4-1.06-4-4c0-2.93 2.39-4 4-4h1v2h-1c-.46 0-2 .17-2 2c0 1.9 1.67 2 2 2h1zm4-5v2H9v-2zm-1 5h-1v-2h1c.46 0 2-.17 2-2c0-1.9-1.67-2-2-2h-1v-2h1c1.61 0 4 1.07 4 4c0 2.94-2.39 4-4 4M13 9V3.5L18.5 9z"></path></svg>
       </div>
       <span>See the <a target="_blank" href="https://dev.doorman.azon.ai/guide/getting-started">documentation</a> to learn more about the setup process. You can also join our <a target="_blank" href="https://discord.gg/t2d34dvmBf">Discord server</a> for assistance and community support.</span>
     </infobox>
 
-    <main>
+    <div id="saveinfo" style="display: none;">
+      <infobox class="warning">
+        <div>
+          <svg xmlns="http://www.w3.org/2000/svg" width="24px" height="24px" viewBox="0 0 24 24"> <g> <!--?lit$956413748$--><path class="primary-path" d="M6,2H18V8H18V8L14,12L18,16V16H18V22H6V16H6V16L10,12L6,8V8H6V2M16,16.5L12,12.5L8,16.5V20H16V16.5M12,11.5L16,7.5V4H8V7.5L12,11.5M10,6H14V6.75L12,8.75L10,6.75V6Z"></path> <!--?lit$956413748$--> </g> </svg>
+        </div>
+        <span>Doorman is connecting to the network... Once connected, the Access Point will automatically turn off.</span>
+      </infobox>
+    </div>
+
+    <main id="main">
       <div class="tab-header">Available Networks</div>
       <div class="tab-container">
         <div class="description-row">
@@ -80,13 +89,6 @@
           <input class="btn" type="file" name="update" accept="application/octet-stream"> <input class="btn" type="submit" value="Update">
         </form>
       </div>
-
-      <aside>
-        <p class="title">PLEASE WAIT</p>
-        <p>
-          Doorman will now try to connect to the network...
-        </p>
-      </aside>
     </main>
 
     <script type="module" src="/src/main.ts?module"></script>

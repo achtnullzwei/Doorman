@@ -1,4 +1,8 @@
-if (document.location.search === "?save") document.getElementsByTagName("aside")[0].style.display = "block";
+if (document.location.search === "?save") {
+  document.getElementById("saveinfo").style.display = "block";
+  document.getElementById("docsinfo").style.display = "none";
+  document.getElementById("main").style.display = "none";
+}
 function wifi(dBm: number) {
   let quality: number = Math.max(Math.min(2 * (dBm + 100), 100), 0) / 100.0;
   return svg(`<path d="m12.008 19.25-11.3-15c7-5 14-5 22.5 0z" fill="none" stroke="currentColor"/>
@@ -21,10 +25,8 @@ function html(h: String[]) {
 fetch("/config.json").then(function (response) {
   response.json().then(function (config) {
     document.title = config.name;
-
     document.getElementById("host").innerText = config.name;
-    document.getElementById("mac").innerText = config.mac;
-
+    document.getElementById("mac").innerText = "Device MAC: " + config.mac;
     let result = config.aps.slice(1).map(function (ap) {
       return `<div class="entity-row click" onclick="document.getElementById('ssid').value = this.innerText;document.getElementById('psk').focus()">
           <div>${wifi(ap.rssi)}</div>
@@ -34,8 +36,6 @@ fetch("/config.json").then(function (response) {
           </div>
         </div>`
     })
-
-
     document.querySelector("#net").innerHTML = html(result)
     document.querySelector("link[rel~='icon']").href = `data:image/svg+xml,${wifi(-65)}`;
   })
