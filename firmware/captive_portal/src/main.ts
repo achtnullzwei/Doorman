@@ -26,7 +26,7 @@ fetch("/config.json").then(function (response) {
   response.json().then(function (config) {
     document.title = config.name;
     document.getElementById("host").innerText = config.name;
-    document.getElementById("mac").innerText = "Device MAC: " + config.mac;
+    //document.getElementById("mac").innerText = "Device MAC: " + config.mac;
     let result = config.aps.slice(1).map(function (ap) {
       return `<div class="entity-row click" onclick="document.getElementById('ssid').value = this.innerText;document.getElementById('psk').focus()">
           <div>${wifi(ap.rssi)}</div>
