@@ -693,11 +693,13 @@ As part of this open-source, community-driven project, I occasionally make fully
 
 :::tip PLEASE NOTE
 This is **not an official, commercial or certified product**.  
-The Doorman hardware and firmware are the result of a reverse-engineering effort and are provided as-is, with **no guarantees regarding safety, reliability, or compatibility**.
+Both the hardware and firmware are outcomes of reverse-engineering work and are offered without any **warranties concerning safety, reliability, or compatibility**.
 
 This page does **not** constitute a shop, sale, or checkout process.  
-Submitting the form below is a **non-binding expression of interest** only, intended to help gauge demand and manage requests.
+Completing the form below simply registers your **non-binding interest** to help me understand demand and organize requests.
 :::
+
+**Each device acquired through me directly contributes to the continued development and improvement of the Doorman project.**
 
 If you submit an inquiry, I may contact you if clarification is needed. Otherwise, you'll only hear from me if and when a unit becomes available.
 

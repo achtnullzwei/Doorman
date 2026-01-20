@@ -696,15 +696,17 @@ Im Rahmen dieses **Open-Source- und Community-Projekts** stelle ich **gelegentli
 
 :::tip BITTE BEACHTEN
 Dies ist **kein offizielles, kommerzielles oder zertifiziertes Produkt**.  
-Die Doorman-Hardware und -Firmware sind das Ergebnis eines Reverse-Engineering-Projekts und werden **ohne jegliche Gewährleistung** bereitgestellt – insbesondere **ohne Zusicherungen hinsichtlich Sicherheit, Zuverlässigkeit oder Kompatibilität**.
+Hardware und Firmware sind das Ergebnis von Reverse-Engineering und werden ohne jegliche **Garantie hinsichtlich Sicherheit, Zuverlässigkeit oder Kompatibilität** bereitgestellt.
 
 Diese Seite stellt **keinen Shop, Verkauf oder Bestellvorgang** dar.  
-Das Ausfüllen des Formulars ist **keine Bestellung**, sondern lediglich eine **unverbindliche Interessenbekundung**, um die Nachfrage abzuschätzen und Anfragen zu koordinieren.
+Das Ausfüllen des untenstehenden Formulars ist lediglich eine **unverbindliche Interessensbekundung**, die mir hilft, die Nachfrage einzuschätzen und Anfragen zu organisieren
 :::
 
-Wenn du eine Anfrage sendest, melde ich mich ggf. bei Rückfragen. Andernfalls erhältst du nur dann eine Nachricht, **wenn und falls** ein Doorman verfügbar wird.
+**Jede über mich erworbene Doorman unterstützt automatisch die Weiterentwicklung des Doorman-Projekts.**
 
-Die Verfügbarkeit ist begrenzt und hängt von Zeit und Kapazität ab. Benachrichtigungen erfolgen automatisiert – **bitte prüfe daher auch deinen Spam-Ordner**, falls du innerhalb eines Monats nichts von mir hörst.
+Nach dem Absenden deiner Anfrage melde ich mich nur, wenn ich zusätzliche Informationen benötige. Ansonsten erhältst du von mir eine Nachricht, sobald ein Gerät für dich verfügbar ist.
+
+Die Verfügbarkeit ist **begrenzt und erfolgt ohne festen Zeitplan**. Benachrichtigungen werden automatisch versendet — **prüfe daher bitte auch deinen Spam-Ordner**, falls du innerhalb eines Monats nichts hörst.
 
 <div v-if="status.status == 'none' && available_units === 0" class="danger custom-block">
     <p class="custom-block-title">DERZEIT NICHT VERFÜGBAR</p>
