@@ -19,7 +19,7 @@ Reports the wifi signal in percent.
 ### ESPHome Version <Badge type="tip" text="esphome_version" /> <Badge type="info" text="Disabled by default" />
 Reports the installed base ESPHome version.
 
-### Firmware Version <Badge type="tip" text="doorman_firmware_version" /> <Badge type="info" text="Disabled by default" />
+### Doorman Version <Badge type="tip" text="doorman_firmware_version" /> <Badge type="info" text="Disabled by default" />
 Reports the installed Doorman firmware version and build time.
 
 ### Model <Badge type="tip" text="doorman_model" /> <Badge type="info" text="Disabled by default" />
@@ -42,9 +42,6 @@ Enables experimental updates, allowing you to easily switch between the master a
 
 
 ## Buttons
-
-### Install Update <Badge type="tip" text="update_install" />
-Installs the latest available Doorman Firmware update.
 
 ### Restart <Badge type="tip" text="doorman_restart" /> <Badge type="info" text="Disabled by default" />
 Restarts the Doorman unit, useful after configuration changes that require a restart.

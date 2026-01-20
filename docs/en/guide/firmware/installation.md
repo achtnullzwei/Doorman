@@ -244,7 +244,7 @@ The firmware supports OTA updates right out of the box, so you can install the l
 
 When integrated with Home Assistant, Doorman updates will even show up directly in your Updates list, making it even more convenient to stay up to date.
 
-To update, simply click the `Install Update` button in the firmware's web interface or use the Update list in Home Assistant.
+To update, simply click the `Update` button in the firmware's web interface or use the Update list in Home Assistant.
 
 ## ESPHome CLI / Dashboard <Badge type="warning" text="Full customization" />
 If you want full customization and the ability to add your own sensors, automations, or features, this is your way to go — ideal for power users who prefer complete control over their setup.

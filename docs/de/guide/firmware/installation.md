@@ -239,7 +239,7 @@ Die Firmware unterstützt direkt OTA-Updates – du kannst die neueste Version m
 
 Wenn Doorman in Home Assistant integriert ist, erscheinen verfügbare Updates sogar direkt in deiner Update-Liste – so bleibst du noch bequemer auf dem neuesten Stand.
 
-Zum Aktualisieren klickst du einfach auf den Button `Install Update` im Web-Interface der Firmware oder nutzt die Update-Liste in Home Assistant.
+Zum Aktualisieren klickst du einfach auf den Button `Update` im Web-Interface der Firmware oder nutzt die Update-Liste in Home Assistant.
 
 ## ESPHome CLI / Dashboard <Badge type="warning" text="Vollständige Anpassung" />
 Wenn du volle Kontrolle möchtest und eigene Sensoren, Automationen oder Funktionen hinzufügen willst, ist das der richtige Weg für dich — ideal für Power-User, die ihre Einrichtung komplett selbst gestalten wollen.

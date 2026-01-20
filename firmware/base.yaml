@@ -280,7 +280,7 @@ text_sensor:
 
   - platform: template
     id: doorman_firmware_version
-    name: "Firmware Version"
+    name: "Doorman Version"
     icon: mdi:information-box
     lambda: |-
       return { ESPHOME_PROJECT_VERSION };

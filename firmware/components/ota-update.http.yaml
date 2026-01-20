@@ -24,24 +24,6 @@ update:
       sorting_weight: 99
     setup_priority: -100
 
-button:
-  - platform: template
-    id: update_install
-    name: "Install Update"
-    icon: "mdi:auto-fix"
-    on_press:
-      - if:
-          condition:
-            - update.is_available:
-                id: update_http_request
-          then:
-            - update.perform: update_http_request
-          else:
-            - logger.log: "No update available"
-    web_server:
-      sorting_group_id: sorting_group_updates
-      sorting_weight: 100
-
 switch:
   - platform: template
     id: dev_firmware

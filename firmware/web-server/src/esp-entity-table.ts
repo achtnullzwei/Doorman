@@ -910,4 +910,11 @@ class ActionRenderer {
     ${this._actionButton(this.entity, "☐", "stop")}
     ${this._actionButton(this.entity, "CLOSE", "close", this.entity.state === "CLOSED")}`;
   }
+  render_update() {
+    if (!this.entity) return;
+    if(this.entity.state == "AVAILABLE") {
+      return html`${this._actionButton(this.entity, "Update", "install")}`;
+    }
+    return html`<div>${this.entity.state}</div>`;
+  }
 }

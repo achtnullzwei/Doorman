@@ -55,9 +55,6 @@ This release **will impact your current setup** and **requires** you to go throu
 - **Quadruple Doorbell Pattern**  
    A new quadruple-press pattern has been added, with slightly refined timing to improve reliability and avoid overlap with other patterns.
 
-- **Install Update Button**  
-   A new button lets you install the latest available Doorman firmware version directly from the web interface.
-
 - **Wi-Fi Signal Sensor**  
    The default firmware now includes a Wi-Fi signal strength sensor, which was previously only available in the developer version.
 

@@ -9,7 +9,7 @@ import { minifyHtml as ViteMinifyHtml } from "vite-plugin-html";
 import stripBanner from "rollup-plugin-strip-banner";
 import replace from "@rollup/plugin-replace";
 
-const proxy_target = process.env.PROXY_TARGET || "http://doorman-s3.local";
+const proxy_target = "http://10.10.0.127";
 
 export default defineConfig({
   clearScreen: false,
@@ -91,6 +91,7 @@ export default defineConfig({
       "/date": proxy_target,
       "/time": proxy_target,
       "/valve": proxy_target,
+      "/update": proxy_target,
     },
   },
 });
