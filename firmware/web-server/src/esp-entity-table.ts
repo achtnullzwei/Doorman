@@ -912,7 +912,7 @@ class ActionRenderer {
   }
   render_update() {
     if (!this.entity) return;
-    if(this.entity.state == "AVAILABLE") {
+    if(this.entity.state == "UPDATE AVAILABLE") {
       return html`${this._actionButton(this.entity, "Update", "install")}`;
     }
     return html`<div>${this.entity.state}</div>`;
