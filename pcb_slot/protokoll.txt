@@ -1,0 +1,148 @@
+PIN 1 - GND IN
+PIN 2 - 2.2K
+PIN 3 - TASTA - 22V BUS / TASTA PRO - Nicht genutzt
+
+PIN 4 - 33 Sendet regelmäßig ping, 1000us pulse
+PIN 5 - 32 Daten welche die Innenstation sendet (bus aber irgendwie komprimiert)
+
+PIN 6 - 35 Innenstation Daten (unter anderem Bus Telegramme) -> Smart Stick
+PIN 7 - 34 Smart Stick Daten -> Innenstation
+
+PIN 8 - 5V IN
+
+
+
+# Initialisieren
+[16:19:53][I][remote.pronto:231]: Received Pronto: data=
+[16:19:53][I][remote.pronto:239]: 0000 006D 0002 0000 0067 0028 0180 
+
+[16:19:54][I][remote.pronto:231]: Received Pronto: data=
+[16:19:54][I][remote.pronto:239]: 0000 006D 0002 0000 0028 001B 0028 0180 
+
+
+# Idle periodisch
+[16:19:55][I][remote.pronto:231]: Received Pronto: data=
+[16:19:55][I][remote.pronto:239]: 0000 006D 0001 0000 0028 0180 
+
+# Während aktiver Sprechverbindung
+[16:23:10][I][remote.pronto:231]: Received Pronto: data=
+[16:23:10][I][remote.pronto:239]: 0000 006D 0001 0000 0025 0180 
+
+# Idle periodisch
+[16:23:16][I][remote.pronto:231]: Received Pronto: data=
+[16:23:16][I][remote.pronto:239]: 0000 006D 0001 0000 0028 0180 
+
+
+# Unbekannt - beim rausziehen von strom
+[16:25:56][I][remote.pronto:231]: Received Pronto: data=
+[16:25:56][I][remote.pronto:239]: 0000 006D 0001 0000 0106 0181 
+[16:25:56][I][remote.pronto:231]: Received Pronto: data=
+[16:25:56][I][remote.pronto:239]: 0000 006D 0001 0000 010B 0181 
+
+
+# In config mode jede halbe sekunde
+[16:48:08][I][remote.raw:041]: Received Raw: -972
+[16:48:08][I][remote.raw:041]: Received Raw: -932
+[16:48:08][I][remote.raw:041]: Received Raw: -1023
+[16:48:08][I][remote.raw:041]: Received Raw: -973
+[16:48:08][I][remote.raw:041]: Received Raw: -937
+[16:48:08][I][remote.raw:041]: Received Raw: -1023
+
+
+
+
+
+
+
+
+
+
+# Licht Telegramm (16 bit)
+## HEX
+0x1200
+## Binär
+0001001000000000
+## Als gesamt Daten auf Bus inklusive Start Sequenz, Längen bit und CRC bit am ende
+6000, 2000, 2000, 2000, 2000, 4000, 2000, 2000, 4000, 2000, 2000, 2000, 2000, 2000, 2000, 2000, 2000, 2000, 4000
+
+Start sequenz (6000us), längenbit, 16 bit daten, 1 crc bit
+
+
+# Türöffner Telegramm (32 bit)
+## HEX
+0x1C30BA80 (1, seriennummer, 80)
+## Binär
+00011100001100001011101010000000
+## Als gesamt Daten auf Bus inklusive Start Sequenz, Längen bit und CRC bit am ende
+6000, 4000, 2000, 2000, 2000, 4000, 4000, 4000, 2000, 2000, 2000, 2000, 4000, 4000, 2000, 2000, 2000, 2000, 4000, 2000, 4000, 4000, 4000, 2000, 4000, 2000, 4000, 2000, 2000, 2000, 2000, 2000, 2000, 2000, 2000
+
+
+
+
+
+
+
+
+# Wenn auf dem Bus etwas von diesem Gerät (Seriennummer 8554D) gesendet wird
+## Licht Telegramm (0x1200)
+[20:22:10.971][W][remote_receiver.esp32:164]: Receiver: PIN: 32
+[20:22:10.971][I][remote.raw:041]: Received Raw: 8000, 4000, 6000, 4000, 6000, 4000, 2000, 2000, 4000, 2000, 2000, 4000
+
+[20:22:10.971][W][remote_receiver.esp32:164]: Receiver: PIN: 35
+[20:22:10.971][I][remote.raw:028]: Received Raw: 6000, 2000, 2000, 2000, 2000, 4000, 2000, 2000, 4000, 2000, 2000, 2000, 2000, 2000, 2000, 2000, 2000, 2000, 4000
+
+
+
+# Türöffner Telegramm (0x18554D80)
+[19:04:21.512][W][remote_receiver.esp32:164]: Receiver: PIN: 32
+[19:04:21.512][I][remote.raw:041]: Received Raw: 10000, 4000, 6000, 6000, 4000, 6000, 2000, 4000, 2000, 4000, 2000, 4000, 2000, 4000, 4000, 8000, 6000, 6000, 4000, 4000, 4000
+
+[19:04:21.528][W][remote_receiver.esp32:164]: Receiver: PIN: 35
+[19:04:21.530][I][remote.raw:028]: Received Raw: 6000, 4000, 2000, 2000, 2000, 4000, 4000, 2000, 2000, 2000, 2000, 4000, 2000, 4000, 2000, 4000, 2000, 4000, 2000, 4000, 2000, 2000, 4000, 4000, 2000, 4000, 4000, 2000, 2000, 2000, 2000, 2000, 2000, 2000, 2000
+
+# Wenn auf dem Bus etwas von anderen geräten (Seriennummer C30BA) gesendet wird
+## Licht Telegramm (0x1200)
+[20:18:50.605][W][remote_receiver.esp32:164]: Receiver: PIN: 35
+[20:18:50.605][I][remote.raw:041]: Received Raw: 6000, 2000, 2000, 2000, 2000, 4000, 2000, 2000, 4000, 2000, 2000, 2000, 2000, 2000, 2000, 2000, 2000, 2000, 4000
+
+## Türöffner Telegramm (0x1C30BA80)
+[18:55:46.809][W][remote_receiver.esp32:164]: Receiver: PIN: 35
+[18:55:46.815][I][remote.raw:028]: Received Raw: 6000, 4000, 2000, 2000, 2000, 4000, 4000, 4000, 2000, 2000, 2000, 2000, 4000, 4000, 2000, 2000, 2000, 2000, 4000, 2000, 4000, 4000, 4000, 2000, 4000, 2000, 4000, 2000, 2000, 2000, 2000, 2000, 2000, 2000, 2000
+
+
+
+
+
+
+5802
+
+0101100000000010
+
+8000, 6000, 6000, 6000, 4000, 4000, 4000, 4000, 6000, 6000, 8000, 2000, 2000, 2000, 4000, 2000
+
+
+
+
+
+[21:09:59.023][W][remote_receiver.esp32:164]: Receiver: PIN: 32 
+[21:09:59.035][I][remote.raw:041]: Received Raw: 4, -7966, 4, -4586, 3, -5982, 8, -3982, 4, -5983, 3, -3988, 4, -3987, 3, -3988, 3, -3987, 4 
+
+[21:10:04.783][W][remote_receiver.esp32:164]: Receiver: PIN: 32 
+[21:10:04.793][I][remote.raw:041]: Received Raw: 3, -7966, 4, -4585, 3, -5982, 5, -3985, 4, -5981, 4, -3986, 4, -3986, 3, -3987, 3, -3986, 4
+
+
+01101000010101010100110100001000
+
+
+
+
+-1, 1399, -148, 441, -1, 1995, -2, 1986, -1, 1996, -2, 1989, -1, 1999, -2, 1988, -1, 1998, -1, 3979, -1, 2261, -2, 6382, -1, 2147, -2, 2105, -2, 2139, -2, 6355, -3
+
+
+2000 2000 2000 2000 2000 2000 2000 2000 4000 2000 6000
+
+
+ -20, 6000, -20, 4000, -20, 2000, -21, 2000, -21, 2000, -18, 2000, -21, 2000, -20, 2000, -21, 6000, -21
+
+
+ 1000 000
