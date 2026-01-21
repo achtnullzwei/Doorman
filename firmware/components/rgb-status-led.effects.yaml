@@ -48,7 +48,7 @@ light:
             call.perform();
 
       - lambda:
-          name: slow_partymode
+          name: ring_to_open
           update_interval: 2s
           lambda: |-
             static bool on_ = false;

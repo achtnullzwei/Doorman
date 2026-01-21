@@ -776,6 +776,6 @@ script:
             - light.turn_on:
                 id: doorman_rgb_status_led
                 red: 100%
-                green: 100%
-                blue: 3%
-                effect: slow_pulse
+                green: 70%
+                blue: 0%
+                effect: ring_to_open
