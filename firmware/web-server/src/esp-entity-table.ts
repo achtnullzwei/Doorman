@@ -913,7 +913,17 @@ class ActionRenderer {
   render_update() {
     if (!this.entity) return;
     if(this.entity.state == "UPDATE AVAILABLE") {
-      return html`${this._actionButton(this.entity, "Update", "install")}`;
+      let version = this.entity.value;
+      let type = "";
+
+      if (version.includes("-")) {
+        const [base, suffix] = version.split("-");
+        type = "Experimental";
+        version = `${base} (${suffix.split(".")[1]})`;
+      }
+
+      const label = `Install ${type ? type + " " : ""}${version}`;
+      return html`${this._actionButton(this.entity, label, "install")}`;
     }
     return html`<div>${this.entity.state}</div>`;
   }
