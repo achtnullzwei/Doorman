@@ -108,7 +108,7 @@ Beispiel:
 
 
 ## Mit WLAN verbinden
-Wenn du deinen **Doorman S3** zum ersten Mal einschaltest, beginnt er **schnell orange zu blinken** — das bedeutet, er ist bereit für die WLAN-Einrichtung!
+Wenn du deinen **Doorman S3** zum ersten Mal einschaltest, beginnt die LED **schnell gelb/orange zu blinken** — das bedeutet, er ist bereit für die WLAN-Einrichtung!
 
 Du kannst ihn auf eine von drei Arten mit dem WLAN verbinden:  
 **Access Point**, **Improv Serial (USB)** oder **Improv Bluetooth**.

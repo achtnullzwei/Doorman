@@ -118,13 +118,14 @@ You can turn off the LED if it becomes annoying. Even when turned off, it will s
 A small WS2812B RGB LED on the Doorman's PCB is used to indicate specific events. The LED can display various colors and patterns to provide visual feedback on different states and actions.
 
 ##### Event Types
-- **Waiting for WiFi / AP Enabled** <Badge type="tip" text="Fast orange pulse" />
+- **Waiting for WiFi** <Badge type="tip" text="Slow yellow/orange pulse" />
+- **Setup Access Point enabled** <Badge type="tip" text="Fast yellow/orange pulse" />
 - **Waiting for Home Assistant / MQTT / HomeKit to Connect** <Badge type="tip" text="Slow blue pulse" />
 - **Home Assistant / MQTT / HomeKit Connected** <Badge type="tip" text="Solid blue light (for 3 seconds)" />
 - **MQTT setup required** <Badge type="tip" text="Red-blue pulse" /> <Badge type="info" text="MQTT integration only" />
 - **HomeKit pairing required** <Badge type="tip" text="Red-blue pulse" /> <Badge type="info" text="HomeKit integration only" />
 - **Setup Mode is Active** <Badge type="tip" text="Fast green-turquoise pulse" />
 - **Setup Mode completed** <Badge type="tip" text="Solid green-turquoise (for 3 seconds)" />
-- **Ring To Open is Active** <Badge type="tip" text="Slow yellow pulse" />
+- **Ring To Open is Active** <Badge type="tip" text="Slow orange pulse" />
 - **Nuki Bridge Pairing Mode is Active** <Badge type="tip" text="Slow purple pulse" /> <Badge type="info" text="Nuki Bridge only" />
 - **Nuki Bridge Paired Successfully** <Badge type="tip" text="Solid purple light (for 3 seconds)" /> <Badge type="info" text="Nuki Bridge only" />

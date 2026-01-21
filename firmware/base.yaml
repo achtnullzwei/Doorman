@@ -896,7 +896,7 @@ script:
       - logger.log: "LED: Waiting for WiFi connection or provisioning"
       - light.turn_on:
           id: doorman_rgb_status_led
-          effect: pulse
+          effect: slow_pulse
           red: 100%
           green: 65%
           blue: 0%
@@ -912,14 +912,21 @@ script:
             - logger.log: "LED: Waiting for WiFi configuration (AP Mode)"
             - light.turn_on:
                 id: doorman_rgb_status_led
-                effect: slow_pulse
+                effect: pulse
                 red: 100%
-                green: 10%
+                green: 65%
                 blue: 0%
             # Wait until AP is deactivated
             - wait_until:
                 condition:
                   - lambda: return id(wifi_id).is_ap_active() == false;
+            - logger.log: "LED: Waiting for WiFi connection after AP"
+            - light.turn_on:
+                id: doorman_rgb_status_led
+                effect: slow_pulse
+                red: 100%
+                green: 65%
+                blue: 0%
             # Wait until wifi is really connected
             - wait_until:
                 condition: wifi.connected

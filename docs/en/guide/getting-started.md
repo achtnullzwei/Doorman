@@ -112,7 +112,7 @@ Example:
 
 
 ## Connect to Wi-Fi
-When you power on your **Doorman S3** for the first time, it will start **blinking rapidly in orange** — that means it's ready for Wi-Fi setup!
+When you power on your **Doorman S3** for the first time, the LED will **blink rapidly in yellow/orange**, indicating that it's ready to connect to Wi-Fi.
 
 You can connect it to Wi-Fi using one of three methods:  
 **Access Point**, **Improv Serial (USB)**, or **Improv Bluetooth**.
