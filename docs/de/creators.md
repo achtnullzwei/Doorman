@@ -1,11 +1,12 @@
 <script setup>
 import { VPTeamMembers } from 'vitepress/theme'
+import { data } from '../contributors.data.js'
 
 const members = [
   {
     avatar: 'https://www.github.com/azoninc.png',
     name: 'AzonInc',
-    title: 'Ersteller vom Doorman-S3 PCB und der ESPHome-basierten Firmware',
+    title: 'Ersteller vom Doorman S3 PCB und der ESPHome-basierten Firmware',
     links: [
       { icon: 'github', link: 'https://github.com/azoninc' },
     ],
@@ -54,6 +55,16 @@ const members = [
     ]
   }
 ]
+
+data.map((x) => {
+  x.title = 'Verfasser von ' + x.contributions + ' Commit ' + (x.contributions != 1 ? 's' : '');
+  return x;
+});
+
+const mergedMembers = [
+  ...members,
+  ...data.filter(d => !members.some(m => m.name === d.name))
+];
 </script>
 
 # Danke ❤️
@@ -62,7 +73,7 @@ Doorman basiert auf dem Code und den Informationen der folgenden Projekte und Pe
 
 ### Coole Leute
 
-<VPTeamMembers size="small" :members="members" />
+<VPTeamMembers size="small" :members="mergedMembers" />
 
 
 ### Projekte

@@ -3,7 +3,7 @@
     Doorman S3
     <br>
     <br>
-    <img src=".github/images/title_dark.png" alt="Doorman S3" height="275">
+    <img src=".github/images/enclosure.png" alt="Doorman S3" height="275">
     <br>
 </h1>
 
@@ -38,11 +38,9 @@ Before diving into the installation process, visit the [Doorman Docs](https://do
   </ul>
 </div>
 
-You can get fully assembled **Doorman S3** units with the **[Stock Firmware](firmware/stock-firmware)** pre-installed and ready for immediate integration into **Home Assistant**. 
+You can get fully assembled **Doorman S3** units with the **[Doorman Firmware](https://doorman.azon.ai/guide/firmware/installation)** pre-installed and ready for immediate integration into **Home Assistant**. 
 
-For inquiries, feel free to reach out via:
-- [Discord](https://discord.gg/t2d34dvmBf)
-- [E-Mail](mailto:flo@azon.ai?subject=Doorman)
+For inquiries, please use [this page](https://doorman.azon.ai/order).
 
 ---
 
@@ -75,7 +73,7 @@ Check out the [TC:BUS ESPHome component documentation](https://doorman.azon.ai/r
 - **External Button** (G + BTN) for manual triggering
 - **Bridge Rectifier** for correcting polarity on bus-wire input
 - **TC:BUS Communication** for door functions and detecting the doorbell
-- **Nuki Bridge functionality** with the [Nuki Bridge Firmware](https://doorman.azon.ai/guide/firmware/nuki-bridge-firmware) (Note: Incompatible with Nuki app but works with **Home Assistant** app)
+- **Nuki Bridge functionality** with the [Nuki Bridge Addon](https://doorman.azon.ai/guide/firmware/nuki-bridge)
 
 ---
 
@@ -107,7 +105,7 @@ A huge thanks to [PCBX](https://www.pcbx.com/?mtm_campaign=review&mtm_kwd=BD&mtm
 
 If you're looking for a reliable PCB manufacturer for your own project, definitely check out [PCBX](https://www.pcbx.com/?mtm_campaign=review&mtm_kwd=BD&mtm_source=flo). While their production might take a little longer than some others, the unbeatable prices and super-easy part sourcing make it absolutely worth it. They handle everything for you!  
 
-You can find all the necessary files for manufacturing the **Doorman-S3** [here](https://github.com/azoninc/doorman/tree/master/pcb).
+You can find all the necessary files for manufacturing the **Doorman S3** [here](https://github.com/azoninc/doorman/tree/master/pcb).
 
 ---
 
@@ -119,7 +117,7 @@ You can find all the necessary files for manufacturing the **Doorman-S3** [here]
   </ul>
 </div>
 
-Contributions to the **Doorman** project are always welcome! Whether it's code improvements, bug fixes, or documentation updates, your help is greatly appreciated. Please feel free to open a **Pull Request**.
+To get started, check out our [Contributing Guidelines](CONTRIBUTING.md).
 
 ---
 

@@ -43,30 +43,32 @@ jobs:
       - id: files-array
         run: |
           files=$(echo "${{ inputs.files }}" | jq -Rcn 'inputs | . / ","')
-          echo ::set-output name=files::$files
+          echo "files=$files" >> $GITHUB_OUTPUT
 
   build:
-    name: Build ${{ matrix.file }}
+    name: Build ${{ inputs.name }}
     needs: [prepare]
     runs-on: ubuntu-latest
     strategy:
       matrix:
         file: ${{ fromJson(needs.prepare.outputs.files) }}
     outputs:
-      esphome-version: ${{ steps.esphome-build.outputs.esphome-version }}
+      esphome-version: ${{ steps.esphome-build.outputs.version }}
       esphome-build-name: ${{ steps.esphome-build.outputs.name}}
       project-version: ${{ steps.esphome-build.outputs.project-version }}
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
       
-      - name: Change ESPHome project version to dev
+      - name: Update version for dev builds
         if: startsWith(github.ref_name, 'dev')
         run: |
           VERSION=$(awk '/project:/, /version:/' firmware/base.yaml | grep 'version:' | awk '{print $2}' | sed 's/[",]//g')
           TIMESTAMP=$(date +%d%H%M)
-          sed -i '/^  project:/,/^  platformio_options:/s/^    version: .*/    version: "'"$VERSION"'-dev.'"$TIMESTAMP"'"/' firmware/base.yaml
+          DEV_VERSION="${VERSION}-dev.${TIMESTAMP}"
+          sed -i "/^  project:/,/^  platformio_options:/s/^    version: .*/    version: \"${DEV_VERSION}\"/" firmware/base.yaml
 
-      - uses: esphome/build-action@v6.0.0
+      - name: Build ESPHome firmware
+        uses: esphome/build-action@v7.1.0
         id: esphome-build
         with:
           yaml-file: ${{ matrix.file }}
@@ -75,15 +77,23 @@ jobs:
           release-summary: ${{ inputs.summary }}
           complete-manifest: true
 
-      - name: Change Manifest Firmware Name
+      - name: Prepare output directory
         run: |
-          mkdir output
-          mv "${{ steps.esphome-build.outputs.name}}" temp
-          mv temp "output/${{ inputs.directory_name }}"
-          sed -i '/"new_install_prompt_erase"/s/false/true/' output/${{ inputs.directory_name }}/manifest.json
-          sed -i 's/Doorman S3/${{ inputs.name }}/g' output/${{ inputs.directory_name }}/manifest.json
+          mkdir -p output
+          mv "${{ steps.esphome-build.outputs.name}}" "output/${{ inputs.directory_name }}"
 
-      - uses: actions/upload-artifact@v4
+      - name: Update manifest
+        run: |
+          MANIFEST="output/${{ inputs.directory_name }}/manifest.json"
+
+          # Update JSON values with jq
+          jq '.new_install_prompt_erase = true |
+              .name = "${{ inputs.name }}" |
+              .funding_url = "https://github.com/sponsors/AzonInc"' \
+            "$MANIFEST" > "${MANIFEST}.tmp" && mv "${MANIFEST}.tmp" "$MANIFEST"
+    
+      - name: Upload firmware artifact
+        uses: actions/upload-artifact@v5
         with:
           name: firmware.${{ inputs.directory_name }}
           path: output

@@ -1,0 +1,41 @@
+name: Build custom webserver
+
+on:
+  workflow_call:
+
+jobs:
+  build-webserver:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
+
+      - name: Setup Node
+        uses: actions/setup-node@v6
+        with:
+          node-version: '20'
+          cache: 'npm'
+          cache-dependency-path: firmware/web-server/package-lock.json
+
+      - name: Install dependencies
+        run: npm install
+        working-directory: firmware/web-server
+
+      - name: Use dev branch resources
+        if: startsWith(github.ref_name, 'dev')
+        working-directory: firmware/web-server
+        run: |
+          find . -type f -exec sed -i "s/doorman.azon.ai/dev.doorman.azon.ai/g" {} +
+
+      - name: Build Webserver Bundle
+        working-directory: firmware/web-server
+        run: npm run xbuild
+
+      - name: Upload webserver artifact
+        uses: actions/upload-artifact@v5
+        with:
+          name: webserver-bundle
+          path: firmware/web-server/dist
+          if-no-files-found: error

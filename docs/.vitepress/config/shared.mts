@@ -1,14 +1,3 @@
-
-
-export default defineConfig({
-  head: [
-    // og:site_name, og:type, og:image:width, og:image:height, twitter:card go here
-  ],
-  
-  // …
-});
-
-
 import { createRequire } from 'module'
 import { defineConfig } from 'vitepress'
 import { search as deSearch } from './de.mts'
@@ -23,6 +12,8 @@ function href(path = "") {
 
 const require = createRequire(import.meta.url)
 const pkg = require('../../package.json')
+
+const branch = pkg.version.includes('dev') ? 'dev' : 'master';
 
 export const shared = defineConfig({
   title: "Doorman",
@@ -41,7 +32,7 @@ export const shared = defineConfig({
   ],
 
   sitemap: {
-    hostname: pkg.version.includes('dev') ? 'https://doorman-dev.surge.sh' : 'https://doorman.azon.ai',
+    hostname: branch == 'dev' ? 'https://dev.doorman.azon.ai' : 'https://doorman.azon.ai',
     transformItems(items) {
       return items.filter((item) => !item.url.includes('migration'))
     }
@@ -55,14 +46,6 @@ export const shared = defineConfig({
     ['meta', { property: 'og:site_name', content: 'Doorman' }],
     ['meta', { property: 'og:image', content: 'https://doorman.azon.ai/doorman-og.jpg' }],
     ['meta', { property: 'og:url', content: 'https://doorman.azon.ai/' }],
-    [
-      'script',
-      {
-        async: '',
-        type: 'module',
-        src: 'https://unpkg.com/esp-web-tools@10/dist/web/install-button.js?module'
-      }
-    ],
     [
       'script',
       {
@@ -160,6 +143,13 @@ export const shared = defineConfig({
         [
           "meta",
           {
+            property: "og:description",
+            content: pageDescription,
+          },
+        ],
+        [
+          "meta",
+          {
             name: "twitter:description",
             content: pageDescription,
           },
@@ -169,24 +159,19 @@ export const shared = defineConfig({
   },
 
   themeConfig: {
-
     logo: {
       src: '/logo.png', width: 24, height: 24
     },
 
     lastUpdated: {
-        formatOptions: {
-            dateStyle: 'short',
-            timeStyle: 'medium'
-        }
-    },
-
-    editLink: {
-        pattern: 'https://github.com/azoninc/doorman/edit/master/docs/:path',
+      formatOptions: {
+        dateStyle: 'medium',
+        timeStyle: 'short'
+      }
     },
 
     socialLinks: [
-      { icon: 'github', link: 'https://github.com/azoninc/doorman' },
+      { icon: 'github', link: 'https://github.com/azoninc/doorman/tree/' + branch },
       { icon: 'discord', link: 'https://discord.gg/t2d34dvmBf' }
     ],
 

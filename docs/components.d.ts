@@ -7,6 +7,11 @@ export {}
 /* prettier-ignore */
 declare module 'vue' {
   export interface GlobalComponents {
+    ContactModal: typeof import('./.vitepress/theme/components/ContactModal.vue')['default']
+    IconIcRoundOtherHouses: typeof import('~icons/ic/round-other-houses')['default']
+    IconLineMdUploadingLoop: typeof import('~icons/line-md/uploading-loop')['default']
+    IconMdiPackageVariantPlus: typeof import('~icons/mdi/package-variant-plus')['default']
+    IconPhCpuBold: typeof import('~icons/ph/cpu-bold')['default']
     ModelViewer: typeof import('./.vitepress/theme/components/ModelViewer.vue')['default']
     STLLoader: typeof import('./.vitepress/theme/components/STLLoader.vue')['default']
   }

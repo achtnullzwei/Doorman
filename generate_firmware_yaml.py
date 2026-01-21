@@ -23,34 +23,50 @@ def get_packages(host, api_variant, firmware, branch):
     # Define packages in exact order with their conditions
     is_esp32 = 'esp32' in host.lower()
     has_psram = host in ['esp32-s2', 'esp32-s3', 'esp32-s3-quad']
-    has_status_led = is_esp32
 
     packages_config = [
         ('host', f'!include ../hosts/{host}.yaml', True),
         
-        ('rgb_status_led', '!include ../components/rgb-status-led.yaml', has_status_led),
-        ('rgb_status_led', '!include ../components/rgb-status-led.dummy.yaml', not has_status_led),
-        
+        ('external_components', '!include ../components/external-components.yaml', branch != 'local'),
+        ('external_components_local', '!include ../components/external-components.local.yaml', branch == 'local'),
+
+        ('rgb_status_led', '!include ../components/rgb-status-led.yaml', True),
+        ('rgb_status_led_effects', '!include ../components/rgb-status-led.effects.yaml', True),
+
         ('base', '!include ../base.yaml', True),
+        ('webserver_dev', '!include ../components/web-server.dev.yaml', branch == 'dev' or branch == 'local'),
+
         ('bluedroid_ble', '!include ../components/bluedroid-ble.yaml', is_esp32 and firmware != 'nuki-bridge'),
         
-        ('ota_updates', '!include ../components/ota-updates.yaml', api_variant == 'ha'),
-        ('ota_updates_default_dev', '!include ../components/ota-updates-default-dev.yaml', api_variant == 'ha' and branch == 'dev'),
-        ('dashboard_import', '!include ../components/dashboard-import.yaml', api_variant == 'ha'),
-        
-        ('api', '!include ../components/api-homeassistant.yaml', api_variant == 'ha'),
-        ('api', '!include ../components/api-mqtt.yaml', api_variant == 'mqtt'),
-        ('api', '!include ../components/api-custom.yaml', api_variant == 'custom'),
+        ('ota_update_esphome', '!include ../components/ota-update.esphome.yaml', True),
+        ('ota_update_http', '!include ../components/ota-update.http.yaml', branch != 'local'),
+        ('ota_update_http_dev', '!include ../components/ota-update.http.dev.yaml', branch == 'dev'),
 
-        ('debug_utilities', '!include ../components/debug-utilities.yaml', branch == 'dev'),
-        ('debug_utilities_psram', '!include ../components/debug-utilities.psram.yaml', branch == 'dev' and has_psram),
-        ('debug_utilities_non_esp32', '!include ../components/debug-utilities.non-esp32.yaml', branch == 'dev' and not is_esp32),
+        ('dashboard_import', '!include ../components/dashboard-import.yaml', api_variant == 'ha' and branch != 'local'),
+        
+        ('api', '!include ../components/api.homeassistant.yaml', api_variant == 'ha'),
+        ('api', '!include ../components/api.mqtt.yaml', api_variant == 'mqtt'),
+        ('api', '!include ../components/api.homekit.yaml', api_variant == 'homekit'),
+        ('api', '!include ../components/api.custom.yaml', api_variant == 'custom'),
+
+        ('debug_utilities', '!include ../components/debug-utilities.yaml', branch == 'dev' or branch == 'local'),
+
+        ('debug_component', '!include ../components/debug-component.yaml', branch == 'dev' or branch == 'local'),
+        ('debug_component_psram', '!include ../components/debug-component.psram.yaml', (branch == 'dev' or branch == 'local') and has_psram),
+        
+        # Add configo for local tests
+        ('configo', '!include ../components/configo.yaml', branch == 'local'),
 
         ('pattern_events', '!include ../components/pattern-events.yaml', True),
         ('ring_to_open', '!include ../components/ring-to-open.yaml', True),
-        ('intercom_settings', '!include ../components/intercom-settings.yaml', True),
+        ('ring_to_open_homekit', '!include ../components/ring-to-open.homekit.yaml', api_variant == 'homekit'),
+        ('ring_to_open_nuki', '!include ../components/ring-to-open-nuki.yaml', firmware == 'nuki-bridge'),
+        ('indoor_station_settings', '!include ../components/indoor-station-settings.yaml', True),
         ('addon_nuki_bridge', '!include ../components/nuki-bridge.yaml', firmware == 'nuki-bridge'),
         ('interactive_setup', '!include ../components/interactive-setup.yaml', True),
+
+        # Add outdoor station for local tests
+        ('outdoor_station', '!include ../components/outdoor-station.yaml', branch == 'local'),
     ]
     
     return [(name, path) for name, path, condition in packages_config if condition]
@@ -74,17 +90,35 @@ def generate_yaml_content(host, api_variant, firmware, branch):
 
 def generate_example_yaml(host, api_variant, firmware, branch):
 
-    filename = f'github://azoninc/doorman/firmware/configurations/{host}.{api_variant}.{firmware}.{branch}.yaml@{branch}'
+    if branch == "local":
+        filename = f'!include ../configurations/{host}.{api_variant}.{firmware}.{branch}.yaml'
+    else:
+        filename = f'github://azoninc/doorman/firmware/configurations/{host}.{api_variant}.{firmware}.{branch}.yaml@{branch}'
     
+    if api_variant == "ha":
+        api_variant_desc = "Home Assistant"
+    elif api_variant == "mqtt":
+        api_variant_desc = "MQTT"
+    elif api_variant == "homekit":
+        api_variant_desc = "HomeKit"
+    else:
+        api_variant_desc = "Custom"
+    
+    if branch == "local":
+        device_name = "doorman-s3-local-dev"
+        device_friendly_name = "Doorman S3 (Development)"
+    else:
+        device_name = "doorman-s3"
+        device_friendly_name = "Doorman S3"
+
     content = [
-        f'# Doorman {"Nuki Bridge" if firmware == "nuki-bridge" else "Stock"} Firmware ({"Home Assistant" if api_variant == "ha" else "MQTT"})',
+        f'# Doorman {"Nuki Bridge" if firmware == "nuki-bridge" else "Standard"} Firmware ({api_variant_desc})',
         f'# Base Board {host.upper()}',
         '',
         '# You can change a few options here.',
         'substitutions:',
-        '  name: "doorman-s3"',
-        '  friendly_name: "Doorman S3"',
-        '  # log_level: "ERROR"',
+        f'  name: "{device_name}"',
+        f'  friendly_name: "{device_friendly_name}"',
         '  # led_pin: "GPIO1"',
         '  # rgb_led_pin: "GPIO2"',
         '  # relay_pin: "GPIO42"',
@@ -93,7 +127,7 @@ def generate_example_yaml(host, api_variant, firmware, branch):
         '',
         '# Import Doorman Firmware Config',
         'packages:',
-        f'  AzonInc.Doorman{"-Nuki-Bridge" if firmware == "nuki-bridge" else ""}: ' +
+        f'  AzonInc.Doorman-{"Nuki-Bridge" if firmware == "nuki-bridge" else "Standard"}: ' +
         f'{filename}',
         '',
         'wifi:',
@@ -101,14 +135,14 @@ def generate_example_yaml(host, api_variant, firmware, branch):
         '  password: !secret wifi_password'
     ]
 
-    if api_variant == 'mqtt':
-        content.extend([
-            '',
-            'mqtt:',
-            '  broker: "10.10.0.2"',
-            '  username: ""',
-            '  password: ""'
-        ])
+    #if api_variant == 'mqtt':
+    #    content.extend([
+    #        '',
+    #        'mqtt:',
+    #        '  broker: "10.10.0.2"',
+    #        '  username: ""',
+    #        '  password: ""'
+    #    ])
     
     return '\n'.join(content)
 
@@ -116,16 +150,22 @@ def generate_example_yaml(host, api_variant, firmware, branch):
 # Configuration options
 HOST_ARCHITECTURES = get_host_architectures()
 
-API_VARIANTS = ['ha', 'mqtt', 'custom']
-FIRMWARES = ['stock', 'nuki-bridge']
-BRANCHES = ['master', 'dev']
+API_VARIANTS = ['ha', 'mqtt', 'homekit', 'custom']
+FIRMWARES = ['standard', 'nuki-bridge']
+BRANCHES = ['master', 'dev', 'local']
 
 
 def main():
     os.makedirs('firmware/configurations', exist_ok=True)
     os.makedirs('firmware/examples', exist_ok=True)
     
-    combinations = product(HOST_ARCHITECTURES, API_VARIANTS, FIRMWARES, BRANCHES)
+    # Filter out invalid combinations before generating files
+    combinations = [
+        (host, api_variant, firmware, branch)
+        for host, api_variant, firmware, branch in product(HOST_ARCHITECTURES, API_VARIANTS, FIRMWARES, BRANCHES)
+        if not (firmware == 'nuki-bridge' and 'mqtt' in api_variant)
+    ]
+
     for host, api_variant, firmware, branch in combinations:
         filename = f'{host}.{api_variant}.{firmware}.{branch}.yaml'
         example_filename = f'{host}.{api_variant}.{firmware}.{branch}.example.yaml'
@@ -144,6 +184,25 @@ def main():
             f.write(example_content)
         
         print(f'Generated: {filename}')
+
+        # Also generate stock version for compatibility with older setups
+        if firmware == 'standard':
+            print('Generate stock version for compatibility...')
+
+            stock_filename = f'{host}.{api_variant}.stock.{branch}.yaml'
+            stock_example_filename = f'{host}.{api_variant}.stock.{branch}.example.yaml'
+
+            # Write stock config YAML (same content as standard)
+            stock_config_filepath = os.path.join('firmware', 'configurations', stock_filename)
+            with open(stock_config_filepath, 'w', encoding='utf-8') as f:
+                f.write(config_content)
+
+            # Write stock example YAML (same content as standard)
+            stock_example_filepath = os.path.join('firmware', 'examples', stock_example_filename)
+            with open(stock_example_filepath, 'w', encoding='utf-8') as f:
+                f.write(example_content)
+
+            print(f'Generated: {stock_filename}')
 
 if __name__ == '__main__':
     main()

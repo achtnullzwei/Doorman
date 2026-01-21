@@ -1,5 +1,11 @@
-## MQTT
+# MQTT Integration
 
+Diese Seite bietet alles, was du brauchst – von der Konfiguration bis hin zu praktischen Beispielen mit MQTT-Topics und Payloads.
+
+## Einrichtung
+<!--@include: ./instructions/mqtt.md-->
+
+## Topics
 Bei Verwendung der MQTT-Firmware werden verschiedene Topics an deinen Broker gesendet. So funktioniert die Struktur der Topics und Steuerung.
 
 ### Topic Struktur
@@ -19,7 +25,7 @@ ON oder OFF oder was sonst unterstützt wird
 :::
 
 ### Beispiel
-Um die [Ring-To-Open](../automation/ring-to-open.md) Automatisierung zu aktivieren oder zu deaktivieren, sende ON oder OFF als Payload an dieses Topic:
+Um die [Ring-To-Open](../features/ring-to-open.md) Automatisierung zu aktivieren oder zu deaktivieren, sende `ON` oder `OFF` als Payload an dieses Topic:
 ::: code-group
 ``` [Topic]
 doorman-s3/switch/ring_to_open/command
@@ -29,40 +35,79 @@ ON
 ```
 :::
 
-### Spezielle Topics
-Es gibt spezielle Topics, die erweiterte Befehle ermöglichen.
-
-#### Senden eines Commands (Hexadezimal)
-Hier ist ein Beispiel um hexadezimale Commands (uint32) an den Bus zu senden:
+## Senden eines Bus Telegramms (Hexadezimal)
+Hier ist ein Beispiel um hexadezimale Telegramme (16-bit/32-bit) an den Bus zu senden:
 ::: code-group
 ``` [Topic]
-doorman-s3/send_raw_command
+doorman-s3/send_tc_telegram/raw
 ```
-```json [Payload]
-{
-    "command": 0x1C30BA80
-}
+```text [16-Bit Text Payload]
+1100
 ```
-```json [Advanced Payload]
-{
-    "command": 0x1C30BA80,
-    "is_long": false
-}
+```text [32-Bit Text Payload]
+1C30BA80
 ```
 :::
 
-#### Senden eines Commands (Command Builder)
-Hier ist ein Beispiel um Commands via Command Builder an den Bus zu senden:
+## Senden eines Bus Telegramms (Telegram Builder)
+Hier ist ein Beispiel um Telegramme via Telegram Builder an den Bus zu senden:
 ::: code-group
 ``` [Topic]
-doorman-s3/send_command
+doorman-s3/send_tc_telegram
 ```
-```json [Payload]
+```json [JSON Payload]
 {
     "type": "open_door",
     "address": 0,
     "payload": 0,
     "serial_number": 123456
+}
+```
+:::
+
+## Senden eines Innenstation Telegramms (Telegram Builder)
+Hier ist ein Beispiel um Innenstation Telegramme via Telegram Builder an den Bus zu senden:
+::: code-group
+``` [Topic]
+doorman-s3/send_tc_is_telegram
+```
+```json [JSON Payload]
+{
+    "type": "open_door",
+    "address": 0,
+    "payload": 0
+}
+```
+:::
+
+## WLAN neu konfigurieren
+Hier ist ein Beispiel um die WLAN Zugangsdaten neu zu konfigurieren:
+::: code-group
+``` [Topic]
+doorman-s3/reconfigure_wifi
+```
+```json [JSON Payload]
+{
+    "ssid": "Your new WiFi SSID",
+    "password": "YourNewPassword!"
+}
+```
+:::
+
+## Empfang von geparsten Telegrammen
+Alle Telegramme werden auf einem speziellen Topic veröffentlicht. Die Nachrichten enthalten die geparsten Telegrammdaten.
+
+::: code-group
+``` [Topic]
+doorman-s3/last_telegram
+```
+```json [Payload]
+{
+    "telegram": "1100",
+    "type": "open_door",
+    "address": "0",
+    "payload": "0",
+    "serial_number": "0"
 }
 ```
 :::

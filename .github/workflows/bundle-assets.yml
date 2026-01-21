@@ -9,92 +9,50 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
 
-      - name: Create Output Directory
-        run: mkdir -p output 
+      - name: Create Output Directories
+        run: |
+          mkdir -p output/firmware/release
+          mkdir -p output/firmware/temp
 
-      - name: Create Fimrware Directory
-        run: mkdir -p output/firmware/release/
-
-      - name: Create Temp Directory
-        run: mkdir -p output/firmware/temp/
-
-      - name: Download github-pages artifact
-        uses: actions/download-artifact@v4
+      - name: Download VitePress docs
+        uses: actions/download-artifact@v6
         with:
           name: vitepress-docs
           path: output
 
       - name: Copy interactive BOM
         run: cp pcb/bom/ibom.html output/
+
+      - name: Download Webserver Bundle
+        uses: actions/download-artifact@v6
+        with:
+          name: webserver-bundle
+          path: output/firmware/esphome-webserver
         
-
-
-      - name: Download Doorman Stock for Home Assistant (ESP32) artifact
-        uses: actions/download-artifact@v4
+      - name: Download all firmware artifacts
+        uses: actions/download-artifact@v6
         with:
-          name: firmware.esp32.ha.stock
+          pattern: firmware.*
           path: output/firmware/release
+          merge-multiple: true
 
-      - name: Download Doorman Stock for Home Assistant (ESP32-S3) artifact
-        uses: actions/download-artifact@v4
-        with:
-          name: firmware.esp32-s3.ha.stock
-          path: output/firmware/release
-
-      - name: Download Doorman Stock for Home Assistant (ESP32-S3-Quad) artifact
-        uses: actions/download-artifact@v4
-        with:
-          name: firmware.esp32-s3-quad.ha.stock
-          path: output/firmware/release
-
-      - name: Download Doorman Stock for Home Assistant (ESP8266) artifact
-        uses: actions/download-artifact@v4
-        with:
-          name: firmware.esp8266.ha.stock
-          path: output/firmware/release
-
-
-
-      - name: Download Doorman Nuki Bridge for Home Assistant (ESP32) artifact
-        uses: actions/download-artifact@v4
-        with:
-          name: firmware.esp32.ha.nuki-bridge
-          path: output/firmware/release
-
-      - name: Download Doorman Nuki Bridge for Home Assistant (ESP32-S3) artifact
-        uses: actions/download-artifact@v4
-        with:
-          name: firmware.esp32-s3.ha.nuki-bridge
-          path: output/firmware/release
-
-      - name: Download Doorman Nuki Bridge for Home Assistant (ESP32-S3-Quad) artifact
-        uses: actions/download-artifact@v4
-        with:
-          name: firmware.esp32-s3-quad.ha.nuki-bridge
-          path: output/firmware/release
-
-
-
-      - name: Create Doorman Stock backwards compatibility files for updates
+      # Temporary duplicate for stock compatibility
+      - name: Temporary backwards compatibility for stock firmware filenames
+        working-directory: output/firmware/release
         run: |
-          cp -r output/firmware/release/esp32-s3.ha.stock output/firmware/release/doorman-stock
-          cp -r output/firmware/release/esp32-s3.ha.stock output/firmware/release/ha-doorman-stock
-          cp -r output/firmware/release/esp32-s3.ha.nuki-bridge output/firmware/release/doorman-nuki-bridge
-          cp -r output/firmware/release/esp32-s3.ha.nuki-bridge output/firmware/release/ha-doorman-nuki-bridge
-  
-
+          for f in *.standard; do cp -r "$f" "${f%.standard}.stock"; done
 
       - name: Upload Pages artifact
         if: github.ref_name == 'master'
-        uses: actions/upload-pages-artifact@v3
+        uses: actions/upload-pages-artifact@v4
         with:
           path: output
       
       - name: Upload Assets Bundle
         if: startsWith(github.ref_name, 'dev')
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v5
         with:
           name: asset-bundle
           path: output

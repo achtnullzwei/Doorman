@@ -1,8 +1,11 @@
 # Kann ich Doorman benutzen?
-
 Wenn deine [TCS](https://www.tcsag.de/), [Koch](https://www.kochag.ch/) oder [Scantron](https://scantron.dk/) Innenstation die Anschlussklemmen `a`, `b` und `P` hat und mit 24V DC betrieben wird, ist sie wahrscheinlich kompatibel.
 
 Einige umgelabelte [Niko](https://www.niko.eu/) und ältere [Jung](https://www.jung-group.com/) Innenstationen, die den TCS- und Koch-Modellen entsprechen, könnten ebenfalls passen.
+
+:::warning TCS:IP
+Die TCS:IP Serie wird nicht unterstützt! Bitte prüfe ob dein System ein Bus-System ist.
+:::
 
 :::danger WICHTIG - BEVOR DU BESTELLST
 Da dieses Produkt durch Reverse Engineering entwickelt wurde, gibt es keine Garantie, dass deine Sprechanlage ohne Tests funktioniert.
@@ -55,7 +58,6 @@ Wenn andere Geräte an der `P`-Leitung zu viel Strom ziehen, reicht es mögliche
 :::
 
 ## Bekannte Probleme
-
 Innenstationen mit einem TTC1-B-1 Anschlussmodul verursachen Probleme, da die `a`- und `P`-Anschlüsse verbunden sind.
 Ab Hardware Revision `1.5` gibt es eine neue Anschlussmethode, welche nur noch ein leises, aber dennoch wahrnehmbares Rauschen im Lautsprecher erzeugt.
 
@@ -65,7 +67,9 @@ Es tritt ein lautes Piepen auf, wenn jemand spricht.
 
 ![ttc1-b-1-module](./images/incompatible-ttc1-b-1.png){width=300px}
 
-## Verifizierte Modelle
+## Mehrere Innenstationen
+Wenn du mehrere Innenstationen hast, wird's etwas tricky. Du musst dann eine eigene YAML-Konfiguration erstellen, damit alle zusammen funktionieren. Die Standard-Firmware kann nämlich nur mit einer Innenstation umgehen.
 
-Schau dir die [unterstützten Modelle und Einstellungen](../../reference/esphome-component.md#model-setting-availability) an.  
+## Verifizierte Modelle
+Schau dir die [unterstützten Modelle und Einstellungen](../../reference/esphome-component-device#model-setting-availability) an.  
 Modelle mit verfügbaren Einstellungen sind auf jeden Fall kompatibel. Falls dein Modell nicht dabei ist, erstelle bitte ein Issue, um die Kompatibilität zu überprüfen.

@@ -1,16 +1,14 @@
 # Board Setup
 esp32:
-  board: esp32dev
+  variant: esp32
   framework:
     type: esp-idf
     version: recommended
 
 # TODO: Proper GPIO selection
-tc_bus:
-  rx_pin: 22
-  tx_pin: 23
-
 substitutions:
+  rx_pin: "GPIO22"
+  tx_pin: "GPIO23"
   led_pin: "GPIO2"
   rgb_led_pin: "GPIO4"
   relay_pin: "GPIO21"

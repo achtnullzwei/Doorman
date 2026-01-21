@@ -4,19 +4,21 @@ import { defineConfig, type DefaultTheme } from 'vitepress'
 const require = createRequire(import.meta.url)
 const pkg = require('../../package.json')
 
+const branch = pkg.version.includes('dev') ? 'dev' : 'master';
+
 export const en = defineConfig({
-    lang: 'en-US',
-    description: "Doorman S3 lets you connect your TCS or Koch intercom to any home automation system.",
-  
-    /* prettier-ignore */
-    head: [
-        ['meta', { property: 'og:locale', content: 'en' }],
-        ['meta', { property: 'og:title', content: 'Doorman | Gateway for TCS and Koch intercoms' }],
-        ['meta', { property: 'og:description', content: 'Doorman S3 lets you connect your TCS or Koch intercom to any home automation system.' }],
-    ],
+  lang: 'en-US',
+  description: "Doorman S3 lets you connect your TCS or Koch intercom to any home automation system.",
+
+  /* prettier-ignore */
+  head: [
+    ['meta', { property: 'og:locale', content: 'en' }],
+    ['meta', { property: 'og:title', content: 'Doorman | Gateway for TCS and Koch intercoms' }],
+    ['meta', { property: 'og:description', content: 'Doorman S3 lets you connect your TCS or Koch intercom to any home automation system.' }],
+    ['meta', { name: 'og:description', content: 'Doorman S3 lets you connect your TCS or Koch intercom to any home automation system.' }],
+  ],
 
   themeConfig: {
-
     nav: nav(),
 
     sidebar: {
@@ -26,7 +28,8 @@ export const en = defineConfig({
     },
 
     editLink: {
-        pattern: 'https://github.com/azoninc/doorman/edit/master/docs/:path'
+      pattern: 'https://github.com/azoninc/doorman/edit/' + branch  + '/docs/:path',
+      text: 'Edit this page'
     },
 
     footer: {
@@ -37,40 +40,45 @@ export const en = defineConfig({
 })
 
 function nav(): DefaultTheme.NavItem[] {
-    return [
+  return [
+    {
+      text: 'Guide',
+      link: '/guide/what-is-doorman',
+      activeMatch: '/guide/'
+    },
+    {
+      text: 'Reference',
+      link: '/reference/entities',
+      activeMatch: '/reference/'
+    },
+    {
+      text: 'Get your Doorman',
+      link: '/order',
+      activeMatch: '/order',
+    },
+    {
+      text: pkg.version,
+      items: [
+        { text: 'Issues', link: 'https://github.com/azoninc/doorman/issues' },
         {
-          text: 'Guide',
-          link: '/guide/what-is-doorman',
-          activeMatch: '/guide/'
+          text: 'Changelog',
+          link: '/changelog/firmware',
+          activeMatch: '/changelog/'
         },
         {
-          text: 'Reference',
-          link: '/reference/entities',
-          activeMatch: '/reference/'
-        },
-        {
-          text: pkg.version,
+          text: 'Docs',
           items: [
-            { text: 'Issues', link: 'https://github.com/azoninc/doorman/issues' },
             {
-              text: 'Changelog',
-              link: '/changelog/firmware',
-              activeMatch: '/changelog/'
-            },
-            {
-              text: 'Docs',
-              items: [
-                {
-                  text: !pkg.version.includes('dev') ? 'Switch to development' : 'Switch to current',
-                  link: !pkg.version.includes('dev') ? 'https://doorman-dev.surge.sh/' : 'https://doorman.azon.ai/',
-                  target: '_self'
-                }
-              ]
+              text: branch != 'dev' ? 'Switch to development' : 'Switch to current',
+              link: branch != 'dev' ? 'https://dev.doorman.azon.ai/' : 'https://doorman.azon.ai/',
+              target: '_self'
             }
           ]
         }
       ]
-  }
+    }
+  ]
+}
 
 function sidebarGuide(): DefaultTheme.SidebarItem[] {
   return [
@@ -83,24 +91,34 @@ function sidebarGuide(): DefaultTheme.SidebarItem[] {
       ]
     },
     {
-      text: 'Firmware',
+      text: 'Features',
       items: [
-        { text: 'Stock Firmware', link: 'stock-firmware', base: '/guide/firmware/' },
-        { text: 'Nuki Bridge Firmware', link: 'nuki-bridge-firmware', base: '/guide/firmware/' },
-        {
-          text: 'Entities',
-          link: 'entities',
-          base: '/reference/',
-        },
-        { text: 'Custom Firmware', link: 'custom-firmware', base: '/guide/firmware/' }
+        { text: 'Ring To Open', link: 'ring-to-open', base: '/guide/features/' },
+        { text: 'Indoor Station Settings', link: 'intercom-settings', base: '/guide/features/' },
+        { text: 'Pattern Events', link: 'pattern-events', base: '/guide/features/' },
       ]
     },
     {
-      text: 'Automations',
+      text: 'Firmware',
       items: [
-        { text: 'Pattern Events', link: 'pattern-events', base: '/guide/automation/' },
-        { text: 'Ring To Open', link: 'ring-to-open', base: '/guide/automation/' },
-        { text: 'Blueprints', link: 'blueprints', base: '/guide/automation/' }
+        { text: 'Install or Update', link: 'installation', base: '/guide/firmware/' },
+        {
+          text: 'Smart Home Integrations',
+          collapsed: true,
+          items: [
+            { text: 'Home Assistant', link: 'home-assistant', base: '/guide/firmware/' },
+            { text: 'MQTT', link: 'mqtt', base: '/guide/firmware/' },
+            { text: 'HomeKit', link: 'homekit', base: '/guide/firmware/' },
+          ]
+        },
+        {
+          text: 'Addons',
+          collapsed: true,
+          items: [
+            { text: 'Nuki Bridge', link: 'nuki-bridge', base: '/guide/firmware/' },
+          ]
+        },
+        { text: 'Customization', link: 'customization', base: '/guide/firmware/' },
       ]
     },
     {
@@ -124,13 +142,32 @@ function sidebarGuide(): DefaultTheme.SidebarItem[] {
 function sidebarReference(): DefaultTheme.SidebarItem[] {
   return [
     {
-      text: 'Reference',
+      text: 'Hardware',
       items: [
-        { text: 'Entities', link: 'entities' },
-        { text: 'GPIO Pinout', link: 'gpio' },
         { text: 'Schematics', link: 'schematics' },
         { text: 'Specifications', link: 'specifications' },
-        { text: 'ESPHome Component', link: 'esphome-component' }
+        { text: 'GPIO Pinout', link: 'gpio' },
+      ]
+    },
+    {
+      text: 'ESPHome Components',
+      items: [
+        { text: 'TC:BUS', link: 'esphome-component' },
+        { text: 'TC:BUS Device', link: 'esphome-component-device' },
+        { text: 'TC:BUS Serial', link: 'esphome-component-serial' },
+        { text: 'Hardware', link: 'esphome-component-hardware' }
+      ]
+    },
+    {
+      text: 'Entities',
+      link: 'entities',
+      items: [
+        { text: 'Doorman', link: 'entities-doorman' },
+        { text: 'TC:BUS', link: 'entities-tc-bus' },
+        { text: 'MQTT Integration', link: 'entities-mqtt' },
+        { text: 'HomeKit Integration', link: 'entities-homekit' },
+        { text: 'Nuki Bridge', link: 'entities-nuki-bridge' },
+        { text: 'Nuki Lock', link: 'entities-nuki-lock' },
       ]
     }
   ];

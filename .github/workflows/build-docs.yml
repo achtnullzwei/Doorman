@@ -8,53 +8,61 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
         with:
           fetch-depth: 0
 
       - name: Setup Node
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v6
         with:
           node-version: 20
           cache: npm
           cache-dependency-path: docs/package-lock.json
 
       - name: Setup Pages
-        uses: actions/configure-pages@v4
+        uses: actions/configure-pages@v5
 
-      - name: Extract version from base.yaml
+      - name: Extract version and prepare environment
         run: |
           VERSION=$(awk '/project:/, /version:/' firmware/base.yaml | grep 'version:' | awk '{print $2}' | sed 's/[",]//g')
-          echo "VERSION=${VERSION}" >> $GITHUB_ENV
           
-      - name: Update package.json version
-        if: github.ref_name == 'master'
-        working-directory: docs
-        run: |
-          sed -i "s/\"version\": \".*\"/\"version\": \"${VERSION}\"/" package.json
+          if [[ "${{ github.ref_name }}" == dev* ]]; then
+            TIMESTAMP=$(date +%d%H%M)
+            echo "FULL_VERSION=${VERSION}-dev.${TIMESTAMP}" >> $GITHUB_ENV
+          else
+            echo "FULL_VERSION=${VERSION}" >> $GITHUB_ENV
+          fi
 
       - name: Update package.json version
-        if: startsWith(github.ref_name, 'dev')
         working-directory: docs
         run: |
-          TIMESTAMP=$(date +%d%H%M)
-          sed -i "s/\"version\": \".*\"/\"version\": \"${VERSION}-dev.${TIMESTAMP}\"/" package.json
+          sed -i "s/\"version\": \".*\"/\"version\": \"${FULL_VERSION}\"/" package.json
           
-      - name: Update example fw branch
+      - name: Update example firmware branch references
         if: startsWith(github.ref_name, 'dev')
         working-directory: firmware/examples
         run: |
-          BRANCH_NAME=${{ github.ref_name }}
-          sed -i "s/master.yaml@master/dev.yaml@${BRANCH_NAME}/g" *.example.yaml
+          sed -i "s/master.yaml@master/dev.yaml@${{ github.ref_name }}/g" *.example.yaml
 
-      - name: Update docs branch
+      - name: Update documentation branch references
         if: startsWith(github.ref_name, 'dev')
         working-directory: docs
         run: |
-          BRANCH_NAME=${{ github.ref_name }}
-          sed -i "s/master/${BRANCH_NAME}/g" */guide/enclosure/3d-printing.md
-          sed -i "s/@master/@${BRANCH_NAME}/g" */reference/schematics.md
-          sed -i "s/master.yaml@master/dev.yaml@${BRANCH_NAME}/g" */guide/firmware/minimal.example.yaml
+          # Update 3D printing guide
+          sed -i "s/master/${{ github.ref_name }}/g" */guide/enclosure/3d-printing.md
+          
+          # Update schematics references
+          sed -i "s/@master/@${{ github.ref_name }}/g" */reference/schematics.md
+
+          # Update example references
+          sed -i "s/@master/@${{ github.ref_name }}/g" */guide/firmware/customization.md
+          sed -i "s/branch: \"master\"/branch: \"${{ github.ref_name }}\"/g" */guide/firmware/customization.md
+          
+          # Update firmware example references
+          sed -i "s/master.yaml@master/dev.yaml@${{ github.ref_name }}/g" */guide/firmware/minimal.example.yaml
+          
+          # Update ESPHome component references
+          sed -i "s/@master/@${{ github.ref_name }}/g" */reference/esphome-component*.md
 
       - name: Install dependencies
         working-directory: docs
@@ -69,7 +77,7 @@ jobs:
         run: npm run lunaria:build
 
       - name: Upload VitePress artifact
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v5
         with:
           name: vitepress-docs
           path: docs/.vitepress/dist

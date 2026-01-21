@@ -1,14 +1,24 @@
-## MQTT
+---
+description: Learn how to configure Doorman with MQTT, including practical examples using topics and payloads for automation.
+---
 
-When using the MQTT firmware, various topics are published to your broker. Here's how the topic structure and controls work.
+# MQTT Integration
 
-### Topic Structure
+This page provides everything you need — from configuration to practical examples using MQTT topics and payloads.
+
+## Setup
+<!--@include: ./instructions/mqtt.md-->
+
+## Topics
+Various topics are published to your broker. Here's how the topic structure and controls work.
+
+### Structure
 Each entity publishes its state to a topic in the following format:
 ```
 <TOPIC_PREFIX>/<COMPONENT_TYPE>/<COMPONENT_NAME>/state
 ```
 
-You can control certain entities by publishing a command to this topic format:
+You can control certain entities by publishing a telegram to this topic format:
 ::: code-group
 ``` [Topic]
 <TOPIC_PREFIX>/<COMPONENT_TYPE>/<COMPONENT_NAME>/command 
@@ -19,7 +29,7 @@ ON or OFF or whatever is supported
 :::
 
 ### Example
-To enable or disable the [Ring-To-Open](../automation/ring-to-open.md) automation, send `ON` or `OFF` as the payload to the topic:
+To enable or disable the [Ring-To-Open](../features/ring-to-open.md) automation, send `ON` or `OFF` as the payload to the topic:
 ::: code-group
 ``` [Topic]
 doorman-s3/switch/ring_to_open/command
@@ -29,40 +39,79 @@ ON
 ```
 :::
 
-### Special Topics
-Certain special topics allow for advanced commands.
-
-#### Send a Command (Hexadecimal)
-Here's an example of how to send a hexadecimal command (uint32) to the bus:
+## Send a Bus Telegram (Hexadecimal)
+Here's an example of how to send a hexadecimal telegram (16-bit/32-bit) to the bus:
 ::: code-group
 ``` [Topic]
-doorman-s3/send_raw_command
+doorman-s3/send_tc_telegram/raw
 ```
-```json [Payload]
-{
-    "command": 0x1C30BA80
-}
+```text [16-Bit Text Payload]
+1100
 ```
-```json [Advanced Payload]
-{
-    "command": 0x1C30BA80,
-    "is_long": false
-}
+```text [32-Bit Text Payload]
+1C30BA80
 ```
 :::
 
-#### Send a Command (Command Builder)
-Here's an example of how to use the command builder to send a command to the bus:
+## Send a Bus Telegram (Telegram Builder)
+Here's an example of how to use the telegram builder to send a telegram to the bus:
 ::: code-group
 ``` [Topic]
-doorman-s3/send_command
+doorman-s3/send_tc_telegram
 ```
-```json [Payload]
+```json [JSON Payload]
 {
     "type": "open_door",
     "address": 0,
     "payload": 0,
     "serial_number": 123456
+}
+```
+:::
+
+## Send a Indoor Station Telegram (Telegram Builder)
+Here's an example of how to use the telegram builder to send a telegram to the bus:
+::: code-group
+``` [Topic]
+doorman-s3/send_tc_is_telegram
+```
+```json [JSON Payload]
+{
+    "type": "open_door",
+    "address": 0,
+    "payload": 0,
+}
+```
+:::
+
+## Reconfigure WiFi credentials
+Here's an example of how to reconfigure your WiFi credentials:
+::: code-group
+``` [Topic]
+doorman-s3/reconfigure_wifi
+```
+```json [JSON Payload]
+{
+    "ssid": "Your new WiFi SSID",
+    "password": "YourNewPassword!"
+}
+```
+:::
+
+## Receive parsed telegrams
+Each telegram is published on a special topic. The messages contain the parsed telegram data.
+
+::: code-group
+``` [Topic]
+doorman-s3/last_telegram
+```
+```json [Payload]
+{
+    "telegram": "1100",
+    "type": "open_door",
+    "address": "0",
+    "payload": "0",
+    "serial_number": "0"
 }
 ```
 :::

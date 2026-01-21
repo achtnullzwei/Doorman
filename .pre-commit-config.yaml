@@ -2,28 +2,28 @@
 repos:
   - repo: local
     hooks:
-      - id: esp32-s3.ha.stock.yaml
-        name: Validate Config - Stock (ha, master)
-        entry: esphome config firmware/configurations/esp32-s3.ha.stock.master.yaml
+      - id: esp32-s3.ha.standard.yaml
+        name: Validate Config - Standard (ha, master)
+        entry: esphome config firmware/configurations/esp32-s3.ha.standard.master.yaml
         language: system
         pass_filenames: false
         files: ^firmware/
-      - id: esp32-s3.ha.stock.dev.yaml
-        name: Validate Config - Stock (ha, dev)
-        entry: esphome config firmware/configurations/esp32-s3.ha.stock.dev.yaml
+      - id: esp32-s3.ha.standard.dev.yaml
+        name: Validate Config - Standard (ha, dev)
+        entry: esphome config firmware/configurations/esp32-s3.ha.standard.dev.yaml
         language: system
         pass_filenames: false
         files: ^firmware/
 
-      - id: esp32-s3.mqtt.stock.yaml
-        name: Validate Config - Stock (mqtt, master)
-        entry: esphome config firmware/configurations/esp32-s3.mqtt.stock.master.yaml
+      - id: esp32-s3.mqtt.standard.yaml
+        name: Validate Config - Standard (mqtt, master)
+        entry: esphome config firmware/configurations/esp32-s3.mqtt.standard.master.yaml
         language: system
         pass_filenames: false
         files: ^firmware/
-      - id: esp32-s3.mqtt.stock.dev.yaml
-        name: Validate Config - Stock (mqtt, dev)
-        entry: esphome config firmware/configurations/esp32-s3.mqtt.stock.dev.yaml
+      - id: esp32-s3.mqtt.standard.dev.yaml
+        name: Validate Config - Standard (mqtt, dev)
+        entry: esphome config firmware/configurations/esp32-s3.mqtt.standard.dev.yaml
         language: system
         pass_filenames: false
         files: ^firmware/

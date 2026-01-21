@@ -3,9 +3,9 @@ substitutions:
   name: "doorman-s3"
   friendly_name: "Doorman S3"
 
-# Import Doorman Stock Firmware Config
+# Import Doorman Standard Firmware Config
 packages:
-  AzonInc.Doorman: github://azoninc/doorman/firmware/configurations/esp32-s3.ha.stock.master.yaml@master
+  AzonInc.Doorman-Standard: github://azoninc/doorman/firmware/configurations/esp32-s3.ha.standard.master.yaml@master
 
 wifi:
   ssid: !secret wifi_ssid

@@ -7,34 +7,56 @@ on:
   workflow_dispatch:
 
 jobs:
-  build:
-    name: Build Firmware
+  # Firmware-Builds
+  build-firmware:
+    name: Build ${{ matrix.chip }} ${{ matrix.variant }} (${{ matrix.integration }})
+    runs-on: ubuntu-latest
+    continue-on-error: true
+    strategy:
+      fail-fast: false
+      matrix:
+        chip: [esp32, esp32-s3, esp32-s3-quad]
+        variant: [standard, nuki-bridge]
+        integration: [ha, mqtt, homekit, custom]
+        exclude:
+          - variant: nuki-bridge
+            integration: mqtt
+          - variant: nuki-bridge
+            integration: homekit
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v5
+
+      - name: Build ESPHome firmware
+        uses: esphome/build-action@v7.1.0
+        with:
+          yaml-file: firmware/configurations/${{ matrix.chip }}.${{ matrix.integration }}.${{ matrix.variant }}.master.yaml
+          version: latest
+          complete-manifest: true
+
+  # Component Test Build
+  build-component-test:
+    name: Build Component Test
+    runs-on: ubuntu-latest
+    continue-on-error: true
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v5
+
+      - name: Build Component Test Firmware
+        uses: esphome/build-action@v7.1.0
+        with:
+          yaml-file: firmware/tc-bus-component.yaml
+          version: latest
+  
+  # Notification job
+  notify-failure:
+    name: Send failure notification
+    needs: [build-firmware, build-component-test]
+    if: failure() || contains(needs.*.result, 'failure')
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-
-      - name: Build Doorman Stock for Home Assistant (ESP32-S3) Firmware
-        uses: esphome/build-action@v6.0.0
-        with:
-          yaml-file: firmware/ha-doorman-stock.yaml
-          version: latest
-          complete-manifest: true
-
-      - name: Build Doorman Nuki Bridge for Home Assistant (ESP32-S3) Firmware
-        uses: esphome/build-action@v6.0.0
-        with:
-          yaml-file: firmware/ha-doorman-nuki-bridge.yaml
-          version: latest
-          complete-manifest: true
-
-      - name: Build Component Test (ESP8266) Firmware
-        uses: esphome/build-action@v6.0.0
-        with:
-          yaml-file: firmware/tc-bus-component-8266.yaml
-          version: latest
-
       - name: Send Discord failure notification
-        if: failure()
         uses: appleboy/discord-action@master
         with:
           webhook_id: ${{ secrets.DISCORD_WEBHOOK_ID }}

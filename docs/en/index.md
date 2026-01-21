@@ -1,6 +1,7 @@
 ---
 # https://vitepress.dev/reference/default-theme-home-page
 layout: home
+description: Doorman S3 lets you connect your TCS or Koch intercom to any home automation system.
 
 hero:
   name: Doorman
@@ -13,6 +14,7 @@ hero:
     - theme: brand
       text: What is Doorman?
       link: /guide/what-is-doorman
+
     - theme: alt
       text: Quickstart
       link: /guide/getting-started
@@ -22,19 +24,35 @@ hero:
       link: https://github.com/azoninc/doorman
 
 features:
-  - icon: 🚀
+  - icon:
+      src: /icons/fluent-emoji-rocket.png
+      wrap: true
+      height: 28px
+      width: 28px
     title: Powerful
     details: Powered by the ESP32-S3, featuring a dual-core CPU, integrated PSRAM, and Bluetooth, making it both powerful and versatile.
 
-  - icon: 🤏​
+  - icon:
+      src: /icons/fluent-emoji-pinching-hand.png
+      wrap: true
+      height: 28px
+      width: 28px
     title: Perfect Size
     details: A compact design allows it to fit almost anywhere, making it ideal for a wide range of installation scenarios.
 
-  - icon: ✨​
+  - icon:
+      src: /icons/fluent-emoji-sparkles.png
+      wrap: true
+      height: 28px
+      width: 28px
     title: Expandable
     details: Two additional GPIOs and an external button allow for effortless expansion with your own sensors and devices.
 
-  - icon: 🎉​
+  - icon:
+      src: /icons/fluent-emoji-party-popper.png
+      wrap: true
+      height: 28px
+      width: 28px
     title: Compatible
     details: The solid state relay allows you to switch up to 40V (max. 2.5A), perfect for integrating with old-school intercom systems.
 ---

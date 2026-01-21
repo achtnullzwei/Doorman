@@ -1,7 +1,5 @@
-# TC:BUS ESPHome Komponente
+# TC:BUS Komponente <Badge type="tip" text="tc_bus" />
 
-<div class="tip custom-block" style="padding-top: 8px">
-
+::: tip HINWEIS
 Die Dokumentation dazu gibt es nur auf Englisch. Klicke [hier](../../reference/esphome-component) um zu wechseln.
-
-</div>
+:::

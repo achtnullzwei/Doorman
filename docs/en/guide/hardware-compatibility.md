@@ -1,7 +1,15 @@
+---
+description: Check if your intercom system is compatible with Doorman, including TCS, Koch, Scantron, and some rebranded Niko and older Jung models.
+---
+
 # Can I use Doorman?
 If your [TCS](https://www.tcsag.de/), [Koch](https://www.kochag.ch/) or [Scantron](https://scantron.dk/) indoor station has `a`, `b`, and `P` labeled screw terminals and operates on 24V DC, it's likely compatible.
 
 Some rebranded [Niko](https://www.niko.eu/) and older [Jung](https://www.jung-group.com/) indoor stations, which are counterparts to the TCS and Koch models, may also be compatible.
+
+:::warning TCS:IP
+The TCS:IP series is not supported! Please make sure your system is a bus-system.
+:::
 
 :::danger READ - BEFORE YOU ORDER
 Since this product is the result of reverse engineering, there is no guarantee that your indoor station will work without testing it yourself.
@@ -64,9 +72,10 @@ A loud beeping noise occurs whenever someone is talking.
 
 ![ttc1-b-1-module](./images/incompatible-ttc1-b-1.png){width=300px}
 
-
+## Multiple Indoor Stations
+If you have multiple indoor stations, things become a bit more complex. You'll need to create a custom YAML configuration to integrate all the indoor stations. The default firmware only supports a single indoor station.
 
 ## Verified Hardware
 
-Check out the [supported models and settings](../reference/esphome-component.md#model-setting-availability).  
+Check out the [supported models and settings](../reference/esphome-component-device#model-setting-availability).  
 Models with available settings are guaranteed to be compatible. If your model isn't listed, please open an issue to verify its compatibility.
