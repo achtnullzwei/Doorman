@@ -142,7 +142,7 @@ export default {
                 {
                     key: 'DE',
                     name: 'Deutschland',
-                    details: '',
+                    details: 'Doorman kommt aus Deutschland- daher gibt es hier die günstigsten Versandoptionen.',
                     icon: IconTwemojiFlagGermany,
                     options: [
                         {
@@ -178,12 +178,12 @@ export default {
                 {
                     key: 'CH',
                     name: 'Schweiz',
-                    details: '',
+                    details: 'Bitte beachte, dass der Zoll gelegentlich zu leichten Verzögerungen führen kann.',
                     icon: IconTwemojiFlagSwitzerland,
                     options: [
                         {
                             key: 'standard',
-                            name: 'Standardversand',
+                            name: 'Päckchen',
                             icon: '',
                             details: parcelTrackingDetails,
                             price: 0,
@@ -191,7 +191,7 @@ export default {
                         },
                         {
                             key: 'tracking',
-                            name: 'Sendungsverfolgung',
+                            name: 'Paket',
                             icon: '',
                             details: packageTrackingDetails,
                             price: 0,
@@ -206,12 +206,12 @@ export default {
                 {
                     key: 'EU',
                     name: 'Europäische Union',
-                    details: '',
+                    details: 'Die Lieferzeiten können je nach Land leicht variieren.',
                     icon: IconTwemojiFlagEuropeanUnion,
                     options: [
                         {
                             key: 'standard',
-                            name: 'Standardversand',
+                            name: 'Päckchen',
                             icon: '',
                             details: parcelTrackingDetails,
                             price: 0,
@@ -219,7 +219,7 @@ export default {
                         },
                         {
                             key: 'tracking',
-                            name: 'Sendungsverfolgung',
+                            name: 'Paket',
                             icon: '',
                             details: packageTrackingDetails,
                             price: 0,
@@ -234,12 +234,12 @@ export default {
                 {
                     key: 'INT',
                     name: 'Irgendwo anders',
-                    details: '',
+                    details: 'Wenn dein Land nicht in der Liste ist, helfe ich Dir gerne – schreib mir einfach eine Mail.',
                     icon: EmojioneV1GlobeShowingAmericas,
                     options: [
                         {
                             key: 'standard',
-                            name: 'Standardversand',
+                            name: 'Päckchen',
                             icon: '',
                             details: parcelTrackingDetails,
                             price: 0,
@@ -247,7 +247,7 @@ export default {
                         },
                         {
                             key: 'tracking',
-                            name: 'Sendungsverfolgung',
+                            name: 'Paket',
                             icon: '',
                             details: packageTrackingDetails,
                             price: 0,

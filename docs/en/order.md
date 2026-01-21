@@ -140,7 +140,7 @@ export default {
                 {
                     key: 'DE',
                     name: 'Germany',
-                    details: '',
+                    details: 'Doorman is made in Germany, which allows for the most affordable shipping options.',
                     icon: IconTwemojiFlagGermany,
                     options: [
                         {
@@ -176,12 +176,12 @@ export default {
                 {
                     key: 'CH',
                     name: 'Switzerland',
-                    details: '',
+                    details: 'Please note that customs may occasionally cause slight delays.',
                     icon: IconTwemojiFlagSwitzerland,
                     options: [
                         {
                             key: 'standard',
-                            name: 'Parcel (Standard)',
+                            name: 'Parcel',
                             icon: '',
                             details: parcelTrackingDetails,
                             price: 0,
@@ -189,7 +189,7 @@ export default {
                         },
                         {
                             key: 'tracking',
-                            name: 'Tracked Package',
+                            name: 'Package',
                             icon: '',
                             details: packageTrackingDetails,
                             price: 0,
@@ -204,12 +204,12 @@ export default {
                 {
                     key: 'EU',
                     name: 'European Union',
-                    details: '',
+                    details: 'Delivery times may vary slightly depending on your location.',
                     icon: IconTwemojiFlagEuropeanUnion,
                     options: [
                         {
                             key: 'standard',
-                            name: 'Parcel (Standard)',
+                            name: 'Parcel',
                             icon: '',
                             details: parcelTrackingDetails,
                             price: 0,
@@ -217,7 +217,7 @@ export default {
                         },
                         {
                             key: 'tracking',
-                            name: 'Tracked Package',
+                            name: 'Package',
                             icon: '',
                             details: packageTrackingDetails,
                             price: 0,
@@ -232,12 +232,12 @@ export default {
                 {
                     key: 'INT',
                     name: 'Somewhere else',
-                    details: '',
+                    details: 'If your country is not on the list, I would be happy to assist you - just get in touch.',
                     icon: EmojioneV1GlobeShowingAmericas,
                     options: [
                         {
                             key: 'standard',
-                            name: 'Parcel (Standard)',
+                            name: 'Parcel',
                             icon: '',
                             details: parcelTrackingDetails,
                             price: 0,
@@ -245,7 +245,7 @@ export default {
                         },
                         {
                             key: 'tracking',
-                            name: 'Tracked Package',
+                            name: 'Package',
                             icon: '',
                             details: packageTrackingDetails,
                             price: 0,
