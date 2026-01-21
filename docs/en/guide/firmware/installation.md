@@ -1,8 +1,9 @@
 ---
-description: Step-by-step instructions to install or update Doorman firmware, including Web Serial, web interface, and Home Assistant integration.
+description: Schritt-für-Schritt-Anleitung zur Installation oder Aktualisierung der Doorman-Firmware, inklusive Web Serial, Web-Oberfläche und Home Assistant Integration.
 ---
 
 <script setup>
+import { ref, watch, nextTick } from 'vue';
 import { inBrowser } from 'vitepress'
 import pkg from '../../../package.json';
 </script>
@@ -98,6 +99,12 @@ export default {
         },
         variant(newVariant, oldVariant) {
             localStorage.setItem("fw_variant", newVariant);
+        },
+        valid_manifest(newVariant, oldVariant) {
+            this.applyWebInstallOverrides();
+        },
+        manifest_file(newVariant, oldVariant) {
+            this.applyWebInstallOverrides();
         }
     },
     computed: {
@@ -138,6 +145,22 @@ export default {
                 return navigator.serial != undefined;
             }
             return false;
+        }
+    },
+    methods: {
+        async applyWebInstallOverrides() {
+            await this.$nextTick();
+
+            const button = this.$refs.webInstallBtn;
+            button.overrides = {
+                checkSameFirmware(manifest, improvInfo) {
+                    const manifestFirmware = manifest?.name?.toLowerCase() ?? '';
+                    const deviceFirmware = improvInfo?.firmware?.toLowerCase() ?? '';
+                    const firmwareName = deviceFirmware.split('.')[1];
+
+                    return manifestFirmware.includes(firmwareName);
+                }
+            };
         }
     },
     async mounted() {
@@ -357,6 +380,14 @@ esphome run <yamlfile.yaml>
 ```yaml [Custom]
 <!--@include: ../../../../firmware/examples/esp32.custom.nuki-bridge.master.example.yaml-->
 ```
+:::
+
+## Experimental Firmware
+
+You can switch to the development branch by enabling the `Experimental Firmware` option in the Doorman web interface or Home Assistant to access the latest features and fixes.
+
+::: tip HELP WANTED
+Please report any issues you encounter - your feedback helps us improve stability and deliver a reliable firmware in the future.
 :::
 
 ## Firmware Alternatives

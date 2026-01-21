@@ -1,4 +1,5 @@
 <script setup>
+import { ref, watch, nextTick } from 'vue';
 import { inBrowser } from 'vitepress'
 import pkg from '../../../package.json';
 </script>
@@ -93,6 +94,12 @@ export default {
         },
         variant(newVariant, oldVariant) {
             localStorage.setItem("fw_variant", newVariant);
+        },
+        valid_manifest(newVariant, oldVariant) {
+            this.applyWebInstallOverrides();
+        },
+        manifest_file(newVariant, oldVariant) {
+            this.applyWebInstallOverrides();
         }
     },
     computed: {
@@ -133,6 +140,22 @@ export default {
                 return navigator.serial != undefined;
             }
             return false;
+        }
+    },
+    methods: {
+        async applyWebInstallOverrides() {
+            await this.$nextTick();
+
+            const button = this.$refs.webInstallBtn;
+            button.overrides = {
+                checkSameFirmware(manifest, improvInfo) {
+                    const manifestFirmware = manifest?.name?.toLowerCase() ?? '';
+                    const deviceFirmware = improvInfo?.firmware?.toLowerCase() ?? '';
+                    const firmwareName = deviceFirmware.split('.')[1];
+
+                    return manifestFirmware.includes(firmwareName);
+                }
+            };
         }
     },
     async mounted() {
@@ -206,7 +229,7 @@ Dieser geführte Prozess sorgt für eine nahtlose Integration mit der Home Assis
             <p class="custom-block-title">HINWEIS</p>
             <p v-html="notes"></p>
         </div>
-        <esp-web-install-button :manifest="manifest_file">
+        <esp-web-install-button ref="webInstallBtn" :manifest="manifest_file">
             <button slot="activate">
                 <div class="custom-layout">
                     <a class="btn">Firmware installieren oder updaten</a>
@@ -353,6 +376,15 @@ esphome run <yamlfile.yaml>
 <!--@include: ../../../../firmware/examples/esp32.custom.nuki-bridge.master.example.yaml-->
 ```
 :::
+
+## Experimentelle Firmware
+
+Du kannst auf den Entwicklungszweig wechseln, indem du die Option `Experimental Firmware` in der Doorman-Weboberfläche oder in Home Assistant aktivierst, um die neuesten Funktionen und Fehlerbehebungen zu nutzen.
+
+::: tip HILFE GESUCHT
+Bitte melde alle Probleme, die dir auffallen – dein Feedback hilft uns, die Stabilität zu verbessern und eine zuverlässige Firmware bereitzustellen.
+:::
+
 
 ## Firmware Alternativen
 
