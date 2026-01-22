@@ -5,7 +5,13 @@ description: Stay up to date with Doorman's latest features, improvements, and i
 # Release Notes & Changelog
 Welcome to the latest updates! Here's a breakdown of all the **new features**, **improvements**, and important **changes** you need to know. Be sure to check out the **Breaking Changes** section for any actions needed to keep everything running smoothly.
 
-## 2026.1.0 <Badge type="tip" text="Stable" />
+## 2026.1.1 <Badge type="tip" text="Stable" />
+
+### ✨ Improvements
+- **Adjust Telegram start timing**  
+   The Telegram start sequence timing has been slightly modified to address edge cases where decoding failed.
+
+## 2026.1.0
 ### 🚨 IMPORTANT
 Please carefully review the breaking changes listed below before updating!  
 This release **will impact your current setup** and **requires** you to go through the **setup process again**.

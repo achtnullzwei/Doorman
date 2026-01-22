@@ -135,7 +135,7 @@ namespace esphome::tc_bus
         static constexpr uint32_t BIT_1_MIN = 3000;
         static constexpr uint32_t BIT_1_MAX = 4999;
 
-        static constexpr uint32_t START_CMD = 5800;
+        static constexpr uint32_t START_CMD = 5700;
         static constexpr uint32_t START_RSP = 6090;
 
         static constexpr uint32_t START_MAX = 6900;
