@@ -11,7 +11,7 @@ esphome:
   min_version: "2026.1.0"
   project:
     name: "AzonInc.Doorman Standard"
-    version: "2026.1.0"
+    version: "2026.1.1"
   on_boot:
     - priority: 500.0
       then:
