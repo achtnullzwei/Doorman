@@ -227,7 +227,7 @@ export default class EspApp extends LitElement {
           id="col_logs"
           class="col"
         >
-          <esp-log rows="50" .scheme="${this.scheme}"></esp-log>
+          <esp-log rows="100" .scheme="${this.scheme}"></esp-log>
         </section>`
       : nothing;
   }
