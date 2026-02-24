@@ -1340,7 +1340,14 @@ namespace esphome::tc_bus
         send_telegram(TELEGRAM_TYPE_WRITE_MEMORY, cellData.index, new_values);
 
         // Reset
-        send_telegram(TELEGRAM_TYPE_RESET);
+        if (this->device_group_ == DEVICE_GROUP_INDOOR_STATION)
+        {
+            this->tc_bus_->send_telegram(TELEGRAM_TYPE_DEVICE_RESET, 0, 0, this->serial_number_);
+        }
+        else
+        {
+            send_telegram(TELEGRAM_TYPE_RESET);
+        }
 
         return true;
     }
@@ -1385,7 +1392,14 @@ namespace esphome::tc_bus
         }
 
         // Reset
-        send_telegram(TELEGRAM_TYPE_RESET);
+        if (this->device_group_ == DEVICE_GROUP_INDOOR_STATION)
+        {
+            this->tc_bus_->send_telegram(TELEGRAM_TYPE_DEVICE_RESET, 0, 0, this->serial_number_);
+        }
+        else
+        {
+            send_telegram(TELEGRAM_TYPE_RESET);
+        }
 
         return true;
     }

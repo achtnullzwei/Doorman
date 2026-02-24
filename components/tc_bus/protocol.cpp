@@ -233,6 +233,15 @@ namespace esphome::tc_bus
                 data.raw |= (1 << 8);  // 100
                 break;
 
+            case TELEGRAM_TYPE_DEVICE_RESET:
+                data.serial_number = serial_number;
+                data.is_long = true;
+
+                data.raw |= (6 << 28); // 6
+                data.raw |= ((serial_number & 0xFFFFF) << 8); // C30BA
+                data.raw |= 0xD7; // D7 (Individual Reset)
+                break;
+
             case TELEGRAM_TYPE_SEARCH_DOORMAN_DEVICES:
                 data.is_long = false;  
 
@@ -604,6 +613,7 @@ namespace esphome::tc_bus
         {TELEGRAM_TYPE_END_OF_DOOR_READINESS, "END_OF_DOOR_READINESS"},
         {TELEGRAM_TYPE_INITIALIZE_DOOR_STATION, "INITIALIZE_DOOR_STATION"},
         {TELEGRAM_TYPE_RESET, "RESET"},
+        {TELEGRAM_TYPE_DEVICE_RESET, "DEVICE_RESET"},
         {TELEGRAM_TYPE_SELECT_DEVICE_GROUP, "SELECT_DEVICE_GROUP"},
         {TELEGRAM_TYPE_SELECT_DEVICE_GROUP_RESET, "SELECT_DEVICE_GROUP_RESET"},
         {TELEGRAM_TYPE_SEARCH_DEVICES, "SEARCH_DEVICES"},
